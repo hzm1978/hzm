@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.parquet
+futures_replay_session.json
+futures_replay_heads.json
+futures_replay_main_list_sort.json
+selftest.png
+ui-validation/
