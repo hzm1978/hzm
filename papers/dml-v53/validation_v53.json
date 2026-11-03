@@ -1,0 +1,120 @@
+{
+  "revision": "DML v53",
+  "date_utc": "2026-11-03",
+  "status": "PASS_LOCAL_CHECKS_EXTERNAL_SOURCE_REVIEW_INCOMPLETE",
+  "documents": [
+    {
+      "source": "main_en_PRA_v53.tex",
+      "pdf": "main_en_PRA_v53.pdf",
+      "pages": 13,
+      "source_sha256": "4d396bcd4859f0841f2f2b84d621d40426bca3bbba5a599f42ae665c791c53f7",
+      "pdf_sha256": "8ba8d5f694f9b601be9c8cf7891d9ec947c240a4b7af3900c014b3d70297eca2",
+      "unique_labels": 63,
+      "unique_citation_keys": 22,
+      "undefined_references": [],
+      "undefined_citations": [],
+      "duplicate_labels": [],
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "all_pdf_pages_have_text": true,
+      "all_extracted_text_within_page": true,
+      "minor_layout_notices": {
+        "underfull_hboxes": 19,
+        "revtex_label_warning": true,
+        "revtex_hidden_keywords_warning": true
+      }
+    },
+    {
+      "source": "main_zh_v53.tex",
+      "pdf": "main_zh_v53.pdf",
+      "pages": 23,
+      "source_sha256": "fe3e13679b4ea231c3433a5d107ea2447e92cb121c4942a3cfbc07d693087bdb",
+      "pdf_sha256": "57170b081aeb74193073f6f410e4e75d7cd0c6788817b1f15c21fc82248d131f",
+      "unique_labels": 63,
+      "unique_citation_keys": 22,
+      "undefined_references": [],
+      "undefined_citations": [],
+      "duplicate_labels": [],
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "all_pdf_pages_have_text": true,
+      "all_extracted_text_within_page": true,
+      "minor_layout_notices": {
+        "underfull_hboxes": 0,
+        "revtex_label_warning": false,
+        "revtex_hidden_keywords_warning": false
+      }
+    },
+    {
+      "source": "supplementary_material_en_v53.tex",
+      "pdf": "supplementary_material_en_v53.pdf",
+      "pages": 13,
+      "source_sha256": "7da1cf78f20874e8ca9b1cde538b9993bd307561add7453749e3414eb92d433a",
+      "pdf_sha256": "b4a4a21e20a903ccb680797a27c17dd7e97bdb0a7ebc27ccecf0da35e4649c44",
+      "unique_labels": 44,
+      "unique_citation_keys": 0,
+      "undefined_references": [],
+      "undefined_citations": [],
+      "duplicate_labels": [],
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "all_pdf_pages_have_text": true,
+      "all_extracted_text_within_page": true,
+      "minor_layout_notices": {
+        "underfull_hboxes": 1,
+        "revtex_label_warning": false,
+        "revtex_hidden_keywords_warning": false
+      }
+    },
+    {
+      "source": "supplementary_material_zh_v53.tex",
+      "pdf": "supplementary_material_zh_v53.pdf",
+      "pages": 13,
+      "source_sha256": "9e7cd611f5812fdae498011cd8ab24710b2745c272a690ab23c1888dcb05c676",
+      "pdf_sha256": "dabea61360ccaf3fae01181fd3c442bd6a4bc46fef39dcb07a9df841c5b7d93c",
+      "unique_labels": 44,
+      "unique_citation_keys": 0,
+      "undefined_references": [],
+      "undefined_citations": [],
+      "duplicate_labels": [],
+      "overfull_boxes": 0,
+      "missing_glyphs": 0,
+      "all_pdf_pages_have_text": true,
+      "all_extracted_text_within_page": true,
+      "minor_layout_notices": {
+        "underfull_hboxes": 2,
+        "revtex_label_warning": false,
+        "revtex_hidden_keywords_warning": false
+      }
+    }
+  ],
+  "bilingual_label_and_citation_key_sets_match": true,
+  "bibliography_entries": 22,
+  "computations": {
+    "original_example_script": "Executed successfully; saved output in code/reproduce_output_v53.txt",
+    "haar_and_direct_probability_checks": "PASS",
+    "maximum_haar_monte_carlo_z_score": 1.6719516916969306,
+    "maximum_gamma_identity_error": 3.3861802251067274e-15,
+    "maximum_direct_probability_error": 5.551115123125783e-16,
+    "five_outcome_interval_status": "CERTIFIED_BY_OUTWARD_INTERVAL_ARITHMETIC",
+    "five_outcome_enclosure": {
+      "lower": "0.620509845202",
+      "upper": "0.620509845203"
+    },
+    "unique_minimizing_facet": [
+      2,
+      3
+    ]
+  },
+  "visual_review": {
+    "reviewed": "All-page English main contact sheet; final first pages of both main manuscripts; final interval-table pages of both supplements",
+    "result": "Readable layouts; no clipping or broken tables observed"
+  },
+  "limitations": [
+    "External primary sources and bibliographic metadata not newly verified",
+    "Literature priority not established",
+    "No journal submission or acceptance assessment by an editor",
+    "No formal proof-assistant verification; interval result is conditional on the documented implementation"
+  ],
+  "original_v52_untouched": true
+}
