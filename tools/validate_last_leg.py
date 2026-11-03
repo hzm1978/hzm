@@ -19,8 +19,8 @@ def validate(output):
     output.mkdir(parents=True,exist_ok=True)
     app=QApplication.instance() or QApplication([]);app.setFont(QFont('Noto Sans CJK SC',9))
     cases=[('trend','顺势下行：只画候选止盈',daily_five().iloc[:88].copy(),'target',3),
-           ('adjustment','向上调整：前一下跌浪从底向顶画黄金分割',daily_five(),'fibonacci',6),
-           ('sideways','横盘调整：只画黄金分割',sideways_frame(),'fibonacci',6)]
+           ('adjustment','向上调整：前一下跌浪从底向顶画黄金分割',daily_five(),'fibonacci',7),
+           ('sideways','横盘调整：只画黄金分割',sideways_frame(),'fibonacci',7)]
     result=[]
     for name,title,frame,kind,count in cases:
         scale=786/(170.05-144.95);offset=3129-144.95*scale

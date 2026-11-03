@@ -15,6 +15,8 @@ from .trading_calendar import exchange_calendar, parse_trading_days, session_tra
 from .live_store import read_live_overlay, overlay_contracts
 
 _REQUIRED = ["open", "high", "low", "close"]
+# Documentation folders can sit beside product folders in both data layouts.
+_NON_INSTRUMENT_DIRS = frozenset({"商品说明", "品种清单"})
 _COL_ALIASES = {
     "datetime": ["datetime", "date_time", "timestamp", "time", "dt"],
     "open": ["open", "o", "开盘", "开盘价"],
@@ -65,7 +67,9 @@ class DataRepository:
             dirs = [base]
         else:
             dirs = [x for x in base.iterdir() if self._looks_like_instrument_dir(x) or source_name != "原始行情" and x.is_dir()]
-        return [self.read_metadata(p.name, source_name) for p in sorted(dirs, key=lambda x: x.name)]
+        return [self.read_metadata(p.name, source_name)
+                for p in sorted(dirs, key=lambda x: x.name)
+                if p.name.strip() not in _NON_INSTRUMENT_DIRS]
 
     def read_metadata(self, symbol: str, source_name: str = "原始行情") -> InstrumentMeta:
         key = f"{source_name}:{symbol}"

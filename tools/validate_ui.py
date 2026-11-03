@@ -41,6 +41,10 @@ def fixture(root):
     (raw / "数据说明.md").write_text("# SN 沪锡\n交易所：SHFE\n", encoding="utf-8")
     data.to_parquet(continuous / "1d.parquet", index=False)
     data.to_parquet(raw / "1d" / "sn2611.parquet", index=False)
+    for name in ("商品说明", "品种清单"):
+        (root / "qihuozldata_parquet" / name).mkdir()
+        for period in ("1min", "1d"):
+            (root / "qihushuju_parquet" / name / period).mkdir(parents=True)
     return data
 
 
@@ -71,6 +75,10 @@ def validate(output):
                 panel.volume.setChecked(False)
                 panel.apply_options()
             window.show(); app.processEvents()
+            for source in ("原始行情", "主力连续"):
+                assert [m.symbol for m in window.repo.list_instruments(source)] == ["SN"]
+            assert [window.symbol_combo.itemData(i) for i in range(window.symbol_combo.count())] == ["SN"]
+            assert window.main_list.rowCount() == 1
             assert window.engine is not None, errors
             window.engine.jump_bar(len(window.engine.bars)-1, to_end_of_bar=True)
             window._capture_current_session(force=True)

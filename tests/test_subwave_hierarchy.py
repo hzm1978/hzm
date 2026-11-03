@@ -99,7 +99,8 @@ class SubwaveRegressionTests(unittest.TestCase):
     def test_corrections_belong_to_wave_two_and_four_not_rolling_abcde_windows(self):
         a = analyze_trend(daily_five())
         s = a.subwaves[0]
-        local = [p for p in a.corrections if p.start_index >= s.points[0].index]
+        local = [p for p in a.corrections if p.owner == (s.points[0].index,s.points[-1].index)
+                 and p.degree == 1 and p.state == "breakout"]
         self.assertEqual(len(local), 2)
         self.assertEqual([(p.start_index, p.end_point.index) for p in local], [(65, 69), (76, 80)])
         self.assertTrue(all(p.kind == "simple" and p.state == "breakout" for p in local))

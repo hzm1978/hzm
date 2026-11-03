@@ -45,21 +45,26 @@ class SubwaveSeries:
     pivot_line_offset: float | None = None
     parent_leg: tuple[int, int] | None = None
     historical: bool = False
+    depth: int = 1
+    owner: tuple[int, int] | None = None
+    owner_wave: int | None = None
+    alternative: bool = False
 
     @property
     def label(self):
-        name = ("历史" if self.historical else "") + ("下降" if self.direction < 0 else "上升")
-        suffix = ("第5浪候选·未破浪3" if self.state == "fifth_pending" else
+        name = ("备选" if self.alternative else "历史" if self.historical else "") + ("下降" if self.direction < 0 else "上升")
+        suffix = ("历史段·确认条件见明细" if self.historical else
+                  "第5浪候选·未破浪3" if self.state == "fifth_pending" else
                   "末端进行中" if self.state == "running" else "末端转折已观察")
         if self.state != "fifth_pending" and not self.structure.complete:
             suffix += "·" + ("待第三Q" if "five" in self.structure.kind and self.structure.kind != "same_five"
                               else "子结构待耦合")
-        return f"{name}{len(self.points)-1}子浪 · {suffix}"
+        return f"{name}{len(self.points)-1}{'孙' if self.depth > 1 else '子'}浪 · {suffix}"
 
 
 def correction_in_leg(start: TrendPivot, endpoint: TrendPivot | None, direction: int,
                       pivots: Sequence[TrendPivot], frame: pd.DataFrame,
-                      positions: np.ndarray, atr: np.ndarray) -> TrendCorrection | None:
+                      positions: np.ndarray, atr: np.ndarray, *, include_running_tip=False) -> TrendCorrection | None:
     """One correction context, never every rolling a/b/c/d/e permutation.
 
     An endpoint is the end of the chosen *degree*, not necessarily its most
@@ -71,7 +76,21 @@ def correction_in_leg(start: TrendPivot, endpoint: TrendPivot | None, direction:
         within.pop(0)
     if endpoint:
         within = [p for p in within if p.index < endpoint.index] + [endpoint]
-    elif within and within[-1].kind == start.kind:
+    elif include_running_tip:
+        reference = next((p for p in reversed(within) if p.kind == start.kind),start)
+        begin = int(np.searchsorted(positions,reference.index,side="right"))
+        if begin < len(positions):
+            values = frame["low" if direction > 0 else "high"].to_numpy(dtype=float)
+            local = begin+int(np.argmax(-direction*values[begin:]))
+            current = TrendPivot(int(positions[local]),float(values[local]),
+                                 "L" if direction > 0 else "H",int(positions[-1]))
+            if -direction*(current.price-reference.price) > 0:
+                if within and within[-1].kind != start.kind:
+                    if -direction*(current.price-within[-1].price) > 0:
+                        within[-1] = current
+                else:
+                    within.append(current)
+    if not endpoint and within and within[-1].kind == start.kind:
         within.pop()
     points = (start, *within)
     if len(points) < 2 or len(points) % 2:
@@ -85,7 +104,7 @@ def correction_in_leg(start: TrendPivot, endpoint: TrendPivot | None, direction:
     return item
 
 
-def _pending_fifth(points, structure, positions, fine, extreme, begin):
+def _pending_fifth(points, structure, positions, fine, extreme, begin, close):
     sign, tip = structure.direction, points[-1]
     mapping = {int(x): i for i, x in enumerate(positions)}
     asof = int(positions[-1])
@@ -98,6 +117,10 @@ def _pending_fifth(points, structure, positions, fine, extreme, begin):
         return None
     j5 = local4+1+int(np.argmax(extreme[local4+1:]) if sign > 0 else np.argmin(extreme[local4+1:]))
     if sign*(extreme[j5]-fourth.price) <= 0 or sign*(extreme[j5]-tip.price) > 0:
+        return None
+    if np.any(sign*(close[j5:]-fourth.price) < 0):
+        # The rebound has closed beyond the proposed wave-4 end. A smaller
+        # opposing leg inside that rebound cannot remain a live wave 5.
         return None
     tie = np.flatnonzero(np.isclose(extreme[begin:mapping[tip.index]+1], tip.price, rtol=0, atol=1e-9))
     if not len(tie):
@@ -186,7 +209,7 @@ def _series(origin, structure, frame, positions, fine, atr, correction_cache=Non
     if len(structure.intervals) == 1:
         # A fifth leg can already be running before it takes out wave 3. Its
         # second Q is an OPEN clock, not a completed interval or a confirmed 5.
-        extra = _pending_fifth(points, structure, positions, fine, extreme, begin)
+        extra = _pending_fifth(points, structure, positions, fine, extreme, begin, close)
         if extra:
             fourth, fifth, ratio, pending = extra
             # Resolve the whole open correction context as well. A triangle's
@@ -201,21 +224,33 @@ def _series(origin, structure, frame, positions, fine, atr, correction_cache=Non
             if proposed and proposed.end_point and proposed.state == "breakout":
                 fourth = proposed.end_point
                 k4 = mapping[fourth.index]
-                k5 = k4+1+int(np.argmax(extreme[k4+1:]) if sign > 0 else np.argmin(extreme[k4+1:]))
-                fifth = TrendPivot(int(positions[k5]), float(extreme[k5]), tip.kind, asof)
-                height3 = sign*(tip.price-points[-2].price)
-                percent4 = sign*(tip.price-fourth.price)/height3*100
-                ratio = replace(ratio, index=fourth.index, price=fourth.price, percent=percent4,
-                    text=f"子4回调 {percent4:.1f}% · {mapping[fourth.index]-mapping[tip.index]}根 · 候选",
-                    confirmed_at=max(fourth.confirmed_at, proposed.confirmed_at))
-            if proposed:
-                corrections.append(replace(proposed, label="子4·"+proposed.label))
-                boundaries.append(BoundaryPoint(fourth.index, fourth.price, sign, "subwave", 2,
-                    proposed.kind, max(fourth.confirmed_at, proposed.confirmed_at), pending.start_index,
-                    state="candidate"))
-            ratios.append(ratio)
-            points.extend((fourth, fifth))
-            tip, state = fifth, "fifth_pending"
+                if k4+1 >= len(positions):
+                    extra = None
+                else:
+                    k5 = k4+1+int(np.argmax(extreme[k4+1:]) if sign > 0 else np.argmin(extreme[k4+1:]))
+                    # A structural c/e can be less extreme than a. Recheck
+                    # this actual endpoint, including the tip bar's close.
+                    if (sign*(extreme[k5]-fourth.price) <= 0 or
+                            np.any(sign*(close[k5:]-fourth.price) < 0)):
+                        extra = None
+                    else:
+                        fifth = TrendPivot(int(positions[k5]), float(extreme[k5]), tip.kind, asof)
+                        height3 = sign*(tip.price-points[-2].price)
+                        percent4 = sign*(tip.price-fourth.price)/height3*100
+                        ratio = replace(ratio, index=fourth.index, price=fourth.price, percent=percent4,
+                            text=f"子4回调 {percent4:.1f}% · {mapping[fourth.index]-mapping[tip.index]}根 · 候选",
+                            confirmed_at=max(fourth.confirmed_at, proposed.confirmed_at))
+            if extra is not None:
+                if proposed:
+                    corrections.append(replace(proposed, label="子4·"+proposed.label))
+                    boundaries.append(BoundaryPoint(fourth.index, fourth.price, sign, "subwave", 2,
+                        proposed.kind, max(fourth.confirmed_at, proposed.confirmed_at), pending.start_index,
+                        state="candidate"))
+                ratios.append(ratio)
+                points.extend((fourth, fifth))
+                tip, state = fifth, "fifth_pending"
+            else:
+                pending = None
     labels = tuple(TrendLabel(p.index, p.price,
         f"子{i}" + ("?·未破浪3" if i == 5 and state == "fifth_pending" else
                     "·进行中" if i == len(points)-1 and state == "running" else ""),
@@ -231,41 +266,27 @@ def _series(origin, structure, frame, positions, fine, atr, correction_cache=Non
         for ratio in (.4, .62, .786))
     percent = sign * (tip.price - float(close[-1])) / height * 100
     return SubwaveSeries(sign, tuple(points), structure.intervals, structure, labels,
-        tuple(ratios), tuple(corrections), levels, ruler_origin, tip, percent, state,
+        tuple(ratios), tuple(replace(c,degree=1,owner=(origin.index,tip.index)) for c in corrections), levels, ruler_origin, tip, percent, state,
         max(structure.confirmed_at, *(p.confirmed_at for p in points[:-1])), asof,
         "本组Q独立计时；第一Q收盘、后续Q影线突破；父区间在本组范围外时重新归属；"
         + "；".join(structure.rules), pending, tuple(boundaries))
 
 
-def analyze_subwaves(frame: pd.DataFrame, positions: np.ndarray, fine: Sequence[TrendPivot],
-                     intervals: Sequence[BookInterval], atr: np.ndarray,
-                     parent: WaveStructure | None = None,
-                     parent_points: Sequence[TrendPivot] = ()) -> tuple[SubwaveSeries, ...]:
-    """Resolve recent local degrees in BOTH directions, returning current first.
-
-    Resolve observed parent-leg scopes separately so a completed historical
-    child is not swallowed by the next parent leg. Search the full supplied
-    lookback; overlapping alternative counts remain out of the plot.
-    """
-    if len(fine) < 4 or not intervals:
-        return ()
-    candidates, seen, correction_cache = [], set(), {}
+def _scan_candidates(frame, positions, fine, intervals, atr, work, parent=None, correction_cache=None,candidate_cache=None):
+    candidates, seen = [], set()
+    correction_cache = correction_cache if correction_cache is not None else {}
+    candidate_cache = candidate_cache if candidate_cache is not None else {}
     high, low = frame.high.to_numpy(dtype=float), frame.low.to_numpy(dtype=float)
-    scopes = [(a.index, b.index) for a, b in zip(parent_points, parent_points[1:])]
-    if parent_points and parent_points[-1].index < int(positions[-1]):
-        scopes.append((parent_points[-1].index, int(positions[-1])))
     raw_by_sign = {sign: [p for p in intervals if p.direction == sign and not p.ambiguous] for sign in (-1, 1)}
-    work = []
-    for origin in fine:
-        scope = next((s for s in scopes if s[0] <= origin.index < s[1]),
-                     (int(positions[0]), int(positions[-1])))
-        work.append((origin, scope))
-        # A nominal parent pivot can itself be an inner turn before the old
-        # outer high/low has been exceeded. Also test the full observed tail;
-        # otherwise that parent interpretation cuts a complete child in half.
-        if scope[1] < int(positions[-1]):
-            work.append((origin, (scope[0], int(positions[-1]))))
     for origin, scope in work:
+        context_parent = (parent if parent and scope[0] <= parent.origin_index
+                          and scope[1] >= parent.intervals[-1].end_index else None)
+        cache_key = origin.index,scope,bool(context_parent)
+        if cache_key in candidate_cache:
+            if candidate_cache[cache_key] is not None:
+                candidates.append(candidate_cache[cache_key])
+            continue
+        candidate_cache[cache_key] = None
         sign = -1 if origin.kind == "H" else 1
         begin = int(np.searchsorted(positions, origin.index))
         stop = int(np.searchsorted(positions, scope[1], side="right"))
@@ -299,36 +320,135 @@ def analyze_subwaves(frame: pd.DataFrame, positions: np.ndarray, fine: Sequence[
         initial = high[begin:first_j+1] if sign < 0 else -low[begin:first_j+1]
         if len(initial) and float(np.max(initial)) > -sign*origin.price + 1e-9:
             continue
-        earlier = [p for p in eligible if p.start_index < first.start_index]
-        if earlier:  # a degree upgrade must use its new observed leg origin
-            continue
         if signature in seen:
             continue
         seen.add(signature)
-        if parent and len(structure.intervals) >= 2 and sign == parent.direction and (
-                tuple(p.start_index for p in structure.intervals) == tuple(p.start_index for p in parent.intervals)
+        if context_parent and len(structure.intervals) >= 2 and sign == context_parent.direction and (
+                tuple(p.start_index for p in structure.intervals) == tuple(p.start_index for p in context_parent.intervals)
                 and origin.index <= first.start_index):
             continue
         scoped_fine = tuple(p for p in fine if p.index <= scope[1])
         series = _series(origin, structure, frame.iloc[:stop], positions[:stop], scoped_fine, atr[:stop], correction_cache)
-        if (series and len(series.points) == 4 and parent
-                and sign == parent.direction and tuple(p.start_index for p in structure.intervals) == tuple(p.start_index for p in parent.intervals)):
+        if (series and len(series.points) == 4 and context_parent
+                and sign == context_parent.direction and tuple(p.start_index for p in structure.intervals) == tuple(p.start_index for p in context_parent.intervals)):
             continue
         if series:
-            candidates.append(replace(series, parent_leg=scope, as_of_index=int(positions[-1])))
-    # Current extreme first, then largest local Q; this preserves the outer
-    # five within the recent move instead of replacing it with tiny subcounts.
-    candidates.sort(key=lambda s: (len(s.points) >= 6,
-        min(p.bars for p in s.intervals), s.points[-1].index,
-        s.points[-1].index-s.points[0].index), reverse=True)
-    selected = []
-    for series in candidates:
-        if any(not (series.points[-1].index <= old.points[0].index
-                    or series.points[0].index >= old.points[-1].index) for old in selected):
+            candidate_cache[cache_key] = replace(series,parent_leg=scope,as_of_index=int(positions[-1]))
+            candidates.append(candidate_cache[cache_key])
+    return candidates
+
+
+def _select_nonoverlapping(candidates, limit=12):
+    chosen = []
+    for series in sorted(candidates,key=lambda s:(len(s.points)>=6,
+            min(q.bars for q in s.intervals),s.points[-1].index,
+            s.points[-1].index-s.points[0].index),reverse=True):
+        if any(not(series.points[-1].index <= old.points[0].index
+                   or series.points[0].index >= old.points[-1].index) for old in chosen):
             continue
-        selected.append(series)
-        if len(selected) == 12:
+        chosen.append(series)
+        if len(chosen) == limit:
             break
-    selected = [replace(s, historical=any(other.points[0].index >= s.points[-1].index
-        and other.points[-1].index > s.points[-1].index for other in selected)) for s in selected]
-    return tuple(sorted(selected, key=lambda s: s.points[-1].index, reverse=True))
+    return chosen
+
+
+def _at_depth(series,depth,owner,wave):
+    prefix = "子" if depth == 1 else "孙"
+    def caption(text):
+        return prefix+text[1:] if text.startswith("子") else text
+    return replace(series,depth=depth,owner=owner,owner_wave=wave,
+        labels=tuple(replace(p,text=caption(p.text)) for p in series.labels),
+        retracements=tuple(replace(p,text=caption(p.text)) for p in series.retracements),
+        corrections=tuple(replace(p,label=caption(p.label),degree=depth,
+            owner=(series.points[0].index,series.points[-1].index)) for p in series.corrections),
+        boundaries=tuple(replace(p,degree="subwave" if depth == 1 else "grandchild") for p in series.boundaries),
+        levels=tuple(replace(p,label=caption(p.label)) for p in series.levels))
+
+
+def analyze_subwaves(frame: pd.DataFrame, positions: np.ndarray, fine: Sequence[TrendPivot],
+                     intervals: Sequence[BookInterval], atr: np.ndarray,
+                     parent: WaveStructure | None = None,
+                     parent_points: Sequence[TrendPivot] = ()) -> tuple[SubwaveSeries, ...]:
+    """Resolve recent local degrees in BOTH directions, returning current first.
+
+    Resolve observed parent-leg scopes separately so a completed historical
+    child is not swallowed by the next parent leg. Search the full supplied
+    lookback; overlapping alternative counts remain out of the plot.
+    """
+    if len(fine) < 4 or not intervals:
+        return ()
+    correction_cache, candidate_cache = {}, {}
+    scopes = [(a.index, b.index) for a, b in zip(parent_points, parent_points[1:])]
+    if parent_points and parent_points[-1].index < int(positions[-1]):
+        scopes.append((parent_points[-1].index, int(positions[-1])))
+    work = []
+    for origin in fine:
+        scope = next((s for s in scopes if s[0] <= origin.index < s[1]),
+                     (int(positions[0]), int(positions[-1])))
+        work.append((origin, scope))
+        # A nominal parent pivot can itself be an inner turn before the old
+        # outer high/low has been exceeded. Also test the full observed tail;
+        # otherwise that parent interpretation cuts a complete child in half.
+        if scope[1] < int(positions[-1]):
+            work.append((origin, (scope[0], int(positions[-1]))))
+    candidates = _scan_candidates(frame,positions,fine,intervals,atr,work,parent,correction_cache,candidate_cache)
+    # Resolve each parent leg first. A child of a complex main wave is allowed
+    # to overlap its parent in time; only sibling alternatives exclude each
+    # other. The old global exclusion discarded exactly these inner counts.
+    aligned = []
+    for number,scope in enumerate(scopes,1):
+        if scope[1]-scope[0] < 7:
+            continue
+        work = [(p,scope) for p in fine if scope[0] <= p.index < scope[1]]
+        local = _scan_candidates(frame,positions,fine,intervals,atr,work,
+                                 correction_cache=correction_cache,candidate_cache=candidate_cache)
+        aligned += [_at_depth(s,1,scope,number) for s in _select_nonoverlapping(local,4)]
+    selected = _select_nonoverlapping(candidates)
+    identities = {(s.direction,tuple(p.index for p in s.points)) for s in aligned}
+    alternatives = []
+    for series in selected:
+        key = series.direction,tuple(p.index for p in series.points)
+        if key in identities:
+            continue
+        conflicts = [old for old in aligned if not(series.points[-1].index <= old.points[0].index
+                     or series.points[0].index >= old.points[-1].index)]
+        if conflicts:
+            if len(series.points) >= 6 and all(len(old.points) < 6 for old in conflicts):
+                # A later provisional parent pivot must not cut an already
+                # coupled five/seven into several incomplete three-wave pieces.
+                aligned = [old for old in aligned if old not in conflicts]
+                alternatives += [replace(old,alternative=True) for old in conflicts]
+                aligned.append(series);identities.add(key)
+            else:
+                alternatives.append(replace(series,alternative=True))
+        else:
+            aligned.append(series);identities.add(key)
+    # Keep one direct lower level inside every selected child leg. The labels
+    # explicitly distinguish 子 and 孙 instead of reusing 子1 in every layer.
+    nested = []
+    for parent_series in aligned:
+        for number,(left,right) in enumerate(zip(parent_series.points,parent_series.points[1:]),1):
+            scope = left.index,right.index
+            if scope[1]-scope[0] < 7:
+                continue
+            work = [(p,scope) for p in fine if scope[0] <= p.index < scope[1]]
+            local = _scan_candidates(frame,positions,fine,intervals,atr,work,
+                                     correction_cache=correction_cache,candidate_cache=candidate_cache)
+            nested += [replace(_at_depth(s,2,(parent_series.points[0].index,parent_series.points[-1].index),number),
+                               historical=scope[1] < int(positions[-1]))
+                       for s in _select_nonoverlapping(local,2)]
+    primary = [replace(s,historical=any(other.points[0].index >= s.points[-1].index
+               and other.points[-1].index > s.points[-1].index for other in aligned)) for s in aligned]
+    primary = [replace(s,labels=tuple(replace(p,text=p.text.replace("·进行中","")) for p in s.labels))
+               if s.historical else s for s in primary]
+    result = sorted(primary,key=lambda s:s.points[-1].index,reverse=True)
+    seen = {(s.direction,tuple(p.index for p in s.points)) for s in result}
+    alternatives = [replace(s,historical=any(other.points[0].index >= s.points[-1].index
+                    and other.points[-1].index > s.points[-1].index for other in aligned)) for s in alternatives]
+    for series in sorted(nested,key=lambda s:s.points[-1].index,reverse=True)+alternatives:
+        key = series.direction,tuple(p.index for p in series.points)
+        if key not in seen:
+            if series.historical:
+                series = replace(series,labels=tuple(replace(p,text=p.text.replace("·进行中","")) for p in series.labels))
+            result.append(series);seen.add(key)
+    return tuple(result)

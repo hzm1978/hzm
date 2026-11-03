@@ -82,9 +82,15 @@ def analysis_html(analysis, frame=None):
             [("导航q", when(p.start_index), when(p.end_index), p.bars, when(p.first_confirmed_at), p.relation, "内区间" if p.parent_start is not None else "降级/合并") for p in a.structure.navigation])
         h += "<p>" + "<br>".join(escape(r) for r in a.structure.rules) + "</p>"
     if a.subwaves:
-        h += "<h3>独立子浪（当前组在前）</h3>"
+        h += "<h3>独立子浪计数（按父段归属，保留孙结构）</h3>"
         for s in a.subwaves:
             h += "<h4>" + escape(s.label) + "</h4>"
+            h += f"<p>层级：{'子' if s.depth == 1 else '孙'}；"
+            if s.owner:
+                h += f"所属结构 {escape(when(s.owner[0]))} → {escape(when(s.owner[1]))}；第{s.owner_wave}个已观察浪段。"
+            if s.alternative:
+                h += "跨父段备选解释，未参与当前图层、工作方向或正式信号。"
+            h += "</p>"
             h += _table(["子浪", "起点", "起价", "终点", "末价", "根数", "可观察时刻"],
                 [(i, when(left.index), f"{left.price:.8g}", when(right.index), f"{right.price:.8g}",
                   right.index-left.index, when(max(left.confirmed_at, right.confirmed_at, s.confirmed_at)))
@@ -115,7 +121,8 @@ def analysis_html(analysis, frame=None):
     h += "<h3>位置参考（目标与估计不生成未来K线）</h3>" + _table(["位置", "价位", "已知时刻"],
         [(p.label, f"{p.price:.6g}", when(p.confirmed_at)) for p in a.levels])
     for group in a.wave_projections:
-        h += f"<h3>{escape(group.degree)}级浪{group.wave}：计数依据及历史参考（非当前叠加图层）</h3>"
+        name = f"浪{group.wave}" if group.wave is not None else "延续段（计数待重分级）"
+        h += f"<h3>{escape(group.degree)}级{name}：计数依据及历史参考（非当前叠加图层）</h3>"
         if group.reverse and not a.last_leg:
             r = group.reverse
             h += (f"<p>取前一回调 {escape(when(r.start.index))}（{r.start.price:.8g}）→ "

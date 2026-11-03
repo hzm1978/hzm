@@ -183,6 +183,32 @@ def _line_value(a: TrendPivot, b: TrendPivot, index: int) -> tuple[float, float]
     return float(a.price) + slope * (int(index) - int(a.index)), float(slope)
 
 
+def _geometry_points(pivots,high,low,mapping):
+    """Use actual first equal-price touches for rays, leaving A/Q labels intact.
+
+    Micro pivots keep the last equal high/low for structural labelling. Using
+    that later bar as a ray endpoint can make the immediately preceding equal
+    extreme falsely appear to penetrate the ray.
+    """
+    if not pivots:
+        return tuple(pivots)
+    if not any(p.index in mapping for p in pivots):
+        return ()
+    reverse = {local:global_index for global_index,local in mapping.items()}
+    floor = min(mapping[p.index] for p in pivots if p.index in mapping)
+    output = []
+    for point in pivots:
+        if point.index not in mapping:
+            continue
+        j = mapping[point.index]
+        values = high if point.kind == "H" else low
+        while j > floor and np.isclose(values[j-1],point.price,rtol=0,atol=1e-9):
+            j -= 1
+        output.append(replace(point,index=int(reverse[j])))
+        floor = j+1
+    return tuple(output)
+
+
 def _select_valid_trendline(
     direction: str,
     pivots: tuple[TrendPivot, ...],
@@ -290,6 +316,7 @@ def _select_external_channel(direction, pivots, high, low, atr, global_to_local)
     between them. Falling trend: connect two exterior lows and shift through
     the intervening high. Its slope need not equal the primary trendline.
     """
+    pivots = _geometry_points(pivots,high,low,global_to_local)
     kind = "H" if direction == "up" else "L"
     exterior = [p for p in pivots if p.kind == kind][-14:]
     local_to_global = {local: global_index for global_index, local in global_to_local.items()}
@@ -497,7 +524,8 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
                 p = TrendPivot(boundary.index, boundary.price, "L" if sign > 0 else "H", boundary.confirmed_at)
                 if p.index > wave_points[-1].index:
                     wave_points.append(p)
-                wave_labels.append(TrendLabel(p.index, p.price, f"浪{2 * i + 2}" + ("?" if boundary.state == "candidate" else ""), sign,
+                wave_labels.append(TrendLabel(p.index, p.price,
+                                               (f"浪{2 * i + 2}" if i < 3 else "延续调整端") + ("?" if boundary.state == "candidate" else ""), sign,
                                                p.confirmed_at, peak.index, evidence=boundary.pattern + "的结构结束点"))
         # Navigation A is separately labelled; it never changes the main A merely
         # because it is a newer local low/high.
@@ -509,12 +537,19 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
                 boundaries.append(boundary)
         last_boundary = next((p for p in reversed(boundaries) if p.degree == "main"), None)
         if last_boundary:
-            tips = [p for p in fine if p.index > last_boundary.index and p.kind == ("H" if sign > 0 else "L")]
-            if tips:
-                tip = max(tips, key=lambda p: sign * p.price)
+            begin = int(np.searchsorted(positions,last_boundary.index,side="right"))
+            if begin < n:
+                values = high if sign > 0 else low
+                local = begin+int(np.argmax(sign*values[begin:]))
+                tips = [p for p in fine if p.index >= int(positions[local])
+                        and p.kind == ("H" if sign > 0 else "L")
+                        and np.isclose(p.price,values[local],rtol=0,atol=1e-9)]
+                tip = tips[-1] if tips else TrendPivot(int(positions[local]),float(values[local]),
+                    "H" if sign > 0 else "L",as_of)
                 if tip.index > wave_points[-1].index:
                     wave_points.append(tip)
-                    wave_labels.append(TrendLabel(tip.index, tip.price, f"浪{2 * len(main_intervals) + 1}?", -sign,
+                    wave_labels.append(TrendLabel(tip.index, tip.price,
+                                                   f"浪{2 * len(main_intervals) + 1}?" if len(main_intervals) <= 3 else "延续段?·待重分级", -sign,
                                                    tip.confirmed_at, last_boundary.index, evidence="末主浪端点解释，可随新高低延伸"))
         previous = [p for p in intervals if p.direction == -sign and p.end_index <= origin.index]
         degree = "级别待定"
@@ -562,6 +597,9 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
     subwaves = analyze_subwaves(data, positions, fine, intervals, atr, structure, points)
     resolved = []
     for series in subwaves:
+        if series.alternative:
+            resolved.append(series)
+            continue
         child_direction = "up" if series.direction > 0 else "down"
         child_line = _select_valid_trendline(child_direction, series.points, high, low, atr,
                                             mapping, positions, as_of, min_anchor_bars=2)
@@ -572,7 +610,8 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
                                 pivot_line_anchor=child_anchor, pivot_line_offset=child_offset))
     subwaves = tuple(resolved)
     for series in subwaves:
-        boundaries.extend(series.boundaries)
+        if not series.alternative:
+            boundaries.extend(series.boundaries)
     # Corrections must belong to an observed leg at a stated degree. A rolling
     # 2/4/6-pivot window repeatedly mislabels an opposing five-wave drive as
     # overlapping abcde corrections. Keep navigation/failed interpretations in
@@ -580,18 +619,36 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
     main_starts = {p.start_index for p in main_intervals}
     chosen = [p for p in book_corrections if p.start_index in main_starts]
     for series in subwaves:
-        chosen = [p for p in chosen if (p.end_point.index if p.end_point else p.markers[-1].index) <= series.points[0].index
-                  or p.start_index >= series.points[-1].index]
-        chosen.extend(series.corrections)
+        if not series.alternative:
+            chosen.extend(series.corrections)
     current = subwaves[0].points[-1] if subwaves else (points[-1] if points else None)
     current_sign = subwaves[0].direction if subwaves else sign
     if current is not None and current_sign:
-        live_correction = correction_in_leg(current, None, current_sign, fine, data, positions, atr)
+        live_correction = correction_in_leg(current, None, current_sign, fine, data, positions, atr,
+                                             include_running_tip=True)
         if live_correction and live_correction.state != "opposite_break":
-            chosen.append(live_correction)
-    corrections = tuple(sorted({(p.direction, p.start_index, p.markers[-1].index): p
+            chosen.append(replace(live_correction,label="子调整观察·"+live_correction.label,degree=1))
+    if points and sign and points[-1].kind == ("H" if sign > 0 else "L"):
+        point = points[-1]
+        after = int(np.searchsorted(positions,point.index,side="right"))
+        values = high if sign > 0 else low
+        if after < n and not np.any(sign*(values[after:]-point.price) > 1e-9):
+            parent_correction = correction_in_leg(point,None,sign,fine,data,positions,atr,
+                                                  include_running_tip=True)
+            if parent_correction and parent_correction.state != "opposite_break":
+                inner = next((s for s in subwaves if not s.alternative and s.depth == 1
+                              and s.structure.complete and s.points[0].index >= point.index
+                              and s.direction == -sign),None)
+                if inner:
+                    parent_correction = replace(parent_correction,kind="compound_pending",state="candidate",
+                        label=f"内部{'上升' if inner.direction > 0 else '下降'}{len(inner.points)-1}子浪·父级待确认",
+                        marker_labels=(),
+                        structure=f"已观察{len(inner.points)-1}子浪；父级调整细分待确认",
+                        evidence=parent_correction.evidence+"；子级五/七浪不能仅按轮廓冒充父级abcde已完成")
+                chosen.append(replace(parent_correction,label="父调整观察·"+parent_correction.label,degree=0))
+    corrections = tuple(sorted({(p.degree,p.direction, p.start_index, p.markers[-1].index): p
         for p in chosen if p.state != "opposite_break"}.values(), key=lambda p: p.start_index))
-    correction_history = tuple(sorted({(p.direction, p.start_index, p.markers[-1].index): p
+    correction_history = tuple(sorted({(p.degree,p.direction, p.start_index, p.markers[-1].index): p
         for p in (*book_corrections, *chosen)}.values(), key=lambda p: p.confirmed_at))
     ratios, contexts = [], []
     main_by_start = {p.interval_start: p for p in boundaries if p.degree == "main"}
@@ -686,7 +743,11 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
 
     complete = bool(structure and structure.complete)
     for series in subwaves:
+        if series.alternative:
+            continue
         for boundary in series.boundaries:
+            if boundary.state != "confirmed":
+                continue
             contexts.append(TrendLabel(boundary.index, boundary.price,
                 boundary.label + "·调整结构结束", series.direction, boundary.confirmed_at,
                 boundary.interval_start, evidence=boundary.pattern + "；所属子浪Q已确认"))
@@ -780,14 +841,15 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
         status += f" | 标准K样本{n}/{config.standard_window}"
     projections = []
     for series in subwaves:
-        projected = make_wave_projection(series.points, series.direction, "子", data,
+        projected = make_wave_projection(series.points, series.direction, "孙" if series.depth > 1 else "子", data,
             positions, series.intervals, series.boundaries,
-            historical=series.historical or bool(series.parent_leg and series.parent_leg[1] < as_of))
+            historical=series.historical or bool(series.parent_leg and series.parent_leg[1] < as_of),
+            level=series.depth,owner=series.owner,owner_wave=series.owner_wave,alternative=series.alternative)
         if projected:
             projections.append(projected)
     if structure:
         projected = make_wave_projection(points, sign, "主", data, positions,
-                                         main_intervals, confirmed_main)
+                                         main_intervals, confirmed_main,level=0)
         if projected:
             projections.append(projected)
     last_leg = last_leg_overlay(data, positions, fine, projections, corrections,
@@ -800,7 +862,8 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
             if (tip.index == last_leg.origin.index
                     and any(p.index == tip.index and p.kind == tip.kind for p in fine)
                     and not any(p.index == tip.index for p in group.historical_arrivals)):
-                item = TrendLabel(tip.index,tip.price,f"{group.degree}{group.wave}实际末价",
+                item = TrendLabel(tip.index,tip.price,
+                    f"{group.degree}{group.wave if group.wave is not None else '延续段'}实际末价",
                     -group.direction,max(tip.confirmed_at,group.first_tip.confirmed_at),
                     group.active_origin.index,"main_wave_arrival",
                     evidence="末端转折已经观察，随后反向调整；只记录实际到达价")

@@ -42,3 +42,5 @@ class TrendCorrection:
     structure: str = ""
     end_point: TrendPivot | None = None
     evidence: str = ""
+    degree: int = 0
+    owner: tuple[int, int] | None = None

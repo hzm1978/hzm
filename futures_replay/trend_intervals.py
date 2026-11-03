@@ -105,7 +105,7 @@ class BoundaryPoint:
 
     @property
     def label(self):
-        prefix = "主" if self.degree == "main" else "子" if self.degree == "subwave" else "导"
+        prefix = {"main":"主","subwave":"子","grandchild":"孙"}.get(self.degree,"导")
         return f"{prefix}A{self.number}"
 
 
@@ -292,6 +292,11 @@ def build_structure(intervals: Sequence[BookInterval], direction: int,
             label = {"diamond_seven": "钻石7浪", "expanding_seven": "扩张7浪",
                      "x_seven": "X7浪", "contracting_seven": "收缩7浪", "same_five": "同级5浪"}[kind] + "·主结构候选完整"
             complete = True
+    if len(main) > 3:
+        # Four observed outer Qs cannot be labelled a completed seven-wave
+        # trend. Retain the evidence for regrading instead of inventing wave 9.
+        kind, label, complete = "extension_pending", "延续结构·待重分级", False
+        rules.append("外区间超过三个，保留原Q证据；未完成合法合并前不宣称七浪完整")
     # Completeness of the main degree is not completeness of its last subwave.
     children = [p for p in navigation if p.start_index > main[-1].counter_index]
     if complete and len(children) == 1:

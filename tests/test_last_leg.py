@@ -103,10 +103,10 @@ class LastLegChartTests(unittest.TestCase):
         finally:
             self.finish(chart)
 
-    def test_adjustment_draws_six_exact_level_captions_and_one_price_per_historical_endpoint(self):
+    def test_adjustment_draws_standard_retracement_levels_and_one_price_per_historical_endpoint(self):
         chart = self.render(daily_five())
         try:
-            self.assertEqual(len(chart._trend_price_segments),6)
+            self.assertEqual(len(chart._trend_price_segments),7)
             self.assertEqual({p['kind'] for p in chart._trend_price_segments},{'fibonacci'})
             for item in chart._trend_price_segments:
                 self.assertAlmostEqual(item['y'],item['label_y'])
