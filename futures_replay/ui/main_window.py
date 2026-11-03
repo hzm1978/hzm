@@ -3355,7 +3355,7 @@ class MainWindow(QMainWindow):
         self.live_status_label.setText("后台行情：" + (("当前" if self.live_controller.mode == "current" else "全部") if running else "停止"))
         self.realtime_action.setText("停止实时更新当前" if running and self.live_controller.mode == "current" else "免费实时更新当前")
         self.realtime_all_action.setText("停止实时更新全部" if running and self.live_controller.mode == "all" else "免费实时更新全部")
-        if not running:
+        if not running and (self._live_chart is None or not self._live_chart.isVisible()):
             self.live_view_action.setChecked(False)
 
     def _start_current_live(self):
@@ -3375,6 +3375,10 @@ class MainWindow(QMainWindow):
             if resolved and resolved["tq_symbol"] != old.tq_symbol:
                 target = RealtimeTarget(self.repo.root,**resolved)
                 self._live_chart.configure(target,self._live_chart.period.currentData(),self._live_chart.chart.trend_settings)
+            else:
+                # Re-establish an already visible view after a worker restart,
+                # including a main-continuous symbol whose name is unchanged.
+                self._live_chart._request()
 
     def _start_background_live(self, mode):
         if self.live_controller.is_running() and self.live_controller.mode == mode:

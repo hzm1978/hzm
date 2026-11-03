@@ -41,6 +41,8 @@ class LiveChartDialog(QDialog):
         self.period.currentIndexChanged.connect(self._request)
         self.trend.toggled.connect(self.chart.set_trend_visible)
         self.controller.previewReady.connect(self._preview)
+        self.controller.statusChanged.connect(self._backend_status)
+        self.controller.viewStatusChanged.connect(self._view_status)
 
     def configure(self, target, period="1min", settings=None):
         self.target = target
@@ -53,12 +55,29 @@ class LiveChartDialog(QDialog):
         self.period.setCurrentIndex(max(0, self.period.findData(period)))
         self.period.blockSignals(False)
         self.chart.set_series(pd.DataFrame(columns=["datetime", "open", "high", "low", "close"]), -1)
-        self.status.setText("等待当前合约的实时行情…")
+        self.status.setText(self.controller.last_status)
         self.show(); self._request()
 
     def _request(self, *_):
         if self.target and self.isVisible():
+            # Do not leave a different period's bars under the new selector.
+            self._closed_signature = None
+            self.chart.set_series(pd.DataFrame(columns=["datetime", "open", "high", "low", "close"]), -1)
+            self.status.setText(f"正在获取 {self.target.symbol} 的{self.period.currentText()}实时K线…")
             self.controller.request_view(self.target.tq_symbol, self.period.currentData())
+
+    def _backend_status(self, text):
+        if not self.isVisible() or text.startswith("免费行情后台运行中"):
+            return
+        if self.chart.df.empty or text.startswith(("后台实时更新已停止", "后台行情连接未完成")):
+            self.status.setText(text)
+
+    def _view_status(self, payload):
+        if (not self.isVisible() or self.target is None
+                or payload.get("tq_symbol") != self.target.tq_symbol
+                or payload.get("period") != self.period.currentData()):
+            return
+        self.status.setText(str(payload.get("text", "")))
 
     def _preview(self, payload):
         if (not self.isVisible() or self.target is None or payload.get("tq_symbol") != self.target.tq_symbol

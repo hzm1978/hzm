@@ -141,14 +141,15 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
             if stopped.is_set():
                 break
             try:
+                emit("status", text=f"正在获取 {target.symbol} 行情与最近最多10000根K线（{i+1}/{len(targets)}）…")
                 quote = api.get_quote(target.tq_symbol)
                 serials = {key: api.get_kline_serial(target.tq_symbol, LIVE_PERIODS[key],
                     data_length=LIVE_HISTORY_BARS) for key in ("1min", "1d")}
                 active.append({"target": target, "quote": quote, "serials": serials,
                                "signature": None, "fingerprints": {}, "next_check": 0.})
                 emit("status", text=f"后台订阅 {i+1}/{len(targets)}：{target.symbol}")
-            except Exception:
-                emit("status", text=f"{target.symbol}订阅未完成，其他品种继续更新")
+            except Exception as exc:
+                emit("status", text=f"{target.symbol}订阅未完成：{safe_error(exc,secrets)}；其他品种继续更新")
         for command in deferred:
             commands.put(command)
         if not active and not stopped.is_set():
@@ -163,31 +164,45 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
                 if command.get("command") == "stop":
                     stopped.set(); break
                 if command.get("command") == "view":
+                    symbol, period = command.get("tq_symbol"), command.get("period", "1min")
+                    if period not in LIVE_PERIODS:
+                        period = "1d"
                     try:
                         if not command.get("enabled", True):
                             view = None; continue
-                        symbol, period = command["tq_symbol"], command.get("period", "1min")
-                        if period not in LIVE_PERIODS:
-                            period = "1d"
+                        view = None
+                        emit("view_status", tq_symbol=symbol, period=period,
+                             text=f"正在订阅 {symbol} 的实时K线…")
                         source = next((item for item in active if item["target"].tq_symbol == symbol), None)
                         quote = source["quote"] if source else api.get_quote(symbol)
                         daily = source["serials"]["1d"] if source else api.get_kline_serial(symbol, 86400, data_length=LIVE_HISTORY_BARS)
                         native = (source["serials"][period] if source and period in source["serials"]
                                   else api.get_kline_serial(symbol, LIVE_PERIODS[period], data_length=LIVE_HISTORY_BARS))
-                        view = {"symbol": symbol, "period": period, "serials": {"1d": daily, period: native}, "quote": quote}
-                    except Exception:
-                        emit("view_error", text="当前合约的实时图尚未就绪，后台采集继续运行")
+                        view = {"symbol": symbol, "period": period, "serials": {"1d": daily, period: native},
+                                "quote": quote, "requested": time.monotonic(), "last_notice": 0.}
+                    except Exception as exc:
+                        emit("view_error", tq_symbol=symbol, period=period,
+                             text=f"{symbol}实时图订阅未完成：{safe_error(exc,secrets)}；后台采集继续运行")
             if stopped.is_set():
                 break
             api.wait_update(deadline=time.time()+.25)
             now = time.monotonic()
             if view and now-last_preview >= 1:
                 try:
-                    if all(api.is_serial_ready(frame) for frame in view["serials"].values()):
+                    # A ready selected period may be displayed while the
+                    # separate daily calendar subscription is still loading.
+                    if api.is_serial_ready(view["serials"][view["period"]]):
                         snap = build_snapshot(view["serials"], view["quote"])
                         emit("preview", tq_symbol=view["symbol"], **preview_payload(snap, view["period"]))
-                except Exception:
-                    emit("view_error", text="实时图暂未就绪，后台更新继续运行")
+                    elif now-view["last_notice"] >= 5:
+                        view["last_notice"] = now
+                        emit("view_status", tq_symbol=view["symbol"], period=view["period"],
+                             text=f"正在等待 {view['symbol']} 的K线数据（{int(now-view['requested'])}秒）；后台连接仍在运行")
+                except Exception as exc:
+                    if now-view["last_notice"] >= 5:
+                        view["last_notice"] = now
+                        emit("view_error", tq_symbol=view["symbol"], period=view["period"],
+                             text=f"{view['symbol']}实时图加载未完成：{safe_error(exc,secrets)}；后台更新继续运行")
                 last_preview = now
             if now-last_health > 10:
                 emit("status", text=f"免费行情后台运行中 · {len(active)}个品种；复盘进度保持不变")

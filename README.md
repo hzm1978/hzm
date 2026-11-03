@@ -1,10 +1,14 @@
-# 期货复盘训练系统 v8：父、子、孙结构与回调尺
+# 期货复盘训练系统 v8.1：修复实时跟随空白，保留父子孙结构
 
-[直接下载完整源码包 futures_replay_fixed_v8.zip](https://github.com/hzm1978/hzm/raw/refs/heads/fix/futures-replay-trading-days/futures_replay_fixed_v8.zip)
+[直接下载完整源码包 futures_replay_fixed_v8_1.zip](https://github.com/hzm1978/hzm/raw/refs/heads/fix/futures-replay-trading-days/futures_replay_fixed_v8_1.zip)
 
 依据用户指定的最新版 **3.pdf**（《趋势交易法》第三版，731页）修改所有品种共用的趋势指标。按父浪段分别识别下一级子结构，再保留子浪内部的孙结构；同一时间内父、子、孙可以共存。沪银、沪锡仅为例子，没有按品种或截图硬编码数浪。
 
 ## 本版变化
+
+- 修复刚启动后台就打开实时窗口的协议顺序错误：先发送登录/配置，再发送最后选择的看图请求。启动时切换周期或关闭窗口也按最终选择处理。
+- 实时窗口同步连接及服务端错误，等待所选周期时显示进度；后台停止后保留窗口及停止原因。分钟已就绪时不再等待另一份日历订阅才显示。
+- 实际联机验证SM主连日线显示2000根，最新日线2026-11-03，报价14:59:59.617001（北京时间），后台保存成功。
 
 - 品种列表过滤“商品说明”“品种清单”两个资料目录，主连列表和品种下拉框都不再将它们当作交易品种。
 
@@ -30,11 +34,11 @@
 
 采集在独立低优先级后台进程中进行。勾选 **实时跟随** 才打开实时K线窗口；关闭窗口后采集继续，原回放和模拟账户保持原位。状态栏显示真实最新保存时间。Windows可用 **记住登录** 将凭据用当前用户DPAPI加密保存在本机；公开源码和ZIP不含真实账号密码。
 
-免费范围是每周期最近最多10000根，并非固定一年。分钟、日线和按需预览均按10000根请求，已有更早本地历史继续保留。v7时经授权实测账号认证、沪银主连及AG2612/SN2612生产采集和重读成功；v8未重复登录，实时模块未改动，后台及界面回归通过。详情见 [实时更新说明](实时更新说明.md)。
+免费范围是每周期最近最多10000根，并非固定一年。分钟、日线和按需预览均按10000根请求，已有更早本地历史继续保留。v7时经授权实测账号认证、沪银主连及AG2612/SN2612生产采集和重读成功；v8.1又实际验证SM主连日线经生产后台传入真实Qt窗口。详情见 [实时更新说明](实时更新说明.md)。
 
 ## 安装
 
-退出旧程序并备份。解压后用整个 `futures_replay` 文件夹覆盖旧同名文件夹，保留行情与交易记录；同时复制 `requirements.txt`、`run.py` 和两个批处理。先运行 **安装或更新依赖.bat**，再运行 **启动程序.bat**。窗口标题应显示 **v8.0.0**。
+退出旧程序并备份。解压后用整个 `futures_replay` 文件夹覆盖旧同名文件夹，保留行情与交易记录；同时复制 `requirements.txt`、`run.py` 和两个批处理。先运行 **安装或更新依赖.bat**，再运行 **启动程序.bat**。窗口标题应显示 **v8.1.0**。
 
 源码包需要Python，不是独立exe。两个批处理优先使用包内或上一级已有 `.venv`，否则使用系统Python。
 
@@ -50,10 +54,10 @@ python run.py
 - [修复及安装说明](修复说明.md) · [实时更新说明](实时更新说明.md)
 - [指标规则与原书页码](指标规则说明.md) · [验证记录](验证记录.md)
 - [完整父子孙结构](trend_indicator_v8_structure.png) · [较早主跌段放大](trend_indicator_v8_detail.png) · [上涨对称例](trend_indicator_v8_mirror.png)
-- [实时窗口示意](realtime_v8_preview.png)（预览图均为构造行情）
+- [实时窗口示意](realtime_v8_1_preview.png)（包内预览图均为构造行情；实际SM联机另见验证记录）
 
-122项回归在pandas 2.2.3、3.0.6下通过；原主窗口、日期导航、后台进程、三种末段及父子孙结构Qt渲染通过。SDK固定3.10.4，pandas限制 `<3.1`。Windows实机及DPAPI系统调用未在Linux云环境执行。
+129项回归在pandas 2.2.3、3.0.6下通过；原主窗口、日期导航、后台进程、三种末段及父子孙结构Qt渲染通过。SDK固定3.10.4，pandas限制 `<3.1`。Windows实机及DPAPI系统调用未在Linux云环境执行。
 
 复杂行情仍可能有多种合法分级，证据不足保留候选/待分级；目标价是理论参考。预览不代表逐根复现用户本地行情。
 
-包大小、文件数、SHA-256见 [v8_manifest.json](https://github.com/hzm1978/hzm/blob/fix/futures-replay-trading-days/v8_manifest.json)。旧版ZIP保留。原书：[book Release](https://github.com/hzm1978/hzm/releases/tag/book) · [3.pdf](https://github.com/hzm1978/hzm/releases/download/book/3.pdf)。
+包大小、文件数、SHA-256见 [v8_1_manifest.json](https://github.com/hzm1978/hzm/blob/fix/futures-replay-trading-days/v8_1_manifest.json)。旧版ZIP保留。原书：[book Release](https://github.com/hzm1978/hzm/releases/tag/book) · [3.pdf](https://github.com/hzm1978/hzm/releases/download/book/3.pdf)。

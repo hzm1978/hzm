@@ -108,6 +108,9 @@ def validate(output):
             direct = window.findChild(QToolButton,'free_realtime_button')
             assert direct is not None
             direct.click()
+            # Exercise opening the view while QProcess is still Starting.
+            # The old protocol sent this view command ahead of login config.
+            window.live_view_action.setChecked(True)
             spin(lambda: ("主力连续", "SN") in window._live_dirty)
             assert window.live_controller.is_running()
             assert id(window.engine) == engine_id and window.engine.current().timestamp == before.timestamp
@@ -122,8 +125,12 @@ def validate(output):
             assert not live.isModal()
             window.live_view_action.setChecked(False)
             assert not live.isVisible() and window.live_controller.is_running()
+            window.live_view_action.setChecked(True)
+            spin(lambda: not live.chart.df.empty)
             window.realtime_action.trigger()
             spin(lambda: window.live_controller.process is None)
+            assert live.isVisible() and '已停止' in live.status.text()
+            window.live_view_action.setChecked(False)
             window._live_dirty.clear()
             with patch('futures_replay.ui.main_window.load_saved_login',return_value=('offline-test','offline-secret')):
                 window.realtime_all_action.trigger()
@@ -141,7 +148,8 @@ def validate(output):
     sys.argv[:] = old_argv
     result = {"result": "passed", "pandas": pd.__version__, "checks": [
         "可见免费实时按钮及原当前/全部菜单", "本地账号登录及记住后直接启动", "独立后台进程", "真实增量分片保存与固定保存时间",
-        "前台复盘引擎和进度不变", "模拟账户不变", "按需非模态实时图", "隐藏实时图后继续采集", "退出时停止子进程"],
+        "前台复盘引擎和进度不变", "模拟账户不变", "启动时立即打开实时图的协议顺序", "按需非模态实时图",
+        "隐藏实时图后继续采集", "停止后窗口保留并提示状态", "退出时停止子进程"],
         "data": "构造行情、模拟服务端；未使用真实天勤账号"}
     (output/"result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False))

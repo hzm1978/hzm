@@ -76,6 +76,7 @@ class BackgroundLiveController(QObject):
     statusChanged = Signal(str)
     saved = Signal(object)
     previewReady = Signal(object)
+    viewStatusChanged = Signal(object)
     runningChanged = Signal(bool)
     targetsReady = Signal(object)
 
@@ -87,6 +88,10 @@ class BackgroundLiveController(QObject):
         self._payload = self._pending = None
         self._buffer = b""
         self._last_error = ""
+        self.last_status = "后台行情尚未启动"
+        self._configured = False
+        self._view_request = None
+        self._stop_requested = False
         self._program = program or sys.executable
         self._arguments = arguments or ["-X", "utf8", "-u", "-m", "futures_replay.live_service"]
         self._guard = QTimer(self); self._guard.setSingleShot(True); self._guard.setInterval(8000)
@@ -109,6 +114,9 @@ class BackgroundLiveController(QObject):
         self.mode = payload["mode"]
         self._buffer = b""
         self._last_error = ""
+        self._configured = False
+        self._view_request = None
+        self._stop_requested = False
         process = QProcess(self)
         self.process = process
         process.setWorkingDirectory(str(Path(__file__).resolve().parents[2]))
@@ -117,27 +125,44 @@ class BackgroundLiveController(QObject):
         process.readyReadStandardError.connect(self._discard_stderr)
         process.errorOccurred.connect(self._error)
         process.finished.connect(self._finished)
+        self._status("正在启动后台实时行情…")
         process.start(self._program, self._arguments)
         self.runningChanged.emit(True)
 
     @Slot()
     def _started(self):
+        # QProcess accepts writes while Starting. A view command sent then
+        # used to precede the login/config line and break the child protocol.
+        self._configured = True
         self._send(self._payload)
         self._payload = None
+        if self._stop_requested:
+            self._send({"command": "stop"})
+        elif self._view_request is not None:
+            self._send(self._view_request)
 
     def _send(self, value):
-        if self.process is not None:
+        if self.process is not None and self._configured and value is not None:
             self.process.write((json.dumps(value, ensure_ascii=False)+"\n").encode("utf-8"))
 
+    def _status(self, text):
+        self.last_status = text
+        self.statusChanged.emit(text)
+
     def request_view(self, tq_symbol=None, period="1min", *, enabled=True):
-        self._send({"command": "view", "enabled": enabled, "tq_symbol": tq_symbol, "period": period})
+        # Keep only the latest selection while starting; closing the view
+        # must also replace a queued enable rather than open it later.
+        self._view_request = {"command": "view", "enabled": enabled,
+                              "tq_symbol": tq_symbol, "period": period}
+        self._send(self._view_request)
 
     def stop(self, *, cancel_pending=True):
         if cancel_pending:
             self._pending = None
         if self.process is not None:
+            self._stop_requested = True
             self._send({"command": "stop"})
-            self.statusChanged.emit("正在停止后台行情…")
+            self._status("正在停止后台行情…")
             self._guard.start()
 
     @Slot()
@@ -160,13 +185,20 @@ class BackgroundLiveController(QObject):
             elif kind == "started":
                 self.context["targets"] = message.get("targets",[])
                 self.targetsReady.emit(self.context["targets"])
-                self.statusChanged.emit(f"已连接免费实时行情 · {message.get('count',0)}个品种；勾选“实时跟随”看最新K线")
+                self._status(f"已连接免费实时行情 · {message.get('count',0)}个品种；勾选“实时跟随”看最新K线")
             elif kind == "preview":
                 latest_preview = message
-            elif kind in {"status", "error", "view_error"}:
+            elif kind in {"view_status", "view_error"}:
+                self.viewStatusChanged.emit(message)
+                requested = self._view_request or {}
+                if (kind == "view_error" and requested.get("enabled")
+                        and message.get("tq_symbol") == requested.get("tq_symbol")
+                        and message.get("period") == requested.get("period")):
+                    self._status(str(message.get("text", "")))
+            elif kind in {"status", "error"}:
                 if kind == "error":
                     self._last_error = str(message.get("text", ""))
-                self.statusChanged.emit(str(message.get("text", "")))
+                self._status(str(message.get("text", "")))
         if len(self._buffer) > 4_000_000:
             self._buffer = b""
         if latest_preview is not None:
@@ -181,7 +213,7 @@ class BackgroundLiveController(QObject):
     def _error(self, error):
         self._payload = None
         self._last_error = "后台行情连接未完成，请检查组件、账号或网络后重试。"
-        self.statusChanged.emit(self._last_error)
+        self._status(self._last_error)
         if error == QProcess.ProcessError.FailedToStart:
             self._finished()
 
@@ -190,6 +222,7 @@ class BackgroundLiveController(QObject):
         process = self.process
         self.process = None
         self._payload = None
+        self._configured = False
         self._guard.stop()
         if process is not None:
             process.deleteLater()
@@ -198,7 +231,7 @@ class BackgroundLiveController(QObject):
         if pending is not None:
             self._begin(pending)
         else:
-            self.statusChanged.emit("后台实时更新已停止" + ("："+self._last_error if self._last_error else ""))
+            self._status("后台实时更新已停止" + ("："+self._last_error if self._last_error else ""))
 
     @Slot()
     def _force_stop(self):
