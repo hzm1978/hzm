@@ -1,0 +1,20 @@
+{
+  "status": "PASS_NUMERICAL_CHECKS",
+  "maximum_beta_quadrature_error": 4.163336342344337e-15,
+  "maximum_recovery_error_for_original_formula": 9.159339953157541e-16,
+  "four_dimensional_four_outcome_example": {
+    "effect_ranks": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "pure_state_guarantee": 0.40824829046386296,
+    "formula": "1/sqrt(6)",
+    "direct_probability_vs_quaternion_formula_error": 4.440892098500626e-16,
+    "blind_rank_two_state_imaginarity": 1.0,
+    "blind_rank_two_state_tv": 0.0
+  }
+}
+Frame Monte Carlo maximum |z|: 2.7528152262052425
+Direct probability maximum |z|: 2.0554662123983047

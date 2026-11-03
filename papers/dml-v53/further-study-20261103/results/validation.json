@@ -1,0 +1,20 @@
+{
+  "status": "PASS_INTERNAL_CHECKS_EXTERNAL_NOVELTY_UNRESOLVED",
+  "note_pages": 5,
+  "undefined_references": false,
+  "latex_overfull_boxes": false,
+  "missing_glyphs": false,
+  "text_within_page_bounds": true,
+  "numerical_check_status": "PASS_NUMERICAL_CHECKS",
+  "frame_cases": 21,
+  "direct_probability_cases": 7,
+  "curve_cases": 63,
+  "visual_review": [
+    "Final note first page",
+    "Four-dimensional construction page",
+    "Final rank-guarantee plot"
+  ],
+  "external_primary_source_verification": "Blocked by current network policy; research-domain draft saved, requires user review/save/publication",
+  "v53_zip_sha256_unchanged": true,
+  "scope": "Independent derivations and numerical examples; not a literature-priority claim or formal verification"
+}

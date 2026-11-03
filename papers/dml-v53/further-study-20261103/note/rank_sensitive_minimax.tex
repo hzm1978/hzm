@@ -1,0 +1,378 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,bm,booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Id}{\mathbb I}
+\newcommand{\E}{\mathsf E}
+\newcommand{\V}{\mathcal V}
+\newcommand{\opt}{\operatorname{opt}}
+\title{Further internal research on DML v53:\\rank promises and finite measurements}
+\author{Research working note prepared for author review}
+\date{3 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give independent analytic extensions of the supplied minimax argument.
+For a state-rank promise at most $s$, the exact coefficient is
+$\frac{d}{d-1}\binom{2k}{k}4^{-k}$, where
+$k=\min(s,\lfloor d/2\rfloor)$.
+The same real-two-frame measurement is optimal for every such promise.
+For pure inputs the coefficient is $d/[2(d-1)]$.
+We also give a finite-nonattainment proof for all $d\geq3$ and all these
+rank promises, and determine the positive-guarantee outcome threshold
+for pure inputs in dimension four.
+These are internal derivations, not established claims of literature
+novelty. External primary-source and priority verification remains incomplete.
+\end{abstract}
+
+\section{Setting and the promise}
+Fix the conjugation basis in dimension $d\geq2$.
+Use the unnormalized trace norm and
+\[
+\M(\rho)=\frac12\|\rho-\rho^*\|_1,\qquad
+\TV[p,q]=\frac12\|p-q\|_1.
+\]
+The measurement is chosen before the unknown input, and may have continuous
+outcomes. This definition makes no assumption that conjugation is a
+physically implementable channel. For $1\leq s\leq d$, define
+\[
+\alpha_s(\E)=\inf_{\substack{\rank\rho\leq s\\\M(\rho)>0}}
+\frac{\TV[p_{\E}(\rho),p_{\E}(\rho^*)]}{\M(\rho)},\qquad
+\beta_{d,s}=\sup_{\E}\alpha_s(\E).
+\]
+Let $r=\lfloor d/2\rfloor$ and $k=\min(s,r)$.
+The rank promise is strict. A purity value alone is not the same promise.
+
+\begin{proposition}[Exactly which directions are allowed]
+Up to nonzero positive scaling, the directions $\rho-\rho^*$ with
+$\rank\rho\leq s$ are precisely the nonzero matrices
+\[
+X=X^\dagger,\quad X^*=-X,\quad \rank X\leq2k.
+\]
+\end{proposition}
+\begin{proof}
+The forward implication follows from
+$\rank(\rho-\rho^*)\leq2\rank\rho$ and the paired spectrum of an
+imaginary Hermitian matrix. Conversely, write the positive and negative
+parts of $X$ as $X_+,X_-$. Conjugation exchanges them, and
+$\Tr X_+=\Tr X_->0$. Thus
+\[
+\rho=\frac{X_+}{\Tr X_+},\qquad
+\rho^*=\frac{X_-}{\Tr X_+},\qquad
+\rho-\rho^*=\frac{X}{\Tr X_+}.
+\]
+The rank of $\rho$ is $\rank X/2\leq k\leq s$.
+Its imaginarity is one. Hence every allowed direction is realized by
+an actual state within the promise.
+\end{proof}
+
+\section{An exact rank-sensitive minimax law}
+Define
+\[
+c_{d-1}=\frac{\Gamma((d-1)/2)}{\sqrt\pi\,\Gamma(d/2)},\qquad
+\mu_{d,k}=\frac{\Gamma(k+1/2)\Gamma(d/2)}
+{\Gamma(k)\Gamma((d+1)/2)}.
+\]
+For a uniform unit real vector $u$, $\mu_{d,k}$ is the mean length of
+its projection onto a fixed $2k$-plane. The formula also covers
+$2k=d$, when this length is one.
+
+\begin{theorem}[Rank-promise coefficient]
+For every $d\geq2$ and $1\leq s\leq d$,
+\begin{equation}
+\boxed{\quad
+\beta_{d,s}=\frac{d}{d-1}
+\frac{\Gamma(k+1/2)}{\sqrt\pi\,\Gamma(k+1)}
+=\frac{d}{d-1}\frac{\binom{2k}{k}}{4^k},
+\quad k=\min(s,\lfloor d/2\rfloor).
+\quad}
+\label{eq:ranklaw}
+\end{equation}
+An attaining POVM, independent of $s$, is
+\[
+\E_{\rm fr}(du\,dv)=d|\psi_{u,v}\rangle\langle\psi_{u,v}|\,d\nu(u,v),
+\qquad \psi_{u,v}=\frac{u+iv}{\sqrt2},
+\]
+where $\nu$ is invariant probability on ordered orthonormal real
+two-frames. A worst direction has exactly $k$ equal nonzero skew
+singular-value pairs.
+\end{theorem}
+\begin{proof}
+First consider the invariant orbit of a real skew matrix $A_0$ with
+$k$ singular-value pairs equal to one and all remaining singular
+values zero. Put $A=OA_0O^T$ for Haar $O\in O(d)$.
+For fixed real $y\ne0$, $Ay\perp y$ and
+\[
+\mathbb E\|Ay\|=\mu_{d,k}\|y\|.
+\]
+Invariance under the stabilizer of $y$ implies that, conditional on
+its length, the direction of $Ay$ is uniform in $y^\perp$.
+Consequently
+\begin{equation}
+\mathbb E_A|x^TAy|
+=c_{d-1}\mu_{d,k}\|P_{y^\perp}x\|\,\|y\|.
+\label{eq:orbitalmean}
+\end{equation}
+The zero-vector case contributes zero. For a unit complex vector
+$\psi=x+iy$ this gives
+\[
+\mathbb E_A|\langle\psi|iA|\psi\rangle|
+=2c_{d-1}\mu_{d,k}
+\sqrt{\|x\|^2\|y\|^2-(x\cdot y)^2}
+\leq c_{d-1}\mu_{d,k}.
+\]
+Spectral decomposition and the triangle inequality extend the bound to
+every positive effect $F$, with right side
+$c_{d-1}\mu_{d,k}\Tr F$. Write an arbitrary POVM as
+$F_\omega d\lambda(\omega)$ and integrate $\Tr F_\omega$ to $d$.
+Since $\|iA\|_1=2k$ and every orbit direction is allowed by the
+rank promise,
+\[
+\alpha_s(\E)\leq\mathbb E_A
+\frac{\int|\Tr(F_\omega iA)|\,d\lambda}{2k}
+\leq\frac{d\,c_{d-1}\mu_{d,k}}{2k}.
+\]
+The last expression simplifies to Eq.~\eqref{eq:ranklaw}.
+
+For the lower bound, orthogonal invariance and reversal $v\mapsto-v$
+give $\int|\psi_{u,v}\rangle\langle\psi_{u,v}|d\nu=\Id/d$,
+so the frame POVM is normalized. Put an allowed $X=iA$ in canonical
+form with nonnegative paired singular values $a_1,\ldots,a_k$,
+padding zeros if necessary. Its response is
+\[
+R_{\rm fr}(X)=\frac{d\,c_{d-1}}{2\sum_j a_j}
+\mathbb E_u\sqrt{\sum_{j=1}^k
+a_j^2(u_{2j-1}^2+u_{2j}^2)}.
+\]
+At fixed $\sum_j a_j$, the expectation is convex in $(a_j)$
+and symmetric under their permutations. Averaging all permutations
+therefore shows that it is minimized by equal $a_j$.
+For that spectrum the expectation is $a\mu_{d,k}$, giving the
+same upper bound. This proves attainability and the worst-spectrum
+statement, including lower-rank directions.
+\end{proof}
+
+\begin{corollary}[Pure inputs and recovery of v53]
+For pure unknown inputs,
+\begin{equation}
+\beta_{d,1}=\frac{d}{2(d-1)}\longrightarrow\frac12.
+\label{eq:pure}
+\end{equation}
+The frame measurement has this ratio for every nonreal pure input.
+Taking $s\geq r$ in Eq.~\eqref{eq:ranklaw} recovers the even/odd
+dimension formula in v53. For fixed $s$ and $d\to\infty$ the
+coefficient approaches $\binom{2s}{s}/4^s$; when $k$ also grows it
+behaves as $d/[(d-1)\sqrt{\pi k}]$.
+\end{corollary}
+\begin{proof}
+For pure $\rho=|\psi\rangle\langle\psi|$, the nonzero conjugation
+direction has rank two, so its skew spectrum has one pair.
+The remaining assertions follow directly from the gamma identities
+and Stirling's formula. In particular the unrestricted dimension decay
+comes from admitting a growing number of nonzero skew pairs.
+\end{proof}
+
+\begin{proposition}[Complex Haar baseline under the same promise]
+For $\mathsf U(d\psi)=d|\psi\rangle\langle\psi|d\mu(\psi)$
+with complex Haar probability,
+\[
+\alpha_s(\mathsf U)
+=\frac{\Gamma(k+1/2)}{\sqrt\pi\,\Gamma(k+1)}
+=\frac{d-1}{d}\beta_{d,s}.
+\]
+\end{proposition}
+\begin{proof}
+The response is a convex symmetric function of the $k$ nonnegative
+paired eigenvalues at fixed sum. At equal eigenvalues let $p_+,p_-$
+be the probabilities in the two $k$-dimensional eigenspaces.
+With $T=p_++p_-$ and $U=p_+/T$, one has
+$\mathbb ET=2k/d$ and an independent $U\sim\mathrm{Beta}(k,k)$.
+The normalized response is
+\[
+\frac{d}{2k}\mathbb E[T|2U-1|]
+=\mathbb E|2U-1|
+=\frac{\Gamma(k+1/2)}{\sqrt\pi\,\Gamma(k+1)}.
+\]
+\end{proof}
+Thus the constant-order behavior for a fixed-rank promise is already
+present in the Haar baseline. The improvement over that baseline is
+the finite-dimensional factor $d/(d-1)$; no new asymptotic scaling
+advantage over Haar is asserted.
+
+\section{No finite measurement attains these optima}
+\begin{theorem}[All-rank finite nonattainment]
+For $d\geq3$, every finite-outcome POVM obeys
+$\alpha_s(\E)<\beta_{d,s}$ for each $1\leq s\leq d$.
+For every fixed outcome budget $m$, the supremum over POVMs with at
+most $m$ outcomes is also strictly below $\beta_{d,s}$.
+\end{theorem}
+\begin{proof}
+Suppose a finite POVM attained the optimum. Refine its effects into
+their finitely many rank-one spectral components. Classical
+coarse-graining contracts total variation, so this refinement still
+attains the optimum. Write its nonzero effects as
+$w_j|\psi_j\rangle\langle\psi_j|$, with $\sum_jw_j=d$.
+
+The orbital average used above is now exact:
+\[
+\mathbb E_A R_{\E}(iA)
+=\frac{\beta_{d,s}}{d}\sum_jw_j m_j,\qquad
+m_j=2\sqrt{\|x_j\|^2\|y_j\|^2-(x_j\cdot y_j)^2}\leq1.
+\]
+The assumed lower bound $R_{\E}(iA)\geq\beta_{d,s}$ forces
+$m_j=1$ for every active effect and forces the continuous response
+to be constant on the entire flat-rank-$2k$ orbit.
+For any chosen effect this means, after a real basis change,
+$\psi_j=(e_1+ie_2)/\sqrt2$.
+
+Choose $A_0$ with a skew block on coordinates $(1,3)$; if $k\geq2$
+also put a block on $(2,4)$, then put the remaining $k-2$ blocks
+on $(5,6),(7,8),\ldots$. For $k=1$ all other coordinates are
+zero. This is available for every $d\geq3$, $k\leq\lfloor d/2\rfloor$.
+Let $R_\theta$ rotate coordinates $(2,3)$ and set
+$A_\theta=R_\theta A_0R_\theta^T$.
+The response of the chosen effect is proportional to
+\[
+|e_1^T A_\theta e_2|=|\sin\theta|.
+\]
+It has a strictly positive jump in its first derivative at zero.
+Every other term is a positive multiple of the absolute value of
+a real analytic function. At a zero its derivative jump is
+nonnegative, and away from a zero its derivative is continuous.
+Hence the finite sum has a positive derivative jump and cannot be
+constant. This contradicts orbital constancy.
+
+Finally, the set of $m$-outcome POVMs, allowing zero effects, is
+compact. The coefficient is a continuous minimum over the compact
+set $\{X\in\V_d:\|X\|_1=1,\rank X\leq2k\}$.
+A fixed-budget supremum is therefore attained; since equality is
+impossible, it is strictly smaller than $\beta_{d,s}$.
+\end{proof}
+This does not give a quantitative dependence of the gap on $m$.
+Dimension two is an exception: a sharp $Y$ measurement attains one.
+
+\section{A changed outcome threshold in dimension four}
+For unrestricted inputs v53 requires $d(d-1)/2+1$ outcomes for a
+positive coefficient. The following promise changes that threshold.
+
+\begin{theorem}[Pure inputs in dimension four]
+The minimum number of outcomes with $\alpha_1(\E)>0$ in dimension
+four is exactly four. An explicit four-outcome POVM has
+$\alpha_1=1/\sqrt6$. For unrestricted inputs the threshold is seven.
+The value $1/\sqrt6$ is a feasible guarantee, not a claimed optimal
+four-outcome coefficient for pure inputs.
+\end{theorem}
+\begin{proof}
+The space of real skew $4\times4$ matrices has dimension six.
+Any $m$-outcome readout has rank at most $m-1$ on this space.
+For $m\leq3$, its kernel has dimension at least four.
+The Pfaffian quadratic form
+\[
+q(A)=A_{12}A_{34}-A_{13}A_{24}+A_{14}A_{23}
+\]
+has signature $(3,3)$. A subspace on which it has no nonzero zero
+must be positive or negative definite and has dimension at most
+three. Thus the kernel contains a nonzero $A$ with $q(A)=0$.
+Such an $A$ has rank two and corresponds to a pure-state direction.
+The coefficient is zero, proving the lower bound on outcomes.
+
+For an explicit construction use the real quaternion matrices
+\[
+\begin{split}
+L_1&=\begin{pmatrix}0&-1&0&0\\1&0&0&0\\0&0&0&-1\\0&0&1&0\end{pmatrix},\quad
+L_2=\begin{pmatrix}0&0&-1&0\\0&0&0&1\\1&0&0&0\\0&-1&0&0\end{pmatrix},\\
+L_3&=\begin{pmatrix}0&0&0&-1\\0&0&-1&0\\0&1&0&0\\1&0&0&0\end{pmatrix}.
+\end{split}
+\]
+They satisfy $L_a^T=-L_a$ and
+$L_aL_b+L_bL_a=-2\delta_{ab}\Id$.
+Let $H_a=iL_a$ and let $n_j$ be the four unit tetrahedral vertices
+$(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)$ divided by $\sqrt3$.
+Set
+\[
+E_j=\frac{\Id+n_j\cdot H}{4},\qquad j=1,\ldots,4.
+\]
+These are rank-two positive effects and sum to $\Id$.
+For a rank-two direction $X=ia(uv^T-vu^T)$, with $u,v$ real
+orthonormal, the three vectors $L_a u$ form an orthonormal basis
+of $u^\perp$. Thus $z_a=-v^TL_a u$ is a unit vector, and
+\[
+R_{\E}(X)=\frac14\sum_{j=1}^4|n_j\cdot z|.
+\]
+Every $z\in S^2$ is attainable, and the tetrahedral absolute sum
+has minimum $2\sqrt{2/3}$ (evaluate the normals to pairs of its
+generators). Consequently $\alpha_1(\E)=1/\sqrt6>0$.
+\end{proof}
+
+The same measurement is blind to the rank-two state
+\[
+\rho_{\rm blind}=\frac{\Id+iR_1}{4},\qquad
+R_1=\begin{pmatrix}0&-1&0&0\\1&0&0&0\\0&0&0&1\\0&0&-1&0\end{pmatrix}.
+\]
+Indeed $\Tr(H_a iR_1)=0$, so both conjugate inputs give uniform
+outcome probabilities. The state has $\M(\rho_{\rm blind})=1$.
+This verifies why the pure-input guarantee cannot be applied to
+arbitrary mixed inputs.
+
+\section{Approximate promises and research interpretation}
+\begin{proposition}[A robust consequence with an explicit limitation]
+Suppose there is a state $\sigma$ of rank at most $s$ with
+$\|\rho-\sigma\|_1\leq\eta$. For the frame measurement,
+\[
+\TV[p(\rho),p(\rho^*)]
+\geq\beta_{d,s}\M(\rho)-(1+\beta_{d,s})\eta.
+\]
+If $\M(\rho)>0$, divide by it to obtain a ratio bound. There is
+no uniform small ratio error from this argument when
+$\M(\rho)$ is arbitrarily small.
+\end{proposition}
+\begin{proof}
+Contraction and the triangle inequality bound the change in the
+two-input total variation by $\eta$.
+The distance-to-real-state function $\M$ is one-Lipschitz in trace
+norm. Apply the exact rank-promise guarantee to $\sigma$ and use
+$\M(\sigma)\geq\M(\rho)-\eta$.
+\end{proof}
+
+The rank formula, the common optimal measurement, and the strict
+gap for a finite outcome budget suggest studying how the rank
+promise changes measurement design. These extensions use orthogonal
+averaging, convexity, and measurement norms, methods already present
+in the surrounding literature.
+The Haar comparison gives the same fixed-rank asymptotic order.
+Their publication value therefore still depends on primary-source
+and priority verification. No claim that a literature search found
+these statements absent is made here.
+
+\section{Checks actually performed}
+The supplied Python script checks exact rational values against
+beta quadrature for $2\leq d\leq40$, recovers the v53 parity formula,
+and performs 21 real-frame Monte Carlo cases with $100000$ samples
+each. Seven direct density-matrix probability cases check that the
+promised directions are realized by positive rank-$k$ states.
+The four-dimensional effects, their guarantee, a blind mixed state,
+and 63 flat-orbit cusp curves are also checked.
+Saved results and implementation versions accompany the note.
+These computations check consistency and examples; they do not
+replace the analytic proofs or establish literature novelty.
+
+Primary literature access was attempted through the configured
+proxy. Both arXiv and Crossref returned a forbidden tunnel response.
+Required research domains have been saved in an environment
+configuration draft, which does not itself apply or publish the
+network change. Full-text verification remains pending.
+
+\medskip
+\noindent\textit{Assistance record.} This research note, its analytic
+extensions, and verification code were developed with ChatGPT
+assistance. They require independent author and expert review before
+being incorporated into a submission. DML v53 has been preserved.
+\end{document}

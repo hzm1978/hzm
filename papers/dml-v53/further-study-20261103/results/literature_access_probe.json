@@ -1,0 +1,14 @@
+[
+  {
+    "service": "arxiv",
+    "url": "https://arxiv.org/search/?query=Zonoids+and+sparsification+of+quantum+measurements&searchtype=all",
+    "error": "Tunnel connection failed: 403 Forbidden",
+    "accessible": false
+  },
+  {
+    "service": "crossref",
+    "url": "https://api.crossref.org/works?query.title=Zonoids%20and%20sparsification%20of%20quantum%20measurements&rows=2",
+    "error": "Tunnel connection failed: 403 Forbidden",
+    "accessible": false
+  }
+]
