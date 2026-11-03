@@ -101,6 +101,24 @@ def analysis_html(analysis, frame=None):
         [(when(p.index), when(p.start_index), f"{p.percent:.3f}%", when(p.confirmed_at)) for p in a.retracements])
     h += "<h3>位置参考（目标与估计不生成未来K线）</h3>" + _table(["位置", "价位", "已知时刻"],
         [(p.label, f"{p.price:.6g}", when(p.confirmed_at)) for p in a.levels])
+    for group in a.wave_projections:
+        h += f"<h3>{escape(group.degree)}级末浪{group.wave}：反向黄金分割与候选止盈</h3>"
+        if group.reverse:
+            r = group.reverse
+            h += (f"<p>取前一回调 {escape(when(r.start.index))}（{r.start.price:.8g}）→ "
+                  f"{escape(when(r.base.index))}（{r.base.price:.8g}），从回调结束价反向量向其起点。"
+                  + ("回调端点仍属候选。" if r.candidate else "回调结束已有所属级别A点证据。") + "</p>")
+            h += _table(["反向比例", "价格", "可观察时刻"],
+                [(p.label, f"{p.price:.8g}", when(p.confirmed_at)) for p in r.levels])
+        h1 = abs(group.first_tip.price-group.first_origin.price)
+        h += (f"<p>H1={h1:.8g}，来自同组浪1的 {escape(when(group.first_origin.index))} → "
+              f"{escape(when(group.first_tip.index))}。后续主浪从各自前一调整结束价投射；全趋势从浪1起点投射。"
+              "止盈仅为理论候选，2.382/2.618/3倍是需强势条件的扩展。实际触及与计数确认时刻分别记录。</p>")
+        h += _table(["候选位置", "价格", "投射起点", "最早已知", "首次实际触及", "触及可确认", "条件"],
+            [(p.label, f"{p.price:.8g}", when(p.origin.index), when(p.confirmed_at), when(p.hit_index),
+              when(p.hit_confirmed_at), p.tier) for p in group.targets])
+        h += _table(["历史主浪", "实际末价", "可确认时刻"],
+            [(p.text, f"{p.price:.8g}", when(p.confirmed_at)) for p in group.historical_arrivals])
     if a.break_decision:
         d = a.break_decision
         h += f"<h3>突破 / 延时</h3><p>{escape(d.label)}<br>{escape(d.reason)}<br>突破：{escape(when(d.break_index))}；延时线成立：{escape(when(d.delay_ready_at))}；确认：{escape(when(d.confirmed_at))}；水平：{d.delay_level}</p>"

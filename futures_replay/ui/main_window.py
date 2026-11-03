@@ -5,6 +5,7 @@ import random
 import time
 import traceback
 from pathlib import Path
+from .. import __version__
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
     QDateEdit,
+    QDialog,
     QDockWidget,
     QFileDialog,
     QHBoxLayout,
@@ -24,6 +26,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
     QMainWindow,
+    QMenu,
     QMessageBox,
     QPushButton,
     QProgressDialog,
@@ -31,6 +34,7 @@ from PySide6.QtWidgets import (
     QSplitter,
     QStatusBar,
     QToolBar,
+    QToolButton,
     QTabWidget,
     QTableWidget,
     QTableWidgetItem,
@@ -40,6 +44,9 @@ from PySide6.QtWidgets import (
 
 from ..config import DEFAULT_INITIAL_CAPITAL, PERIODS, SOURCE_DIRS, locate_data_root
 from .trend_dialog import TrendIndicatorDialog
+from ..realtime_data import RealtimeTarget
+from .background_live import BackgroundLiveController, TqLoginDialog, component_issue
+from .live_chart_dialog import LiveChartDialog
 from ..data_repo import DataRepository
 from ..models import Drawing, OrderSide, Side
 from ..edb_update import (
@@ -367,7 +374,7 @@ class ReplayStatusBar(QStatusBar):
 class MainWindow(QMainWindow):
     def __init__(self, data_root: Path | None = None):
         super().__init__()
-        self.setWindowTitle("期货复盘训练系统")
+        self.setWindowTitle(f"期货复盘训练系统 v{__version__}")
         self.resize(1500, 900)
         self.state = load_state()
         # Main-list sorting is also stored in its own tiny preference file.
@@ -456,6 +463,12 @@ class MainWindow(QMainWindow):
         self._main_quote_timer = QTimer(self)
         self._main_quote_timer.setInterval(120)
         self._main_quote_timer.timeout.connect(self._load_main_quote_batch)
+        self._live_dirty = set()
+        self._live_chart = None
+        self.live_controller = BackgroundLiveController(self)
+        self.live_controller.statusChanged.connect(self._live_status)
+        self.live_controller.saved.connect(self._live_saved)
+        self.live_controller.runningChanged.connect(self._live_running_changed)
         self._build_ui()
         self._building = False
         self._restore_ui()
@@ -476,8 +489,28 @@ class MainWindow(QMainWindow):
         for label, widget in [("数据源",self.source_combo),("交易所",self.exchange_combo),("品种",self.symbol_combo),("工具",self.tool_combo),("窗口",self.window_combo)]:
             tb.addWidget(QLabel(label+" ")); tb.addWidget(widget); tb.addSeparator()
         choose = QAction("选择数据目录", self); choose.triggered.connect(self._choose_data_root); tb.addAction(choose)
-        update_data = QAction("更新数据", self); update_data.triggered.connect(self._update_edb_data); update_data.setToolTip("通过天勤 EDB 更新当前合约的1分钟和日线，并从1分钟重建其他分钟周期"); tb.addAction(update_data)
-        update_all = QAction("全部更新", self); update_all.triggered.connect(self._update_all_edb_data); update_all.setToolTip("通过天勤 EDB 更新当前数据源中各品种的活动合约/未复权主连"); tb.addAction(update_all)
+        self.realtime_action = QAction("免费实时更新当前", self)
+        self.realtime_action.setObjectName("tianqin_realtime_action")
+        self.realtime_action.setToolTip("用普通天勤账号订阅当前合约的实时分钟行情，并保存到本地复盘数据")
+        self.realtime_action.triggered.connect(self._start_current_live)
+        self.realtime_all_action = QAction("免费实时更新全部", self)
+        self.realtime_all_action.setObjectName("tianqin_realtime_all_action")
+        self.realtime_all_action.triggered.connect(self._start_all_live)
+        self.realtime_all_action.setToolTip("免费行情在独立后台进程中更新当前数据源的全部品种，不移动复盘位置")
+        self.live_view_action = QAction("实时跟随", self)
+        self.live_view_action.setCheckable(True)
+        self.live_view_action.setToolTip("按需打开实时K线窗口；关闭后后台更新继续，原复盘进度保持不变")
+        self.live_view_action.toggled.connect(self._toggle_live_view)
+        tb.addAction(self.live_view_action)
+        update_data = QAction("更新数据", self); update_data.triggered.connect(self._update_edb_data)
+        update_all = QAction("全部更新", self); update_all.triggered.connect(self._update_all_edb_data)
+        for action, live_action in ((update_data, self.realtime_action), (update_all, self.realtime_all_action)):
+            button = QToolButton(self)
+            button.setDefaultAction(action)
+            menu = QMenu(button); menu.addAction(live_action)
+            button.setMenu(menu); button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
+            button.setToolTip("点击按钮保留原历史更新；点击右侧箭头可选择免费后台实时更新或停止")
+            tb.addWidget(button)
         rebuild_history = QAction("更新历史数据", self); rebuild_history.triggered.connect(self._rebuild_all_history); tb.addAction(rebuild_history)
         rebuild_history.setToolTip("通过天勤 EDB 扫描并更新本地所有原始合约；分钟周期由1分钟合成，周线/月线由日线合成")
         clear_draw = QAction("清画线", self); clear_draw.triggered.connect(self._clear_drawings); tb.addAction(clear_draw)
@@ -604,6 +637,8 @@ class MainWindow(QMainWindow):
 
         _replay_status_bar = ReplayStatusBar(self)
         self.setStatusBar(_replay_status_bar)
+        self.live_status_label = QLabel("后台行情：未启动")
+        self.statusBar().addPermanentWidget(self.live_status_label)
         # Playback controls stay in the top toolbar; the status bar remains
         # dedicated to the changing replay timestamp and temporary messages.
         self.btn_all_play.setFixedWidth(88)
@@ -2494,6 +2529,12 @@ class MainWindow(QMainWindow):
 
         self._sync_session_from_engine(sess)
         cached_engine = sess.get("engine") if sess else None
+        if (source, self.symbol) in self._live_dirty:
+            # Reload only on an explicit chart/context operation, never for
+            # every arriving tick while the user is replaying history.
+            self.repo.clear_cache()
+            cached_engine = None
+            self._live_dirty.discard((source, self.symbol))
         if (cached_engine is not None and sess is not None
                 and str(sess.get("period", "")) == str(period)
                 and str(sess.get("contract", "")) == str(contract)):
@@ -3278,6 +3319,90 @@ class MainWindow(QMainWindow):
                 if not self._has_live_trading_state():
                     self._go_start()
                 return
+
+    def _live_status(self, text):
+        self.live_status_label.setToolTip(text)
+        self.statusBar().showMessage(text, 15000)
+
+    def _live_saved(self, message):
+        self._live_dirty.add((message["source"], message["symbol"]))
+        if message["symbol"] == self.symbol:
+            self._live_status(f"后台已更新 {message['symbol']} 1分钟至 {message.get('minute_latest') or '—'}；复盘位置保持不变")
+
+    def _live_running_changed(self, running):
+        self.live_status_label.setText("后台行情：" + (("当前" if self.live_controller.mode == "current" else "全部") if running else "停止"))
+        self.realtime_action.setText("停止实时更新当前" if running and self.live_controller.mode == "current" else "免费实时更新当前")
+        self.realtime_all_action.setText("停止实时更新全部" if running and self.live_controller.mode == "all" else "免费实时更新全部")
+        if not running:
+            self.live_view_action.setChecked(False)
+
+    def _start_current_live(self):
+        self._start_background_live("current")
+
+    def _start_all_live(self):
+        self._start_background_live("all")
+
+    def _start_background_live(self, mode):
+        if self.live_controller.is_running() and self.live_controller.mode == mode:
+            self.live_controller.stop()
+            return
+        if self.repo is None:
+            QMessageBox.information(self, "免费实时更新", "请先选择数据目录和品种。")
+            return
+        issue = component_issue()
+        if issue:
+            QMessageBox.information(self, "免费实时更新", issue)
+            return
+        try:
+            config = {"mode": mode, "root": str(self.repo.root.resolve()), "source": self.source_combo.currentText()}
+            if mode == "current":
+                target = self._live_target()
+                config.update(symbol=target.symbol, contract=target.contract, tq_symbol=target.tq_symbol)
+            dialog = TqLoginDialog(self)
+            try:
+                if dialog.exec() != QDialog.DialogCode.Accepted:
+                    return
+                username, password = dialog.username.text().strip(), dialog.password.text()
+                dialog.password.clear()
+            finally:
+                dialog.deleteLater()
+            self.live_controller.start(config, username, password)
+        except Exception as exc:
+            self._error(exc)
+
+    def _live_target(self):
+        tq_symbol, contract = self._edb_update_target()
+        if self.source_combo.currentText() == "原始行情":
+            from ..live_service import tq_contract_symbol
+            exchange = self._exchange_for_symbol(self.symbol) or self.exchange_combo.currentText()
+            tq_symbol = tq_contract_symbol(exchange, contract)
+        return RealtimeTarget(self.repo.root, self.source_combo.currentText(), self.symbol, contract, tq_symbol)
+
+    def _toggle_live_view(self, checked):
+        if not checked:
+            if self._live_chart is not None:
+                self._live_chart.hide()
+                self.live_controller.request_view(enabled=False)
+            return
+        if not self.live_controller.is_running():
+            self._live_status("请先点击“实时更新当前”或“实时更新全部”开始后台采集。")
+            self.live_view_action.setChecked(False)
+            return
+        try:
+            target = self._live_target()
+            if self._live_chart is None:
+                self._live_chart = LiveChartDialog(self.live_controller, self)
+                self._live_chart.closed.connect(self._live_view_closed)
+            panel = self.panels[0]
+            self._live_chart.configure(target, panel.period.currentText(), panel.chart.trend_settings)
+            self._live_chart.raise_()
+        except Exception as exc:
+            self.live_view_action.setChecked(False)
+            self._error(exc)
+
+    def _live_view_closed(self):
+        self.live_view_action.setChecked(False)
+
 
     def _edb_authentication(self) -> tuple[str | None, bool]:
         """Return (JWT, has_professional_token); credentials are never persisted."""
@@ -4365,6 +4490,7 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(0, self._apply_top_replay_order)
 
     def closeEvent(self, event):
+        self.live_controller.shutdown()
         self.play_timer.stop()
         self.save_timer.stop()
         # Save the visible list order before any shutdown/session synchronization.

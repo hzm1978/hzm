@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from html import escape
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -40,6 +41,9 @@ class TrendIndicatorDialog(QDialog):
             ("show_ratios", "历史回调百分比"), ("show_candles", "关键位置K线反转"),
             ("show_corrections", "调整浪结构标注"), ("show_levels", "40 / 62 / 78.6%与延时线"),
             ("show_targets", "主浪/全趋势目标与角度参考"),
+            ("show_reverse_fibonacci", "前一回调的反向黄金分割"),
+            ("show_main_wave_targets", "末主浪候选止盈与到达状态"),
+            ("show_historical_arrivals", "历史主浪实际到达位置"),
         ]
         for i, (key, text) in enumerate(names):
             box = QCheckBox(text)
@@ -74,7 +78,10 @@ class TrendIndicatorDialog(QDialog):
         tabs.addTab(options, "显示与参数")
         details = QTextBrowser()
         details.setObjectName("trend_analysis_details")
-        details.setHtml(analysis_html(self.analysis, chart.df))
+        content = analysis_html(self.analysis, chart.df)
+        if getattr(chart, "_trend_error", ""):
+            content = "<h3>当前分析异常</h3><p>" + escape(chart._trend_error) + "</p>" + content
+        details.setHtml(content)
         tabs.addTab(details, "当前判定明细")
         rules = QTextBrowser()
         rules.setOpenExternalLinks(True)

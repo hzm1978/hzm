@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from collections import OrderedDict
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Iterable
 
 import numpy as np
@@ -11,6 +12,7 @@ import pandas as pd
 from .config import CACHE_ITEMS, SOURCE_DIRS
 from .models import InstrumentMeta
 from .trading_calendar import exchange_calendar, parse_trading_days, session_trading_days
+from .live_store import read_live_overlay, overlay_contracts
 
 _REQUIRED = ["open", "high", "low", "close"]
 _COL_ALIASES = {
@@ -121,16 +123,15 @@ class DataRepository:
             folder = base / period
             if not folder.exists() and period in {"1w", "1M"}:
                 folder = base / "1d"
-            if not folder.exists():
-                return []
-            return sorted(p.stem for p in folder.glob("*.parquet"))
+            regular = [p.stem for p in folder.glob("*.parquet")] if folder.exists() else []
+            return sorted(set(regular) | set(overlay_contracts(self.root, source_name, symbol, period)))
         # Continuous data commonly: symbol/sequence/period.parquet
         seqs: list[str] = []
         if base.exists():
             for d in base.iterdir():
                 if d.is_dir() and ((d / f"{period}.parquet").exists() or (period in {"1w", "1M"} and (d / "1d.parquet").exists())):
                     seqs.append(d.name)
-        return sorted(seqs)
+        return sorted(set(seqs) | set(overlay_contracts(self.root, source_name, symbol, period)))
 
 
     def clear_cache(self) -> None:
@@ -246,7 +247,8 @@ class DataRepository:
         new_keys = set(new_df[key].astype(str))
         added = len(new_keys - old_keys)
 
-        merged = pd.concat([old_df, new_df], ignore_index=True, sort=False)
+        merged = pd.concat([part for part in (old_df, new_df) if not part.empty],
+                           ignore_index=True, sort=False)
         merged = self.standardize(merged)
         if period == "1d":
             merged = merged.sort_values(["trading_day", "datetime"]).drop_duplicates("trading_day", keep="last")
@@ -261,7 +263,15 @@ class DataRepository:
         for col in keep:
             if col not in merged.columns:
                 merged[col] = 0.0 if col not in {"datetime", "trading_day"} else ""
-        merged[keep].to_parquet(path, index=False)
+        # Readers (including replay sessions) see either the old file or the
+        # complete new file while the live-data worker saves in the background.
+        with NamedTemporaryFile(prefix=path.stem+"-", suffix=".tmp", dir=path.parent, delete=False) as handle:
+            temporary = Path(handle.name)
+        try:
+            merged[keep].to_parquet(temporary, index=False)
+            temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
         self.clear_cache()
         last = merged["datetime"].max() if not merged.empty else None
         return added, len(merged), pd.Timestamp(last) if last is not None and pd.notna(last) else None
@@ -294,9 +304,13 @@ class DataRepository:
         OHLC is rebuilt from real 1-minute bars whenever those minutes exist.
         """
         path = self._resolve_file(source_name, symbol, period, contract)
-        if not path.exists():
+        overlay = read_live_overlay(self.root, source_name, symbol, contract, period)
+        if not path.exists() and overlay.empty:
             raise FileNotFoundError(path)
-        frame = self.standardize(pd.read_parquet(path))
+        parts = ([pd.read_parquet(path)] if path.exists() else []) + ([overlay] if not overlay.empty else [])
+        frame = self.standardize(pd.concat(parts, ignore_index=True))
+        key = "trading_day" if period in {"1d", "1w", "1M"} else "datetime"
+        frame = frame.sort_values("datetime", kind="stable").drop_duplicates(key, keep="last").reset_index(drop=True)
         if period in {"1d", "1w", "1M"}:
             frame = self._clean_daily_frame(frame)
         return frame
@@ -762,11 +776,7 @@ class DataRepository:
         if cached is not None:
             return cached.copy(deep=False)
 
-        path = self._resolve_file(source_name, symbol, "1min", contract)
-        if not path.exists():
-            raise FileNotFoundError(path)
-
-        df = self.standardize(pd.read_parquet(path))
+        df = self._read_native_frame(source_name, symbol, "1min", contract)
 
         # Fast path: most EDB minute files already have valid trading_day values.
         # Do not read the daily parquet at all unless at least one row actually
@@ -847,7 +857,7 @@ class DataRepository:
         if "datetime" not in df.columns:
             raise ValueError("行情文件缺少可识别的时间列")
         df["datetime"] = DataRepository._parse_datetime_values(df["datetime"])
-        df = df.dropna(subset=["datetime"]).sort_values("datetime").drop_duplicates("datetime", keep="last")
+        df = df.dropna(subset=["datetime"]).sort_values("datetime", kind="stable").drop_duplicates("datetime", keep="last")
         for c in _REQUIRED + ["volume", "amount", "open_interest"]:
             if c not in df.columns:
                 df[c] = 0.0 if c not in _REQUIRED else np.nan

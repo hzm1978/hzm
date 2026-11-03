@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+
 from math import ceil, floor, hypot, isfinite, log10
 from typing import Iterable
 
@@ -730,6 +732,9 @@ class CandleChart(QWidget):
             if trend_scale is not None:
                 settings = trend_scale.settings
                 child = trend_scale.subwaves[0] if settings.show_subwaves and trend_scale.subwaves else None
+                projected = next((g for g in trend_scale.wave_projections if not g.historical
+                                  and (settings.show_subwaves or g.degree == "主")), None)
+                reverse = projected.reverse if settings.show_reverse_fibonacci and projected else None
                 span = max(pmax - pmin, abs(pmax) * .005, 1e-9)
                 visible_values = []
                 if settings.show_trendline and trend_scale.trendline:
@@ -746,9 +751,11 @@ class CandleChart(QWidget):
                                           if x.degree == "main" or settings.show_navigation)
                 if settings.show_levels:
                     visible_values.extend(x.price for x in trend_scale.levels
-                                          if x.kind != "target" and (not child or x.kind != "retracement"))
-                    if child:
+                                          if x.kind != "target" and (not (child or reverse) or x.kind != "retracement"))
+                    if child and not reverse:
                         visible_values.extend(x.price for x in child.levels)
+                if reverse:
+                    visible_values.extend(x.price for x in reverse.levels)
                 margin = span * (.25 if child else 1)
                 bounded = [x for x in visible_values if np.isfinite(x) and pmin - margin <= x <= pmax + margin]
                 if settings.show_targets:
@@ -914,6 +921,7 @@ class CandleChart(QWidget):
         window_start = max(0, analysis_end - settings.lookback)
         source = self.df.iloc[window_start:analysis_end].copy()
         if source.empty:
+            self._trend_error = ""
             return None
         source["_trend_position"] = np.arange(window_start, analysis_end, dtype=int)
         try:
@@ -924,9 +932,25 @@ class CandleChart(QWidget):
             )
         except Exception:
             signature = ()
-        key = (id(self.df), analysis_end, window_start, signature, settings)
+        try:
+            values = source[["open", "high", "low", "close"]].to_numpy(dtype=float)
+            fingerprint = hashlib.blake2b(values.tobytes(), digest_size=16).digest()
+        except (ValueError, TypeError, KeyError):
+            fingerprint = id(self.df), signature
+        # Intrabar replay and live ticks often create another DataFrame wrapper
+        # around the SAME closed prefix. Numeric content, rather than wrapper
+        # identity, keeps this expensive analysis cached until a closed bar or
+        # historical correction actually changes.
+        key = (fingerprint, analysis_end, window_start, settings)
         if key != self._trend_cache_key:
-            self._trend_cache = analyze_trend(source, lookback=settings.lookback, settings=settings)
+            self._trend_error = ""
+            try:
+                self._trend_cache = analyze_trend(source, lookback=settings.lookback, settings=settings)
+            except Exception as exc:
+                # A failed overlay must not escape Qt's paintEvent and close
+                # the price window. Expose the reason in the indicator details.
+                self._trend_cache = None
+                self._trend_error = f"{type(exc).__name__}: {exc}"
             self._trend_cache_key = key
         return self._trend_cache
 

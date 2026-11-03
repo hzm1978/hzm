@@ -20,6 +20,9 @@ class TrendSettings:
     show_corrections: bool = True
     show_levels: bool = True
     show_targets: bool = False
+    show_reverse_fibonacci: bool = True
+    show_main_wave_targets: bool = True
+    show_historical_arrivals: bool = True
 
     @classmethod
     def from_dict(cls, values=None):

@@ -4,9 +4,46 @@ from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QBrush, QColor, QPen
 
 
+def reference_table(c, p, rows, color, occupied, top, start, end):
+    fm = p.fontMetrics()
+    row_h = fm.height()+3
+    width = min(210, max(140, max(fm.horizontalAdvance(row) for row in rows)+12))
+    width = min(width, c._plot_rect.width()-8)
+    height = row_h*len(rows)+8
+    left, right = c._plot_rect.left()+4, c._plot_rect.right()-width-4
+    bottom = c._plot_rect.bottom()-height-4
+    boxes = [QRectF(right, top, width, height), QRectF(left, bottom, width, height),
+             QRectF(right, bottom, width, height), QRectF(left, top, width, height)]
+    def cost(rect):
+        total = sum(rect.intersected(old).width()*rect.intersected(old).height() for old in occupied)
+        for i in range(start, end):
+            row = c.partial if i == c.current_idx and c.partial is not None else c.df.iloc[i]
+            candle = QRectF(c._index_x(i)-2, c._price_y(float(row["high"])), 4,
+                            max(1, c._price_y(float(row["low"]))-c._price_y(float(row["high"]))))
+            overlap = rect.intersected(candle)
+            total += overlap.width()*overlap.height()
+        return total
+    panel = min(boxes, key=cost)
+    p.fillRect(panel, QColor(16, 20, 28, 238))
+    p.setPen(QPen(color, .8)); p.drawRect(panel)
+    for i, text in enumerate(rows):
+        p.setPen(color if i == 0 else QColor(210, 220, 235))
+        row_rect = QRectF(panel.left()+6, panel.top()+4+i*row_h, panel.width()-12, row_h)
+        p.drawText(row_rect, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+                   fm.elidedText(text, Qt.TextElideMode.ElideRight, int(row_rect.width())))
+    occupied.append(panel.adjusted(-3, -3, 3, 3))
+
+
 def paint_trend_overlay(chart, painter, start, end):
     a = chart._trend_analysis_cached(end)
     if a is None:
+        if getattr(chart, "_trend_error", ""):
+            painter.save()
+            painter.setPen(QColor(255, 150, 125))
+            painter.drawText(QRectF(chart._plot_rect.left()+8, chart._plot_rect.top()+5,
+                                   chart._plot_rect.width()-16, 30),
+                             Qt.AlignmentFlag.AlignLeft, "趋势分析暂不可用，请打开指标明细查看原因")
+            painter.restore()
         return
     c, p, settings = chart, painter, a.settings
     p.save()
@@ -65,11 +102,13 @@ def paint_trend_overlay(chart, painter, start, end):
         if start <= index < end and c._plot_rect.top() <= y <= c._plot_rect.bottom():
             tags.append((priority, c._index_x(index), y, text, color, above))
 
-    def line(points, offset, color, style, label):
+    def line(points, offset, color, style, label, stop=None):
         if not points:
             return
         left, right = points
         x1, x2 = max(start, left.index), end - 1
+        if stop is not None:
+            x2 = min(x2, stop)
         if x2 < x1:
             return
         y1 = c._price_y(c._trend_line_price(left, right, x1) + offset)
@@ -77,7 +116,44 @@ def paint_trend_overlay(chart, painter, start, end):
         p.setPen(QPen(color, 1.5, style))
         p.drawLine(QPointF(c._index_x(x1), y1), QPointF(c._index_x(x2), y2))
         if c._plot_rect.top() <= y2 <= c._plot_rect.bottom():
-            tags.append((20, c._plot_rect.right() - 80, y2, label, color, not up))
+            tags.append((20, c._index_x(x2)-60, y2, label, color, not up))
+
+    projection = next((g for g in a.wave_projections if not g.historical
+                       and (settings.show_subwaves or g.degree == "主")), None)
+    show_reverse = bool(settings.show_reverse_fibonacci and projection and projection.reverse)
+    if show_reverse:
+        ruler = projection.reverse
+        x1 = c._index_x(max(start, ruler.start.index))
+        x2 = c._plot_rect.right()
+        ys = [c._price_y(level.price) for level in ruler.levels]
+        for i, (y1, y2) in enumerate(zip(ys, ys[1:])):
+            p.fillRect(QRectF(x1, min(y1, y2), max(0, x2-x1), abs(y2-y1)),
+                       QColor(195, 150, 30, 12 if i % 2 else 22))
+        p.setPen(QPen(QColor(240, 205, 75, 180), .8, Qt.PenStyle.DotLine))
+        visible = []
+        for level, y in zip(ruler.levels, ys):
+            if c._plot_rect.top()+36 < y < c._plot_rect.bottom()-5:
+                p.drawLine(QPointF(x1, y), QPointF(x2, y))
+                visible.append((level, y))
+        # Price captions must stay beside their real level. The general tag
+        # placer can move crowded captions far away, which misstates the ruler.
+        ordered_y = sorted(y for _, y in visible)
+        if all(b-a >= metrics.height()+2 for a, b in zip(ordered_y, ordered_y[1:])):
+            for level, y in visible:
+                text = f"{level.label} ({level.price:.6g})"
+                w = metrics.horizontalAdvance(text)+8
+                rect = QRectF(min(x1+4, c._plot_rect.right()-w-2), y+2,
+                              w, metrics.height()+2)
+                if rect.bottom() > c._plot_rect.bottom():
+                    rect.moveBottom(y-2)
+                p.fillRect(rect, QColor(20, 20, 15, 225))
+                p.setPen(yellow)
+                p.drawText(rect.adjusted(4, 0, -2, 0), Qt.AlignmentFlag.AlignVCenter, text)
+                occupied.append(rect.adjusted(-2, -2, 2, 2))
+        elif visible:
+            reference_table(c, p, ["前一回调 · 反向黄金分割"] +
+                            [f"{level.label}  {level.price:.6g}" for level, _ in visible],
+                            yellow, occupied, header_y+(25 if compact else 43), start, end)
 
     if settings.show_navigation:
         p.setPen(QPen(QColor(155, 165, 185, 75), .8, Qt.PenStyle.DotLine))
@@ -146,8 +222,10 @@ def paint_trend_overlay(chart, painter, start, end):
         color = QColor(250, 120, 105) if a.trendline_broken else main
         line(a.trendline, 0, color, Qt.PenStyle.DashLine if a.trendline_broken else Qt.PenStyle.SolidLine,
              "趋势线 · " + a.line_degree)
-        if child:
-            line(child.trendline, 0, blue, Qt.PenStyle.DashLine, "子趋势线")
+        if settings.show_subwaves:
+            for series in a.subwaves:
+                line(series.trendline, 0, blue, Qt.PenStyle.DashLine, "子趋势线",
+                     None if series is child else series.points[-1].index)
         if a.trendline:
             for point, name in zip(a.trendline, ("趋势锚1", "趋势锚2")):
                 tag(point.index, point.price, name, color, point.kind == "H", 65)
@@ -162,9 +240,11 @@ def paint_trend_overlay(chart, painter, start, end):
         if a.navigation_line and (settings.show_navigation or a.active_tool.startswith("导航")):
             line(a.navigation_line, float(a.navigation_offset or 0), QColor(170, 150, 245),
                  Qt.PenStyle.DashDotLine, "导航拐点线")
-        if child and child.external_line:
-            line(child.external_line, float(child.pivot_line_offset or 0), QColor(150, 170, 245),
-                 Qt.PenStyle.DashDotLine, "子拐点线")
+        if settings.show_subwaves:
+            for series in a.subwaves:
+                line(series.external_line, float(series.pivot_line_offset or 0), QColor(150, 170, 245),
+                     Qt.PenStyle.DashDotLine, "子拐点线",
+                     None if series is child else series.points[-1].index)
 
     if settings.show_intervals:
         items = [(f"Q{i+1}", item) for i, item in enumerate(a.structure.intervals)][-5:] if a.structure else []
@@ -196,7 +276,7 @@ def paint_trend_overlay(chart, painter, start, end):
     if settings.show_boundaries:
         main_points = [x for x in a.boundaries if x.degree == "main"]
         nav_points = [x for x in a.boundaries if x.degree == "navigation"]
-        child_points = list(child.boundaries) if child else []
+        child_points = [point for series in a.subwaves for point in series.boundaries] if settings.show_subwaves else []
         shown = main_points[-3:] + (nav_points[-3:] if settings.show_navigation else []) + child_points
         for point in shown:
             color = orange if point.degree == "main" else blue
@@ -209,7 +289,7 @@ def paint_trend_overlay(chart, painter, start, end):
                 tag(point.index, point.price, point.label + ("?" if point.state == "candidate" else ""), color, not up, 5)
             if point.state == "confirmed" and ((main_points and point == main_points[-1]) or
                                                 (settings.show_navigation and nav_points and point == nav_points[-1]) or
-                                                (child_points and point == child_points[-1])):
+                                                (child and child.boundaries and point == child.boundaries[-1])):
                 y = c._price_y(point.price)
                 if not c._plot_rect.top() <= y <= c._plot_rect.bottom():
                     continue
@@ -221,8 +301,8 @@ def paint_trend_overlay(chart, painter, start, end):
                              point.direction > 0))
 
     seen_levels = set()
-    displayed_levels = [x for x in a.levels if not child or x.kind != "retracement"]
-    if child:
+    displayed_levels = [x for x in a.levels if not (child or show_reverse) or x.kind != "retracement"]
+    if child and not show_reverse:
         displayed_levels += list(child.levels)
     for level in displayed_levels:
         if level.kind == "target" and not settings.show_targets:
@@ -243,7 +323,7 @@ def paint_trend_overlay(chart, painter, start, end):
         if level.kind != "subwave_retracement":
             tags.append((25, c._plot_rect.right() - 85, y, f"{level.label} {level.price:.6g}", color, True))
 
-    if child and settings.show_levels:
+    if child and settings.show_levels and not show_reverse:
         # A fixed ruler table avoids moving a price caption several rows away
         # from its true horizontal level when the latest leg is short.
         row_height = metrics.height() + 3
@@ -275,6 +355,33 @@ def paint_trend_overlay(chart, painter, start, end):
             p.drawText(panel.adjusted(6, 4+i*row_height, -4, -panel.height()+4+(i+1)*row_height),
                        Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, text)
         occupied.append(panel.adjusted(-3, -3, 3, 3))
+
+    if settings.show_main_wave_targets and projection:
+        active = [t for t in projection.targets if t.wave == projection.wave and t.kind == "main"]
+        displayed = active if c._plot_rect.height() >= 400 else (sorted(active, key=lambda t: t.hit_index is not None)[:3])
+        rows = [f"{projection.degree}{projection.wave}候选止盈 · H1={abs(projection.first_tip.price-projection.first_origin.price):.6g}"]
+        rows += [f"{t.ratio:g}H1  {t.price:.6g}" + ("·强势" if t.ratio > 2 else "") + (" ✓" if t.hit_index is not None else "") for t in displayed]
+        if c._plot_rect.height() >= 400:
+            rows += [f"全 {t.ratio:g}H1  {t.price:.6g}" + (" ✓" if t.hit_index is not None else "")
+                     for t in projection.targets if t.kind == "whole"]
+        if len(displayed) < len(active):
+            rows.append("扩展 / 全趋势价位见明细")
+        reference_table(c, p, rows, orange, occupied, header_y+(25 if compact else 43), start, end)
+        for target in active:
+            y = c._price_y(target.price)
+            if c._plot_rect.top()+40 < y < c._plot_rect.bottom()-4:
+                p.setPen(QPen(QColor(255, 180, 80, 130), .9, Qt.PenStyle.DashLine))
+                p.drawLine(QPointF(c._index_x(max(start, target.origin.index)), y), QPointF(c._plot_rect.right(), y))
+                if target.hit_index is not None:
+                    tag(target.hit_index, target.price, f"{target.ratio:g}H1已达", orange,
+                        projection.direction > 0, 17)
+
+    if settings.show_historical_arrivals:
+        for group in a.wave_projections:
+            if group.degree == "子" and not settings.show_subwaves:
+                continue
+            for item in group.historical_arrivals:
+                tag(item.index, item.price, item.text, orange, item.direction < 0, 16)
 
     if settings.show_targets and a.angle_slope is not None and a.angle_anchor is not None:
         anchor = a.angle_anchor

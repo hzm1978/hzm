@@ -27,6 +27,7 @@ from .trend_intervals import (BookInterval, WaveStructure, BoundaryPoint, BookLe
 from .trend_candles import standard_candles, StandardCandle
 from .trend_corrections import correction_for_interval
 from .trend_hierarchy import SubwaveSeries, analyze_subwaves, correction_in_leg
+from .trend_projections import WaveProjection, make_wave_projection
 from .trend_signals import BreakDecision, line_break_decision
 
 
@@ -86,6 +87,7 @@ class TrendAnalysis:
     angle_anchor: TrendPivot | None = None
     subwaves: tuple[SubwaveSeries, ...] = ()
     correction_history: tuple[TrendCorrection, ...] = ()
+    wave_projections: tuple[WaveProjection, ...] = ()
 
 
 def _wilder_atr(
@@ -354,6 +356,8 @@ def _book_episode(intervals, data, positions):
     main bias merely because a few micro highs/lows moved in that direction.
     """
     sign, origin, reference = 0, None, None
+    if len(positions) == 0:
+        return sign, origin
     high, low, close = (data[k].to_numpy(dtype=float) for k in ("high", "low", "close"))
     outer = [x for x in intervals if x.parent_start is None and not x.ambiguous
              and x.first_confirmed_at is not None]
@@ -370,6 +374,13 @@ def _book_episode(intervals, data, positions):
         if item.direction == sign:
             if relation.kind != "downgrade":
                 reference = item
+                if item.start_index < origin.index:
+                    # A first-close confirmation can arrive long AFTER its
+                    # first-wick breakout. Rebase this newly visible outer Q
+                    # instead of retaining an origin after its anchor.
+                    j = int(np.argmin(low[:local+1]) if sign > 0 else np.argmax(high[:local+1]))
+                    origin = TrendPivot(int(positions[j]), float(low[j] if sign > 0 else high[j]),
+                                        "L" if sign > 0 else "H", item.first_confirmed_at)
             continue
         observed = int(np.searchsorted(positions, item.first_confirmed_at))
         # Raw counter-extreme is a conservative bound until a structured e is
@@ -378,6 +389,11 @@ def _book_episode(intervals, data, positions):
         prior_a_broken = sign * (close[observed] - boundary) < 0
         if relation.kind in {"same", "expanding", "upgrade"} or prior_a_broken:
             begin = int(np.searchsorted(positions, origin.index))
+            if begin > local:
+                # The late-confirmed opposite Q encloses the newer episode.
+                # Its valid origin lies before its own anchor, not inside the
+                # (empty) slice from that newer episode back into the past.
+                begin = 0
             j = begin + int(np.argmin(low[begin:local + 1]) if item.direction > 0 else np.argmax(high[begin:local + 1]))
             sign = item.direction
             origin = TrendPivot(int(positions[j]), float(low[j] if sign > 0 else high[j]),
@@ -540,7 +556,7 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
 
     # Historical correction / ratio explanations are restricted to this trend
     # episode; ordinary earlier opposite pivots do not inherit the current bias.
-    subwaves = analyze_subwaves(data, positions, fine, intervals, atr, structure)
+    subwaves = analyze_subwaves(data, positions, fine, intervals, atr, structure, points)
     resolved = []
     for series in subwaves:
         child_direction = "up" if series.direction > 0 else "down"
@@ -552,8 +568,8 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
         resolved.append(replace(series, trendline=child_line, external_line=child_external,
                                 pivot_line_anchor=child_anchor, pivot_line_offset=child_offset))
     subwaves = tuple(resolved)
-    if subwaves:
-        boundaries.extend(subwaves[0].boundaries)
+    for series in subwaves:
+        boundaries.extend(series.boundaries)
     # Corrections must belong to an observed leg at a stated degree. A rolling
     # 2/4/6-pivot window repeatedly mislabels an opposing five-wave drive as
     # overlapping abcde corrections. Keep navigation/failed interpretations in
@@ -561,8 +577,8 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
     main_starts = {p.start_index for p in main_intervals}
     chosen = [p for p in book_corrections if p.start_index in main_starts]
     for series in subwaves:
-        chosen = [p for p in chosen if p.end_index < series.points[0].index
-                  or p.start_index > series.points[-1].index]
+        chosen = [p for p in chosen if (p.end_point.index if p.end_point else p.markers[-1].index) <= series.points[0].index
+                  or p.start_index >= series.points[-1].index]
         chosen.extend(series.corrections)
     current = subwaves[0].points[-1] if subwaves else (points[-1] if points else None)
     current_sign = subwaves[0].direction if subwaves else sign
@@ -759,6 +775,18 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
         breakout = "line_" + decision.state
     if n < config.standard_window:
         status += f" | 标准K样本{n}/{config.standard_window}"
+    projections = []
+    for series in subwaves:
+        projected = make_wave_projection(series.points, series.direction, "子", data,
+            positions, series.intervals, series.boundaries,
+            historical=series.historical or bool(series.parent_leg and series.parent_leg[1] < as_of))
+        if projected:
+            projections.append(projected)
+    if structure:
+        projected = make_wave_projection(points, sign, "主", data, positions,
+                                         main_intervals, confirmed_main)
+        if projected:
+            projections.append(projected)
     return TrendAnalysis(
         direction, status, tuple(points), main_line, slope, line_value, line_broken,
         None, None, offset, pivot_value, bool(pivot_broken),
@@ -775,4 +803,5 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
         tuple(timing), active_tool, line_degree, config,
         nav_line, nav_offset, nav_anchor, angle_slope, angle_anchor,
         subwaves, correction_history,
+        tuple(projections),
     )
