@@ -1,0 +1,4 @@
+An exact trace norm determines phase-dependent encoded entanglement.
+An all-time phase optimum is proved for a collective detector generator.
+Sector distinguishability quantifies a specified recovered resource.
+Weak sector mixing sets the lifetime and a matched-bath resource contrast.
