@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict
 from html import escape
 import json
+from .trend_last_leg import price_text
 
 
 BOOK_URL = "https://github.com/hzm1978/hzm/releases/download/book/3.pdf"
@@ -62,6 +63,18 @@ def analysis_html(analysis, frame=None):
 
     h = f"<h2>{escape(a.status)}</h2><p>截至 {escape(when(a.as_of_index))} 的已收盘资料；依据《趋势交易法》第三版 3.pdf。</p>"
     h += f"<p>当前线的级别：{escape(a.line_degree)}；使用工具：{escape(a.active_tool)}。</p>"
+    if a.last_leg:
+        leg = a.last_leg
+        label = {"targets":"主浪推进：只画止盈线","fibonacci":"调整/横盘：只画黄金分割","pending":"末段/级别待确认"}[leg.mode]
+        h += f"<h3>最后一段：{label}</h3><p>{escape(leg.evidence)}</p>"
+        if leg.fibonacci:
+            ruler = leg.fibonacci
+            h += f"<p>前一完整浪段：{escape(when(ruler.start.index))} → {escape(when(ruler.base.index))}；"
+            h += f"由末价{price_text(ruler.base.price)}反向量回起价{price_text(ruler.start.price)}。</p>"
+            h += _table(["黄金分割","价格"],[(p.label,price_text(p.price)) for p in ruler.levels])
+        if leg.all_targets:
+            h += _table(["本段止盈参考","价格","图中显示","条件"],
+                [(p.label,price_text(p.price),"是" if p in leg.targets else "已越过/更远参考",p.tier) for p in leg.all_targets])
     if a.structure:
         h += "<h3>区间与级别</h3>" + _table(
             ["级别", "开始", "突破", "Q根数", "第一Q收盘时刻", "关系", "备注"],
@@ -102,8 +115,8 @@ def analysis_html(analysis, frame=None):
     h += "<h3>位置参考（目标与估计不生成未来K线）</h3>" + _table(["位置", "价位", "已知时刻"],
         [(p.label, f"{p.price:.6g}", when(p.confirmed_at)) for p in a.levels])
     for group in a.wave_projections:
-        h += f"<h3>{escape(group.degree)}级末浪{group.wave}：反向黄金分割与候选止盈</h3>"
-        if group.reverse:
+        h += f"<h3>{escape(group.degree)}级浪{group.wave}：计数依据及历史参考（非当前叠加图层）</h3>"
+        if group.reverse and not a.last_leg:
             r = group.reverse
             h += (f"<p>取前一回调 {escape(when(r.start.index))}（{r.start.price:.8g}）→ "
                   f"{escape(when(r.base.index))}（{r.base.price:.8g}），从回调结束价反向量向其起点。"
@@ -128,6 +141,9 @@ def analysis_html(analysis, frame=None):
     h += _table(["历史/导航调整", "起点", "终点", "状态", "依据"],
         [(p.label, when(p.start_index), when(p.end_point.index) if p.end_point else "待定",
           states.get(p.state, p.state), p.evidence) for p in a.correction_history if p not in a.corrections])
+    h += "<h3>最近两个转折的形态观察（不提升为正式信号）</h3>" + _table(
+        ["可能形态","实际K线","对应转折","可观察时刻","依据"],
+        [(p.text,when(p.index),p.context,when(p.confirmed_at),p.evidence) for p in a.turn_observations])
     h += "<h3>关键位置反转</h3>" + _table(["形态", "实际K线", "位置", "可确认时刻", "依据"],
         [(p.text, when(p.index), p.context, when(p.confirmed_at), p.evidence) for p in a.reversals])
     h += "<h3>最近形态观察（未通过位置/标准条件的不算反转信号）</h3>" + _table(["形态", "时刻", "标准/后续确认", "依据"],

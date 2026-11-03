@@ -28,6 +28,7 @@ from .trend_candles import standard_candles, StandardCandle
 from .trend_corrections import correction_for_interval
 from .trend_hierarchy import SubwaveSeries, analyze_subwaves, correction_in_leg
 from .trend_projections import WaveProjection, make_wave_projection
+from .trend_last_leg import LastLegOverlay, last_leg_overlay, turn_observations
 from .trend_signals import BreakDecision, line_break_decision
 
 
@@ -88,6 +89,8 @@ class TrendAnalysis:
     subwaves: tuple[SubwaveSeries, ...] = ()
     correction_history: tuple[TrendCorrection, ...] = ()
     wave_projections: tuple[WaveProjection, ...] = ()
+    last_leg: LastLegOverlay | None = None
+    turn_observations: tuple[TrendLabel, ...] = ()
 
 
 def _wilder_atr(
@@ -787,6 +790,22 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
                                          main_intervals, confirmed_main)
         if projected:
             projections.append(projected)
+    last_leg = last_leg_overlay(data, positions, fine, projections, corrections,
+                               show_subwaves=config.show_subwaves)
+    if last_leg.mode == "fibonacci" and last_leg.origin:
+        # A confirmed turn followed by an opposing leg completes the previous
+        # main-wave endpoint for display, even while its larger group remains.
+        for i, group in enumerate(projections):
+            tip = group.active_tip
+            if (tip.index == last_leg.origin.index
+                    and any(p.index == tip.index and p.kind == tip.kind for p in fine)
+                    and not any(p.index == tip.index for p in group.historical_arrivals)):
+                item = TrendLabel(tip.index,tip.price,f"{group.degree}{group.wave}实际末价",
+                    -group.direction,max(tip.confirmed_at,group.first_tip.confirmed_at),
+                    group.active_origin.index,"main_wave_arrival",
+                    evidence="末端转折已经观察，随后反向调整；只记录实际到达价")
+                projections[i] = replace(group,historical_arrivals=(*group.historical_arrivals,item))
+    observations = turn_observations(shapes, last_leg.turns, as_of, reversals)
     return TrendAnalysis(
         direction, status, tuple(points), main_line, slope, line_value, line_broken,
         None, None, offset, pivot_value, bool(pivot_broken),
@@ -804,4 +823,5 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
         nav_line, nav_offset, nav_anchor, angle_slope, angle_anchor,
         subwaves, correction_history,
         tuple(projections),
+        last_leg, observations,
     )

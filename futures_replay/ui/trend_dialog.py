@@ -41,9 +41,9 @@ class TrendIndicatorDialog(QDialog):
             ("show_ratios", "历史回调百分比"), ("show_candles", "关键位置K线反转"),
             ("show_corrections", "调整浪结构标注"), ("show_levels", "40 / 62 / 78.6%与延时线"),
             ("show_targets", "主浪/全趋势目标与角度参考"),
-            ("show_reverse_fibonacci", "前一回调的反向黄金分割"),
-            ("show_main_wave_targets", "末主浪候选止盈与到达状态"),
-            ("show_historical_arrivals", "历史主浪实际到达位置"),
+            ("show_reverse_fibonacci", "调整/横盘末段黄金分割（与止盈互斥）"),
+            ("show_main_wave_targets", "顺势末段候选止盈线（与黄金分割互斥）"),
+            ("show_historical_arrivals", "历史主浪末端实际价（每处一个）"),
         ]
         for i, (key, text) in enumerate(names):
             box = QCheckBox(text)

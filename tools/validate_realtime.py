@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pandas as pd
 from PySide6.QtCore import QTimer, QCoreApplication, QEvent
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication,QToolButton
 
 from validate_ui import fixture
 from futures_replay.ui.main_window import MainWindow
@@ -47,7 +47,8 @@ quote=dict(datetime='2026-11-03 10:35:20',last_price=last+110,underlying_symbol=
 snapshot=build_snapshot(serials,quote,'2026-11-03 10:35:20')
 target=RealtimeTarget(root,'主力连续','SN','主连','KQ.m@SHFE.sn')
 stats=write_live_snapshot(target,snapshot)
-send('started',count=1,mode=config['mode'])
+send('started',count=1,mode=config['mode'],targets=[dict(source=target.source,symbol=target.symbol,
+     contract=target.contract,tq_symbol=target.tq_symbol)])
 send('saved',source=target.source,symbol=target.symbol,contract=target.contract,minute_latest=stats['minute_latest'])
 for line in sys.stdin:
  command=json.loads(line)
@@ -104,11 +105,14 @@ def validate(output):
                 dialog.password.setText("offline-secret")
                 dialog.accept()
             QTimer.singleShot(20, login)
-            window.realtime_action.trigger()
+            direct = window.findChild(QToolButton,'free_realtime_button')
+            assert direct is not None
+            direct.click()
             spin(lambda: ("主力连续", "SN") in window._live_dirty)
             assert window.live_controller.is_running()
             assert id(window.engine) == engine_id and window.engine.current().timestamp == before.timestamp
             assert window.account.to_dict() == account
+            assert '2026-11-03 10:34:00' in window.live_status_label.toolTip()
             assert window.live_controller.process.processId() != os.getpid()
             window.live_view_action.setChecked(True)
             spin(lambda: window._live_chart is not None and not window._live_chart.chart.df.empty)
@@ -121,8 +125,8 @@ def validate(output):
             window.realtime_action.trigger()
             spin(lambda: window.live_controller.process is None)
             window._live_dirty.clear()
-            QTimer.singleShot(20, login)
-            window.realtime_all_action.trigger()
+            with patch('futures_replay.ui.main_window.load_saved_login',return_value=('offline-test','offline-secret')):
+                window.realtime_all_action.trigger()
             spin(lambda: ("主力连续", "SN") in window._live_dirty)
             assert window.live_controller.mode == "all"
             assert id(window.engine) == engine_id and window.engine.current().timestamp == before.timestamp
@@ -136,7 +140,7 @@ def validate(output):
             app.processEvents()
     sys.argv[:] = old_argv
     result = {"result": "passed", "pandas": pd.__version__, "checks": [
-        "原更新入口内的免费当前/全部菜单", "本地账号登录", "独立后台进程", "真实增量分片保存",
+        "可见免费实时按钮及原当前/全部菜单", "本地账号登录及记住后直接启动", "独立后台进程", "真实增量分片保存与固定保存时间",
         "前台复盘引擎和进度不变", "模拟账户不变", "按需非模态实时图", "隐藏实时图后继续采集", "退出时停止子进程"],
         "data": "构造行情、模拟服务端；未使用真实天勤账号"}
     (output/"result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")

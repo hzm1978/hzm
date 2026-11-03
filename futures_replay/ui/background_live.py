@@ -7,12 +7,13 @@ from pathlib import Path
 import sys
 
 from PySide6.QtCore import QObject, QProcess, QTimer, Signal, Slot
-from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QLabel,
+from PySide6.QtWidgets import (QCheckBox, QDialog, QDialogButtonBox, QFormLayout, QLabel,
                               QLineEdit, QVBoxLayout)
+from ..local_login import LocalLoginStore
 
 
 def component_issue():
-    if importlib.util.find_spec("tqsdk") is None:
+    if any(importlib.util.find_spec(name) is None for name in ("tqsdk","pyarrow")):
         return "请先退出程序，运行包内“安装或更新依赖.bat”，完成后重启。"
     try:
         from packaging.version import Version
@@ -26,7 +27,7 @@ def component_issue():
 
 
 class TqLoginDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, *, setup_only=False):
         super().__init__(parent)
         self.setWindowTitle("免费实时行情登录")
         layout = QVBoxLayout(self)
@@ -38,16 +39,35 @@ class TqLoginDialog(QDialog):
         self.password.setEchoMode(QLineEdit.EchoMode.Password)
         form.addRow("天勤账号", self.username); form.addRow("密码", self.password)
         layout.addLayout(form)
-        self.message = QLabel("登录后在后台更新；账号密码不写入存档。")
+        self.store = LocalLoginStore()
+        self.remember = QCheckBox("记住登录（仅当前Windows用户加密保存）")
+        self.remember.setEnabled(self.store.available); self.remember.setChecked(self.store.available)
+        self.remember.setToolTip("保存到本机用户目录，不随源码、行情或便携存档分发。取消勾选可清除已保存登录。")
+        layout.addWidget(self.remember)
+        saved = self.store.load()
+        if saved:
+            self.username.setText(saved[0]);self.password.setText(saved[1])
+        limit = QLabel("免费按每周期最近最多10000根订阅，并非固定一年；可用长度受上市时间限制。")
+        limit.setWordWrap(True);layout.addWidget(limit)
+        self.message = QLabel("普通账号用于实时行情，历史更新仍使用原入口。" if self.store.available else
+                              "本系统不保存密码；Windows版本可加密记住登录。")
         layout.addWidget(self.message)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("开始后台更新")
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("保存设置" if setup_only else "开始后台更新")
         buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
 
     def accept(self):
         if not self.username.text().strip() or not self.password.text():
             self.message.setText("请输入天勤账号和密码。")
+            return
+        try:
+            if self.remember.isChecked():
+                self.store.save(self.username.text().strip(),self.password.text())
+            elif self.store.available:
+                self.store.clear()
+        except OSError:
+            self.message.setText("本机加密保存未完成，可取消“记住登录”后继续。")
             return
         super().accept()
 
@@ -57,6 +77,7 @@ class BackgroundLiveController(QObject):
     saved = Signal(object)
     previewReady = Signal(object)
     runningChanged = Signal(bool)
+    targetsReady = Signal(object)
 
     def __init__(self, parent=None, *, program=None, arguments=None):
         super().__init__(parent)
@@ -136,6 +157,10 @@ class BackgroundLiveController(QObject):
             kind = message.get("kind")
             if kind == "saved":
                 self.saved.emit(message)
+            elif kind == "started":
+                self.context["targets"] = message.get("targets",[])
+                self.targetsReady.emit(self.context["targets"])
+                self.statusChanged.emit(f"已连接免费实时行情 · {message.get('count',0)}个品种；勾选“实时跟随”看最新K线")
             elif kind == "preview":
                 latest_preview = message
             elif kind in {"status", "error", "view_error"}:

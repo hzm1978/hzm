@@ -732,9 +732,9 @@ class CandleChart(QWidget):
             if trend_scale is not None:
                 settings = trend_scale.settings
                 child = trend_scale.subwaves[0] if settings.show_subwaves and trend_scale.subwaves else None
-                projected = next((g for g in trend_scale.wave_projections if not g.historical
-                                  and (settings.show_subwaves or g.degree == "主")), None)
-                reverse = projected.reverse if settings.show_reverse_fibonacci and projected else None
+                last = trend_scale.last_leg
+                reverse = (last.fibonacci if last and last.mode == "fibonacci"
+                           and settings.show_reverse_fibonacci else None)
                 span = max(pmax - pmin, abs(pmax) * .005, 1e-9)
                 visible_values = []
                 if settings.show_trendline and trend_scale.trendline:
@@ -749,17 +749,17 @@ class CandleChart(QWidget):
                 if settings.show_boundaries:
                     visible_values.extend(x.price for x in trend_scale.boundaries[-4:]
                                           if x.degree == "main" or settings.show_navigation)
-                if settings.show_levels:
+                if settings.show_levels and (not child or settings.show_navigation):
                     visible_values.extend(x.price for x in trend_scale.levels
-                                          if x.kind != "target" and (not (child or reverse) or x.kind != "retracement"))
-                    if child and not reverse:
-                        visible_values.extend(x.price for x in child.levels)
+                                          if x.kind not in {"target","retracement","subwave_retracement"})
                 if reverse:
                     visible_values.extend(x.price for x in reverse.levels)
                 margin = span * (.25 if child else 1)
                 bounded = [x for x in visible_values if np.isfinite(x) and pmin - margin <= x <= pmax + margin]
-                if settings.show_targets:
-                    bounded.extend(x.price for x in trend_scale.levels if x.kind == "target" and np.isfinite(x.price))
+                if reverse:
+                    bounded.extend(x.price for x in reverse.levels if np.isfinite(x.price))
+                elif last and last.mode == "targets" and settings.show_main_wave_targets:
+                    bounded.extend(x.price for x in last.targets if np.isfinite(x.price))
                 if bounded:
                     pmin, pmax = min(pmin, min(bounded)), max(pmax, max(bounded))
 

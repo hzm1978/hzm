@@ -16,6 +16,7 @@ from .trading_calendar import session_trading_days
 
 LIVE_PERIODS = {"1min": 60, "5min": 300, "15min": 900, "30min": 1800,
                 "1h": 3600, "4h": 14400, "1d": 86400}
+LIVE_HISTORY_BARS = 10000
 
 
 def create_tq_api(username, password, loop):

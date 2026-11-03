@@ -22,11 +22,19 @@ import pandas as pd
 from .data_repo import DataRepository
 from .edb_update import make_edb_contract_symbol, make_edb_main_symbol
 from .live_store import write_live_snapshot
-from .realtime_data import (RealtimeTarget, LIVE_PERIODS, build_snapshot,
+from .realtime_data import (RealtimeTarget, LIVE_PERIODS, LIVE_HISTORY_BARS, build_snapshot,
                              chart_frame, shanghai_time, create_tq_api, day_close_seconds)
 
 
 PREFIX = "FRLIVE "
+
+
+def safe_error(exc, secrets=()):
+    message = f"{type(exc).__name__}: {exc}"
+    for secret in secrets:
+        if secret:
+            message = message.replace(secret, "[已隐藏]")
+    return message[:500]
 
 
 def emit(kind, **values):
@@ -58,6 +66,15 @@ def lower_priority():
 def resolve_targets(api, config):
     root, source = Path(config["root"]), config["source"]
     if config["mode"] == "current":
+        if source == "原始行情" and config.get("main_symbol"):
+            main = api.get_quote(config["main_symbol"])
+            symbol = str(main.get("underlying_symbol", "") or "")
+            if not symbol:
+                raise ValueError("尚未返回当前实际主力合约，请稍后重试")
+            local = DataRepository(root).list_contracts(config["symbol"],"1d",source)
+            exchange = symbol.split(".")[0]
+            contract = next((s for s in local if tq_contract_symbol(exchange,s) == symbol),symbol.split(".")[-1].upper())
+            return [RealtimeTarget(root,source,config["symbol"],contract,symbol)]
         return [RealtimeTarget(root, source, config["symbol"], config["contract"], config["tq_symbol"])]
     repo = DataRepository(root)
     targets = []
@@ -126,7 +143,7 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
             try:
                 quote = api.get_quote(target.tq_symbol)
                 serials = {key: api.get_kline_serial(target.tq_symbol, LIVE_PERIODS[key],
-                    data_length=8000 if key == "1min" else 1600) for key in ("1min", "1d")}
+                    data_length=LIVE_HISTORY_BARS) for key in ("1min", "1d")}
                 active.append({"target": target, "quote": quote, "serials": serials,
                                "signature": None, "fingerprints": {}, "next_check": 0.})
                 emit("status", text=f"后台订阅 {i+1}/{len(targets)}：{target.symbol}")
@@ -136,7 +153,9 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
             commands.put(command)
         if not active and not stopped.is_set():
             raise ValueError("未建立有效订阅，请检查网络及当前合约")
-        emit("started", count=len(active), mode=config["mode"])
+        emit("started", count=len(active), mode=config["mode"], targets=[dict(
+            source=x["target"].source,symbol=x["target"].symbol,contract=x["target"].contract,
+            tq_symbol=x["target"].tq_symbol) for x in active])
         cursor, last_health = 0, 0.
         while not stopped.is_set():
             while not commands.empty():
@@ -152,9 +171,9 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
                             period = "1d"
                         source = next((item for item in active if item["target"].tq_symbol == symbol), None)
                         quote = source["quote"] if source else api.get_quote(symbol)
-                        daily = source["serials"]["1d"] if source else api.get_kline_serial(symbol, 86400, data_length=1600)
+                        daily = source["serials"]["1d"] if source else api.get_kline_serial(symbol, 86400, data_length=LIVE_HISTORY_BARS)
                         native = (source["serials"][period] if source and period in source["serials"]
-                                  else api.get_kline_serial(symbol, LIVE_PERIODS[period], data_length=1600))
+                                  else api.get_kline_serial(symbol, LIVE_PERIODS[period], data_length=LIVE_HISTORY_BARS))
                         view = {"symbol": symbol, "period": period, "serials": {"1d": daily, period: native}, "quote": quote}
                     except Exception:
                         emit("view_error", text="当前合约的实时图尚未就绪，后台采集继续运行")
@@ -211,8 +230,8 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
                                     target = item["target"]
                                     emit("saved", source=target.source, symbol=target.symbol, contract=target.contract,
                                          minute_latest=stats["minute_latest"], daily_latest=stats["daily_latest"])
-                            except Exception:
-                                emit("status", text=f"{item['target'].symbol}本次保存未完成，稍后重试")
+                            except Exception as exc:
+                                emit("status", text=f"{item['target'].symbol}保存未完成：{safe_error(exc,secrets)}；稍后重试")
     except Exception as exc:
         message = str(exc)
         for secret in secrets:

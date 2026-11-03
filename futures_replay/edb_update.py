@@ -203,8 +203,8 @@ def _request_csv(
                 continue
             if exc.code == 403 or body.startswith("403,"):
                 raise EDBUpdateError(
-                    "天勤 EDB 拒绝了分钟线请求。免费权限只能获取最近一年的 1 分钟数据；"
-                    "如需更早的分钟历史，请确认账号已开通专业版 EDB 权限并重新登录。\n"
+                    "天勤 EDB 拒绝了这段分钟历史请求，实际范围取决于 EDB 账号权限。"
+                    "工具栏“免费实时”可通过 SDK 订阅每周期最近最多10000根；更老历史请核对 EDB 专业版权限。\n"
                     f"服务返回：{body or exc.reason}"
                 ) from exc
             if exc.code == 406:
@@ -227,8 +227,8 @@ def _request_csv(
     if first.startswith(("400,", "401,", "403,", "404,", "406,", "500,")):
         if first.startswith("403,"):
             raise EDBUpdateError(
-                "天勤 EDB 分钟数据权限不足。免费权限仅支持最近一年的分钟线；"
-                "如需更早数据，请使用已开通专业版 EDB 权限的账号。\n" + first
+                "天勤 EDB 不支持当前账号请求这段分钟历史。SDK免费实时按每周期最近最多10000根提供；"
+                "更老历史请核对 EDB 专业版权限。\n" + first
             )
         raise EDBUpdateError(f"天勤 EDB 返回错误：{first}")
     if first.startswith("{"):

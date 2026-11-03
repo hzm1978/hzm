@@ -70,6 +70,7 @@ class MultiApi:
         self.stopped, self.count, self.closed = stopped, 0, False
         self.serials, self.quote = sdk_fixture()
         self.requests = []
+        self.lengths = []
 
     def get_quote(self, symbol):
         product = symbol.split(".")[-1]
@@ -79,6 +80,7 @@ class MultiApi:
 
     def get_kline_serial(self, symbol, seconds, data_length):
         self.requests.append((symbol, seconds))
+        self.lengths.append(data_length)
         return self.serials["1d" if seconds == 86400 else "1min"]
 
     def is_serial_ready(self, frame):
@@ -95,6 +97,13 @@ class MultiApi:
 
 
 class BackgroundServiceTests(unittest.TestCase):
+    def test_current_product_updates_actual_active_contract_instead_of_a_selected_expired_one(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = dict(root=directory,source="原始行情",mode="current",symbol="AG",contract="AG1408",
+                          tq_symbol="SHFE.ag1408",main_symbol="KQ.m@SHFE.ag")
+            targets = resolve_targets(MultiApi(threading.Event()),config)
+            self.assertEqual([(t.symbol,t.contract,t.tq_symbol) for t in targets],[("AG","AG2612","SHFE.ag2612")])
+
     def test_all_products_are_collected_with_free_minute_and_daily_subscriptions(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -115,6 +124,7 @@ class BackgroundServiceTests(unittest.TestCase):
             self.assertEqual({e["symbol"] for e in saved}, {"SN", "AG"})
             self.assertTrue(any("XX" in e.get("text", "") for e in events))
             self.assertEqual({seconds for _, seconds in api.requests}, {60, 86400})
+            self.assertEqual(set(api.lengths),{10000})
             self.assertNotIn("private-password", output.getvalue())
             self.assertTrue(api.closed)
             for file in root.rglob("*.parquet"):

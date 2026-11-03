@@ -47,6 +47,7 @@ from .trend_dialog import TrendIndicatorDialog
 from ..realtime_data import RealtimeTarget
 from .background_live import BackgroundLiveController, TqLoginDialog, component_issue
 from .live_chart_dialog import LiveChartDialog
+from ..local_login import load_saved_login
 from ..data_repo import DataRepository
 from ..models import Drawing, OrderSide, Side
 from ..edb_update import (
@@ -465,10 +466,12 @@ class MainWindow(QMainWindow):
         self._main_quote_timer.timeout.connect(self._load_main_quote_batch)
         self._live_dirty = set()
         self._live_chart = None
+        self._live_latest_text = ""
         self.live_controller = BackgroundLiveController(self)
         self.live_controller.statusChanged.connect(self._live_status)
         self.live_controller.saved.connect(self._live_saved)
         self.live_controller.runningChanged.connect(self._live_running_changed)
+        self.live_controller.targetsReady.connect(self._live_targets_ready)
         self._build_ui()
         self._building = False
         self._restore_ui()
@@ -497,6 +500,16 @@ class MainWindow(QMainWindow):
         self.realtime_all_action.setObjectName("tianqin_realtime_all_action")
         self.realtime_all_action.triggered.connect(self._start_all_live)
         self.realtime_all_action.setToolTip("免费行情在独立后台进程中更新当前数据源的全部品种，不移动复盘位置")
+        login_settings = QAction("天勤账号设置…",self)
+        login_settings.triggered.connect(self._configure_tq_login)
+        live_button = QToolButton(self); live_button.setText("免费实时")
+        live_button.setObjectName("free_realtime_button")
+        live_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
+        live_menu = QMenu(live_button)
+        live_menu.addActions([self.realtime_action,self.realtime_all_action,login_settings])
+        live_button.setMenu(live_menu);live_button.clicked.connect(self._start_current_live)
+        live_button.setToolTip("点击更新当前品种；右侧箭头可选全部品种或账号设置。勾选实时跟随才推动实时图。")
+        tb.addWidget(live_button)
         self.live_view_action = QAction("实时跟随", self)
         self.live_view_action.setCheckable(True)
         self.live_view_action.setToolTip("按需打开实时K线窗口；关闭后后台更新继续，原复盘进度保持不变")
@@ -507,7 +520,7 @@ class MainWindow(QMainWindow):
         for action, live_action in ((update_data, self.realtime_action), (update_all, self.realtime_all_action)):
             button = QToolButton(self)
             button.setDefaultAction(action)
-            menu = QMenu(button); menu.addAction(live_action)
+            menu = QMenu(button); menu.addAction(live_action);menu.addAction(login_settings)
             button.setMenu(menu); button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
             button.setToolTip("点击按钮保留原历史更新；点击右侧箭头可选择免费后台实时更新或停止")
             tb.addWidget(button)
@@ -638,6 +651,7 @@ class MainWindow(QMainWindow):
         _replay_status_bar = ReplayStatusBar(self)
         self.setStatusBar(_replay_status_bar)
         self.live_status_label = QLabel("后台行情：未启动")
+        self.live_status_label.setMaximumWidth(680)
         self.statusBar().addPermanentWidget(self.live_status_label)
         # Playback controls stay in the top toolbar; the status bar remains
         # dedicated to the changing replay timestamp and temporary messages.
@@ -3321,13 +3335,21 @@ class MainWindow(QMainWindow):
                 return
 
     def _live_status(self, text):
+        if text.startswith("免费行情后台运行中"):
+            if self._live_latest_text:
+                text = self._live_latest_text
+            elif "保存未完成" in self.live_status_label.toolTip():
+                return
         self.live_status_label.setToolTip(text)
+        self.live_status_label.setText(self.live_status_label.fontMetrics().elidedText(
+            text,Qt.TextElideMode.ElideRight,670))
         self.statusBar().showMessage(text, 15000)
 
     def _live_saved(self, message):
         self._live_dirty.add((message["source"], message["symbol"]))
         if message["symbol"] == self.symbol:
-            self._live_status(f"后台已更新 {message['symbol']} 1分钟至 {message.get('minute_latest') or '—'}；复盘位置保持不变")
+            self._live_latest_text = f"已保存 {message['symbol']} 分钟至 {message.get('minute_latest') or '—'}；点“实时跟随”看最新"
+            self._live_status(self._live_latest_text)
 
     def _live_running_changed(self, running):
         self.live_status_label.setText("后台行情：" + (("当前" if self.live_controller.mode == "current" else "全部") if running else "停止"))
@@ -3341,6 +3363,18 @@ class MainWindow(QMainWindow):
 
     def _start_all_live(self):
         self._start_background_live("all")
+
+    def _configure_tq_login(self):
+        dialog = TqLoginDialog(self,setup_only=True)
+        dialog.exec();dialog.password.clear();dialog.deleteLater()
+
+    def _live_targets_ready(self, targets):
+        if self._live_chart is not None and self._live_chart.isVisible():
+            old = self._live_chart.target
+            resolved = next((t for t in targets if old and t["source"] == old.source and t["symbol"] == old.symbol),None)
+            if resolved and resolved["tq_symbol"] != old.tq_symbol:
+                target = RealtimeTarget(self.repo.root,**resolved)
+                self._live_chart.configure(target,self._live_chart.period.currentData(),self._live_chart.chart.trend_settings)
 
     def _start_background_live(self, mode):
         if self.live_controller.is_running() and self.live_controller.mode == mode:
@@ -3358,24 +3392,38 @@ class MainWindow(QMainWindow):
             if mode == "current":
                 target = self._live_target()
                 config.update(symbol=target.symbol, contract=target.contract, tq_symbol=target.tq_symbol)
-            dialog = TqLoginDialog(self)
-            try:
-                if dialog.exec() != QDialog.DialogCode.Accepted:
-                    return
-                username, password = dialog.username.text().strip(), dialog.password.text()
-                dialog.password.clear()
-            finally:
-                dialog.deleteLater()
+                if target.source == "原始行情":
+                    exchange = self._exchange_for_symbol(self.symbol) or self.exchange_combo.currentText()
+                    config["main_symbol"] = make_edb_main_symbol(exchange,self.symbol)
+            saved = load_saved_login()
+            if saved:
+                username,password = saved
+            else:
+                dialog = TqLoginDialog(self)
+                try:
+                    if dialog.exec() != QDialog.DialogCode.Accepted:
+                        return
+                    username, password = dialog.username.text().strip(), dialog.password.text()
+                    dialog.password.clear()
+                finally:
+                    dialog.deleteLater()
+            self._live_latest_text = ""
             self.live_controller.start(config, username, password)
         except Exception as exc:
             self._error(exc)
 
     def _live_target(self):
+        context = self.live_controller.context
+        if context.get("root") == str(self.repo.root.resolve()):
+            resolved = next((t for t in context.get("targets",[]) if t["source"] == self.source_combo.currentText()
+                             and t["symbol"] == self.symbol),None)
+            if resolved:
+                return RealtimeTarget(self.repo.root,**resolved)
         tq_symbol, contract = self._edb_update_target()
         if self.source_combo.currentText() == "原始行情":
-            from ..live_service import tq_contract_symbol
             exchange = self._exchange_for_symbol(self.symbol) or self.exchange_combo.currentText()
-            tq_symbol = tq_contract_symbol(exchange, contract)
+            tq_symbol = make_edb_main_symbol(exchange,self.symbol)
+            contract = "当前主力（待解析）"
         return RealtimeTarget(self.repo.root, self.source_combo.currentText(), self.symbol, contract, tq_symbol)
 
     def _toggle_live_view(self, checked):
@@ -3419,7 +3467,7 @@ class MainWindow(QMainWindow):
             "天勤 EDB 权限",
             "是否使用天勤专业版账号登录 EDB？\n\n"
             "选择“是”输入账号密码，可按账号权限获取历史分钟数据；\n"
-            "选择“否”使用免费权限（最近一年 1 分钟数据，日线可查询历史区间）。\n"
+            "选择“否”按EDB公共接口权限请求；SDK最近10000根请使用工具栏“免费实时”。\n"
             "账号密码仅用于本次获取 Token，不会写入软件存档。",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
             QMessageBox.StandardButton.No,
@@ -3568,7 +3616,7 @@ class MainWindow(QMainWindow):
             QMessageBox.information(
                 self, "天勤 EDB 更新完成",
                 f"{edb_symbol} 更新完成。\n\n{self._edb_stats_text(stats)}\n\n"
-                "说明：EDB 免费权限提供最近一年的1分钟数据和历史日线；专业版权限可按账号权限获取更早的分钟历史。",
+                "说明：EDB历史范围以服务端账号权限为准；“免费实时”通过SDK按每周期最近最多10000根订阅。",
             )
             self.statusBar().showMessage(f"{edb_symbol} EDB 更新完成", 9000)
         except EDBUpdateCancelled:
@@ -3718,7 +3766,7 @@ class MainWindow(QMainWindow):
         )
         if failures:
             message += f"\n\n失败 {len(failures)} 个：\n{preview}"
-        message += "\n\n免费权限的1分钟数据范围为最近一年；更早分钟数据需开通专业版 EDB 权限。"
+        message += "\n\nSDK免费实时按每周期最近最多10000根提供；EDB历史范围以服务端账号权限为准。"
         QMessageBox.information(self, "天勤 EDB 全部更新", message)
         self.statusBar().showMessage(
             f"EDB 全部更新{state_word}：成功 {total_ok}/{len(items)}，新增1分钟 {total_minute_added:,} 条",
@@ -3747,7 +3795,7 @@ class MainWindow(QMainWindow):
             return
 
         minute_start, daily_start = full_history_start_times(has_token)
-        access_text = "专业版账号：从 EDB 可提供的历史范围（预计2021年以来）更新分钟线和日线" if has_token else "免费权限：最近一年分钟线 + EDB 可提供的历史日线"
+        access_text = "专业版账号：从 EDB 可提供的历史范围（预计2021年以来）更新分钟线和日线" if has_token else "公共接口：按EDB实际权限请求历史；SDK免费实时为每周期最近最多10000根"
         reply = QMessageBox.warning(
             self,
             "天勤 EDB 更新历史数据",
@@ -3839,7 +3887,7 @@ class MainWindow(QMainWindow):
         )
         if failures:
             detail += f"\n\n失败 {len(failures)} 项：\n" + "\n".join(failures[:15])
-        detail += "\n\nEDB免费权限仅提供最近一年的分钟线；更早的分钟历史需专业版权限。"
+        detail += "\n\nEDB历史范围以账号实际权限为准；SDK免费实时按每周期最近最多10000根提供。"
         QMessageBox.information(self, "天勤 EDB 更新历史数据", detail)
         self.statusBar().showMessage(f"EDB 历史更新{state_word}：新增分钟 {total_minute_added:,} 条", 12000)
 

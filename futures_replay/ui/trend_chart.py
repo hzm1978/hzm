@@ -2,39 +2,36 @@ from __future__ import annotations
 
 from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QBrush, QColor, QPen
+from ..trend_last_leg import price_text
 
 
-def reference_table(c, p, rows, color, occupied, top, start, end):
+def price_segments(c, p, rows, color, occupied, anchor, kind):
+    """Place every numeric caption ON its true price line; vary X, never Y."""
     fm = p.fontMetrics()
-    row_h = fm.height()+3
-    width = min(210, max(140, max(fm.horizontalAdvance(row) for row in rows)+12))
-    width = min(width, c._plot_rect.width()-8)
-    height = row_h*len(rows)+8
-    left, right = c._plot_rect.left()+4, c._plot_rect.right()-width-4
-    bottom = c._plot_rect.bottom()-height-4
-    boxes = [QRectF(right, top, width, height), QRectF(left, bottom, width, height),
-             QRectF(right, bottom, width, height), QRectF(left, top, width, height)]
-    def cost(rect):
-        total = sum(rect.intersected(old).width()*rect.intersected(old).height() for old in occupied)
-        for i in range(start, end):
-            row = c.partial if i == c.current_idx and c.partial is not None else c.df.iloc[i]
-            candle = QRectF(c._index_x(i)-2, c._price_y(float(row["high"])), 4,
-                            max(1, c._price_y(float(row["low"]))-c._price_y(float(row["high"]))))
-            overlap = rect.intersected(candle)
-            total += overlap.width()*overlap.height()
-        return total
-    panel = min(boxes, key=cost)
-    p.fillRect(panel, QColor(16, 20, 28, 238))
-    p.setPen(QPen(color, .8)); p.drawRect(panel)
-    for i, text in enumerate(rows):
-        p.setPen(color if i == 0 else QColor(210, 220, 235))
-        row_rect = QRectF(panel.left()+6, panel.top()+4+i*row_h, panel.width()-12, row_h)
-        p.drawText(row_rect, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
-                   fm.elidedText(text, Qt.TextElideMode.ElideRight, int(row_rect.width())))
-    occupied.append(panel.adjusted(-3, -3, 3, 3))
+    for text, price in rows:
+        y = c._price_y(price)
+        if not c._plot_rect.top()+fm.height()/2 < y < c._plot_rect.bottom()-fm.height()/2:
+            continue
+        w = min(fm.horizontalAdvance(text)+8, c._plot_rect.width()-8)
+        right, left = c._plot_rect.right()-4, c._plot_rect.left()+4
+        starts = list(reversed([left+i*(w+8) for i in range(max(1,int((right-left)/(w+8))))]))
+        starts.insert(0,right-w)
+        rects = [QRectF(x,y-fm.height()/2-1,w,fm.height()+2) for x in starts]
+        def cost(rect):
+            return sum(rect.intersected(old).width()*rect.intersected(old).height() for old in occupied)
+        rect = min(rects,key=cost)
+        x1 = min(c._index_x(max(c._start,anchor)),rect.left()-4)
+        p.setPen(QPen(color,1,Qt.PenStyle.DashLine))
+        p.drawLine(QPointF(x1,y),QPointF(right,y))
+        p.fillRect(rect,QColor(18,21,26,235));p.setPen(color)
+        p.drawText(rect.adjusted(4,0,-2,0),Qt.AlignmentFlag.AlignVCenter,text)
+        occupied.append(rect.adjusted(-3,-2,3,2))
+        c._trend_price_segments.append(dict(kind=kind,text=text,price=price,y=y,
+            x1=x1,x2=right,label_y=rect.center().y()))
 
 
 def paint_trend_overlay(chart, painter, start, end):
+    chart._trend_price_segments = []
     a = chart._trend_analysis_cached(end)
     if a is None:
         if getattr(chart, "_trend_error", ""):
@@ -69,7 +66,12 @@ def paint_trend_overlay(chart, painter, start, end):
         if child.retracements:
             summary += " | " + child.retracements[-1].text
         summary += f" | 当前回调 {child.pullback_percent:.1f}%"
-    title = "趋势交易法 · 第三版 | " + (child.label if compact else a.status)
+    leg = a.last_leg
+    mode = ("末段/级别待确认" if not leg or leg.mode == "pending" else
+            "横盘调整·黄金分割" if leg.market == "sideways" else
+            ("下行" if leg and leg.leg_direction < 0 else "上行")+
+            ("主浪候选·止盈线" if leg and leg.mode == "targets" else "调整·黄金分割"))
+    title = mode + " | 趋势交易法 · 第三版 | " + (child.label if compact else a.status)
     p.setPen(main)
     p.drawText(QRectF(c._plot_rect.left() + 7, header_y - 13, width, 17),
                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
@@ -118,42 +120,18 @@ def paint_trend_overlay(chart, painter, start, end):
         if c._plot_rect.top() <= y2 <= c._plot_rect.bottom():
             tags.append((20, c._index_x(x2)-60, y2, label, color, not up))
 
-    projection = next((g for g in a.wave_projections if not g.historical
-                       and (settings.show_subwaves or g.degree == "主")), None)
-    show_reverse = bool(settings.show_reverse_fibonacci and projection and projection.reverse)
+    last = a.last_leg
+    show_reverse = bool(last and last.mode == "fibonacci" and settings.show_reverse_fibonacci and last.fibonacci)
     if show_reverse:
-        ruler = projection.reverse
-        x1 = c._index_x(max(start, ruler.start.index))
-        x2 = c._plot_rect.right()
-        ys = [c._price_y(level.price) for level in ruler.levels]
-        for i, (y1, y2) in enumerate(zip(ys, ys[1:])):
-            p.fillRect(QRectF(x1, min(y1, y2), max(0, x2-x1), abs(y2-y1)),
-                       QColor(195, 150, 30, 12 if i % 2 else 22))
-        p.setPen(QPen(QColor(240, 205, 75, 180), .8, Qt.PenStyle.DotLine))
-        visible = []
-        for level, y in zip(ruler.levels, ys):
-            if c._plot_rect.top()+36 < y < c._plot_rect.bottom()-5:
-                p.drawLine(QPointF(x1, y), QPointF(x2, y))
-                visible.append((level, y))
-        # Price captions must stay beside their real level. The general tag
-        # placer can move crowded captions far away, which misstates the ruler.
-        ordered_y = sorted(y for _, y in visible)
-        if all(b-a >= metrics.height()+2 for a, b in zip(ordered_y, ordered_y[1:])):
-            for level, y in visible:
-                text = f"{level.label} ({level.price:.6g})"
-                w = metrics.horizontalAdvance(text)+8
-                rect = QRectF(min(x1+4, c._plot_rect.right()-w-2), y+2,
-                              w, metrics.height()+2)
-                if rect.bottom() > c._plot_rect.bottom():
-                    rect.moveBottom(y-2)
-                p.fillRect(rect, QColor(20, 20, 15, 225))
-                p.setPen(yellow)
-                p.drawText(rect.adjusted(4, 0, -2, 0), Qt.AlignmentFlag.AlignVCenter, text)
-                occupied.append(rect.adjusted(-2, -2, 2, 2))
-        elif visible:
-            reference_table(c, p, ["前一回调 · 反向黄金分割"] +
-                            [f"{level.label}  {level.price:.6g}" for level, _ in visible],
-                            yellow, occupied, header_y+(25 if compact else 43), start, end)
+        ruler = last.fibonacci
+        rows = [(f"{ratio:.3f}  {price_text(level.price)}",level.price)
+                for ratio,level in zip((0,.191,.382,.5,.618,1),ruler.levels)]
+        price_segments(c,p,rows,yellow,occupied,last.origin.index,"fibonacci")
+    elif last and last.mode == "targets" and settings.show_main_wave_targets:
+        rows = [(f"止盈 {t.ratio:g}H1{' 全趋势' if t.kind == 'whole' else ''}"
+                 f"{' ·强势' if t.kind == 'main' and t.ratio > 2 else ''}  {price_text(t.price)}",t.price)
+                for t in last.targets]
+        price_segments(c,p,rows,orange,occupied,last.origin.index,"target")
 
     if settings.show_navigation:
         p.setPen(QPen(QColor(155, 165, 185, 75), .8, Qt.PenStyle.DotLine))
@@ -169,12 +147,12 @@ def paint_trend_overlay(chart, painter, start, end):
                 p.drawLine(QPointF(c._index_x(left.index), c._price_y(left.price)),
                            QPointF(c._index_x(right.index), c._price_y(right.price)))
         if a.pivots:
-            last = a.pivots[-1]
+            last_pivot = a.pivots[-1]
             tip_index = min(c.current_idx, end - 1)
-            if tip_index > last.index:
+            if tip_index > last_pivot.index:
                 tip = float(c.partial["close"]) if c.partial is not None and tip_index == c.current_idx else float(c.df.iloc[tip_index]["close"])
                 p.setPen(QPen(QColor(245, 200, 85, 130), 1, Qt.PenStyle.DashLine))
-                p.drawLine(QPointF(c._index_x(last.index), c._price_y(last.price)),
+                p.drawLine(QPointF(c._index_x(last_pivot.index), c._price_y(last_pivot.price)),
                            QPointF(c._index_x(tip_index), c._price_y(tip)))
         for label in a.wave_labels:
             if not child or not child.points[0].index <= label.index <= child.points[-1].index:
@@ -300,90 +278,32 @@ def paint_trend_overlay(chart, painter, start, end):
                 tags.append((5, c._plot_rect.right() - 80, y, label, color,
                              point.direction > 0))
 
-    seen_levels = set()
-    displayed_levels = [x for x in a.levels if not (child or show_reverse) or x.kind != "retracement"]
-    if child and not show_reverse:
-        displayed_levels += list(child.levels)
-    for level in displayed_levels:
-        if level.kind == "target" and not settings.show_targets:
-            continue
-        if level.kind != "target" and not settings.show_levels:
-            continue
-        rounded = round(level.price, 8)
-        if rounded in seen_levels or level.confirmed_at > a.as_of_index:
-            continue
-        seen_levels.add(rounded)
-        y = c._price_y(level.price)
-        if not c._plot_rect.top() + 40 < y < c._plot_rect.bottom() - 5:
-            continue
-        color = QColor(215, 150, 240, 190) if level.kind == "delay" else QColor(180, 190, 210, 130)
-        p.setPen(QPen(color, .9, Qt.PenStyle.DashLine))
-        x = c._index_x(max(start, level.start_index))
-        p.drawLine(QPointF(x, y), QPointF(c._plot_rect.right(), y))
-        if level.kind != "subwave_retracement":
-            tags.append((25, c._plot_rect.right() - 85, y, f"{level.label} {level.price:.6g}", color, True))
-
-    if child and settings.show_levels and not show_reverse:
-        # A fixed ruler table avoids moving a price caption several rows away
-        # from its true horizontal level when the latest leg is short.
-        row_height = metrics.height() + 3
-        panel_width = min(180, max(130, int(c._plot_rect.width() * .33)))
-        panel_height = row_height * 4 + 8
-        left, right = c._plot_rect.left()+4, c._plot_rect.right()-panel_width-4
-        top = header_y+(25 if compact else 43)
-        bottom = c._plot_rect.bottom()-panel_height-4
-        candidates = [QRectF(left, bottom, panel_width, panel_height),
-                      QRectF(right, top, panel_width, panel_height),
-                      QRectF(left, top, panel_width, panel_height),
-                      QRectF(right, bottom, panel_width, panel_height)]
-        def cost(rect):
-            total = sum(rect.intersected(old).width()*rect.intersected(old).height() for old in occupied)
-            for i in range(start, end):
-                row = c.partial if i == c.current_idx and c.partial is not None else c.df.iloc[i]
-                candle = QRectF(c._index_x(i)-2, c._price_y(float(row["high"])), 4,
-                                max(1, c._price_y(float(row["low"]))-c._price_y(float(row["high"]))))
-                overlap = rect.intersected(candle)
-                total += overlap.width()*overlap.height()
-            return total
-        panel = min(candidates, key=cost)
-        p.fillRect(panel, QColor(16, 20, 28, 235))
-        p.setPen(QPen(QColor(95, 205, 245, 100), .8))
-        p.drawRect(panel)
-        for i, text in enumerate([f"子{len(child.points)-1}回调参考价"] +
-                [f"{ratio:g}%   {level.price:.6g}" for ratio, level in zip((40, 62, 78.6), child.levels)]):
-            p.setPen(blue if i == 0 else QColor(205, 220, 235))
-            p.drawText(panel.adjusted(6, 4+i*row_height, -4, -panel.height()+4+(i+1)*row_height),
-                       Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, text)
-        occupied.append(panel.adjusted(-3, -3, 3, 3))
-
-    if settings.show_main_wave_targets and projection:
-        active = [t for t in projection.targets if t.wave == projection.wave and t.kind == "main"]
-        displayed = active if c._plot_rect.height() >= 400 else (sorted(active, key=lambda t: t.hit_index is not None)[:3])
-        rows = [f"{projection.degree}{projection.wave}候选止盈 · H1={abs(projection.first_tip.price-projection.first_origin.price):.6g}"]
-        rows += [f"{t.ratio:g}H1  {t.price:.6g}" + ("·强势" if t.ratio > 2 else "") + (" ✓" if t.hit_index is not None else "") for t in displayed]
-        if c._plot_rect.height() >= 400:
-            rows += [f"全 {t.ratio:g}H1  {t.price:.6g}" + (" ✓" if t.hit_index is not None else "")
-                     for t in projection.targets if t.kind == "whole"]
-        if len(displayed) < len(active):
-            rows.append("扩展 / 全趋势价位见明细")
-        reference_table(c, p, rows, orange, occupied, header_y+(25 if compact else 43), start, end)
-        for target in active:
-            y = c._price_y(target.price)
-            if c._plot_rect.top()+40 < y < c._plot_rect.bottom()-4:
-                p.setPen(QPen(QColor(255, 180, 80, 130), .9, Qt.PenStyle.DashLine))
-                p.drawLine(QPointF(c._index_x(max(start, target.origin.index)), y), QPointF(c._plot_rect.right(), y))
-                if target.hit_index is not None:
-                    tag(target.hit_index, target.price, f"{target.ratio:g}H1已达", orange,
-                        projection.direction > 0, 17)
+    # The last leg has exactly one ruler. Legacy retracement/target tables
+    # must not reintroduce the other ruler when older settings are enabled.
+    if settings.show_levels and (not child or settings.show_navigation):
+        for level in a.levels:
+            if level.kind in {"retracement","target","subwave_retracement"} or level.confirmed_at > a.as_of_index:
+                continue
+            y = c._price_y(level.price)
+            if c._plot_rect.top()+40 < y < c._plot_rect.bottom()-5:
+                color = QColor(215,150,240,190)
+                p.setPen(QPen(color,.9,Qt.PenStyle.DashLine))
+                p.drawLine(QPointF(c._index_x(max(start,level.start_index)),y),QPointF(c._plot_rect.right(),y))
+                tags.append((25,c._plot_rect.right()-85,y,f"{level.label} {price_text(level.price)}",color,True))
 
     if settings.show_historical_arrivals:
+        seen = set()
         for group in a.wave_projections:
             if group.degree == "子" and not settings.show_subwaves:
                 continue
             for item in group.historical_arrivals:
-                tag(item.index, item.price, item.text, orange, item.direction < 0, 16)
+                key = item.index
+                if key not in seen:
+                    # One exact reached price per completed main-wave endpoint.
+                    tag(item.index,item.price,price_text(item.price),orange,item.direction < 0,16)
+                    seen.add(key)
 
-    if settings.show_targets and a.angle_slope is not None and a.angle_anchor is not None:
+    if settings.show_targets and last and last.mode == "targets" and a.angle_slope is not None and a.angle_anchor is not None:
         anchor = a.angle_anchor
         x1, x2 = max(start, anchor.index), end - 1
         value = lambda x: anchor.price + a.angle_slope * (x - anchor.index)
@@ -401,6 +321,13 @@ def paint_trend_overlay(chart, painter, start, end):
         for item in a.retracements:
             tag(item.index, item.price, item.text, QColor(85, 220, 230), item.direction < 0, 10)
     if settings.show_candles:
+        observed_turns = set()
+        for item in a.turn_observations:
+            if compact and item.context in observed_turns:
+                continue
+            observed_turns.add(item.context)
+            caption = item.text.replace("转折观察·","转折·").replace("·位置待确认","·观察")
+            tag(item.index,item.price,caption,QColor(220,195,145),item.direction < 0,12)
         for item in a.reversals:
             if not start <= item.index < end:
                 continue
