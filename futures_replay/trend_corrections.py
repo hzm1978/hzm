@@ -59,12 +59,13 @@ def classify_correction(points: Sequence, direction: int,
     flat_band = max(tolerance, height * .20)
     if np.ptp(bottoms) <= flat_band and np.ptp(tops) <= flat_band:
         return "abcde_sideways", "横向abcde调整"
-    # The author explicitly allows irregular structures. Keep them candidates,
-    # with timing evidence, rather than inventing a geometric certainty.
+    # Irregular is not a catch-all for a failed geometric fit. Compare the
+    # SAME-direction legs (b-c with d-e, and a-b with c-d); the old adjacent
+    # b-c/c-d comparison accepted arbitrary six-pivot windows. This two-pair
+    # screen is a conservative program convention, not a new book rule.
     durations = np.diff([p.index for p in points])
     similar = lambda a, b: abs(a - b) <= max(1, min(a, b) * .208)
-    if ((similar(durations[0], durations[2]) and similar(durations[1], durations[3]))
-            or similar(durations[2], durations[3])):
+    if (similar(durations[2], durations[4]) and similar(durations[1], durations[3])):
         return "abcde_irregular", "不规则abcde调整"
     return None
 
@@ -176,8 +177,8 @@ def correction_patterns(frame: pd.DataFrame, pivots: Sequence, positions: np.nda
     def is_impulse(a, b, sign):
         if sign * (b.price - a.price) <= 0:
             return False
-        if direction is not None:
-            return sign == direction
+        if direction is not None and sign != direction:
+            return False
         old = [p for p in pivots if p.kind == b.kind and p.index < a.index]
         return not old or sign * (b.price - old[-1].price) > 0
 

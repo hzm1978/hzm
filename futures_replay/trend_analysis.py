@@ -26,6 +26,7 @@ from .trend_intervals import (BookInterval, WaveStructure, BoundaryPoint, BookLe
                               failed_interval_candidate, tp_ta)
 from .trend_candles import standard_candles, StandardCandle
 from .trend_corrections import correction_for_interval
+from .trend_hierarchy import SubwaveSeries, analyze_subwaves, correction_in_leg
 from .trend_signals import BreakDecision, line_break_decision
 
 
@@ -83,6 +84,8 @@ class TrendAnalysis:
     navigation_anchor: TrendPivot | None = None
     angle_slope: float | None = None
     angle_anchor: TrendPivot | None = None
+    subwaves: tuple[SubwaveSeries, ...] = ()
+    correction_history: tuple[TrendCorrection, ...] = ()
 
 
 def _wilder_atr(
@@ -537,13 +540,40 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
 
     # Historical correction / ratio explanations are restricted to this trend
     # episode; ordinary earlier opposite pivots do not inherit the current bias.
-    relevant = tuple(p for p in fine if origin is None or p.index >= origin.index)
-    detected = correction_patterns(data, relevant, positions, atr, max_patterns=24,
-                                    direction=sign or None, fine_pivots=fine)
-    by_end = {(p.direction, p.markers[-1].index): p for p in detected}
-    for p in book_corrections:
-        by_end[(p.direction, p.markers[-1].index)] = p
-    corrections = tuple(sorted(by_end.values(), key=lambda p: p.confirmed_at)[-24:])
+    subwaves = analyze_subwaves(data, positions, fine, intervals, atr, structure)
+    resolved = []
+    for series in subwaves:
+        child_direction = "up" if series.direction > 0 else "down"
+        child_line = _select_valid_trendline(child_direction, series.points, high, low, atr,
+                                            mapping, positions, as_of, min_anchor_bars=2)
+        child_external, child_anchor = _select_external_channel(child_direction, series.points, high, low, atr, mapping)
+        child_offset = (child_anchor.price - _line_value(*child_external, child_anchor.index)[0]
+                        if child_external and child_anchor else None)
+        resolved.append(replace(series, trendline=child_line, external_line=child_external,
+                                pivot_line_anchor=child_anchor, pivot_line_offset=child_offset))
+    subwaves = tuple(resolved)
+    if subwaves:
+        boundaries.extend(subwaves[0].boundaries)
+    # Corrections must belong to an observed leg at a stated degree. A rolling
+    # 2/4/6-pivot window repeatedly mislabels an opposing five-wave drive as
+    # overlapping abcde corrections. Keep navigation/failed interpretations in
+    # details, but show only the chosen nonoverlapping leg contexts on the chart.
+    main_starts = {p.start_index for p in main_intervals}
+    chosen = [p for p in book_corrections if p.start_index in main_starts]
+    for series in subwaves:
+        chosen = [p for p in chosen if p.end_index < series.points[0].index
+                  or p.start_index > series.points[-1].index]
+        chosen.extend(series.corrections)
+    current = subwaves[0].points[-1] if subwaves else (points[-1] if points else None)
+    current_sign = subwaves[0].direction if subwaves else sign
+    if current is not None and current_sign:
+        live_correction = correction_in_leg(current, None, current_sign, fine, data, positions, atr)
+        if live_correction and live_correction.state != "opposite_break":
+            chosen.append(live_correction)
+    corrections = tuple(sorted({(p.direction, p.start_index, p.markers[-1].index): p
+        for p in chosen if p.state != "opposite_break"}.values(), key=lambda p: p.start_index))
+    correction_history = tuple(sorted({(p.direction, p.start_index, p.markers[-1].index): p
+        for p in (*book_corrections, *chosen)}.values(), key=lambda p: p.confirmed_at))
     ratios, contexts = [], []
     main_by_start = {p.interval_start: p for p in boundaries if p.degree == "main"}
     previous_origin = origin
@@ -636,6 +666,16 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
                     timing.append(f"前后调整周期 {previous_time} / {latest_time}根；下一调整高度参考 [{.828*depth:.6g}, {depth/.828:.6g}]")
 
     complete = bool(structure and structure.complete)
+    for series in subwaves:
+        for boundary in series.boundaries:
+            contexts.append(TrendLabel(boundary.index, boundary.price,
+                boundary.label + "·调整结构结束", series.direction, boundary.confirmed_at,
+                boundary.interval_start, evidence=boundary.pattern + "；所属子浪Q已确认"))
+        if series.state != "fifth_pending" and series.structure.complete:
+            tip = series.points[-1]
+            contexts.append(TrendLabel(tip.index, tip.price, f"{len(series.points)-1}子浪候选完整", -series.direction,
+                max(series.confirmed_at, tip.confirmed_at), series.points[0].index,
+                evidence="子结构独立Q计数；不等同于父级趋势反转"))
     if complete and points:
         peak = next((p for p in reversed(points) if p.kind == ("H" if sign > 0 else "L")), None)
         if peak:
@@ -643,6 +683,22 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
                                        max(peak.confirmed_at, structure.confirmed_at), peak.index,
                                        evidence=structure.label))
     shapes = book_candle_patterns(data, positions, standard_window=config.standard_window, standard_sample=config.standard_sample)
+    if subwaves:
+        series = subwaves[0]
+        child_height = series.direction*(series.ruler_tip.price-series.ruler_origin.price)
+        for shape in shapes:
+            if (shape.index != as_of or shape.direction != series.direction
+                    or series.ruler_tip.index >= shape.start_index
+                    or max(series.ruler_tip.confirmed_at, series.confirmed_at) > shape.start_index):
+                continue
+            # The live sixth/fourth retracement location uses a ruler already
+            # known BEFORE the reversal candle, not that candle's own extremes.
+            for ratio in (.62,):
+                price = series.ruler_tip.price-series.direction*ratio*child_height
+                if child_height > 0 and abs(shape.price-price) <= max(.5*atr_now, .03*child_height):
+                    contexts.append(TrendLabel(shape.index, shape.price, "子浪62%附近·结构待确认",
+                        series.direction, as_of, shape.start_index,
+                        evidence="形态形成前已知的子浪起止价；不继承父浪的旧回调尺"))
     # Early watch markers use a ruler known BEFORE the shape. The A/degree may
     # remain pending; never build a level from the shape's own high/low.
     if sign and leg_origin is not None and leg_peak is not None:
@@ -718,4 +774,5 @@ def analyze_trend(frame: pd.DataFrame, *, left: int | None = None,
         tuple(levels), tuple(wave_labels), shapes, standards, fine, decision, failed,
         tuple(timing), active_tool, line_degree, config,
         nav_line, nav_offset, nav_anchor, angle_slope, angle_anchor,
+        subwaves, correction_history,
     )

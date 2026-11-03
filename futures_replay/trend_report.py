@@ -32,6 +32,8 @@ def rules_html():
     高度1.618合并、升级/降级；允许浪2超过浪1起点。主结构完整并不代表所有子结构完整。</li>
     <li>书页504–557：简单、标准/收缩/强势abc、收缩/扩张三角、趋势/横向/不规则abcde。
     内部结构按更细转折给出，无法分级时明确待定。</li>
+    <li>书页581–601：先内后外；父趋势内部可有反向子结构。子浪用自己的Q、浪号和回调尺，
+    不以父趋势方向过滤。区间根数是当前周期的K线根数；日线不按自然日或周数替代。</li>
     <li>书页558–561：Tp/Ta的Ta从后浪末价水平回投到前浪同价处计算；完整结构或62%–78.6%区域启用，三角时禁用。</li>
     </ul>
     <h3>程序约定</h3><p>默认微转折右侧1根收盘确认、最短Q为2根，以免臆测单根K内高低先后。
@@ -66,6 +68,26 @@ def analysis_html(analysis, frame=None):
             [("主Q"+str(i+1), when(p.start_index), when(p.end_index), p.bars, when(p.first_confirmed_at), p.relation or "首区间", "隐形" if p.hidden else "外区间") for i, p in enumerate(a.structure.intervals)] +
             [("导航q", when(p.start_index), when(p.end_index), p.bars, when(p.first_confirmed_at), p.relation, "内区间" if p.parent_start is not None else "降级/合并") for p in a.structure.navigation])
         h += "<p>" + "<br>".join(escape(r) for r in a.structure.rules) + "</p>"
+    if a.subwaves:
+        h += "<h3>独立子浪（当前组在前）</h3>"
+        for s in a.subwaves:
+            h += "<h4>" + escape(s.label) + "</h4>"
+            h += _table(["子浪", "起点", "起价", "终点", "末价", "根数", "可观察时刻"],
+                [(i, when(left.index), f"{left.price:.8g}", when(right.index), f"{right.price:.8g}",
+                  right.index-left.index, when(max(left.confirmed_at, right.confirmed_at, s.confirmed_at)))
+                 for i, (left, right) in enumerate(zip(s.points, s.points[1:]), 1)])
+            h += _table(["子区间", "开始", "突破", "根数", "关系"],
+                [(f"q{i+1}", when(q.start_index), when(q.end_index), q.bars, q.relation or "第一Q收盘越过")
+                 for i, q in enumerate(s.intervals)])
+            if s.pending_interval:
+                h += f"<p>q2尚未突破子3，目前已走{s.pending_interval.bars}根；不计入已完成Q。</p>"
+            h += _table(["回调位置", "百分比", "依据"],
+                [(p.text, f"{p.percent:.3f}%", p.evidence) for p in s.retracements])
+            h += f"<p>当前参考尺：子{len(s.points)-1}，{escape(when(s.ruler_origin.index))} "
+            h += f"({s.ruler_origin.price:.8g}) → {escape(when(s.ruler_tip.index))} ({s.ruler_tip.price:.8g})；"
+            h += f"当前收盘回调 {s.pullback_percent:.2f}%。</p>"
+            h += _table(["子浪参考位置", "价位"], [(p.label, f"{p.price:.8g}") for p in s.levels])
+            h += "<p>" + escape(s.evidence) + "</p>"
     h += "<h3>分界点 A（与趋势线锚点分开）</h3>" + _table(
         ["A", "结构结束", "价位", "调整类型", "可确认时刻", "收盘破位时刻", "状态"],
         [(p.label, when(p.index), f"{p.price:.6g}", patterns.get(p.pattern, p.pattern), when(p.confirmed_at), when(p.broken_at), states.get(p.state, p.state)) for p in a.boundaries])
@@ -84,6 +106,10 @@ def analysis_html(analysis, frame=None):
         h += f"<h3>突破 / 延时</h3><p>{escape(d.label)}<br>{escape(d.reason)}<br>突破：{escape(when(d.break_index))}；延时线成立：{escape(when(d.delay_ready_at))}；确认：{escape(when(d.confirmed_at))}；水平：{d.delay_level}</p>"
     h += "<h3>调整浪</h3>" + _table(["形态", "结构结束点", "子结构", "确认时刻", "依据"],
         [(p.label, when(p.end_point.index) if p.end_point else "待定", p.structure, when(p.confirmed_at), p.evidence) for p in a.corrections])
+    h += "<p>图中只标所属浪段的调整解释；同一推进段不重复滑窗拼接abcde。以下保留导航和其他历史解释供核对。</p>"
+    h += _table(["历史/导航调整", "起点", "终点", "状态", "依据"],
+        [(p.label, when(p.start_index), when(p.end_point.index) if p.end_point else "待定",
+          states.get(p.state, p.state), p.evidence) for p in a.correction_history if p not in a.corrections])
     h += "<h3>关键位置反转</h3>" + _table(["形态", "实际K线", "位置", "可确认时刻", "依据"],
         [(p.text, when(p.index), p.context, when(p.confirmed_at), p.evidence) for p in a.reversals])
     h += "<h3>最近形态观察（未通过位置/标准条件的不算反转信号）</h3>" + _table(["形态", "时刻", "标准/后续确认", "依据"],

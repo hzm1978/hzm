@@ -729,6 +729,7 @@ class CandleChart(QWidget):
             trend_scale = self._trend_analysis_cached(end)
             if trend_scale is not None:
                 settings = trend_scale.settings
+                child = trend_scale.subwaves[0] if settings.show_subwaves and trend_scale.subwaves else None
                 span = max(pmax - pmin, abs(pmax) * .005, 1e-9)
                 visible_values = []
                 if settings.show_trendline and trend_scale.trendline:
@@ -744,8 +745,12 @@ class CandleChart(QWidget):
                     visible_values.extend(x.price for x in trend_scale.boundaries[-4:]
                                           if x.degree == "main" or settings.show_navigation)
                 if settings.show_levels:
-                    visible_values.extend(x.price for x in trend_scale.levels if x.kind != "target")
-                bounded = [x for x in visible_values if np.isfinite(x) and pmin - span <= x <= pmax + span]
+                    visible_values.extend(x.price for x in trend_scale.levels
+                                          if x.kind != "target" and (not child or x.kind != "retracement"))
+                    if child:
+                        visible_values.extend(x.price for x in child.levels)
+                margin = span * (.25 if child else 1)
+                bounded = [x for x in visible_values if np.isfinite(x) and pmin - margin <= x <= pmax + margin]
                 if settings.show_targets:
                     bounded.extend(x.price for x in trend_scale.levels if x.kind == "target" and np.isfinite(x.price))
                 if bounded:
@@ -798,6 +803,14 @@ class CandleChart(QWidget):
 
         pad = (pmax - pmin) * 0.06 or max(abs(pmax) * 0.01, 1.0)
         base_min, base_max = pmin - pad, pmax + pad
+        if self.show_trend and not self.intraday_mode and trend_scale is not None:
+            # Reserve actual screen space for the trend legend. Without it,
+            # the local wave-0 high/low can sit directly under three text rows.
+            child = trend_scale.subwaves[0] if trend_scale.settings.show_subwaves and trend_scale.subwaves else None
+            rows = 3 if child and self._plot_rect.width()-16 >= 760 else 2
+            legend_pixels = rows*18 + 8 + (18 if self.show_ma or self.show_boll else 0)
+            fraction = min(.4, legend_pixels/max(1, self._plot_rect.height()))
+            base_max += (base_max-base_min)*fraction/(1-fraction)
         base_span = max(base_max - base_min, 1e-9)
         # Offset the complete price viewport after autoscaling so a vertical
         # mouse drag moves candles and all price overlays together without
@@ -857,6 +870,10 @@ class CandleChart(QWidget):
             if self.show_trend and not self.intraday_mode:
                 # Leave distinct rows for the trend legend and break status.
                 warn_y += 36
+                analysis = self._trend_analysis_cached(end)
+                if (analysis and analysis.settings.show_subwaves and analysis.subwaves
+                        and self._plot_rect.width()-16 >= 760):
+                    warn_y += 18
             p.drawText(int(self._plot_rect.left() + 8), int(warn_y), "分钟数据缺失：按可用K线汇总显示，非分钟行情")
 
     def _wave_analysis_cached(self, visible_end: int):
@@ -1322,11 +1339,20 @@ class CandleChart(QWidget):
         if chosen is None:
             return
 
+        if anchor_is_y:
+            target_x = max(chosen.left(), min(x, chosen.right()))
+            target_y = max(chosen.top(), min(y, chosen.bottom()))
+            if abs(target_x-x) + abs(target_y-y) > height:
+                leader_color = QColor(color)
+                leader_color.setAlpha(100)
+                p.setPen(QPen(leader_color, .7, Qt.PenStyle.DotLine))
+                p.drawLine(QPointF(x, y), QPointF(target_x, target_y))
         p.fillRect(chosen, QColor(16, 18, 22, 215))
         p.setPen(color)
         p.drawText(chosen, Qt.AlignmentFlag.AlignCenter, text)
         if occupied is not None:
             occupied.append(chosen.adjusted(-2.0, -1.0, 2.0, 1.0))
+        return chosen
 
     def _draw_intraday_line(self, p: QPainter, data: pd.DataFrame, start: int):
         """Draw a classic Chinese-market time-sharing view from real 1-minute data.

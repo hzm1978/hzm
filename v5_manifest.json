@@ -1,0 +1,15 @@
+{
+  "version": "5.0.0",
+  "file": "futures_replay_fixed_v5.zip",
+  "bytes": 414479,
+  "files": 48,
+  "sha256": "f6d96394e9fca48c93e03c7e07bd204d314c304e5d84d4560e9d80c7f0a389ac",
+  "tests": {
+    "pandas_2_2_3": 74,
+    "pandas_3_1_0": 74,
+    "qt_selftest": "passed on both",
+    "real_main_window": "passed on both"
+  },
+  "preview_data": "构造日线，非实际SN报价",
+  "book": "3.pdf（第三版）"
+}

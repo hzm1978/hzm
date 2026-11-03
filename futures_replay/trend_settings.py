@@ -11,6 +11,7 @@ class TrendSettings:
     show_intervals: bool = True
     show_navigation: bool = False
     show_waves: bool = True
+    show_subwaves: bool = True
     show_trendline: bool = True
     show_pivot_line: bool = True
     show_boundaries: bool = True

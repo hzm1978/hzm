@@ -105,7 +105,7 @@ class BoundaryPoint:
 
     @property
     def label(self):
-        prefix = "主" if self.degree == "main" else "导"
+        prefix = "主" if self.degree == "main" else "子" if self.degree == "subwave" else "导"
         return f"{prefix}A{self.number}"
 
 

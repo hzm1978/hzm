@@ -33,8 +33,9 @@ class TrendIndicatorDialog(QDialog):
         grid = QGridLayout()
         self.toggles = {}
         names = [
-            ("show_intervals", "主区间Q及关系"), ("show_navigation", "导航区间 / 子转折"),
+            ("show_intervals", "主Q / 子q区间根数"), ("show_navigation", "更多导航区间 / 微转折"),
             ("show_waves", "波浪线与浪号"), ("show_trendline", "趋势线"),
+            ("show_subwaves", "独立子浪计数（含反向5 / 7浪）"),
             ("show_pivot_line", "外延线与拐点线"), ("show_boundaries", "主A / 导A分界点"),
             ("show_ratios", "历史回调百分比"), ("show_candles", "关键位置K线反转"),
             ("show_corrections", "调整浪结构标注"), ("show_levels", "40 / 62 / 78.6%与延时线"),
