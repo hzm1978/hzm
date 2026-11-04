@@ -41,7 +41,7 @@ def pivots(prefix, n, depth=6):
              f"{p}LC:={p}LA AND REF(L,{n})<=LLV(REF(L,{n}),MIN(BC,MAX(1,IF(SUM({p}HA,0)>0,BARSLAST({p}HA)+1,BC))));",
              f"{p}HT:=BARSLAST({p}HC);", f"{p}LT:=BARSLAST({p}LC);",
              f"{p}HS:=SUM({p}HC,0)>0;", f"{p}LS:=SUM({p}LC,0)>0;",
-             f"{p}TYPE:=IF({p}HS AND (IF({p}LS,0,1) OR {p}HT<{p}LT),1,-1);",
+             f"{p}TYPE:=IF({p}HS AND ({p}LS=0 OR {p}HT<{p}LT),1,-1);",
              f"{p}A0:=MIN(BC-1,IF({p}TYPE=1,{p}HT,{p}LT));",
              f"{p}K0:=({p}HS OR {p}LS) AND REF(IF({p}TYPE=1,{p}HC,{p}LC),{p}A0) AND {p}A0+{n}<BC;"]
     # Do not REF(IF(TYPE,...),age): TYPE must be its current value, rather
@@ -82,7 +82,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.1；请先阅读README和验证边界 }",
+    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.2；请先阅读README和验证边界 }",
              "{ PN细转折；BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；手动设置需自己确认级别 }",
              "{ MANF=1时用MFROM/MTO作前主浪起止价，MFAGE为起点距今根数 }",

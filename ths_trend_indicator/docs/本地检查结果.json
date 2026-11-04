@@ -1,9 +1,9 @@
 {
-  "checked_at_utc": "2026-11-04T13:49:24.737815+00:00",
+  "checked_at_utc": "2026-11-04T14:09:09.086787+00:00",
   "python": "3.13.5",
   "numpy": "2.5.4",
   "local_tests": {
-    "run": 43,
+    "run": 49,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -49,6 +49,7 @@
         ]
       ],
       "type_check": "passed",
+      "unary_signs": "none",
       "native_compile": "not_run",
       "sha256": "493de412c407649ae5b83cb31c1477bf8854034a3b316eff4fc55fe3912a9c3b",
       "bytes": 493,
@@ -90,6 +91,7 @@
         ]
       ],
       "type_check": "passed",
+      "unary_signs": "none",
       "native_compile": "not_run",
       "sha256": "7d6d745db25e5a6ee79758ef4c54a5e36f57e3a1d53c0784667d9fc99cc72e69",
       "bytes": 541,
@@ -105,7 +107,7 @@
         "MAX": 16,
         "MIN": 91,
         "REF": 448,
-        "IF": 1954,
+        "IF": 1952,
         "HHV": 8,
         "LLV": 8,
         "SUM": 15,
@@ -361,9 +363,10 @@
         ]
       ],
       "type_check": "passed",
+      "unary_signs": "none",
       "native_compile": "not_run",
-      "sha256": "94da5e95e8145ade140a1df37f0b491efcd57562a7111f26b6e28000c316d17f",
-      "bytes": 64477,
+      "sha256": "24c9054aeee6ae726d91f48d80b70ec6e42b693a6f3c45009f1b0b2975522819",
+      "bytes": 64489,
       "lines": 511,
       "encoding": "gb18030"
     },
@@ -376,7 +379,7 @@
         "MAX": 16,
         "MIN": 91,
         "REF": 448,
-        "IF": 1954,
+        "IF": 1952,
         "HHV": 8,
         "LLV": 8,
         "SUM": 15,
@@ -632,9 +635,10 @@
         ]
       ],
       "type_check": "passed",
+      "unary_signs": "none",
       "native_compile": "not_run",
-      "sha256": "eb81866595fee7a55190d1526fc3ea8b6c9f4bf62c76c64ceadf16f5bccf8dcd",
-      "bytes": 65262,
+      "sha256": "50c656bfb8d99d17716cf676b2bde076f214aaed0b6a278d03e0713909e7eaec",
+      "bytes": 65274,
       "lines": 511,
       "encoding": "utf-8-sig"
     }

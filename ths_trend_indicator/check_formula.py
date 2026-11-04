@@ -184,6 +184,27 @@ def infer_type(node, types, line):
     return output
 
 
+def constant_number(node):
+    """Evaluate numeric constant windows, including canonical (0-1).
+
+    This does not evaluate identifiers or functions, nor depend on market data.
+    """
+    if node[0] == "number":
+        return node[1]
+    if node[0] == "unary":
+        value = constant_number(node[2])
+        return None if value is None else (-value if node[1] == "-" else value)
+    if node[0] != "binary" or node[1] not in ("+", "-", "*", "/"):
+        return None
+    a, b = constant_number(node[2]), constant_number(node[3])
+    if a is None or b is None:
+        return None
+    if node[1] == "+": return a+b
+    if node[1] == "-": return a-b
+    if node[1] == "*": return a*b
+    return None if b == 0 else a/b
+
+
 def check(source, enforce_boundary=True):
     statements = Parser(source).parse()
     names = set(PREDEFINED)
@@ -214,11 +235,16 @@ def check(source, enforce_boundary=True):
                         raise FormulaError(f"line {st.line}: {fn} leaks into analysis")
                 if fn == "REF" and args[1][0] == "unary" and args[1][1] == "-":
                     raise FormulaError(f"line {st.line}: negative REF")
-                if fn in ("REF", "REFX1", "HHV", "LLV", "MA", "SUM", "COUNT", "BACKSET", "FILTER") and args[1][0] == "number":
-                    if args[1][1] != int(args[1][1]) or args[1][1] < 0:
+                if fn in ("REF", "REFX1", "HHV", "LLV", "MA", "SUM", "COUNT", "BACKSET", "FILTER"):
+                    window = constant_number(args[1])
+                    if fn == "REF" and window is not None and window < 0:
+                        raise FormulaError(f"line {st.line}: negative REF")
+                    if window is not None and (window != int(window) or window < 0):
                         raise FormulaError(f"line {st.line}: invalid literal lookback")
                 if fn == "DRAWTEXT" and args[2][0] != "string":
                     raise FormulaError(f"line {st.line}: text must be a literal in this compatibility profile")
+            if node[0] == "unary":
+                raise FormulaError(f"line {st.line}: unary sign is excluded by the client compatibility profile; use (0-X)")
         for style in st.styles:
             if style not in STYLES and not re.fullmatch(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)", style):
                 raise FormulaError(f"line {st.line}: unreviewed style {style}")
@@ -232,7 +258,7 @@ def check(source, enforce_boundary=True):
             types[st.name] = result_type
     return {"statements": len(statements), "variables": len(names-PREDEFINED),
             "outputs": sum(st.output for st in statements), "functions": calls,
-            "future_calls": future_calls, "type_check": "passed",
+            "future_calls": future_calls, "type_check": "passed", "unary_signs": "none",
             "native_compile": "not_run"}
 
 

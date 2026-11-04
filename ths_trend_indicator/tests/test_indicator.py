@@ -6,7 +6,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from check_formula import FormulaError, Parser, check, evaluate as raw_evaluate
+from check_formula import FormulaError, Parser, check, walk, evaluate as raw_evaluate
 from compatibility import SETTINGS, normalize, variable_names
 from generate import build, core, drawing, probe, formula_source, formula_names
 
@@ -152,6 +152,56 @@ class SyntaxTests(unittest.TestCase):
         b = raw_evaluate(converted, bars(60))
         for name in ("SK", "FLAG", "RANK", "VAL", "TOTAL"):
             np.testing.assert_allclose(a[name], b[mapping[name]])
+
+    def test_rejects_negative_if_branch_from_client_screenshot(self):
+        with self.assertRaisesRegex(FormulaError, "unary sign"):
+            check("TTSTYPE:=IF(C>O,1,-1);")
+        check("TTSTYPE:=IF(C>O,1,(0-1));")
+
+    def test_all_emitted_expressions_exclude_unary_signs(self):
+        for source in (SOURCE, probe()):
+            for st in Parser(source).parse():
+                self.assertFalse(any(node[0] == "unary" for node in walk(st.expression)), st.name)
+
+    def test_all_negative_if_arguments_become_grouped_subtractions(self):
+        source = normalize("VALUE1:=IF(C>O,1,-1);VALUE2:=IF(C>O,-2,-3);VALUE3:=-1;")
+        check(source)
+        self.assertIn("IF(C>O,1,(0-1))", source)
+        self.assertIn("IF(C>O,(0-2),(0-3))", source)
+        self.assertIn(":=(0-1);", source)
+
+    def test_sign_rewrite_retains_arithmetic_precedence(self):
+        data = bars(50)
+        for expr in ("-1", "-C", "-(C+O)", "C*-2", "C- -2",
+                     "C/(-C)", "-(-C)", "IF(C>O,-1,-2)",
+                     "IF(-C<0,-1,C)", "MIN(-C,0)", "C/(-(C+O))", "+C"):
+            with self.subTest(expr=expr):
+                original = "VALUE1:="+expr+";"
+                normalized = normalize(original)
+                check(normalized)
+                a = raw_evaluate(original, data)["VALUE1"]
+                b = raw_evaluate(normalized, data)["TTVALUE1"]
+                np.testing.assert_allclose(a, b)
+
+    def test_negative_lookback_cannot_hide_inside_zero_minus_one(self):
+        with self.assertRaisesRegex(FormulaError, "negative REF"):
+            check("VALUE1:=REF(C,(0-1));")
+        for expr in ("HHV(C,(0-1))", "COUNT(C>O,(0-1))", "MA(C,3-4)", "SUM(C,0-1)"):
+            with self.subTest(expr=expr), self.assertRaisesRegex(FormulaError, "invalid literal lookback"):
+                check("VALUE1:="+expr+";")
+
+    def test_pivot_selection_simplification_matches_original_truth_table(self):
+        # Verify the actual production line 166 without relying on the renderer
+        # to compute the expected truth table.
+        st = next(st for st in Parser(SOURCE).parse() if st.name == "TTSTYPE")
+        self.assertEqual(st.expression[0:2], ("call", "IF"))
+        self.assertFalse(any(node[0] == "call" and node[1] == "IF"
+                             for node in walk(st.expression[2][0])))
+        for hs, ls, ht, lt, expected in ((1,0,4,1,1), (0,1,1,4,-1),
+                                        (1,1,1,3,1), (1,1,3,1,-1), (0,0,0,0,-1)):
+            data = bars(60)
+            e = evaluate(SOURCE, data, {"SHS":hs, "SLS":ls, "SHT":ht, "SLT":lt})
+            self.assertTrue(np.all(e["STYPE"] == expected))
 
 
 class NumericalTests(unittest.TestCase):

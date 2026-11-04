@@ -29,7 +29,8 @@ def render(node, parent=0):
     if kind == "number":
         # Scientific notation is deliberately excluded from this profile.
         v = node[1]
-        return str(int(v)) if v == int(v) else format(v, ".12f").rstrip("0").rstrip(".")
+        literal = str(int(abs(v))) if v == int(v) else format(abs(v), ".12f").rstrip("0").rstrip(".")
+        return "(0-"+literal+")" if v < 0 else literal
     if kind == "string":
         return "'"+node[1]+"'"
     if kind == "identifier":
@@ -37,8 +38,11 @@ def render(node, parent=0):
     if kind == "call":
         return node[1]+"("+",".join(render(arg) for arg in node[2])+")"
     if kind == "unary":
-        s = node[1]+render(node[2], 6)
-        return "("+s+")" if parent>6 else s
+        # The user's compiler stopped at IF(...,1,-1). Never emit a unary
+        # sign: keep binary subtraction explicitly grouped even in arguments.
+        if node[1] == "+":
+            return render(node[2], parent)
+        return "(0-"+render(node[2], PRIORITY["-"]+1)+")"
     op = node[1]
     priority = PRIORITY[op]
     # A right child of equal priority needs parentheses to retain the AST,
