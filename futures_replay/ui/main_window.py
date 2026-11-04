@@ -467,6 +467,13 @@ class MainWindow(QMainWindow):
         self._live_dirty = set()
         self._live_chart = None
         self._live_latest_text = ""
+        self._live_show_volume = bool((self.state.get("ui", {}) or {}).get("live_volume", True))
+        self._live_auto_starting = False
+        self._live_shutdown = False
+        self._live_selection_timer = QTimer(self)
+        self._live_selection_timer.setSingleShot(True)
+        self._live_selection_timer.setInterval(60)
+        self._live_selection_timer.timeout.connect(self._sync_live_view)
         self.live_controller = BackgroundLiveController(self)
         self.live_controller.statusChanged.connect(self._live_status)
         self.live_controller.saved.connect(self._live_saved)
@@ -2445,6 +2452,8 @@ class MainWindow(QMainWindow):
             self._market_load_busy = False
             if not self._any_session_playing():
                 self._schedule_main_quote_warmup(900)
+            if self._live_chart is not None and self._live_chart.isVisible():
+                self._live_selection_timer.start()
 
     def _show_data_quality(self, bars: pd.DataFrame) -> None:
         """Surface market-data mismatches instead of silently hiding them.
@@ -3346,6 +3355,8 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage(text, 15000)
 
     def _live_saved(self, message):
+        if message.get("root") and (self.repo is None or Path(message["root"]).resolve() != self.repo.root.resolve()):
+            return
         self._live_dirty.add((message["source"], message["symbol"]))
         if message["symbol"] == self.symbol:
             self._live_latest_text = f"已保存 {message['symbol']} 分钟至 {message.get('minute_latest') or '—'}；点“实时跟随”看最新"
@@ -3369,27 +3380,28 @@ class MainWindow(QMainWindow):
         dialog.exec();dialog.password.clear();dialog.deleteLater()
 
     def _live_targets_ready(self, targets):
-        if self._live_chart is not None and self._live_chart.isVisible():
-            old = self._live_chart.target
-            resolved = next((t for t in targets if old and t["source"] == old.source and t["symbol"] == old.symbol),None)
-            if resolved and resolved["tq_symbol"] != old.tq_symbol:
-                target = RealtimeTarget(self.repo.root,**resolved)
-                self._live_chart.configure(target,self._live_chart.period.currentData(),self._live_chart.chart.trend_settings)
-            else:
-                # Re-establish an already visible view after a worker restart,
-                # including a main-continuous symbol whose name is unchanged.
-                self._live_chart._request()
+        # Always use the current selection, including when a slower reply for
+        # the previously selected product arrives after the user has moved on.
+        self._sync_live_view(force=True)
 
-    def _start_background_live(self, mode):
+    def _start_background_live(self, mode, *, automatic=False):
+        if automatic and self.live_controller.process is not None:
+            return
         if self.live_controller.is_running() and self.live_controller.mode == mode:
-            self.live_controller.stop()
+            if not automatic:
+                self.live_controller.stop()
             return
         if self.repo is None:
             QMessageBox.information(self, "免费实时更新", "请先选择数据目录和品种。")
             return
         issue = component_issue()
         if issue:
-            QMessageBox.information(self, "免费实时更新", issue)
+            if automatic:
+                self._live_status(issue)
+                if self._live_chart is not None:
+                    self._live_chart._backend_status(issue)
+            else:
+                QMessageBox.information(self, "免费实时更新", issue)
             return
         try:
             config = {"mode": mode, "root": str(self.repo.root.resolve()), "source": self.source_combo.currentText()}
@@ -3406,6 +3418,8 @@ class MainWindow(QMainWindow):
                 dialog = TqLoginDialog(self)
                 try:
                     if dialog.exec() != QDialog.DialogCode.Accepted:
+                        if automatic and self._live_chart is not None:
+                            self._live_chart._backend_status("尚未登录实时行情，继续显示本地最新K线")
                         return
                     username, password = dialog.username.text().strip(), dialog.password.text()
                     dialog.password.clear()
@@ -3417,18 +3431,53 @@ class MainWindow(QMainWindow):
             self._error(exc)
 
     def _live_target(self):
-        context = self.live_controller.context
-        if context.get("root") == str(self.repo.root.resolve()):
-            resolved = next((t for t in context.get("targets",[]) if t["source"] == self.source_combo.currentText()
-                             and t["symbol"] == self.symbol),None)
-            if resolved:
-                return RealtimeTarget(self.repo.root,**resolved)
-        tq_symbol, contract = self._edb_update_target()
-        if self.source_combo.currentText() == "原始行情":
-            exchange = self._exchange_for_symbol(self.symbol) or self.exchange_combo.currentText()
-            tq_symbol = make_edb_main_symbol(exchange,self.symbol)
-            contract = "当前主力（待解析）"
-        return RealtimeTarget(self.repo.root, self.source_combo.currentText(), self.symbol, contract, tq_symbol)
+        source = self.source_combo.currentText()
+        resolved = self.live_controller.resolved_target(self.repo.root, source, self.symbol)
+        if resolved:
+            return resolved
+        exchange = self._exchange_for_symbol(self.symbol) or self.exchange_combo.currentText()
+        tq_symbol = make_edb_main_symbol(exchange, self.symbol)
+        contract = "当前主力（待解析）"
+        if source == "主力连续":
+            contracts = self.repo.list_contracts(self.symbol, "1d", source) or self.repo.list_contracts(self.symbol, "1min", source)
+            contract = next((name for name in contracts if self._is_unadjusted_main_sequence_name(name)), "主连")
+        return RealtimeTarget(self.repo.root, source, self.symbol, contract, tq_symbol)
+
+    def _sync_live_view(self, *, force=False, initial=False):
+        if self._live_shutdown or self._live_chart is None or not self._live_chart.isVisible() or not self.repo or not self.symbol:
+            return
+        try:
+            target = self._live_target()
+            history_target = target
+            if target.contract == "当前主力（待解析）" and self.panels:
+                local_contract = self.panels[0].contract.currentText()
+                if local_contract:
+                    history_target = RealtimeTarget(target.root, target.source, target.symbol, local_contract, target.tq_symbol)
+            live = self._live_chart
+            if force or live.target != target or live._history_target != history_target:
+                panel = self.panels[0]
+                period = panel.period.currentText() if initial else live.period.currentData()
+                settings = panel.chart.trend_settings if initial else live.chart.trend_settings
+                live.configure(target, period, settings, history_target=history_target)
+        except Exception as exc:
+            self._live_chart._backend_status(str(exc))
+
+    def _ensure_live_connection(self):
+        if (self._live_shutdown or self._live_auto_starting or self._live_chart is None or not self._live_chart.isVisible()):
+            return
+        if self.live_controller.process is not None:
+            if self.live_controller._stop_requested:
+                QTimer.singleShot(150, self._ensure_live_connection)
+            return
+        self._live_auto_starting = True
+        try:
+            self._start_background_live("current", automatic=True)
+        finally:
+            self._live_auto_starting = False
+
+    def _live_volume_changed(self, visible):
+        self._live_show_volume = bool(visible)
+        self._schedule_save()
 
     def _toggle_live_view(self, checked):
         if not checked:
@@ -3437,18 +3486,15 @@ class MainWindow(QMainWindow):
                 self.live_controller.request_view(enabled=False)
             return
         try:
-            target = self._live_target()
             if self._live_chart is None:
                 self._live_chart = LiveChartDialog(self.live_controller, self)
                 self._live_chart.closed.connect(self._live_view_closed)
-            panel = self.panels[0]
-            history_target = target
-            if target.contract == "当前主力（待解析）":
-                _, local_contract = self._edb_update_target()
-                history_target = RealtimeTarget(target.root, target.source, target.symbol, local_contract, target.tq_symbol)
-            self._live_chart.configure(target, panel.period.currentText(), panel.chart.trend_settings,
-                                       history_target=history_target)
+                self._live_chart.volume.setChecked(self._live_show_volume)
+                self._live_chart.volume.toggled.connect(self._live_volume_changed)
+            self._live_chart.show()
+            self._sync_live_view(force=True, initial=True)
             self._live_chart.raise_()
+            QTimer.singleShot(0, self._ensure_live_connection)
         except Exception as exc:
             self.live_view_action.setChecked(False)
             self._error(exc)
@@ -4517,6 +4563,7 @@ class MainWindow(QMainWindow):
                 "speed": self.speed.value(),
                 "speed_seconds": self._speed_seconds(),
                 "follow": self.follow.isChecked(),
+                "live_volume": self._live_show_volume,
                 "windows": len(self.panels),
                 "splitter": self.main_split.sizes(),
                 "chart_splitter": self.chart_split.sizes(),
@@ -4543,6 +4590,8 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(0, self._apply_top_replay_order)
 
     def closeEvent(self, event):
+        self._live_shutdown = True
+        self._live_selection_timer.stop()
         self.live_controller.shutdown()
         self.play_timer.stop()
         self.save_timer.stop()

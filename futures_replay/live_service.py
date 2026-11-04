@@ -111,6 +111,44 @@ def preview_payload(snapshot, period):
             "day_close_seconds": snapshot.day_close_seconds}
 
 
+def target_info(target):
+    return dict(root=str(target.root.resolve()), source=target.source, symbol=target.symbol,
+                contract=target.contract, tq_symbol=target.tq_symbol)
+
+
+def subscribe_target(api, target):
+    quote = api.get_quote(target.tq_symbol)
+    serials = {key: api.get_kline_serial(target.tq_symbol, LIVE_PERIODS[key],
+               data_length=LIVE_HISTORY_BARS) for key in ("1min", "1d")}
+    return dict(target=target, quote=quote, serials=serials, signature=None,
+                fingerprints={}, next_check=0.)
+
+
+def activate_view_target(api, active, descriptor, mode):
+    config = {**descriptor, "mode": "current"}
+    if config["source"] == "原始行情":
+        config["main_symbol"] = (config["tq_symbol"] if config["tq_symbol"].startswith("KQ.m@") else
+                                 make_edb_main_symbol(config["tq_symbol"].split(".")[0], config["symbol"]))
+    target = resolve_targets(api, config)[0]
+    key = target_info(target)
+    item = next((s for s in active if target_info(s["target"]) == key), None)
+    if item is None:
+        item = subscribe_target(api, target)
+    if mode == "current":
+        changed = len(active) != 1 or active[0] is not item
+        active[:] = [item]
+    else:
+        # Keep the configured all-products collection. At most one extra
+        # product from another source/library is added for the visible view.
+        kept = [s for s in active if not s.get("view_only") or s is item]
+        changed = len(kept) != len(active)
+        if not any(s is item for s in kept):
+            item["view_only"] = True
+            kept.append(item); changed = True
+        active[:] = kept
+    return item, changed
+
+
 def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
     lower_priority()
     commands = command_queue or queue.Queue()
@@ -142,11 +180,7 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
                 break
             try:
                 emit("status", text=f"正在获取 {target.symbol} 行情与最近最多10000根K线（{i+1}/{len(targets)}）…")
-                quote = api.get_quote(target.tq_symbol)
-                serials = {key: api.get_kline_serial(target.tq_symbol, LIVE_PERIODS[key],
-                    data_length=LIVE_HISTORY_BARS) for key in ("1min", "1d")}
-                active.append({"target": target, "quote": quote, "serials": serials,
-                               "signature": None, "fingerprints": {}, "next_check": 0.})
+                active.append(subscribe_target(api, target))
                 emit("status", text=f"后台订阅 {i+1}/{len(targets)}：{target.symbol}")
             except Exception as exc:
                 emit("status", text=f"{target.symbol}订阅未完成：{safe_error(exc,secrets)}；其他品种继续更新")
@@ -154,37 +188,47 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
             commands.put(command)
         if not active and not stopped.is_set():
             raise ValueError("未建立有效订阅，请检查网络及当前合约")
-        emit("started", count=len(active), mode=config["mode"], targets=[dict(
-            source=x["target"].source,symbol=x["target"].symbol,contract=x["target"].contract,
-            tq_symbol=x["target"].tq_symbol) for x in active])
+        emit("started", count=len(active), mode=config["mode"],
+             targets=[target_info(x["target"]) for x in active])
         cursor, last_health = 0, 0.
         while not stopped.is_set():
+            requested_view = None
             while not commands.empty():
                 command = commands.get_nowait()
                 if command.get("command") == "stop":
                     stopped.set(); break
                 if command.get("command") == "view":
-                    symbol, period = command.get("tq_symbol"), command.get("period", "1min")
-                    if period not in LIVE_PERIODS:
-                        period = "1d"
-                    try:
-                        if not command.get("enabled", True):
-                            view = None; continue
-                        view = None
+                    requested_view = command
+            if stopped.is_set():
+                break
+            if requested_view is not None:
+                command = requested_view
+                symbol, period = command.get("tq_symbol"), command.get("period", "1min")
+                if period not in LIVE_PERIODS:
+                    period = "1d"
+                try:
+                    view = None
+                    if command.get("enabled", True):
                         emit("view_status", tq_symbol=symbol, period=period,
                              text=f"正在订阅 {symbol} 的实时K线…")
-                        source = next((item for item in active if item["target"].tq_symbol == symbol), None)
+                        descriptor = command.get("target")
+                        if descriptor:
+                            source, changed = activate_view_target(api, active, descriptor, config["mode"])
+                            symbol = source["target"].tq_symbol
+                            if changed or symbol != command.get("tq_symbol"):
+                                emit("targets", targets=[target_info(x["target"]) for x in active])
+                        else:
+                            source = next((item for item in active if item["target"].tq_symbol == symbol), None)
                         quote = source["quote"] if source else api.get_quote(symbol)
                         daily = source["serials"]["1d"] if source else api.get_kline_serial(symbol, 86400, data_length=LIVE_HISTORY_BARS)
                         native = (source["serials"][period] if source and period in source["serials"]
                                   else api.get_kline_serial(symbol, LIVE_PERIODS[period], data_length=LIVE_HISTORY_BARS))
                         view = {"symbol": symbol, "period": period, "serials": {"1d": daily, period: native},
                                 "quote": quote, "requested": time.monotonic(), "last_notice": 0.}
-                    except Exception as exc:
-                        emit("view_error", tq_symbol=symbol, period=period,
-                             text=f"{symbol}实时图订阅未完成：{safe_error(exc,secrets)}；后台采集继续运行")
-            if stopped.is_set():
-                break
+                        last_preview = 0.
+                except Exception as exc:
+                    emit("view_error", tq_symbol=symbol, period=period,
+                         text=f"{symbol}实时图订阅未完成：{safe_error(exc,secrets)}；后台采集继续运行")
             api.wait_update(deadline=time.time()+.25)
             now = time.monotonic()
             if view and now-last_preview >= 1:
@@ -243,7 +287,7 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
                                 item["signature"] = signature
                                 if stats["changed"]:
                                     target = item["target"]
-                                    emit("saved", source=target.source, symbol=target.symbol, contract=target.contract,
+                                    emit("saved", root=str(target.root.resolve()), source=target.source, symbol=target.symbol, contract=target.contract,
                                          minute_latest=stats["minute_latest"], daily_latest=stats["daily_latest"])
                             except Exception as exc:
                                 emit("status", text=f"{item['target'].symbol}保存未完成：{safe_error(exc,secrets)}；稍后重试")

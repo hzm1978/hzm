@@ -10,6 +10,7 @@ from PySide6.QtCore import QObject, QProcess, QTimer, Signal, Slot
 from PySide6.QtWidgets import (QCheckBox, QDialog, QDialogButtonBox, QFormLayout, QLabel,
                               QLineEdit, QVBoxLayout)
 from ..local_login import LocalLoginStore
+from ..realtime_data import RealtimeTarget
 
 
 def component_issue():
@@ -92,6 +93,7 @@ class BackgroundLiveController(QObject):
         self._configured = False
         self._view_request = None
         self._stop_requested = False
+        self._resolved_targets = {}
         self._program = program or sys.executable
         self._arguments = arguments or ["-X", "utf8", "-u", "-m", "futures_replay.live_service"]
         self._guard = QTimer(self); self._guard.setSingleShot(True); self._guard.setInterval(8000)
@@ -117,6 +119,7 @@ class BackgroundLiveController(QObject):
         self._configured = False
         self._view_request = None
         self._stop_requested = False
+        self._resolved_targets.clear()
         process = QProcess(self)
         self.process = process
         process.setWorkingDirectory(str(Path(__file__).resolve().parents[2]))
@@ -149,12 +152,29 @@ class BackgroundLiveController(QObject):
         self.last_status = text
         self.statusChanged.emit(text)
 
-    def request_view(self, tq_symbol=None, period="1min", *, enabled=True):
+    def request_view(self, tq_symbol=None, period="1min", *, enabled=True, target=None):
         # Keep only the latest selection while starting; closing the view
         # must also replace a queued enable rather than open it later.
         self._view_request = {"command": "view", "enabled": enabled,
                               "tq_symbol": tq_symbol, "period": period}
+        if target is not None and enabled:
+            self._view_request["target"] = dict(root=str(target.root.resolve()), source=target.source,
+                symbol=target.symbol, contract=target.contract, tq_symbol=target.tq_symbol)
         self._send(self._view_request)
+
+    def resolved_target(self, root, source, symbol):
+        info = self._resolved_targets.get((str(Path(root).resolve()), source, symbol))
+        return RealtimeTarget(Path(root), **info) if info else None
+
+    def _remember_targets(self, message):
+        self.context["targets"] = message.get("targets", [])
+        for item in self.context["targets"]:
+            root = item.get("root", message.get("root", self.context.get("root")))
+            if root is None:
+                continue
+            info = {key: item[key] for key in ("source", "symbol", "contract", "tq_symbol")}
+            self._resolved_targets[(str(Path(root).resolve()), info["source"], info["symbol"])] = info
+        self.targetsReady.emit(self.context["targets"])
 
     def stop(self, *, cancel_pending=True):
         if cancel_pending:
@@ -182,10 +202,10 @@ class BackgroundLiveController(QObject):
             kind = message.get("kind")
             if kind == "saved":
                 self.saved.emit(message)
-            elif kind == "started":
-                self.context["targets"] = message.get("targets",[])
-                self.targetsReady.emit(self.context["targets"])
-                self._status(f"已连接免费实时行情 · {message.get('count',0)}个品种；勾选“实时跟随”看最新K线")
+            elif kind in {"started", "targets"}:
+                self._remember_targets(message)
+                if kind == "started":
+                    self._status(f"已连接免费实时行情 · {message.get('count',0)}个品种；勾选“实时跟随”看最新K线")
             elif kind == "preview":
                 latest_preview = message
             elif kind in {"view_status", "view_error"}:

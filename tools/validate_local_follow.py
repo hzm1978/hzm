@@ -17,6 +17,7 @@ from PySide6.QtCore import QCoreApplication,QEvent
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QApplication
 from futures_replay.ui.main_window import MainWindow
+from futures_replay import __version__
 from test_local_follow import bars,write_local
 
 
@@ -41,6 +42,7 @@ def validate(output):
              patch('futures_replay.ui.main_window.save_state'), \
              patch('futures_replay.ui.main_window.save_replay_heads'), \
              patch('futures_replay.ui.main_window.save_main_list_sort'), \
+             patch('futures_replay.ui.main_window.component_issue',return_value='构造测试：后台组件不可用，继续显示本地'), \
              patch.object(MainWindow,'_error',lambda self,error:errors.append(str(error))):
             window=MainWindow(root);window.resize(1400,950)
             window.source_combo.setCurrentText('主力连续')
@@ -52,13 +54,13 @@ def validate(output):
             # Open without logging in or starting a background process.
             window.live_view_action.setChecked(True)
             spin(lambda:window._live_chart is not None and not window._live_chart.chart.df.empty)
-            live=window._live_chart;live.title.setText('【v8.2.0 构造行情：无后台/休市显示验证】 '+live.title.text())
+            live=window._live_chart;live.title.setText(f'【v{__version__} 构造行情：无后台/休市显示验证】 '+live.title.text())
             live.resize(1250,800);app.processEvents();live.grab().save(str(output/'local_daily.png'))
             assert live.chart.df.datetime.iloc[-1]==day.datetime.iloc[-1]
             assert live.chart.current_idx==len(day)-1
             assert live.chart._end==len(day) and live.chart.end_offset==0 and live.chart.follow_latest
             assert live.chart._index_x(len(day)-1)>live.chart.width()*.85
-            assert 'v8.2.0' in live.windowTitle() and '本地最新K线' in live.status.text()
+            assert f'v{__version__}' in live.windowTitle() and '本地最新K线' in live.status.text()
             latest_day=str(live.chart.df.datetime.iloc[-1])
             window.live_controller.statusChanged.emit('连接未完成（构造错误测试）；已有K线保留')
             app.processEvents();assert not live.chart.df.empty
@@ -80,7 +82,7 @@ def validate(output):
     sys.argv[:]=old_argv
     result=dict(result='passed',pandas=pd.__version__,data='构造IF行情；未实际联网、未启动后台进程',
         latest_day=latest_day,latest_minute=latest_minute,checks=['无后台也能打开','本地最新K线位于最右端',
-        '连接失败保留K线并显示原因','切换周期读取本地最新','原复盘引擎/时刻/账户不变','实时窗口显示v8.2.0'])
+        '连接失败保留K线并显示原因','切换周期读取本地最新','原复盘引擎/时刻/账户不变',f'实时窗口显示v{__version__}'])
     (output/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(result,ensure_ascii=False))
 

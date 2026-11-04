@@ -11,6 +11,7 @@ import pandas as pd
 from PySide6.QtCore import QCoreApplication, QEvent, QTimer
 from PySide6.QtWidgets import QApplication
 
+from futures_replay import __version__
 from futures_replay.data_repo import DataRepository
 from futures_replay.live_store import period_folder
 from futures_replay.realtime_data import RealtimeTarget
@@ -111,7 +112,7 @@ class LocalFollowTests(unittest.TestCase):
                 self.assertGreater(view.chart._index_x(len(frame)-1),view.chart.width()*.85)
                 self.assertIsNone(view.chart.partial)
                 self.assertIn('本地最新K线',view.status.text())
-                self.assertIn('v8.2.0',view.windowTitle())
+                self.assertIn(f'v{__version__}',view.windowTitle())
             finally:self.dispose(controller,view)
 
     def test_connection_error_does_not_prevent_the_local_history_from_appearing(self):

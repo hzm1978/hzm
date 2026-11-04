@@ -87,6 +87,8 @@ def validate(output):
              patch("futures_replay.ui.main_window.save_main_list_sort"), \
              patch("futures_replay.ui.main_window.BackgroundLiveController", side_effect=controller_factory), \
              patch("futures_replay.ui.main_window.component_issue", return_value=""), \
+             patch("futures_replay.ui.background_live.LocalLoginStore",
+                   **{"return_value.available": False, "return_value.load.return_value": None}), \
              patch.object(MainWindow, "_error", lambda self, exc: errors.append(str(exc))):
             window = MainWindow(root); window.resize(1500, 1000)
             window.source_combo.setCurrentText("主力连续")

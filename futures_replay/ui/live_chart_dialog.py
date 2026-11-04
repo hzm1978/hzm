@@ -40,6 +40,7 @@ class LiveChartDialog(QDialog):
             self.period.addItem(label, code)
         row.addWidget(self.period)
         self.trend = QCheckBox("趋势交易"); self.trend.setChecked(True); row.addWidget(self.trend)
+        self.volume = QCheckBox("成交量"); self.volume.setChecked(True); row.addWidget(self.volume)
         details = QPushButton("指标明细"); details.clicked.connect(self._details); row.addWidget(details)
         row.addStretch(); layout.addLayout(row)
         self.status = QLabel("等待后台行情…"); self.status.setWordWrap(True); layout.addWidget(self.status)
@@ -50,6 +51,7 @@ class LiveChartDialog(QDialog):
         note.setWordWrap(True); layout.addWidget(note)
         self.period.currentIndexChanged.connect(self._request)
         self.trend.toggled.connect(self.chart.set_trend_visible)
+        self.volume.toggled.connect(self.chart.set_volume_visible)
         self.controller.previewReady.connect(self._preview)
         self.controller.statusChanged.connect(self._backend_status)
         self.controller.viewStatusChanged.connect(self._view_status)
@@ -89,7 +91,7 @@ class LiveChartDialog(QDialog):
                                   if self.controller.is_running() else "后台未启动，显示已有本地K线")
             self._refresh_status()
             self.history.request(self._history_target, period, self._request_token)
-            self.controller.request_view(self.target.tq_symbol, period)
+            self.controller.request_view(self.target.tq_symbol, period, target=self.target)
 
     def _refresh_status(self):
         parts = [self._data_text, "" if self._data_text else self._local_note, self._network_text]
