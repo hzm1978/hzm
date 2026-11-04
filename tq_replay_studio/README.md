@@ -1,6 +1,6 @@
-# 天勤复盘工作台 1.0
+# 天勤复盘工作台 1.0.1
 
-[下载完整源码ZIP](https://github.com/hzm1978/hzm/raw/refs/heads/feat/tq-replay-studio/tq_replay_studio_v1_0_source.zip)
+[下载完整源码ZIP](https://github.com/hzm1978/hzm/raw/refs/heads/feat/tq-replay-studio/tq_replay_studio_v1_0_1_source.zip)
 
 一套独立的 Python／PySide6 桌面软件，以 **天勤 TqSdk API** 为行情、合约目录、历史回放和实时交易接口。完整源码、测试、安装脚本及规则说明都在本目录；可以单独解压运行，不依赖旧复盘程序或旧行情目录。
 
@@ -14,13 +14,15 @@
 
 **实盘连接代码已实现，但没有使用用户真实资金账号联机或发送真实委托。** 实盘界面默认锁定，需要本机输入资金账号和交易密码、明确解锁、逐单确认；详情见 [交易接入说明](docs/交易接入说明.md)。
 
+本次修复：[PySide6缺失及Python版本不兼容](docs/启动修复说明.md)。
+
 ## 安装与启动
 
-推荐 Windows 10／11、64位 Python 3.12；要求 Python 3.11—3.13。第一次使用：
+推荐 Windows 10／11。程序环境使用64位 Python 3.11—3.13，启动器可从已有较新或较旧Python中运行并自动准备兼容环境。第一次使用：
 
 1. 完整解压源码文件夹。
-2. 运行 **安装依赖.bat**。
-3. 运行 **启动工作台.bat**。
+2. 直接运行 **启动工作台.bat**；首次自动检查并安装依赖。
+3. 也可先运行 **安装依赖.bat**，成功后再启动。
 4. 点击 **连接天勤** 填天勤／快期账号。可先点 **演示行情**，无需账号体验界面。
 
 命令行：
@@ -30,6 +32,8 @@ python -m pip install -r requirements.txt
 python run.py
 python run.py --demo
 ~~~
+
+若原来的.venv版本不兼容，启动器保留原目录，创建.venv-studio专用环境。没有兼容Python时从Python官方NuGet下载固定版本3.13.17（约15MB），核对SHA-256后使用，不修改系统Python。安装日志为setup.log；默认包源失败会改用清华HTTPS镜像重试。Qt仅安装本程序需要的PySide6-Essentials，减少下载。
 
 源码不是独立exe；可用 **构建Windows.bat** 在Windows本机构建。该构建保留控制台以支持后台进程标准输入输出；云端没有执行Windows安装器、DPAPI系统调用或exe构建。
 

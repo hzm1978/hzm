@@ -1,0 +1,27 @@
+{
+  "version": "3.13.17",
+  "publisher": "Python Software Foundation",
+  "url": "https://api.nuget.org/v3-flatcontainer/python/3.13.17/python.3.13.17.nupkg",
+  "sha256": "dce409744b088f94c6e37ba41f8100c384c27e029e843237364c602d30d475e5",
+  "bytes": 14826465,
+  "checks": [
+    "actual HTTPS download",
+    "SHA256 matched pinned value",
+    "extract_runtime completed",
+    "python.exe/venv/ensurepip payload present"
+  ],
+  "windows_executed": false,
+  "python_313_linux_runtime": "3.13.5",
+  "qt": "PySide6-Essentials 6.12.0 without full PySide6 distribution",
+  "tests": 170,
+  "launcher_smoke": {
+    "status": "passed",
+    "base_python": "3.12",
+    "selected_project_python": "3.13.5",
+    "path_contains_spaces_and_chinese": true,
+    "old_environment_preserved": true,
+    "qt_selftest": "passed",
+    "qt_distribution": "PySide6-Essentials only",
+    "windows_executed": false
+  }
+}

@@ -1,11 +1,25 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-if not exist ".venv\Scripts\python.exe" goto install_first
-".venv\Scripts\python.exe" run.py
-if errorlevel 1 pause
-exit /b
-:install_first
-echo 请先运行本目录的安装依赖.bat，创建独立运行环境。
+if exist ".venv-studio\Scripts\python.exe" goto managed
+if exist ".venv\Scripts\python.exe" goto local
+where py >nul 2>nul
+if not errorlevel 1 goto launcher
+python bootstrap.py %*
+goto finished
+:managed
+".venv-studio\Scripts\python.exe" bootstrap.py %*
+goto finished
+:local
+".venv\Scripts\python.exe" bootstrap.py %*
+goto finished
+:launcher
+py -3 bootstrap.py %*
+:finished
+set "TQ_STUDIO_EXIT=%ERRORLEVEL%"
+if "%TQ_STUDIO_EXIT%"=="0" goto success
+echo 未完成。请查看上方具体原因，安装日志为本目录 setup.log。
 pause
-exit /b 1
+exit /b %TQ_STUDIO_EXIT%
+:success
+exit /b 0

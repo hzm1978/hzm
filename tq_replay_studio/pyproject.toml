@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tq-replay-studio"
-version = "1.0.0"
+version = "1.0.1"
 description = "天勤接口驱动的期货复盘、图表与模拟交易桌面工作台"
 requires-python = ">=3.11,<3.14"
 dynamic = ["dependencies"]

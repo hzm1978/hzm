@@ -1,28 +1,26 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-if exist ".venv\Scripts\python.exe" goto install
-py -3.12 -m venv .venv
-if not errorlevel 1 goto install
-py -3 -m venv .venv
-if not errorlevel 1 goto install
-python -m venv .venv
-if errorlevel 1 goto failed
-:install
-".venv\Scripts\python.exe" -c "import sys;sys.exit(0 if (3,11) <= sys.version_info[:2] < (3,14) else 1)"
-if errorlevel 1 goto version_error
-".venv\Scripts\python.exe" -m pip install --upgrade pip
-if errorlevel 1 goto failed
-".venv\Scripts\python.exe" -m pip install -r requirements.txt
-if errorlevel 1 goto failed
-echo 安装完成。请运行启动工作台.bat。
+if exist ".venv-studio\Scripts\python.exe" goto managed
+if exist ".venv\Scripts\python.exe" goto local
+where py >nul 2>nul
+if not errorlevel 1 goto launcher
+python bootstrap.py --install %*
+goto finished
+:managed
+".venv-studio\Scripts\python.exe" bootstrap.py --install %*
+goto finished
+:local
+".venv\Scripts\python.exe" bootstrap.py --install %*
+goto finished
+:launcher
+py -3 bootstrap.py --install %*
+:finished
+set "TQ_STUDIO_EXIT=%ERRORLEVEL%"
+if "%TQ_STUDIO_EXIT%"=="0" goto success
+echo 未完成。请查看上方具体原因，安装日志为本目录 setup.log。
+pause
+exit /b %TQ_STUDIO_EXIT%
+:success
 pause
 exit /b 0
-:version_error
-echo 需要 Python 3.11至3.13，推荐64位3.12。请安装后重新创建本软件的.venv。
-pause
-exit /b 1
-:failed
-echo 安装未完成，请检查Python及网络。错误信息见上方。
-pause
-exit /b 1

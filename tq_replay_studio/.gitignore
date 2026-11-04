@@ -8,3 +8,7 @@ dist/
 *.sqlite3-wal
 *.sqlite3-shm
 validation/
+*.log
+.venv-studio*/
+.python-tq/
+.tq-runtime.json
