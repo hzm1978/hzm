@@ -3,14 +3,36 @@ from __future__ import annotations
 import importlib.util
 import importlib.metadata
 import json
+from collections import deque
 from pathlib import Path
+import re
 import sys
+import time
 
 from PySide6.QtCore import QObject, QProcess, QTimer, Signal, Slot
 from PySide6.QtWidgets import (QCheckBox, QDialog, QDialogButtonBox, QFormLayout, QLabel,
                               QLineEdit, QVBoxLayout)
 from ..local_login import LocalLoginStore
-from ..realtime_data import RealtimeTarget
+from .. import __version__
+from ..realtime_data import RealtimeTarget, shanghai_time
+
+
+def background_python(executable):
+    path = Path(executable)
+    # pythonw on Windows can have no usable standard streams. The worker's
+    # JSON protocol requires the console interpreter from the same environment.
+    return str(path.with_name("python.exe")) if path.name.lower() == "pythonw.exe" else str(executable)
+
+
+def redact_diagnostic(value, secrets=()):
+    text = str(value)
+    for secret in sorted({str(s) for s in secrets if s}, key=len, reverse=True):
+        text = text.replace(secret, "[已隐藏]")
+        text = text.replace(json.dumps(secret, ensure_ascii=True)[1:-1], "[已隐藏]")
+    text = re.sub(r"(?i)(Bearer\s+)[A-Za-z0-9._~+/=-]+", r"\1[已隐藏]", text)
+    text = re.sub(r"(?i)(https?://)[^/@\s]+:[^/@\s]+@", r"\1[已隐藏]@", text)
+    text = re.sub(r'''(?i)(["']?(?:password|passwd|access_token|refresh_token|token|client_secret)["']?\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;}]+)''', r"\1[已隐藏]", text)
+    return re.sub(r"\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b", "[已隐藏]", text)
 
 
 def component_issue():
@@ -80,8 +102,9 @@ class BackgroundLiveController(QObject):
     viewStatusChanged = Signal(object)
     runningChanged = Signal(bool)
     targetsReady = Signal(object)
+    connectionTick = Signal()
 
-    def __init__(self, parent=None, *, program=None, arguments=None):
+    def __init__(self, parent=None, *, program=None, arguments=None, connection_timeout_ms=90000):
         super().__init__(parent)
         self.process = None
         self.mode = ""
@@ -94,8 +117,24 @@ class BackgroundLiveController(QObject):
         self._view_request = None
         self._stop_requested = False
         self._resolved_targets = {}
-        self._program = program or sys.executable
+        self._program = background_python(program or sys.executable)
         self._arguments = arguments or ["-X", "utf8", "-u", "-m", "futures_replay.live_service"]
+        self._events = deque(maxlen=80)
+        self._redact_values = ()
+        self._stderr_tail = ""
+        self._stderr_buffer = b""
+        self._worker_info = {}
+        self._service_ready = False
+        self._collection_started = False
+        self._started_at = self._view_requested_at = 0.
+        self._last_preview_info = None
+        self._last_view_text = ""
+        self._phase_text = "后台行情尚未启动"
+        self._connection_guard = QTimer(self); self._connection_guard.setSingleShot(True)
+        self._connection_guard.setInterval(connection_timeout_ms)
+        self._connection_guard.timeout.connect(self._connection_timeout)
+        self._connection_clock = QTimer(self); self._connection_clock.setInterval(1000)
+        self._connection_clock.timeout.connect(self.connectionTick.emit)
         self._guard = QTimer(self); self._guard.setSingleShot(True); self._guard.setInterval(8000)
         self._guard.timeout.connect(self._force_stop)
 
@@ -119,7 +158,18 @@ class BackgroundLiveController(QObject):
         self._configured = False
         self._view_request = None
         self._stop_requested = False
-        self._resolved_targets.clear()
+        # Keep known market identities while a replacement worker connects.
+        # Raw-contract requests still re-resolve the actual main in the worker.
+        self._redact_values = (payload.get("username", ""), payload.get("password", ""))
+        self._stderr_tail = ""
+        self._stderr_buffer = b""
+        self._worker_info = {}
+        self._service_ready = False
+        self._collection_started = False
+        self._last_preview_info = None
+        self._last_view_text = ""
+        self._started_at = time.monotonic()
+        self._phase_text = "正在启动后台实时行情…"
         process = QProcess(self)
         self.process = process
         process.setWorkingDirectory(str(Path(__file__).resolve().parents[2]))
@@ -130,6 +180,8 @@ class BackgroundLiveController(QObject):
         process.finished.connect(self._finished)
         self._status("正在启动后台实时行情…")
         process.start(self._program, self._arguments)
+        self._connection_guard.start()
+        self._connection_clock.start()
         self.runningChanged.emit(True)
 
     @Slot()
@@ -149,8 +201,55 @@ class BackgroundLiveController(QObject):
             self.process.write((json.dumps(value, ensure_ascii=False)+"\n").encode("utf-8"))
 
     def _status(self, text):
-        self.last_status = text
-        self.statusChanged.emit(text)
+        self.last_status = redact_diagnostic(text, self._redact_values)
+        self._event("状态", self.last_status)
+        self.statusChanged.emit(self.last_status)
+        self.connectionTick.emit()
+
+    def _event(self, kind, text):
+        self._events.append(f"{shanghai_time():%H:%M:%S} {kind}：{redact_diagnostic(text, self._redact_values)[:1200]}")
+
+    def connection_summary(self):
+        if self._last_error:
+            return "实时连接："+self._last_error
+        if not self.is_running():
+            return self.last_status
+        if self._stop_requested:
+            return self.last_status
+        elapsed = max(0, int(time.monotonic()-self._started_at))
+        if not self._service_ready:
+            return f"实时连接：{self._phase_text}（已等待{elapsed}秒）"
+        if not self._collection_started:
+            return f"SDK初始化完成；{self._phase_text}（已等待{elapsed}秒）"
+        wanted = self._view_request or {}
+        info = self._last_preview_info
+        if info and info["symbol"] == wanted.get("tq_symbol") and info["period"] == wanted.get("period") and info["rows"]:
+            return f"服务器报价时间：{info['quote_time'] or '尚未返回'}；服务器K线截至：{info['last_bar']}"
+        wait = max(0, int(time.monotonic()-self._view_requested_at)) if self._view_requested_at else 0
+        return f"订阅已建立；{self._last_view_text or '等待当前合约K线'}（等待{wait}秒）"
+
+    def diagnostic_text(self):
+        info = self._worker_info
+        lines = [f"期货复盘训练系统 v{__version__}", f"本机北京时间：{shanghai_time()}",
+                 f"后台程序：{self._program}", f"后台运行：{self.is_running()}",
+                 f"连接状态：{self.connection_summary()}", f"最近错误：{self._last_error or '无'}",
+                 f"后台Python：{info.get('python', '尚未回报')}",
+                 f"后台组件：Python {info.get('python_version', '—')} / SDK {info.get('sdk', '—')} / pandas {info.get('pandas', '—')}"]
+        wanted = self._view_request or {}
+        lines += [f"当前订阅：{wanted.get('tq_symbol', '—')} / {wanted.get('period', '—')}", "", "最近连接事件（凭据已脱敏）：", *self._events]
+        lines.insert(8, "最后预览摘要："+json.dumps(self._last_preview_info,ensure_ascii=False))
+        lines.insert(4, f"后台PID：{self.process.processId() if self.process is not None else 0}")
+        return redact_diagnostic("\n".join(lines), self._redact_values)
+
+    def _connection_timeout(self):
+        if self.process is None or self._service_ready or self._stop_requested:
+            return
+        seconds = self._connection_guard.interval()/1000
+        self._last_error = f"实时连接超过{seconds:g}秒，停在“{self._phase_text}”。请点重新连接或查看连接详情中的具体错误。"
+        self._stop_requested = True
+        self._send({"command": "stop"})
+        self._guard.start()
+        self._status(self._last_error)
 
     def request_view(self, tq_symbol=None, period="1min", *, enabled=True, target=None):
         # Keep only the latest selection while starting; closing the view
@@ -160,7 +259,10 @@ class BackgroundLiveController(QObject):
         if target is not None and enabled:
             self._view_request["target"] = dict(root=str(target.root.resolve()), source=target.source,
                 symbol=target.symbol, contract=target.contract, tq_symbol=target.tq_symbol)
+        self._view_requested_at = time.monotonic()
+        self._last_view_text = "正在请求当前合约K线"
         self._send(self._view_request)
+        self.connectionTick.emit()
 
     def resolved_target(self, root, source, symbol):
         info = self._resolved_targets.get((str(Path(root).resolve()), source, symbol))
@@ -200,39 +302,81 @@ class BackgroundLiveController(QObject):
             except (ValueError, UnicodeError):
                 continue
             kind = message.get("kind")
-            if kind == "saved":
+            if kind == "hello":
+                self._worker_info = {key: message.get(key, "—") for key in ("python", "python_version", "sdk", "pandas")}
+                self._event("后台", f"已启动：{self._worker_info}")
+            elif kind == "saved":
                 self.saved.emit(message)
             elif kind in {"started", "targets"}:
                 self._remember_targets(message)
                 if kind == "started":
+                    self._service_ready = True
+                    self._collection_started = True
+                    self._connection_guard.stop()
                     self._status(f"已连接免费实时行情 · {message.get('count',0)}个品种；勾选“实时跟随”看最新K线")
             elif kind == "preview":
                 latest_preview = message
             elif kind in {"view_status", "view_error"}:
                 self.viewStatusChanged.emit(message)
                 requested = self._view_request or {}
+                if message.get("tq_symbol") == requested.get("tq_symbol") and message.get("period") == requested.get("period"):
+                    self._last_view_text = redact_diagnostic(message.get("text", ""), self._redact_values)
+                    self._event("订阅", self._last_view_text)
+                    self.connectionTick.emit()
                 if (kind == "view_error" and requested.get("enabled")
                         and message.get("tq_symbol") == requested.get("tq_symbol")
                         and message.get("period") == requested.get("period")):
                     self._status(str(message.get("text", "")))
             elif kind in {"status", "error"}:
+                if message.get("stage"):
+                    self._phase_text = redact_diagnostic(message.get("text", ""), self._redact_values)
+                    if message["stage"] == "api_ready":
+                        self._service_ready = True
+                        self._connection_guard.stop()
                 if kind == "error":
-                    self._last_error = str(message.get("text", ""))
+                    self._last_error = redact_diagnostic(message.get("text", ""), self._redact_values)
                 self._status(str(message.get("text", "")))
         if len(self._buffer) > 4_000_000:
             self._buffer = b""
         if latest_preview is not None:
+            bars = latest_preview.get("bars", [])
+            self._last_preview_info = dict(symbol=latest_preview.get("tq_symbol"),period=latest_preview.get("period"),
+                quote_time=latest_preview.get("quote_time"),rows=len(bars),last_bar=bars[-1].get("datetime") if bars else "—")
             self.previewReady.emit(latest_preview)
+            self.connectionTick.emit()
 
     @Slot()
-    def _discard_stderr(self):
+    def _discard_stderr(self, flush=False):
         if self.process is not None:
-            self.process.readAllStandardError()
+            self._stderr_buffer += bytes(self.process.readAllStandardError())
+            while b"\n" in self._stderr_buffer:
+                line, self._stderr_buffer = self._stderr_buffer.split(b"\n", 1)
+                self._keep_stderr(line.decode("utf-8", errors="replace"))
+            if len(self._stderr_buffer) > 65536:
+                self._stderr_buffer = b""
+                self._event("后台输出", "过长的未结束日志行已省略")
+            if flush and self._stderr_buffer:
+                self._keep_stderr(self._stderr_buffer.decode("utf-8", errors="replace"))
+                self._stderr_buffer = b""
+
+    def _keep_stderr(self, value):
+        value = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", value)
+        value = redact_diagnostic(value, self._redact_values)
+        self._stderr_tail = (self._stderr_tail+value+"\n")[-4000:]
+        self._event("后台输出", value)
 
     @Slot(QProcess.ProcessError)
     def _error(self, error):
         self._payload = None
-        self._last_error = "后台行情连接未完成，请检查组件、账号或网络后重试。"
+        detail = self.process.errorString() if self.process is not None else "进程不可用"
+        self._event("进程", detail)
+        if error == QProcess.ProcessError.Crashed:
+            # A watchdog kill must not replace the original login timeout.
+            if not self._stop_requested:
+                self._status("后台进程异常："+detail)
+            return
+        if not self._last_error:
+            self._last_error = redact_diagnostic("后台行情连接未完成："+detail, self._redact_values)
         self._status(self._last_error)
         if error == QProcess.ProcessError.FailedToStart:
             self._finished()
@@ -240,10 +384,17 @@ class BackgroundLiveController(QObject):
     @Slot()
     def _finished(self, *_):
         process = self.process
+        if process is not None:
+            self._discard_stderr(flush=True)
+            if not self._last_error and not self._stop_requested and process.exitCode() != 0:
+                detail = self._stderr_tail.strip().splitlines()
+                self._last_error = f"后台异常退出（代码{process.exitCode()}）：" + (detail[-1][:400] if detail else "请查看连接详情")
         self.process = None
         self._payload = None
         self._configured = False
         self._guard.stop()
+        self._connection_guard.stop()
+        self._connection_clock.stop()
         if process is not None:
             process.deleteLater()
         self.runningChanged.emit(False)
@@ -252,6 +403,7 @@ class BackgroundLiveController(QObject):
             self._begin(pending)
         else:
             self._status("后台实时更新已停止" + ("："+self._last_error if self._last_error else ""))
+            self._redact_values = ()
 
     @Slot()
     def _force_stop(self):

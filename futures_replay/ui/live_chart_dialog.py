@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import pandas as pd
 import hashlib
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (QCheckBox, QComboBox, QDialog, QHBoxLayout,
-                              QLabel, QPushButton, QVBoxLayout)
+                              QLabel, QPushButton, QVBoxLayout, QPlainTextEdit, QDialogButtonBox,
+                              QApplication)
 
 from .. import __version__
 from ..realtime_data import RealtimeSnapshot, chart_frame, shanghai_time
@@ -15,9 +16,13 @@ from .trend_dialog import TrendIndicatorDialog
 
 class LiveChartDialog(QDialog):
     closed = Signal()
+    reconnectRequested = Signal()
 
     def __init__(self, controller, parent=None):
         super().__init__(parent)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowSystemMenuHint | Qt.WindowType.WindowMinMaxButtonsHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.controller, self.target = controller, None
         self._closed_signature = None
         self._history_target = None
@@ -42,8 +47,12 @@ class LiveChartDialog(QDialog):
         self.trend = QCheckBox("趋势交易"); self.trend.setChecked(True); row.addWidget(self.trend)
         self.volume = QCheckBox("成交量"); self.volume.setChecked(True); row.addWidget(self.volume)
         details = QPushButton("指标明细"); details.clicked.connect(self._details); row.addWidget(details)
+        reconnect = QPushButton("重新连接"); reconnect.clicked.connect(self.reconnectRequested.emit); row.addWidget(reconnect)
+        connection_details = QPushButton("连接详情"); connection_details.clicked.connect(self._connection_details); row.addWidget(connection_details)
         row.addStretch(); layout.addLayout(row)
         self.status = QLabel("等待后台行情…"); self.status.setWordWrap(True); layout.addWidget(self.status)
+        self.connection = QLabel(self.controller.connection_summary())
+        self.connection.setWordWrap(True); layout.addWidget(self.connection)
         self.chart = CandleChart(); self.chart.show_ma = False
         self.chart.set_trend_visible(True); self.chart.set_wave_visible(False)
         layout.addWidget(self.chart, 1)
@@ -55,6 +64,7 @@ class LiveChartDialog(QDialog):
         self.controller.previewReady.connect(self._preview)
         self.controller.statusChanged.connect(self._backend_status)
         self.controller.viewStatusChanged.connect(self._view_status)
+        self.controller.connectionTick.connect(self._update_connection)
 
     def configure(self, target, period="1min", settings=None, *, history_target=None):
         self.target = target
@@ -87,7 +97,8 @@ class LiveChartDialog(QDialog):
             self._request_token += 1
             self._received_live = False
             self._local_note = "正在读取本地最新K线…"
-            self._network_text = (f"正在获取 {self.target.symbol} 的{self.period.currentText()}实时行情…"
+            self._network_text = (self.controller.last_status if self.controller.is_running() and not self.controller._service_ready else
+                                  f"正在获取 {self.target.symbol} 的{self.period.currentText()}实时行情…"
                                   if self.controller.is_running() else "后台未启动，显示已有本地K线")
             self._refresh_status()
             self.history.request(self._history_target, period, self._request_token)
@@ -96,6 +107,10 @@ class LiveChartDialog(QDialog):
     def _refresh_status(self):
         parts = [self._data_text, "" if self._data_text else self._local_note, self._network_text]
         self.status.setText("　".join(x for x in parts if x))
+        self._update_connection()
+
+    def _update_connection(self):
+        self.connection.setText(self.controller.connection_summary())
 
     def _local_ready(self, result):
         if (not self.isVisible() or result["token"] != self._request_token or self._received_live):
@@ -185,9 +200,25 @@ class LiveChartDialog(QDialog):
             self.chart.set_series(self.chart.df, self.chart.current_idx, partial=partial)
 
     def hideEvent(self, event):
-        self._request_token += 1
-        self.history.cancel_pending()
+        if not self.isMinimized():
+            self._request_token += 1
+            self.history.cancel_pending()
         super().hideEvent(event)
+
+    def _connection_details(self):
+        dialog = QDialog(self); dialog.setWindowTitle("行情连接详情（凭据已脱敏）")
+        dialog.resize(900, 600)
+        layout = QVBoxLayout(dialog)
+        text = QPlainTextEdit(); text.setReadOnly(True); layout.addWidget(text)
+        def refresh():
+            text.setPlainText(self.controller.diagnostic_text()+"\n\n当前画面："+self.status.text())
+        refresh()
+        row = QHBoxLayout()
+        update = QPushButton("刷新"); update.clicked.connect(refresh); row.addWidget(update)
+        copy = QPushButton("复制详情"); copy.clicked.connect(lambda:QApplication.clipboard().setText(text.toPlainText())); row.addWidget(copy)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        buttons.rejected.connect(dialog.reject); row.addWidget(buttons); layout.addLayout(row)
+        dialog.exec(); dialog.deleteLater()
 
     def _details(self):
         dialog = TrendIndicatorDialog(self.chart, self)

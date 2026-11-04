@@ -148,7 +148,7 @@ class Api:
  def is_serial_ready(self,frame):return True
  def wait_update(self,deadline):time.sleep(.025);return True
  def close(self):pass
-service.create_tq_api=lambda username,password,loop:Api()
+service.create_tq_api=lambda username,password,loop,**kwargs:Api()
 service.main()
 '''
 

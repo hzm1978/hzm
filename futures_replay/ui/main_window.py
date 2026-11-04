@@ -3384,10 +3384,10 @@ class MainWindow(QMainWindow):
         # the previously selected product arrives after the user has moved on.
         self._sync_live_view(force=True)
 
-    def _start_background_live(self, mode, *, automatic=False):
+    def _start_background_live(self, mode, *, automatic=False, restart=False):
         if automatic and self.live_controller.process is not None:
             return
-        if self.live_controller.is_running() and self.live_controller.mode == mode:
+        if self.live_controller.is_running() and self.live_controller.mode == mode and not restart:
             if not automatic:
                 self.live_controller.stop()
             return
@@ -3405,6 +3405,9 @@ class MainWindow(QMainWindow):
             return
         try:
             config = {"mode": mode, "root": str(self.repo.root.resolve()), "source": self.source_combo.currentText()}
+            if restart and mode == "all":
+                previous = self.live_controller.context
+                config.update(root=previous.get("root",config["root"]), source=previous.get("source",config["source"]))
             if mode == "current":
                 target = self._live_target()
                 config.update(symbol=target.symbol, contract=target.contract, tq_symbol=target.tq_symbol)
@@ -3479,6 +3482,10 @@ class MainWindow(QMainWindow):
         self._live_show_volume = bool(visible)
         self._schedule_save()
 
+    def _reconnect_live(self):
+        if self._live_chart is not None and self._live_chart.isVisible():
+            self._start_background_live(self.live_controller.mode or "current", restart=True)
+
     def _toggle_live_view(self, checked):
         if not checked:
             if self._live_chart is not None:
@@ -3489,6 +3496,7 @@ class MainWindow(QMainWindow):
             if self._live_chart is None:
                 self._live_chart = LiveChartDialog(self.live_controller, self)
                 self._live_chart.closed.connect(self._live_view_closed)
+                self._live_chart.reconnectRequested.connect(self._reconnect_live)
                 self._live_chart.volume.setChecked(self._live_show_volume)
                 self._live_chart.volume.toggled.connect(self._live_volume_changed)
             self._live_chart.show()

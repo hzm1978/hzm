@@ -19,9 +19,19 @@ LIVE_PERIODS = {"1min": 60, "5min": 300, "15min": 900, "30min": 1800,
 LIVE_HISTORY_BARS = 10000
 
 
-def create_tq_api(username, password, loop):
+def create_tq_api(username, password, loop, *, progress_cb=None):
     from tqsdk import TqApi, TqAuth, TqSim
-    return TqApi(account=TqSim(), auth=TqAuth(username, password), loop=loop,
+    def report(stage, text):
+        if progress_cb is not None:
+            progress_cb(stage, text)
+    class ProgressAuth(TqAuth):
+        def login(self):
+            report("authenticating", "正在认证天勤账号…")
+            result = super().login()
+            report("authenticated", "账号认证通过，正在连接行情服务…")
+            return result
+    report("connecting", "正在初始化天勤行情组件…")
+    return TqApi(account=TqSim(), auth=ProgressAuth(username, password), loop=loop,
                  debug=False, web_gui=False, disable_print=True)
 
 

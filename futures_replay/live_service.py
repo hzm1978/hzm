@@ -7,11 +7,13 @@ Only get_quote/get_kline_serial/wait_update are used; no paid download API.
 """
 
 import asyncio
+import importlib.metadata
 import json
 import math
 import os
 from pathlib import Path
 import queue
+import platform
 import re
 import sys
 import threading
@@ -116,15 +118,21 @@ def target_info(target):
                 contract=target.contract, tq_symbol=target.tq_symbol)
 
 
-def subscribe_target(api, target):
+def subscribe_target(api, target, progress_cb=None):
+    def report(text):
+        if progress_cb is not None:
+            progress_cb(text)
+    report(f"正在读取 {target.symbol} 最新报价…")
     quote = api.get_quote(target.tq_symbol)
-    serials = {key: api.get_kline_serial(target.tq_symbol, LIVE_PERIODS[key],
-               data_length=LIVE_HISTORY_BARS) for key in ("1min", "1d")}
+    serials = {}
+    for key, label in (("1min", "分钟"), ("1d", "日线")):
+        report(f"正在加载 {target.symbol} 最近最多10000根{label}K线…")
+        serials[key] = api.get_kline_serial(target.tq_symbol, LIVE_PERIODS[key], data_length=LIVE_HISTORY_BARS)
     return dict(target=target, quote=quote, serials=serials, signature=None,
                 fingerprints={}, next_check=0.)
 
 
-def activate_view_target(api, active, descriptor, mode):
+def activate_view_target(api, active, descriptor, mode, progress_cb=None):
     config = {**descriptor, "mode": "current"}
     if config["source"] == "原始行情":
         config["main_symbol"] = (config["tq_symbol"] if config["tq_symbol"].startswith("KQ.m@") else
@@ -133,7 +141,7 @@ def activate_view_target(api, active, descriptor, mode):
     key = target_info(target)
     item = next((s for s in active if target_info(s["target"]) == key), None)
     if item is None:
-        item = subscribe_target(api, target)
+        item = subscribe_target(api, target, progress_cb)
     if mode == "current":
         changed = len(active) != 1 or active[0] is not item
         active[:] = [item]
@@ -159,14 +167,19 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
     try:
         if stopped.is_set():
             return
+        emit("status", stage="connecting", text="正在登录免费实时行情…")
+        username, password = config.pop("username"), config.pop("password")
         if api_factory is None:
-            api_factory = create_tq_api
-        emit("status", text="正在登录免费实时行情…")
-        api = api_factory(config.pop("username"), config.pop("password"), loop)
+            api = create_tq_api(username, password, loop,
+                progress_cb=lambda stage,text:emit("status", stage=stage, text=text))
+        else:
+            api = api_factory(username, password, loop)
+        username = password = None
+        emit("status", stage="api_ready", text="天勤组件初始化完成，正在读取品种行情…")
         targets = resolve_targets(api, config)
         if not targets:
             raise ValueError("当前数据源未找到可订阅的品种，请检查品种交易所信息")
-        active, deferred = [], []
+        active, deferred, subscription_errors = [], [], []
         for i, target in enumerate(targets):
             if stopped.is_set():
                 break
@@ -179,15 +192,18 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
             if stopped.is_set():
                 break
             try:
-                emit("status", text=f"正在获取 {target.symbol} 行情与最近最多10000根K线（{i+1}/{len(targets)}）…")
-                active.append(subscribe_target(api, target))
-                emit("status", text=f"后台订阅 {i+1}/{len(targets)}：{target.symbol}")
+                emit("status", stage="subscribing", text=f"正在获取 {target.symbol} 行情与最近最多10000根K线（{i+1}/{len(targets)}）…")
+                active.append(subscribe_target(api, target,
+                    lambda text:emit("status", stage="subscribing", text=text)))
+                emit("status", stage="subscribing", text=f"后台订阅 {i+1}/{len(targets)}：{target.symbol}")
             except Exception as exc:
-                emit("status", text=f"{target.symbol}订阅未完成：{safe_error(exc,secrets)}；其他品种继续更新")
+                detail = f"{target.symbol}：{safe_error(exc,secrets)}"
+                subscription_errors.append(detail)
+                emit("status", text=f"{detail}；其他品种继续更新")
         for command in deferred:
             commands.put(command)
         if not active and not stopped.is_set():
-            raise ValueError("未建立有效订阅，请检查网络及当前合约")
+            raise ValueError("未建立有效订阅："+"；".join(subscription_errors[:3]) if subscription_errors else "未建立有效订阅，请检查网络及当前合约")
         emit("started", count=len(active), mode=config["mode"],
              targets=[target_info(x["target"]) for x in active])
         cursor, last_health = 0, 0.
@@ -213,7 +229,8 @@ def collect(config, api_factory=None, *, command_queue=None, stop_event=None):
                              text=f"正在订阅 {symbol} 的实时K线…")
                         descriptor = command.get("target")
                         if descriptor:
-                            source, changed = activate_view_target(api, active, descriptor, config["mode"])
+                            source, changed = activate_view_target(api, active, descriptor, config["mode"],
+                                lambda text:emit("view_status", tq_symbol=command.get("tq_symbol"), period=period, text=text))
                             symbol = source["target"].tq_symbol
                             if changed or symbol != command.get("tq_symbol"):
                                 emit("targets", targets=[target_info(x["target"]) for x in active])
@@ -314,6 +331,12 @@ def main():
     if not line:
         return
     config = json.loads(line)
+    try:
+        sdk_version = importlib.metadata.version("tqsdk")
+    except importlib.metadata.PackageNotFoundError:
+        sdk_version = "未安装"
+    emit("hello", python=sys.executable, python_version=platform.python_version(),
+         sdk=sdk_version, pandas=pd.__version__)
     commands, stopped = queue.Queue(), threading.Event()
     def reader():
         for line in sys.stdin:
