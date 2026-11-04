@@ -17,7 +17,27 @@ PREDEFINED = {"O", "H", "L", "C", "OPEN", "HIGH", "LOW", "CLOSE",
               "BARPOS", "ISLASTBAR", "DRAWNULL"}
 RESERVED = PREDEFINED | {"RANGE", "CONST", "NOT", "INTPART", "MOD", "ROUND",
                          "DATE", "TIME", "YEAR", "MONTH", "DAY", "WEEKDAY",
-                         "VOL", "VOLUME", "AMOUNT", "BARSTATUS"}
+                         "VOL", "VOLUME", "AMOUNT", "BARSTATUS",
+                         # Futures order instructions share the identifier
+                         # namespace in the user's client (COND_TRADE:SK).
+                         "BK", "SK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"}
+NUMBER, CONDITION, STRING, DRAWING = "number", "condition", "string", "drawing"
+SIGNATURES = {
+    "ABS": ((NUMBER,), NUMBER),
+    "MAX": ((NUMBER, NUMBER), NUMBER), "MIN": ((NUMBER, NUMBER), NUMBER),
+    "IF": ((CONDITION, NUMBER, NUMBER), NUMBER),
+    "REF": ((NUMBER, NUMBER), NUMBER), "REFX1": ((NUMBER, NUMBER), NUMBER),
+    "HHV": ((NUMBER, NUMBER), NUMBER), "LLV": ((NUMBER, NUMBER), NUMBER),
+    "MA": ((NUMBER, NUMBER), NUMBER), "SUM": ((NUMBER, NUMBER), NUMBER),
+    "COUNT": ((CONDITION, NUMBER), NUMBER), "BARSLAST": ((CONDITION,), NUMBER),
+    "FILTER": ((CONDITION, NUMBER), CONDITION),
+    "BACKSET": ((CONDITION, NUMBER), CONDITION),
+    "DRAWLINE": ((CONDITION, NUMBER, CONDITION, NUMBER, NUMBER), NUMBER),
+    "DRAWTEXT": ((CONDITION, NUMBER, STRING), DRAWING),
+    "DRAWNUMBER1": ((CONDITION, NUMBER, NUMBER, NUMBER), DRAWING),
+}
+PREDEFINED_TYPES = {name: CONDITION if name == "ISLASTBAR" else NUMBER
+                    for name in PREDEFINED}
 FUTURE = {"BACKSET", "REFX1", "DRAWLINE"}
 STYLES = {"NODRAW", "LINETHICK1", "LINETHICK2", "LINETHICK3"}
 TOKEN = re.compile(r"\s+|\{[^}]*\}|//[^\n]*|:=|<>|>=|<=|"
@@ -130,11 +150,46 @@ def walk(node):
         yield from walk(node[2])
 
 
+def infer_type(node, types, line):
+    """Use a deliberately strict condition/number split, without implicit casts.
+
+    This is a local compatibility profile, not the THS compiler. Explicit IF
+    casts and comparisons keep the generated code within this smaller subset.
+    """
+    kind = node[0]
+    if kind == "number":
+        return NUMBER
+    if kind == "string":
+        return STRING
+    if kind == "identifier":
+        return types[node[1]]
+
+    def require(actual, expected, where):
+        if actual != expected:
+            raise FormulaError(f"line {line}: {where} requires {expected}, got {actual}; use an explicit IF/condition conversion")
+
+    if kind == "unary":
+        require(infer_type(node[2], types, line), NUMBER, node[1])
+        return NUMBER
+    if kind == "binary":
+        op = node[1]
+        expected = CONDITION if op in ("AND", "OR") else NUMBER
+        require(infer_type(node[2], types, line), expected, op)
+        require(infer_type(node[3], types, line), expected, op)
+        return NUMBER if op in ("+", "-", "*", "/") else CONDITION
+    fn, args = node[1], node[2]
+    signature, output = SIGNATURES[fn]
+    for i, (arg, expected) in enumerate(zip(args, signature), 1):
+        require(infer_type(arg, types, line), expected, f"{fn} argument {i}")
+    return output
+
+
 def check(source, enforce_boundary=True):
     statements = Parser(source).parse()
     names = set(PREDEFINED)
     calls = {}
     future_calls = []
+    types = dict(PREDEFINED_TYPES)
     end = source.find("{ END_ANALYSIS")
     boundary = source.count("\n", 0, end)+1 if end >= 0 else 0
     for st in statements:
@@ -167,11 +222,18 @@ def check(source, enforce_boundary=True):
         for style in st.styles:
             if style not in STYLES and not re.fullmatch(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)", style):
                 raise FormulaError(f"line {st.line}: unreviewed style {style}")
+        result_type = infer_type(st.expression, types, st.line)
+        if st.output and result_type != NUMBER:
+            raise FormulaError(f"line {st.line}: plotted output requires number, got {result_type}")
         if st.name:
+            if result_type in (STRING, DRAWING):
+                raise FormulaError(f"line {st.line}: cannot assign {result_type} to {st.name}")
             names.add(st.name)
+            types[st.name] = result_type
     return {"statements": len(statements), "variables": len(names-PREDEFINED),
             "outputs": sum(st.output for st in statements), "functions": calls,
-            "future_calls": future_calls, "native_compile": "not_run"}
+            "future_calls": future_calls, "type_check": "passed",
+            "native_compile": "not_run"}
 
 
 def evaluate(source, data, overrides=None):

@@ -6,10 +6,21 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from check_formula import FormulaError, check, evaluate
-from generate import build, core, drawing, probe
+from check_formula import FormulaError, Parser, check, evaluate as raw_evaluate
+from compatibility import SETTINGS, normalize, variable_names
+from generate import build, core, drawing, probe, formula_source, formula_names
 
-SOURCE = "\n".join(core()+drawing())+"\n"
+SOURCE = formula_source()
+NAMES = formula_names()
+REVERSE_NAMES = {native: original for original, native in NAMES.items()}
+
+
+def evaluate(source, data, overrides=None):
+    # The tests retain the semantic names used by the independent mathematical
+    # expectations; the interpreter evaluates the actual TT-prefixed formula.
+    overrides = {NAMES.get(k, k): v for k, v in (overrides or {}).items()}
+    values = raw_evaluate(source, data, overrides)
+    return {REVERSE_NAMES.get(k, k): v for k, v in values.items()}
 
 
 def bars(n=360, seed=7):
@@ -94,8 +105,63 @@ class SyntaxTests(unittest.TestCase):
         # This is our conservative source-size budget, not a claimed THS limit.
         self.assertLess(len(SOURCE.encode("gb18030")), 65536)
 
+    def test_rejects_futures_trade_names_from_client_error(self):
+        for name in ("SK", "BK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"):
+            with self.subTest(name=name), self.assertRaisesRegex(FormulaError, "reserved name"):
+                check(f"{name}:=IF(C>O,C-L,H-C);")
+
+    def test_rejects_original_screenshot_ranking_expression(self):
+        with self.assertRaisesRegex(FormulaError, "requires number, got condition"):
+            check("E01:=1;E02:=2;R40:=1+(E01>=E02);")
+
+    def test_rejects_conditions_used_as_arithmetic_numbers(self):
+        for op in ("+", "-", "*", "/"):
+            for expr in (f"2{op}(C>O)", f"(C>O){op}2"):
+                with self.subTest(expr=expr), self.assertRaisesRegex(FormulaError, "requires number"):
+                    check(f"VALUE1:={expr};")
+
+    def test_rejects_conditional_input_in_numeric_function_positions(self):
+        for expr in ("SUM(C>O,5)", "MAX(C>O,1)", "REF(C>O,1)",
+                     "IF(C>O,C>L,L)", "DRAWNUMBER1(C>O,C,C>L,2)"):
+            with self.subTest(expr=expr), self.assertRaisesRegex(FormulaError, "requires number"):
+                check(expr+";" if expr.startswith("DRAW") else "VALUE1:="+expr+";")
+
+    def test_rejects_bare_numeric_condition_arguments(self):
+        for expr in ("IF(1,C,O)", "COUNT(1,5)", "BARSLAST(C)", "DRAWTEXT(1,C,'x')"):
+            with self.subTest(expr=expr), self.assertRaisesRegex(FormulaError, "requires condition"):
+                check(expr+";" if expr.startswith("DRAW") else "VALUE1:="+expr+";")
+
+    def test_explicit_number_condition_casts_pass_strict_profile(self):
+        result = check("VALUE1:=IF(C>O,1,0);VALUE2:=1+IF(VALUE1<>0,1,0);VALUE3:=SUM(VALUE1,5);VALUE4:=COUNT(VALUE1<>0,5);")
+        self.assertEqual(result["type_check"], "passed")
+
+    def test_all_generated_internal_variables_have_safe_namespace(self):
+        for source in (SOURCE, probe()):
+            for st in Parser(source).parse():
+                if st.name and st.name.isascii() and st.name not in SETTINGS:
+                    self.assertTrue(st.name.startswith("TT"), st.name)
+        self.assertEqual(NAMES["SK"], "TTSTD")
+
+    def test_normalizer_handles_both_rankings_boolean_branches_and_numeric_flags(self):
+        raw = "SK:=IF(C>O,C-L,H-C);FLAG:=C>O;RANK:=1+(C>O)+(FLAG AND L>0);VAL:=IF(FLAG,H>0,L>0);TOTAL:=SUM(C>O,5);"
+        converted = normalize(raw)
+        check(converted)
+        mapping = variable_names(raw)
+        self.assertNotIn("SK:=", converted)
+        a = raw_evaluate(raw, bars(60))
+        b = raw_evaluate(converted, bars(60))
+        for name in ("SK", "FLAG", "RANK", "VAL", "TOTAL"):
+            np.testing.assert_allclose(a[name], b[mapping[name]])
+
 
 class NumericalTests(unittest.TestCase):
+    def test_compatibility_rewrite_preserves_every_analysis_value(self):
+        data = bars(160)
+        legacy = raw_evaluate("\n".join(core()+drawing()), data)
+        patched = evaluate(SOURCE, data)
+        for name in legacy:
+            np.testing.assert_allclose(patched[name], legacy[name], err_msg=name, equal_nan=True)
+
     def test_standard_k_matches_independent_sorting_oracle(self):
         data = bars(160)
         e = evaluate(SOURCE, data)

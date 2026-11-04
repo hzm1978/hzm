@@ -1,9 +1,9 @@
 {
-  "checked_at_utc": "2026-11-04T09:54:59.644751+00:00",
+  "checked_at_utc": "2026-11-04T13:49:24.737815+00:00",
   "python": "3.13.5",
   "numpy": "2.5.4",
   "local_tests": {
-    "run": 34,
+    "run": 43,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -24,12 +24,12 @@
         "LLV": 1,
         "BARSLAST": 1,
         "SUM": 1,
+        "IF": 3,
         "COUNT": 1,
         "FILTER": 1,
         "BACKSET": 1,
         "REFX1": 1,
         "MA": 1,
-        "IF": 1,
         "DRAWLINE": 1,
         "DRAWTEXT": 1,
         "DRAWNUMBER1": 1
@@ -48,9 +48,10 @@
           13
         ]
       ],
+      "type_check": "passed",
       "native_compile": "not_run",
-      "sha256": "e4bab57cef033d0f7231883129b8a57370c42b0f80feee238695e964348837d7",
-      "bytes": 455,
+      "sha256": "493de412c407649ae5b83cb31c1477bf8854034a3b316eff4fc55fe3912a9c3b",
+      "bytes": 493,
       "lines": 16,
       "encoding": "gb18030"
     },
@@ -64,12 +65,12 @@
         "LLV": 1,
         "BARSLAST": 1,
         "SUM": 1,
+        "IF": 3,
         "COUNT": 1,
         "FILTER": 1,
         "BACKSET": 1,
         "REFX1": 1,
         "MA": 1,
-        "IF": 1,
         "DRAWLINE": 1,
         "DRAWTEXT": 1,
         "DRAWNUMBER1": 1
@@ -88,9 +89,10 @@
           13
         ]
       ],
+      "type_check": "passed",
       "native_compile": "not_run",
-      "sha256": "d41622400ffcb1169f086ebe5f2eae39cb10113b91a3d527a7c15ea34a4f5fbe",
-      "bytes": 503,
+      "sha256": "7d6d745db25e5a6ee79758ef4c54a5e36f57e3a1d53c0784667d9fc99cc72e69",
+      "bytes": 541,
       "lines": 16,
       "encoding": "utf-8-sig"
     },
@@ -103,7 +105,7 @@
         "MAX": 16,
         "MIN": 91,
         "REF": 448,
-        "IF": 224,
+        "IF": 1954,
         "HHV": 8,
         "LLV": 8,
         "SUM": 15,
@@ -358,9 +360,10 @@
           496
         ]
       ],
+      "type_check": "passed",
       "native_compile": "not_run",
-      "sha256": "f024b525fed290bfc8db7e67581eb542b3e9790df9b8160df087744b3953cbc8",
-      "bytes": 42332,
+      "sha256": "94da5e95e8145ade140a1df37f0b491efcd57562a7111f26b6e28000c316d17f",
+      "bytes": 64477,
       "lines": 511,
       "encoding": "gb18030"
     },
@@ -373,7 +376,7 @@
         "MAX": 16,
         "MIN": 91,
         "REF": 448,
-        "IF": 224,
+        "IF": 1954,
         "HHV": 8,
         "LLV": 8,
         "SUM": 15,
@@ -628,9 +631,10 @@
           496
         ]
       ],
+      "type_check": "passed",
       "native_compile": "not_run",
-      "sha256": "138ee437ad07729d3c7a6d251bce4d4806ef1d76182ce19e9b0819bcbe167401",
-      "bytes": 43117,
+      "sha256": "eb81866595fee7a55190d1526fc3ea8b6c9f4bf62c76c64ceadf16f5bccf8dcd",
+      "bytes": 65262,
       "lines": 511,
       "encoding": "utf-8-sig"
     }

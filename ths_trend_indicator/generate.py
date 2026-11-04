@@ -82,7 +82,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC结构观察版 1.0；请先阅读README和验证边界 }",
+    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.1；请先阅读README和验证边界 }",
              "{ PN细转折；BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；手动设置需自己确认级别 }",
              "{ MANF=1时用MFROM/MTO作前主浪起止价，MFAGE为起点距今根数 }",
@@ -267,7 +267,7 @@ def drawing():
     return lines
 
 
-def probe():
+def raw_probe():
     return """{ 新建主图；本文件逐项检查本包用到的关键绘图函数，不能当趋势指标使用 }
 X1:=REF(C,1);
 X2:=HHV(H,5);
@@ -287,10 +287,25 @@ DRAWNUMBER1(ISLASTBAR,C,C,2),COLORYELLOW;
 """
 
 
+def formula_source():
+    from compatibility import normalize
+    return normalize("\n".join(core()+drawing()))
+
+
+def formula_names():
+    from compatibility import variable_names
+    return variable_names("\n".join(core()+drawing()))
+
+
+def probe():
+    from compatibility import normalize
+    return normalize(raw_probe())
+
+
 def build():
     path = ROOT / "formulas"
     path.mkdir(exist_ok=True)
-    full = "\n".join(core() + drawing()) + "\n"
+    full = formula_source()
     samples = {"趋势交易_PC主图": full, "函数兼容检查": probe()}
     for name, text in samples.items():
         (path / f"{name}_UTF8.txt").write_bytes(text.replace("\n", "\r\n").encode("utf-8-sig"))
