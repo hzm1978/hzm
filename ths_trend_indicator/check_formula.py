@@ -8,39 +8,42 @@ from pathlib import Path
 import re
 
 ARITY = {
-    "ABS": 1, "MAX": 2, "MIN": 2, "IF": 3, "REF": 2,
+    "ABS": 1, "MAX": 2, "MIN": 2, "IF": 3, "IFELSE": 3, "REF": 2,
     "HHV": 2, "LLV": 2, "MA": 2, "SUM": 2, "COUNT": 2,
     "BARSLAST": 1, "FILTER": 2, "BACKSET": 2, "REFX1": 2,
-    "DRAWLINE": 5, "DRAWTEXT": 3, "DRAWNUMBER1": 4,
+    "DRAWLINE": 5, "DRAWTEXT": 3, "DRAWNUMBER1": 4, "DRAWNUMBER": 5,
 }
 PREDEFINED = {"O", "H", "L", "C", "OPEN", "HIGH", "LOW", "CLOSE",
-              "BARPOS", "ISLASTBAR", "DRAWNULL"}
+              "BARPOS", "ISLASTBAR", "DRAWNULL", "NULL"}
 RESERVED = PREDEFINED | {"RANGE", "CONST", "NOT", "INTPART", "MOD", "ROUND",
                          "DATE", "TIME", "YEAR", "MONTH", "DAY", "WEEKDAY",
                          "VOL", "VOLUME", "AMOUNT", "BARSTATUS",
                          # Futures order instructions share the identifier
                          # namespace in the user's client (COND_TRADE:SK).
                          "BK", "SK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"}
-NUMBER, CONDITION, STRING, DRAWING = "number", "condition", "string", "drawing"
+NUMBER, CONDITION, STRING, DRAWING, COLOR = "number", "condition", "string", "drawing", "color"
+COLOR_PATTERN = re.compile(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)")
 SIGNATURES = {
     "ABS": ((NUMBER,), NUMBER),
     "MAX": ((NUMBER, NUMBER), NUMBER), "MIN": ((NUMBER, NUMBER), NUMBER),
     "IF": ((CONDITION, NUMBER, NUMBER), NUMBER),
+    "IFELSE": ((CONDITION, NUMBER, NUMBER), NUMBER),
     "REF": ((NUMBER, NUMBER), NUMBER), "REFX1": ((NUMBER, NUMBER), NUMBER),
     "HHV": ((NUMBER, NUMBER), NUMBER), "LLV": ((NUMBER, NUMBER), NUMBER),
     "MA": ((NUMBER, NUMBER), NUMBER), "SUM": ((NUMBER, NUMBER), NUMBER),
     "COUNT": ((CONDITION, NUMBER), NUMBER), "BARSLAST": ((CONDITION,), NUMBER),
     "FILTER": ((CONDITION, NUMBER), CONDITION),
     "BACKSET": ((CONDITION, NUMBER), CONDITION),
-    "DRAWLINE": ((CONDITION, NUMBER, CONDITION, NUMBER, NUMBER), NUMBER),
+    "DRAWLINE": ((CONDITION, NUMBER, CONDITION, NUMBER, COLOR), DRAWING),
     "DRAWTEXT": ((CONDITION, NUMBER, STRING), DRAWING),
     "DRAWNUMBER1": ((CONDITION, NUMBER, NUMBER, NUMBER), DRAWING),
+    "DRAWNUMBER": ((CONDITION, NUMBER, NUMBER, NUMBER, COLOR), DRAWING),
 }
 PREDEFINED_TYPES = {name: CONDITION if name == "ISLASTBAR" else NUMBER
                     for name in PREDEFINED}
 FUTURE = {"BACKSET", "REFX1", "DRAWLINE"}
 STYLES = {"NODRAW", "LINETHICK1", "LINETHICK2", "LINETHICK3"}
-TOKEN = re.compile(r"\s+|\{[^}]*\}|//[^\n]*|:=|<>|>=|<=|"
+TOKEN = re.compile(r"\s+|\{[^}]*\}|//[^\n]*|:=|<>|>=|<=|&&|\|\||"
                    r"[0-9]+(?:\.[0-9]+)?|'[^'\r\n]*'|"
                    r"[A-Za-z_\u4e00-\u9fff][A-Za-z_0-9\u4e00-\u9fff]*|"
                    r"[+\-*/=><(),:;]", re.S)
@@ -71,7 +74,9 @@ class Parser:
                 raise FormulaError(f"unexpected text at line {source.count(chr(10), 0, offset)+1}: {source[offset:m.start()]!r}")
             t = m.group()
             if not (t.isspace() or t.startswith("{") or t.startswith("//")):
-                self.tokens.append((t if t.startswith("'") else t.upper(), source.count("\n", 0, m.start())+1))
+                token = t if t.startswith("'") else t.upper()
+                token = {"&&":"AND", "||":"OR"}.get(token, token)
+                self.tokens.append((token, source.count("\n", 0, m.start())+1))
             offset = m.end()
         if offset != len(source):
             raise FormulaError(f"unclosed comment or unsupported text: {source[offset:offset+50]!r}")
@@ -215,15 +220,20 @@ def check(source, enforce_boundary=True):
     boundary = source.count("\n", 0, end)+1 if end >= 0 else 0
     for st in statements:
         if st.name:
-            if st.name in names or st.name in ARITY or st.name in RESERVED:
+            if st.name in names or st.name in ARITY or st.name in RESERVED or COLOR_PATTERN.fullmatch(st.name):
                 raise FormulaError(f"line {st.line}: duplicate or reserved name {st.name}")
             if len(st.name) > 16:
                 raise FormulaError(f"line {st.line}: identifier longer than 16 characters: {st.name}")
         for node in walk(st.expression):
+            if node[0] == "identifier" and COLOR_PATTERN.fullmatch(node[1]):
+                names.add(node[1])
+                types[node[1]] = COLOR
             if node[0] == "identifier" and node[1] not in names:
                 raise FormulaError(f"line {st.line}: undefined or forward variable {node[1]}")
             if node[0] == "call":
                 fn, args = node[1], node[2]
+                if fn == "IF":
+                    raise FormulaError(f"line {st.line}: exported value expressions must use IFELSE, not IF")
                 if fn not in ARITY:
                     raise FormulaError(f"line {st.line}: unreviewed function {fn}")
                 if len(args) != ARITY[fn]:
@@ -243,15 +253,6 @@ def check(source, enforce_boundary=True):
                         raise FormulaError(f"line {st.line}: invalid literal lookback")
                 if fn == "DRAWTEXT" and args[2][0] != "string":
                     raise FormulaError(f"line {st.line}: text must be a literal in this compatibility profile")
-                if fn == "IF":
-                    for branch in args[1:]:
-                        value = constant_number(branch)
-                        if value is not None and value < 0:
-                            raise FormulaError(f"line {st.line}: negative IF branch constant must use a named series or arithmetic selector")
-            if node[0] == "unary":
-                raise FormulaError(f"line {st.line}: unary sign is excluded by the client compatibility profile; use (0-X)")
-            if node[0] == "binary" and node[1] in ("AND", "OR"):
-                raise FormulaError(f"line {st.line}: compound logic must use numerical 0/1 flags")
         for style in st.styles:
             if style not in STYLES and not re.fullmatch(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)", style):
                 raise FormulaError(f"line {st.line}: unreviewed style {style}")
@@ -263,10 +264,14 @@ def check(source, enforce_boundary=True):
                 raise FormulaError(f"line {st.line}: cannot assign {result_type} to {st.name}")
             names.add(st.name)
             types[st.name] = result_type
-    return {"statements": len(statements), "variables": len(names-PREDEFINED),
+    unary_count = sum(n[0] == "unary" for st in statements for n in walk(st.expression))
+    logical_count = sum(n[0] == "binary" and n[1] in ("AND", "OR") for st in statements for n in walk(st.expression))
+    return {"statements": len(statements), "variables": sum(st.name is not None for st in statements),
             "outputs": sum(st.output for st in statements), "functions": calls,
-            "future_calls": future_calls, "type_check": "passed", "unary_signs": "none",
-            "compound_logic": "lowered_to_numeric_flags",
+            "future_calls": future_calls, "type_check": "passed",
+            "unary_signs": "none" if not unary_count else "present",
+            "compound_logic": "lowered_to_numeric_flags" if not logical_count else "supported_logical_conditions",
+            "value_function": "IFELSE", "drawline_fifth_argument": "color",
             "native_compile": "not_run"}
 
 
@@ -286,6 +291,7 @@ def evaluate(source, data, overrides=None):
     env["BARPOS"] = np.arange(1, n+1, dtype=float)
     env["ISLASTBAR"] = np.arange(n) == n-1
     env["DRAWNULL"] = np.full(n, np.nan)
+    env["NULL"] = np.full(n, np.nan)
     index = np.arange(n)
     overrides = {k.upper(): v for k, v in (overrides or {}).items()}
 
@@ -328,7 +334,7 @@ def evaluate(source, data, overrides=None):
         if fn == "ABS": return np.abs(args[0])
         if fn == "MAX": return np.maximum(*args)
         if fn == "MIN": return np.minimum(*args)
-        if fn == "IF": return np.where(args[0] != 0, args[1], args[2])
+        if fn in ("IF", "IFELSE"): return np.where(args[0] != 0, args[1], args[2])
         if fn == "REF": return args[0][np.maximum(index-integer(args[1]), 0)]
         if fn == "BARSLAST":
             last = -1

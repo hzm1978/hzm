@@ -6,7 +6,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from check_formula import FormulaError, Parser, check, walk, evaluate as raw_evaluate
+from check_formula import FormulaError, Parser, RESERVED, check, walk, evaluate as raw_evaluate
 from compatibility import SETTINGS, normalize, variable_names
 from generate import build, core, drawing, probe, formula_source, formula_names
 
@@ -66,9 +66,10 @@ class SyntaxTests(unittest.TestCase):
     def test_compatibility_probe(self):
         check(probe(), enforce_boundary=False)
 
-    def test_rejects_other_vendor_numeric_function(self):
-        with self.assertRaisesRegex(FormulaError, "unreviewed function DRAWNUMBER"):
+    def test_drawnumber_uses_five_argument_native_signature(self):
+        with self.assertRaisesRegex(FormulaError, "expects 5 args"):
             check("DRAWNUMBER(ISLASTBAR,C,C);")
+        check("DRAWNUMBER(ISLASTBAR,C,C,2,COLORCYAN);")
 
     def test_rejects_wrong_numeric_arity(self):
         for source in ("DRAWNUMBER1(ISLASTBAR,C,C);", "DRAWNUMBER1(ISLASTBAR,C,C,2,1);"):
@@ -124,24 +125,25 @@ class SyntaxTests(unittest.TestCase):
 
     def test_rejects_conditional_input_in_numeric_function_positions(self):
         for expr in ("SUM(C>O,5)", "MAX(C>O,1)", "REF(C>O,1)",
-                     "IF(C>O,C>L,L)", "DRAWNUMBER1(C>O,C,C>L,2)"):
+                     "IFELSE(C>O,C>L,L)", "DRAWNUMBER1(C>O,C,C>L,2)"):
             with self.subTest(expr=expr), self.assertRaisesRegex(FormulaError, "requires number"):
                 check(expr+";" if expr.startswith("DRAW") else "VALUE1:="+expr+";")
 
     def test_rejects_bare_numeric_condition_arguments(self):
-        for expr in ("IF(1,C,O)", "COUNT(1,5)", "BARSLAST(C)", "DRAWTEXT(1,C,'x')"):
+        for expr in ("IFELSE(1,C,O)", "COUNT(1,5)", "BARSLAST(C)", "DRAWTEXT(1,C,'x')"):
             with self.subTest(expr=expr), self.assertRaisesRegex(FormulaError, "requires condition"):
                 check(expr+";" if expr.startswith("DRAW") else "VALUE1:="+expr+";")
 
     def test_explicit_number_condition_casts_pass_strict_profile(self):
-        result = check("VALUE1:=IF(C>O,1,0);VALUE2:=1+IF(VALUE1<>0,1,0);VALUE3:=SUM(VALUE1,5);VALUE4:=COUNT(VALUE1<>0,5);")
+        result = check("VALUE1:=IFELSE(C>O,1,0);VALUE2:=1+IFELSE(VALUE1<>0,1,0);VALUE3:=SUM(VALUE1,5);VALUE4:=COUNT(VALUE1<>0,5);")
         self.assertEqual(result["type_check"], "passed")
 
     def test_all_generated_internal_variables_have_safe_namespace(self):
         for source in (SOURCE, probe()):
             for st in Parser(source).parse():
                 if st.name and st.name.isascii() and st.name not in SETTINGS:
-                    self.assertTrue(st.name.startswith("TT"), st.name)
+                    self.assertNotIn(st.name, RESERVED)
+                    self.assertLessEqual(len(st.name), 8)
         self.assertEqual(NAMES["SK"], "TTSTD")
 
     def test_normalizer_handles_both_rankings_boolean_branches_and_numeric_flags(self):
@@ -155,12 +157,13 @@ class SyntaxTests(unittest.TestCase):
         for name in ("SK", "FLAG", "RANK", "VAL", "TOTAL"):
             np.testing.assert_allclose(a[name], b[mapping[name]])
 
-    def test_rejects_negative_if_branch_from_client_screenshot(self):
-        with self.assertRaisesRegex(FormulaError, "negative IF branch"):
+    def test_value_expressions_use_ifelse_not_if(self):
+        with self.assertRaisesRegex(FormulaError, "must use IFELSE"):
             check("TTSTYPE:=IF(C>O,1,-1);")
-        with self.assertRaisesRegex(FormulaError, "negative IF branch"):
+        with self.assertRaisesRegex(FormulaError, "must use IFELSE"):
             check("TTSTYPE:=IF(C>O,1,(0-1));")
-        check("TTSTYPE:=2*IF(C>O,1,0)-1;")
+        check("TTSTYPE:=IFELSE(C>O,1,-1);")
+        check("TTSTYPE:=2*IFELSE(C>O,1,0)-1;")
 
     def test_all_emitted_expressions_exclude_unary_signs(self):
         for source in (SOURCE, probe()):
@@ -174,8 +177,9 @@ class SyntaxTests(unittest.TestCase):
         self.assertIn(":=(0-1);", source)
         data = bars(60)
         before, after = raw_evaluate(original, data), raw_evaluate(source, data)
+        mapping = variable_names(original)
         for name in ("VALUE1", "VALUE2", "VALUE3"):
-            np.testing.assert_allclose(before[name], after["TT"+name])
+            np.testing.assert_allclose(before[name], after[mapping[name]])
 
     def test_sign_rewrite_retains_arithmetic_precedence(self):
         data = bars(50)
@@ -187,7 +191,7 @@ class SyntaxTests(unittest.TestCase):
                 normalized = normalize(original)
                 check(normalized)
                 a = raw_evaluate(original, data)["VALUE1"]
-                b = raw_evaluate(normalized, data)["TTVALUE1"]
+                b = raw_evaluate(normalized, data)[variable_names(original)["VALUE1"]]
                 np.testing.assert_allclose(a, b)
 
     def test_negative_lookback_cannot_hide_inside_zero_minus_one(self):
@@ -200,7 +204,7 @@ class SyntaxTests(unittest.TestCase):
     def test_pivot_selection_simplification_matches_original_truth_table(self):
         # Verify the actual production line 166 without relying on the renderer
         # to compute the expected truth table.
-        st = next(st for st in Parser(SOURCE).parse() if st.name == "TTSTYPE")
+        st = next(st for st in Parser(SOURCE).parse() if st.name == NAMES["STYPE"])
         self.assertEqual(st.expression[0], "binary")
         self.assertFalse(any(node[0] == "call" and node[1] == "IF"
                              for node in walk(st.expression)))
@@ -242,6 +246,40 @@ class SyntaxTests(unittest.TestCase):
         before, after = raw_evaluate(original, data), raw_evaluate(rewritten, data)
         for key in mapping:
             np.testing.assert_allclose(before[key], after[mapping[key]])
+
+    def test_all_exported_value_calls_use_ifelse(self):
+        for source in (SOURCE, probe()):
+            functions = {n[1] for st in Parser(source).parse() for n in walk(st.expression) if n[0] == "call"}
+            self.assertIn("IFELSE", functions)
+            self.assertNotIn("IF", functions)
+
+    def test_native_drawline_fifth_argument_is_color_not_expand_flag(self):
+        with self.assertRaisesRegex(FormulaError, "requires color"):
+            check("DRAWLINE(C>O,L,C<O,H,0),COLORCYAN;", enforce_boundary=False)
+        check("DRAWLINE(C>O,L,C<O,H,COLORCYAN);", enforce_boundary=False)
+
+    def test_public_qht_value_and_color_call_forms(self):
+        # Function forms from the cited QHT video description. This is a local
+        # parsing baseline, not a claim that the video/native client was run.
+        source = """W1:=1;
+HT:=IFELSE(OPEN>CLOSE,OPEN,CLOSE);
+LT:=IFELSE(OPEN<CLOSE,OPEN,CLOSE);
+DRAWLINE(W1=1,HIGH,W1=1,HT,COLORCYAN);
+DRAWLINE(W1=1,LOW,W1=1,LT,COLORCYAN);
+N1:=IFELSE(CLOSE>OPEN,-3,1);
+N2:=IFELSE(H<REF(H,1)&&REF(H,1)<REF(H,2),REF(H,2),0);
+"""
+        check(source, enforce_boundary=False)
+
+    def test_export_uses_native_null_symbol_and_preserves_empty_value(self):
+        source = normalize("EMPTY:=IF(C>O,C,DRAWNULL);")
+        check(source)
+        self.assertIn("NULL", source)
+        self.assertNotIn("DRAWNULL", source)
+        data = bars(60)
+        before = raw_evaluate("EMPTY:=IF(C>O,C,DRAWNULL);", data)["EMPTY"]
+        after = raw_evaluate(source, data)[variable_names("EMPTY:=IF(C>O,C,DRAWNULL);")["EMPTY"]]
+        np.testing.assert_allclose(before, after, equal_nan=True)
 
 
 class NumericalTests(unittest.TestCase):

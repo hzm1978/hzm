@@ -84,7 +84,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.3；请先阅读README和验证边界 }",
+    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.4；请先阅读README和验证边界 }",
              "{ PN细转折；BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；手动设置需自己确认级别 }",
              "{ MANF=1时用MFROM/MTO作前主浪起止价，MFAGE为起点距今根数 }",
@@ -306,14 +306,24 @@ def probe():
     return normalize(raw_probe())
 
 
+def basic_probe():
+    return """{ 在新建的空白指标中只测试以下两行，确认条件取值函数 }
+QTEST:=IFELSE(C>O,1,0);
+检查:QTEST;
+"""
+
+
 def build():
     path = ROOT / "formulas"
     path.mkdir(exist_ok=True)
     full = formula_source()
-    samples = {"趋势交易_PC主图": full, "函数兼容检查": probe()}
+    samples = {"趋势交易_PC主图": full, "函数兼容检查": probe(),
+               "基础函数兼容检查": basic_probe()}
     for name, text in samples.items():
         (path / f"{name}_UTF8.txt").write_bytes(text.replace("\n", "\r\n").encode("utf-8-sig"))
         (path / f"{name}_GB18030.txt").write_bytes(text.replace("\n", "\r\n").encode("gb18030"))
+    import json
+    (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     return samples
 
 

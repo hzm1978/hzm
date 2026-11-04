@@ -1,14 +1,14 @@
-"""Emit a conservative THS subset with explicit number/condition conversions.
+"""Emit QHT value expressions with explicit number/condition conversions.
 
 Every stored variable is numerical, every conditional argument is a condition,
-and internal identifiers receive a TT prefix. This also avoids futures order
-names such as SK, which the user's actual compiler rejected.
+and compact internal names avoid futures order names such as SK. Mathematical
+IF templates emit IFELSE; empty plots emit NULL; DRAWLINE receives its color.
 """
 import re
 
 from check_formula import (Parser, FormulaError, NUMBER, CONDITION, STRING,
                            SIGNATURES, PREDEFINED_TYPES, PRIORITY,
-                           constant_number, walk)
+                           constant_number, walk, COLOR, COLOR_PATTERN)
 
 # Existing user settings keep their names, so upgrading does not obscure the
 # documented parameter values. All other ASCII variables are internal.
@@ -19,6 +19,7 @@ SETTINGS = {"PN", "BN", "DIR", "KIND", "MANF", "MFROM", "MTO", "MFAGE",
 
 def variable_names(source):
     result = {}
+    next_id = 41
     for st in Parser(source).parse():
         if st.name and st.name.isascii() and st.name not in SETTINGS:
             if st.name == "SK":
@@ -26,9 +27,10 @@ def variable_names(source):
             elif re.fullmatch(r"E[0-9]{2}", st.name):
                 # Forty repeatedly referenced samples dominate source length.
                 # Short names keep both exported encodings within our budget.
-                result[st.name] = "TT"+str(int(st.name[1:]))
+                result[st.name] = "T"+str(int(st.name[1:]))
             else:
-                result[st.name] = "TT"+st.name
+                result[st.name] = "T"+str(next_id)
+                next_id += 1
     return result
 
 
@@ -42,9 +44,10 @@ def render(node, parent=0):
     if kind == "string":
         return "'"+node[1]+"'"
     if kind == "identifier":
-        return node[1]
+        return "NULL" if node[1] == "DRAWNULL" else node[1]
     if kind == "call":
-        return node[1]+"("+",".join(render(arg) for arg in node[2])+")"
+        fn = "IFELSE" if node[1] == "IF" else node[1]
+        return fn+"("+",".join(render(arg) for arg in node[2])+")"
     if kind == "unary":
         # The user's compiler stopped at IF(...,1,-1). Never emit a unary
         # sign: keep binary subtraction explicitly grouped even in arguments.
@@ -73,7 +76,7 @@ def normalize(source):
         """Name a numerical series before its use, preserving REF semantics."""
         expression = render(value)
         if expression not in helpers:
-            name = f"TTG{len(helpers)+1:04}"
+            name = f"G{len(helpers)+1}"
             if name in occupied:
                 raise FormulaError(f"helper name collision: {name}")
             occupied.add(name)
@@ -96,7 +99,7 @@ def normalize(source):
             return True
         if fn in ("REF", "REFX1"):
             return is_flag(args[0])
-        if fn == "IF":
+        if fn in ("IF", "IFELSE"):
             def branch_flag(arg):
                 return constant_number(arg) in (0, 1) or is_flag(arg)
             return branch_flag(args[1]) and branch_flag(args[2])
@@ -137,7 +140,7 @@ def normalize(source):
         if kind == "call":
             if SIGNATURES[node[1]][1] == CONDITION:
                 return one_if_zero(call(node))
-            if node[1] == "IF":
+            if node[1] in ("IF", "IFELSE"):
                 a, b = constant_number(node[2][1]), constant_number(node[2][2])
                 if (a, b) == (1, 0):
                     return flag(node[2][0])
@@ -179,9 +182,11 @@ def normalize(source):
                 output.append(cond(arg))
             elif kind == STRING and arg[0] == "string":
                 output.append(arg)
+            elif kind == COLOR and arg[0] == "identifier" and COLOR_PATTERN.fullmatch(arg[1]):
+                output.append(arg)
             else:
                 raise FormulaError(f"unsupported argument in {fn}")
-        if fn == "IF":
+        if fn in ("IF", "IFELSE"):
             # Keep negative branch constants out of the client's IF argument
             # grammar. Signed two-way choices above use 2*flag-1 instead.
             for i in (1, 2):
@@ -197,6 +202,16 @@ def normalize(source):
             lines.append(line)
             continue
         for st in Parser(line).parse():
+            # QHT's fifth DRAWLINE parameter is its color, not TDX's expand
+            # flag. Pull the existing color suffix into the native call.
+            if st.expression[0:2] == ("call", "DRAWLINE"):
+                colors = [style for style in st.styles if COLOR_PATTERN.fullmatch(style)]
+                if len(colors) != 1:
+                    raise FormulaError("DRAWLINE template needs exactly one explicit color")
+                args = list(st.expression[2])
+                args[4] = ("identifier", colors[0])
+                st.expression = ("call", "DRAWLINE", args)
+                st.styles = tuple(style for style in st.styles if style != colors[0])
             node = num(st.expression) if st.name else call(st.expression)
             head = names.get(st.name, st.name)+(":" if st.output else ":=") if st.name else ""
             tail = ","+",".join(st.styles) if st.styles else ""
