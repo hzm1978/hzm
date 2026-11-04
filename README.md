@@ -1,10 +1,17 @@
-# 期货复盘训练系统 v8.1：修复实时跟随空白，保留父子孙结构
+# 期货复盘训练系统 v8.2：休市也显示本地最新K线
 
-[直接下载完整源码包 futures_replay_fixed_v8_1.zip](https://github.com/hzm1978/hzm/raw/refs/heads/fix/futures-replay-trading-days/futures_replay_fixed_v8_1.zip)
+[直接下载完整源码包 futures_replay_fixed_v8_2.zip](https://github.com/hzm1978/hzm/raw/refs/heads/fix/futures-replay-trading-days/futures_replay_fixed_v8_2.zip)
 
 依据用户指定的最新版 **3.pdf**（《趋势交易法》第三版，731页）修改所有品种共用的趋势指标。按父浪段分别识别下一级子结构，再保留子浪内部的孙结构；同一时间内父、子、孙可以共存。沪银、沪锡仅为例子，没有按品种或截图硬编码数浪。
 
 ## 本版变化
+
+- 打开 **实时跟随** 就异步读取本地原行情和已保存实时增量的最新K线，并跳到最右端；无需先登录或启动后台，休市、断网和订阅失败仍可显示已有数据。
+- 当前画面会注明“本地最新K线”和实际时间。后台收到行情后接续更新；重启同一订阅、重开窗口或收到空数据不会清空已有K线。实时返回比已显示数据更旧时不倒退，短窗口按时间更新并保留本地历史。没有本地数据时明确提示，不伪造新K。
+- 本地读取在独立线程、使用独立缓存；日线先读现成日K，切换周期/合约时丢弃过期结果，迟到的本地读取不覆盖新实时图。原复盘和账户保持原位。
+- 实时窗口标题明确显示 **v8.2.0**，顶部品种文字的提示可查看实际运行模块路径，方便确认更新生效。
+
+以下v8/v8.1修复继续保留：
 
 - 修复刚启动后台就打开实时窗口的协议顺序错误：先发送登录/配置，再发送最后选择的看图请求。启动时切换周期或关闭窗口也按最终选择处理。
 - 实时窗口同步连接及服务端错误，等待所选周期时显示进度；后台停止后保留窗口及停止原因。分钟已就绪时不再等待另一份日历订阅才显示。
@@ -28,7 +35,11 @@
 
 例如3919.71→3174.45的下降之后向上反弹，50%为3547.08，61.8%为3635.02。书中40%/62%/78.6%的结构位置参考与这把标准回调尺分别记录。当前工作方向、依据的Q、父段归属、候选及确认时刻可在 **指标明细** 和JSON中核对。
 
-## 免费实时更新
+## 本地显示与免费实时更新
+
+只想看最新已有K线：选择品种/周期，勾选 **实时跟随** 即可。即使后台尚未启动，窗口也从磁盘读取最新数据，不使用原回放时刻截断它；最多显示2000根。原始行情的活动主力还未解析时，先显示本机所选合约并注明，解析后再切换。
+
+需要持续接收新行情，再点击 **免费实时**。本地最新时间不代表已经连接服务器；状态栏明确区分数据来源和连接状态。
 
 工具栏 **免费实时** 点击更新当前品种，右侧箭头可选全部品种或 **天勤账号设置**。原“更新数据”“全部更新”及各自实时菜单保留。
 
@@ -38,7 +49,7 @@
 
 ## 安装
 
-退出旧程序并备份。解压后用整个 `futures_replay` 文件夹覆盖旧同名文件夹，保留行情与交易记录；同时复制 `requirements.txt`、`run.py` 和两个批处理。先运行 **安装或更新依赖.bat**，再运行 **启动程序.bat**。窗口标题应显示 **v8.1.0**。
+退出旧程序并备份。解压后用整个 `futures_replay` 文件夹覆盖旧同名文件夹，保留行情与交易记录；同时复制 `requirements.txt`、`run.py` 和两个批处理。先运行 **安装或更新依赖.bat**，再运行 **启动程序.bat**。主窗口和实时窗口标题都应显示 **v8.2.0**。如果仍见“等待当前合约的实时行情…”且标题无版本，运行的实时窗口仍来自旧文件；请关闭所有旧窗口，从覆盖目录内的批处理启动。
 
 源码包需要Python，不是独立exe。两个批处理优先使用包内或上一级已有 `.venv`，否则使用系统Python。
 
@@ -54,10 +65,10 @@ python run.py
 - [修复及安装说明](修复说明.md) · [实时更新说明](实时更新说明.md)
 - [指标规则与原书页码](指标规则说明.md) · [验证记录](验证记录.md)
 - [完整父子孙结构](trend_indicator_v8_structure.png) · [较早主跌段放大](trend_indicator_v8_detail.png) · [上涨对称例](trend_indicator_v8_mirror.png)
-- [实时窗口示意](realtime_v8_1_preview.png)（包内预览图均为构造行情；实际SM联机另见验证记录）
+- [无后台的本地日线](realtime_v8_2_preview.png) · [连接失败仍保留K线](realtime_v8_2_error.png) · [本地分钟线](realtime_v8_2_minute.png)（包内预览均为构造行情；旧SM实测另见验证记录）
 
-129项回归在pandas 2.2.3、3.0.6下通过；原主窗口、日期导航、后台进程、三种末段及父子孙结构Qt渲染通过。SDK固定3.10.4，pandas限制 `<3.1`。Windows实机及DPAPI系统调用未在Linux云环境执行。
+141项回归在pandas 2.2.3、3.0.6下通过；原主窗口、日期导航、后台进程、三种末段及父子孙结构Qt渲染通过。SDK固定3.10.4，pandas限制 `<3.1`。Windows实机及DPAPI系统调用未在Linux云环境执行。
 
 复杂行情仍可能有多种合法分级，证据不足保留候选/待分级；目标价是理论参考。预览不代表逐根复现用户本地行情。
 
-包大小、文件数、SHA-256见 [v8_1_manifest.json](https://github.com/hzm1978/hzm/blob/fix/futures-replay-trading-days/v8_1_manifest.json)。旧版ZIP保留。原书：[book Release](https://github.com/hzm1978/hzm/releases/tag/book) · [3.pdf](https://github.com/hzm1978/hzm/releases/download/book/3.pdf)。
+包大小、文件数、SHA-256见 [v8_2_manifest.json](https://github.com/hzm1978/hzm/blob/fix/futures-replay-trading-days/v8_2_manifest.json)。旧版ZIP保留。原书：[book Release](https://github.com/hzm1978/hzm/releases/tag/book) · [3.pdf](https://github.com/hzm1978/hzm/releases/download/book/3.pdf)。

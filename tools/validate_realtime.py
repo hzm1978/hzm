@@ -118,7 +118,8 @@ def validate(output):
             assert '2026-11-03 10:34:00' in window.live_status_label.toolTip()
             assert window.live_controller.process.processId() != os.getpid()
             window.live_view_action.setChecked(True)
-            spin(lambda: window._live_chart is not None and not window._live_chart.chart.df.empty)
+            spin(lambda: window._live_chart is not None and window._live_chart._received_live
+                 and not window._live_chart.chart.df.empty)
             live = window._live_chart
             live.status.setText("【构造行情联调，非实盘登录】 " + live.status.text())
             assert live.grab().save(str(output/"realtime_dialog.png"))
@@ -126,7 +127,7 @@ def validate(output):
             window.live_view_action.setChecked(False)
             assert not live.isVisible() and window.live_controller.is_running()
             window.live_view_action.setChecked(True)
-            spin(lambda: not live.chart.df.empty)
+            spin(lambda: live._received_live and not live.chart.df.empty)
             window.realtime_action.trigger()
             spin(lambda: window.live_controller.process is None)
             assert live.isVisible() and '已停止' in live.status.text()

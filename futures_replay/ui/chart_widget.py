@@ -125,6 +125,7 @@ class CandleChart(QWidget):
         self._roll_marker_indices: list[tuple[int, dict]] = []
         self.synthetic = False
         self.intraday_mode = False
+        self.empty_text = "请选择数据"
 
         self.crosshair_enabled = True
         self._plot_rect = QRectF()
@@ -665,7 +666,7 @@ class CandleChart(QWidget):
         p.fillRect(self.rect(), QColor(20, 22, 26))
         if self.df.empty or self.current_idx < 0:
             p.setPen(QColor(180, 180, 180))
-            p.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, "请选择数据")
+            p.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, self.empty_text)
             return
 
         start, end = self._window()

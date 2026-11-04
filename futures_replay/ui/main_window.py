@@ -3436,17 +3436,18 @@ class MainWindow(QMainWindow):
                 self._live_chart.hide()
                 self.live_controller.request_view(enabled=False)
             return
-        if not self.live_controller.is_running():
-            self._live_status("请先点击“实时更新当前”或“实时更新全部”开始后台采集。")
-            self.live_view_action.setChecked(False)
-            return
         try:
             target = self._live_target()
             if self._live_chart is None:
                 self._live_chart = LiveChartDialog(self.live_controller, self)
                 self._live_chart.closed.connect(self._live_view_closed)
             panel = self.panels[0]
-            self._live_chart.configure(target, panel.period.currentText(), panel.chart.trend_settings)
+            history_target = target
+            if target.contract == "当前主力（待解析）":
+                _, local_contract = self._edb_update_target()
+                history_target = RealtimeTarget(target.root, target.source, target.symbol, local_contract, target.tq_symbol)
+            self._live_chart.configure(target, panel.period.currentText(), panel.chart.trend_settings,
+                                       history_target=history_target)
             self._live_chart.raise_()
         except Exception as exc:
             self.live_view_action.setChecked(False)

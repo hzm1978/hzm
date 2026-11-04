@@ -6,8 +6,10 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (QCheckBox, QComboBox, QDialog, QHBoxLayout,
                               QLabel, QPushButton, QVBoxLayout)
 
+from .. import __version__
 from ..realtime_data import RealtimeSnapshot, chart_frame, shanghai_time
 from .chart_widget import CandleChart
+from .local_history import LocalHistoryLoader
 from .trend_dialog import TrendIndicatorDialog
 
 
@@ -18,10 +20,18 @@ class LiveChartDialog(QDialog):
         super().__init__(parent)
         self.controller, self.target = controller, None
         self._closed_signature = None
-        self.setWindowTitle("实时跟随 · 免费期货行情")
+        self._history_target = None
+        self._request_key = None
+        self._request_token = 0
+        self._received_live = False
+        self._data_text = self._network_text = self._local_note = ""
+        self.history = LocalHistoryLoader(self)
+        self.history.ready.connect(self._local_ready)
+        self.setWindowTitle(f"实时跟随 v{__version__} · 最新K线与免费行情")
         self.resize(1250, 800)
         layout = QVBoxLayout(self)
         self.title = QLabel("实时行情独立显示，原复盘位置和模拟账户保持不变。")
+        self.title.setToolTip(f"运行版本 v{__version__}\n{__file__}")
         layout.addWidget(self.title)
         row = QHBoxLayout(); row.addWidget(QLabel("周期"))
         self.period = QComboBox()
@@ -44,9 +54,9 @@ class LiveChartDialog(QDialog):
         self.controller.statusChanged.connect(self._backend_status)
         self.controller.viewStatusChanged.connect(self._view_status)
 
-    def configure(self, target, period="1min", settings=None):
+    def configure(self, target, period="1min", settings=None, *, history_target=None):
         self.target = target
-        self._closed_signature = None
+        self._history_target = history_target or target
         if period in {"1w", "1M"}:
             period = "1d"
         self.title.setText(f"{target.source} · {target.symbol} · {target.contract}　实时跟随（原复盘保持原位）")
@@ -54,30 +64,77 @@ class LiveChartDialog(QDialog):
         self.period.blockSignals(True)
         self.period.setCurrentIndex(max(0, self.period.findData(period)))
         self.period.blockSignals(False)
-        self.chart.set_series(pd.DataFrame(columns=["datetime", "open", "high", "low", "close"]), -1)
-        self.status.setText(self.controller.last_status)
         self.show(); self._request()
 
     def _request(self, *_):
         if self.target and self.isVisible():
-            # Do not leave a different period's bars under the new selector.
-            self._closed_signature = None
-            self.chart.set_series(pd.DataFrame(columns=["datetime", "open", "high", "low", "close"]), -1)
-            self.status.setText(f"正在获取 {self.target.symbol} 的{self.period.currentText()}实时K线…")
-            self.controller.request_view(self.target.tq_symbol, self.period.currentData())
+            period = self.period.currentData()
+            key = (str(self.target.root), self.target.source, self.target.symbol,
+                   self.target.contract, self.target.tq_symbol, period,
+                   str(self._history_target.root), self._history_target.source,
+                   self._history_target.symbol, self._history_target.contract)
+            if key != self._request_key:
+                # Clear only when the contract/period changes. Reopening or
+                # restarting the same subscription must retain its last bars.
+                self._closed_signature = None
+                self._data_text = ""
+                self.chart.set_series(pd.DataFrame(columns=["datetime", "open", "high", "low", "close"]), -1)
+                self._request_key = key
+            self.chart.empty_text = "正在加载最新K线…"
+            self.chart.set_follow_latest(True)
+            self._request_token += 1
+            self._received_live = False
+            self._local_note = "正在读取本地最新K线…"
+            self._network_text = (f"正在获取 {self.target.symbol} 的{self.period.currentText()}实时行情…"
+                                  if self.controller.is_running() else "后台未启动，显示已有本地K线")
+            self._refresh_status()
+            self.history.request(self._history_target, period, self._request_token)
+            self.controller.request_view(self.target.tq_symbol, period)
+
+    def _refresh_status(self):
+        parts = [self._data_text, "" if self._data_text else self._local_note, self._network_text]
+        self.status.setText("　".join(x for x in parts if x))
+
+    def _local_ready(self, result):
+        if (not self.isVisible() or result["token"] != self._request_token or self._received_live):
+            return
+        self._local_note = ""
+        frame = result["frame"]
+        if frame.empty:
+            self._local_note = "本地暂无该周期K线" if not result["error"] or result["error"].startswith("FileNotFoundError") else "本地K线读取未完成，详情见提示"
+            self.status.setToolTip(result["error"])
+            if self.chart.df.empty:
+                self.chart.empty_text = self._local_note
+                self.chart.update()
+            self._refresh_status()
+            return
+        if not self.chart.df.empty and frame.datetime.iloc[-1] < self.chart.df.datetime.iloc[-1]:
+            # A completed-bar disk snapshot may lag the already visible live
+            # forming bar. Never rewind that view when reopening it.
+            return
+        period = self.period.currentData()
+        code = self.target.tq_symbol.rsplit(".", 1)[-1].rstrip("0123456789")
+        day_close = 15*3600+15*60 if "CFFEX" in self.target.tq_symbol and code in {"T","TF","TS","TL"} else 15*3600
+        snapshot = RealtimeSnapshot({period: frame}, shanghai_time(), day_close_seconds=day_close)
+        bars, partial = chart_frame(snapshot, period)
+        self.chart.set_follow_latest(True)
+        self._show_bars(bars, partial)
+        self._data_text = f"本地最新K线：{bars.datetime.iloc[-1]} · {self._history_target.contract} · 末根{'预览' if partial else '已结束'}"
+        self._refresh_status()
 
     def _backend_status(self, text):
         if not self.isVisible() or text.startswith("免费行情后台运行中"):
             return
-        if self.chart.df.empty or text.startswith(("后台实时更新已停止", "后台行情连接未完成")):
-            self.status.setText(text)
+        self._network_text = text
+        self._refresh_status()
 
     def _view_status(self, payload):
         if (not self.isVisible() or self.target is None
                 or payload.get("tq_symbol") != self.target.tq_symbol
                 or payload.get("period") != self.period.currentData()):
             return
-        self.status.setText(str(payload.get("text", "")))
+        self._network_text = str(payload.get("text", ""))
+        self._refresh_status()
 
     def _preview(self, payload):
         if (not self.isVisible() or self.target is None or payload.get("tq_symbol") != self.target.tq_symbol
@@ -85,23 +142,50 @@ class LiveChartDialog(QDialog):
             return
         frame = pd.DataFrame(payload.get("bars", []))
         if frame.empty:
-            self.status.setText("当前合约尚未返回K线；到期合约可改选主连查看最新行情。")
+            self._network_text = "实时服务尚未返回该周期K线；已有画面继续保留"
+            self._refresh_status()
             return
         frame["datetime"] = pd.to_datetime(frame["datetime"], errors="coerce")
+        frame = frame.dropna(subset=["datetime"]).sort_values("datetime", kind="stable")
+        if frame.empty:
+            self._network_text = "实时回复暂无有效K线，已有画面继续保留"
+            self._refresh_status()
+            return
+        if not self.chart.df.empty:
+            if frame.datetime.iloc[-1] < self.chart.df.datetime.iloc[-1]:
+                self._network_text = f"实时数据截至 {frame.datetime.iloc[-1]}，保留较新的已有K线"
+                self._refresh_status()
+                return
+            # A short server window updates matching times without discarding
+            # older local bars needed by the trend calculation.
+            frame = (pd.concat([self.chart.df, frame], ignore_index=True).sort_values("datetime", kind="stable")
+                     .drop_duplicates("datetime", keep="last").tail(2000).reset_index(drop=True))
         snapshot = RealtimeSnapshot({payload["period"]: frame}, shanghai_time(payload["received_at"]),
             shanghai_time(payload["quote_time"]) if payload.get("quote_time") else None,
             payload.get("last_price"), payload.get("underlying", ""), payload.get("day_close_seconds", 15*3600))
         bars, partial = chart_frame(snapshot, payload["period"])
+        self._received_live = True
+        self._local_note = self._network_text = ""
+        self.status.setToolTip("")
+        self._show_bars(bars, partial)
+        self._data_text = (f"最新K线：{bars.datetime.iloc[-1]}　行情时间（北京时间）：{payload.get('quote_time') or '尚未收到'}　"
+                           f"最新价：{payload.get('last_price')}　末根{'动态预览' if partial else '已结束'}")
+        self._refresh_status()
+
+    def _show_bars(self, bars, partial):
         closed = bars.iloc[:-1] if partial is not None else bars
         fingerprint = hashlib.sha256(pd.util.hash_pandas_object(closed, index=False).to_numpy().tobytes()).digest()
-        signature = payload["period"], len(closed), fingerprint
+        signature = self.period.currentData(), len(closed), fingerprint
         if signature != self._closed_signature or len(self.chart.df) != len(bars):
             self.chart.set_series(bars, len(bars)-1, partial=partial)
             self._closed_signature = signature
         else:
             self.chart.set_series(self.chart.df, self.chart.current_idx, partial=partial)
-        self.status.setText(f"行情时间（北京时间）：{payload.get('quote_time') or '尚未收到'}　"
-                            f"最新价：{payload.get('last_price')}　末根{'动态预览' if partial else '已结束'}")
+
+    def hideEvent(self, event):
+        self._request_token += 1
+        self.history.cancel_pending()
+        super().hideEvent(event)
 
     def _details(self):
         dialog = TrendIndicatorDialog(self.chart, self)

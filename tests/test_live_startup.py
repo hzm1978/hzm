@@ -108,7 +108,7 @@ class LiveStartupTests(unittest.TestCase):
             controller.viewStatusChanged.emit(dict(tq_symbol=target.tq_symbol,period='1min',text='wrong period'))
             self.assertNotIn('wrong period',view.status.text())
             controller.viewStatusChanged.emit(dict(tq_symbol=target.tq_symbol,period='1d',text='日线请求超时'))
-            self.assertEqual(view.status.text(),'日线请求超时')
+            self.assertIn('日线请求超时',view.status.text())
             controller.statusChanged.emit('后台实时更新已停止：测试断线')
             self.assertIn('测试断线',view.status.text())
         finally:
