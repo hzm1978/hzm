@@ -1,0 +1,638 @@
+{
+  "checked_at_utc": "2026-11-04T09:54:59.644751+00:00",
+  "python": "3.13.5",
+  "numpy": "2.5.4",
+  "local_tests": {
+    "run": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "native_compile": {
+    "status": "not_run",
+    "reason": "No Windows THS Futures PC client in this environment"
+  },
+  "files": {
+    "函数兼容检查_GB18030.txt": {
+      "statements": 15,
+      "variables": 12,
+      "outputs": 3,
+      "functions": {
+        "REF": 1,
+        "HHV": 1,
+        "LLV": 1,
+        "BARSLAST": 1,
+        "SUM": 1,
+        "COUNT": 1,
+        "FILTER": 1,
+        "BACKSET": 1,
+        "REFX1": 1,
+        "MA": 1,
+        "IF": 1,
+        "DRAWLINE": 1,
+        "DRAWTEXT": 1,
+        "DRAWNUMBER1": 1
+      },
+      "future_calls": [
+        [
+          "BACKSET",
+          8
+        ],
+        [
+          "REFX1",
+          9
+        ],
+        [
+          "DRAWLINE",
+          13
+        ]
+      ],
+      "native_compile": "not_run",
+      "sha256": "e4bab57cef033d0f7231883129b8a57370c42b0f80feee238695e964348837d7",
+      "bytes": 455,
+      "lines": 16,
+      "encoding": "gb18030"
+    },
+    "函数兼容检查_UTF8.txt": {
+      "statements": 15,
+      "variables": 12,
+      "outputs": 3,
+      "functions": {
+        "REF": 1,
+        "HHV": 1,
+        "LLV": 1,
+        "BARSLAST": 1,
+        "SUM": 1,
+        "COUNT": 1,
+        "FILTER": 1,
+        "BACKSET": 1,
+        "REFX1": 1,
+        "MA": 1,
+        "IF": 1,
+        "DRAWLINE": 1,
+        "DRAWTEXT": 1,
+        "DRAWNUMBER1": 1
+      },
+      "future_calls": [
+        [
+          "BACKSET",
+          8
+        ],
+        [
+          "REFX1",
+          9
+        ],
+        [
+          "DRAWLINE",
+          13
+        ]
+      ],
+      "native_compile": "not_run",
+      "sha256": "d41622400ffcb1169f086ebe5f2eae39cb10113b91a3d527a7c15ea34a4f5fbe",
+      "bytes": 503,
+      "lines": 16,
+      "encoding": "utf-8-sig"
+    },
+    "趋势交易_PC主图_GB18030.txt": {
+      "statements": 488,
+      "variables": 414,
+      "outputs": 16,
+      "functions": {
+        "ABS": 71,
+        "MAX": 16,
+        "MIN": 91,
+        "REF": 448,
+        "IF": 224,
+        "HHV": 8,
+        "LLV": 8,
+        "SUM": 15,
+        "BARSLAST": 13,
+        "COUNT": 4,
+        "FILTER": 4,
+        "BACKSET": 4,
+        "DRAWLINE": 8,
+        "DRAWNUMBER1": 22,
+        "DRAWTEXT": 44,
+        "REFX1": 48
+      },
+      "future_calls": [
+        [
+          "BACKSET",
+          385
+        ],
+        [
+          "BACKSET",
+          386
+        ],
+        [
+          "BACKSET",
+          387
+        ],
+        [
+          "BACKSET",
+          388
+        ],
+        [
+          "DRAWLINE",
+          389
+        ],
+        [
+          "DRAWLINE",
+          390
+        ],
+        [
+          "DRAWLINE",
+          391
+        ],
+        [
+          "DRAWLINE",
+          392
+        ],
+        [
+          "DRAWLINE",
+          395
+        ],
+        [
+          "DRAWLINE",
+          396
+        ],
+        [
+          "REFX1",
+          422
+        ],
+        [
+          "REFX1",
+          423
+        ],
+        [
+          "REFX1",
+          424
+        ],
+        [
+          "REFX1",
+          425
+        ],
+        [
+          "REFX1",
+          425
+        ],
+        [
+          "REFX1",
+          426
+        ],
+        [
+          "REFX1",
+          427
+        ],
+        [
+          "DRAWLINE",
+          428
+        ],
+        [
+          "REFX1",
+          428
+        ],
+        [
+          "REFX1",
+          428
+        ],
+        [
+          "DRAWLINE",
+          429
+        ],
+        [
+          "REFX1",
+          429
+        ],
+        [
+          "REFX1",
+          429
+        ],
+        [
+          "REFX1",
+          432
+        ],
+        [
+          "REFX1",
+          436
+        ],
+        [
+          "REFX1",
+          440
+        ],
+        [
+          "REFX1",
+          444
+        ],
+        [
+          "REFX1",
+          448
+        ],
+        [
+          "REFX1",
+          452
+        ],
+        [
+          "REFX1",
+          456
+        ],
+        [
+          "REFX1",
+          460
+        ],
+        [
+          "REFX1",
+          461
+        ],
+        [
+          "REFX1",
+          462
+        ],
+        [
+          "REFX1",
+          463
+        ],
+        [
+          "REFX1",
+          464
+        ],
+        [
+          "REFX1",
+          465
+        ],
+        [
+          "REFX1",
+          466
+        ],
+        [
+          "REFX1",
+          467
+        ],
+        [
+          "REFX1",
+          468
+        ],
+        [
+          "REFX1",
+          470
+        ],
+        [
+          "REFX1",
+          471
+        ],
+        [
+          "REFX1",
+          472
+        ],
+        [
+          "REFX1",
+          474
+        ],
+        [
+          "REFX1",
+          475
+        ],
+        [
+          "REFX1",
+          476
+        ],
+        [
+          "REFX1",
+          478
+        ],
+        [
+          "REFX1",
+          479
+        ],
+        [
+          "REFX1",
+          480
+        ],
+        [
+          "REFX1",
+          482
+        ],
+        [
+          "REFX1",
+          483
+        ],
+        [
+          "REFX1",
+          484
+        ],
+        [
+          "REFX1",
+          486
+        ],
+        [
+          "REFX1",
+          487
+        ],
+        [
+          "REFX1",
+          488
+        ],
+        [
+          "REFX1",
+          490
+        ],
+        [
+          "REFX1",
+          491
+        ],
+        [
+          "REFX1",
+          492
+        ],
+        [
+          "REFX1",
+          494
+        ],
+        [
+          "REFX1",
+          495
+        ],
+        [
+          "REFX1",
+          496
+        ]
+      ],
+      "native_compile": "not_run",
+      "sha256": "f024b525fed290bfc8db7e67581eb542b3e9790df9b8160df087744b3953cbc8",
+      "bytes": 42332,
+      "lines": 511,
+      "encoding": "gb18030"
+    },
+    "趋势交易_PC主图_UTF8.txt": {
+      "statements": 488,
+      "variables": 414,
+      "outputs": 16,
+      "functions": {
+        "ABS": 71,
+        "MAX": 16,
+        "MIN": 91,
+        "REF": 448,
+        "IF": 224,
+        "HHV": 8,
+        "LLV": 8,
+        "SUM": 15,
+        "BARSLAST": 13,
+        "COUNT": 4,
+        "FILTER": 4,
+        "BACKSET": 4,
+        "DRAWLINE": 8,
+        "DRAWNUMBER1": 22,
+        "DRAWTEXT": 44,
+        "REFX1": 48
+      },
+      "future_calls": [
+        [
+          "BACKSET",
+          385
+        ],
+        [
+          "BACKSET",
+          386
+        ],
+        [
+          "BACKSET",
+          387
+        ],
+        [
+          "BACKSET",
+          388
+        ],
+        [
+          "DRAWLINE",
+          389
+        ],
+        [
+          "DRAWLINE",
+          390
+        ],
+        [
+          "DRAWLINE",
+          391
+        ],
+        [
+          "DRAWLINE",
+          392
+        ],
+        [
+          "DRAWLINE",
+          395
+        ],
+        [
+          "DRAWLINE",
+          396
+        ],
+        [
+          "REFX1",
+          422
+        ],
+        [
+          "REFX1",
+          423
+        ],
+        [
+          "REFX1",
+          424
+        ],
+        [
+          "REFX1",
+          425
+        ],
+        [
+          "REFX1",
+          425
+        ],
+        [
+          "REFX1",
+          426
+        ],
+        [
+          "REFX1",
+          427
+        ],
+        [
+          "DRAWLINE",
+          428
+        ],
+        [
+          "REFX1",
+          428
+        ],
+        [
+          "REFX1",
+          428
+        ],
+        [
+          "DRAWLINE",
+          429
+        ],
+        [
+          "REFX1",
+          429
+        ],
+        [
+          "REFX1",
+          429
+        ],
+        [
+          "REFX1",
+          432
+        ],
+        [
+          "REFX1",
+          436
+        ],
+        [
+          "REFX1",
+          440
+        ],
+        [
+          "REFX1",
+          444
+        ],
+        [
+          "REFX1",
+          448
+        ],
+        [
+          "REFX1",
+          452
+        ],
+        [
+          "REFX1",
+          456
+        ],
+        [
+          "REFX1",
+          460
+        ],
+        [
+          "REFX1",
+          461
+        ],
+        [
+          "REFX1",
+          462
+        ],
+        [
+          "REFX1",
+          463
+        ],
+        [
+          "REFX1",
+          464
+        ],
+        [
+          "REFX1",
+          465
+        ],
+        [
+          "REFX1",
+          466
+        ],
+        [
+          "REFX1",
+          467
+        ],
+        [
+          "REFX1",
+          468
+        ],
+        [
+          "REFX1",
+          470
+        ],
+        [
+          "REFX1",
+          471
+        ],
+        [
+          "REFX1",
+          472
+        ],
+        [
+          "REFX1",
+          474
+        ],
+        [
+          "REFX1",
+          475
+        ],
+        [
+          "REFX1",
+          476
+        ],
+        [
+          "REFX1",
+          478
+        ],
+        [
+          "REFX1",
+          479
+        ],
+        [
+          "REFX1",
+          480
+        ],
+        [
+          "REFX1",
+          482
+        ],
+        [
+          "REFX1",
+          483
+        ],
+        [
+          "REFX1",
+          484
+        ],
+        [
+          "REFX1",
+          486
+        ],
+        [
+          "REFX1",
+          487
+        ],
+        [
+          "REFX1",
+          488
+        ],
+        [
+          "REFX1",
+          490
+        ],
+        [
+          "REFX1",
+          491
+        ],
+        [
+          "REFX1",
+          492
+        ],
+        [
+          "REFX1",
+          494
+        ],
+        [
+          "REFX1",
+          495
+        ],
+        [
+          "REFX1",
+          496
+        ]
+      ],
+      "native_compile": "not_run",
+      "sha256": "138ee437ad07729d3c7a6d251bce4d4806ef1d76182ce19e9b0819bcbe167401",
+      "bytes": 43117,
+      "lines": 511,
+      "encoding": "utf-8-sig"
+    }
+  }
+}

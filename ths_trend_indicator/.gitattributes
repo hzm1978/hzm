@@ -1,0 +1,3 @@
+# Preserve both Windows formula encodings and their CRLF bytes.
+formulas/*.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+formulas/*_GB18030.txt -diff
