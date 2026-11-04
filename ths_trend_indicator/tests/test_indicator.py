@@ -60,6 +60,7 @@ class SyntaxTests(unittest.TestCase):
         self.assertIn("DRAWNUMBER1", report["functions"])
         self.assertNotIn("DRAWNUMBER", report["functions"])
         self.assertLessEqual(report["outputs"], 16)
+        self.assertLessEqual(report["variables"], 500)
         self.assertTrue(report["future_calls"])
 
     def test_compatibility_probe(self):
@@ -104,6 +105,7 @@ class SyntaxTests(unittest.TestCase):
     def test_source_below_64k(self):
         # This is our conservative source-size budget, not a claimed THS limit.
         self.assertLess(len(SOURCE.encode("gb18030")), 65536)
+        self.assertLess(len(SOURCE.replace("\n", "\r\n").encode("utf-8-sig")), 65536)
 
     def test_rejects_futures_trade_names_from_client_error(self):
         for name in ("SK", "BK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"):
@@ -154,9 +156,11 @@ class SyntaxTests(unittest.TestCase):
             np.testing.assert_allclose(a[name], b[mapping[name]])
 
     def test_rejects_negative_if_branch_from_client_screenshot(self):
-        with self.assertRaisesRegex(FormulaError, "unary sign"):
+        with self.assertRaisesRegex(FormulaError, "negative IF branch"):
             check("TTSTYPE:=IF(C>O,1,-1);")
-        check("TTSTYPE:=IF(C>O,1,(0-1));")
+        with self.assertRaisesRegex(FormulaError, "negative IF branch"):
+            check("TTSTYPE:=IF(C>O,1,(0-1));")
+        check("TTSTYPE:=2*IF(C>O,1,0)-1;")
 
     def test_all_emitted_expressions_exclude_unary_signs(self):
         for source in (SOURCE, probe()):
@@ -164,11 +168,14 @@ class SyntaxTests(unittest.TestCase):
                 self.assertFalse(any(node[0] == "unary" for node in walk(st.expression)), st.name)
 
     def test_all_negative_if_arguments_become_grouped_subtractions(self):
-        source = normalize("VALUE1:=IF(C>O,1,-1);VALUE2:=IF(C>O,-2,-3);VALUE3:=-1;")
+        original = "VALUE1:=IF(C>O,1,-1);VALUE2:=IF(C>O,-2,-3);VALUE3:=-1;"
+        source = normalize(original)
         check(source)
-        self.assertIn("IF(C>O,1,(0-1))", source)
-        self.assertIn("IF(C>O,(0-2),(0-3))", source)
         self.assertIn(":=(0-1);", source)
+        data = bars(60)
+        before, after = raw_evaluate(original, data), raw_evaluate(source, data)
+        for name in ("VALUE1", "VALUE2", "VALUE3"):
+            np.testing.assert_allclose(before[name], after["TT"+name])
 
     def test_sign_rewrite_retains_arithmetic_precedence(self):
         data = bars(50)
@@ -194,17 +201,72 @@ class SyntaxTests(unittest.TestCase):
         # Verify the actual production line 166 without relying on the renderer
         # to compute the expected truth table.
         st = next(st for st in Parser(SOURCE).parse() if st.name == "TTSTYPE")
-        self.assertEqual(st.expression[0:2], ("call", "IF"))
+        self.assertEqual(st.expression[0], "binary")
         self.assertFalse(any(node[0] == "call" and node[1] == "IF"
-                             for node in walk(st.expression[2][0])))
+                             for node in walk(st.expression)))
         for hs, ls, ht, lt, expected in ((1,0,4,1,1), (0,1,1,4,-1),
                                         (1,1,1,3,1), (1,1,3,1,-1), (0,0,0,0,-1)):
             data = bars(60)
             e = evaluate(SOURCE, data, {"SHS":hs, "SLS":ls, "SHT":ht, "SLT":lt})
             self.assertTrue(np.all(e["STYPE"] == expected))
 
+    def test_current_client_compound_if_forms_are_rejected(self):
+        prefix = "TTSHS:=1;TTSLS:=1;TTSHT:=1;TTSLT:=2;"
+        for tail in ("(0-1)", "0"):
+            old = prefix+"TTSTYPE:=IF(TTSHS<>0 AND (TTSLS=0 OR TTSHT<TTSLT),1,"+tail+");"
+            with self.subTest(tail=tail), self.assertRaises(FormulaError):
+                check(old)
+
+    def test_no_compound_logic_remains_in_exported_expressions(self):
+        for source in (SOURCE, probe()):
+            for st in Parser(source).parse():
+                self.assertFalse(any(n[0] == "binary" and n[1] in ("AND", "OR")
+                                     for n in walk(st.expression)), st.name)
+
+    def test_compound_conditions_lower_to_equivalent_numerical_flags(self):
+        original = "A1:=C>O;B1:=H>C;D1:=L>O;VALUE1:=IF(A1 AND (B1 OR D1),H,L);VALUE2:=(A1 OR B1) AND (A1 OR D1);"
+        rewritten = normalize(original)
+        check(rewritten)
+        mapping = variable_names(original)
+        data = bars(100)
+        before, after = raw_evaluate(original, data), raw_evaluate(rewritten, data)
+        for key in mapping:
+            np.testing.assert_allclose(before[key], after[mapping[key]])
+
+    def test_lifted_condition_preserves_historical_ref_scope(self):
+        original = "A1:=C>O;B1:=H>REF(H,1);VALUE1:=REF(IF(A1 AND B1,C,O),MIN(BARPOS-1,2));VALUE2:=IF(A1 OR B1,REF(C,1),O);"
+        rewritten = normalize(original)
+        check(rewritten)
+        mapping = variable_names(original)
+        data = bars(90)
+        before, after = raw_evaluate(original, data), raw_evaluate(rewritten, data)
+        for key in mapping:
+            np.testing.assert_allclose(before[key], after[mapping[key]])
+
 
 class NumericalTests(unittest.TestCase):
+    def test_previous_release_analysis_values_are_preserved(self):
+        reference = (ROOT/"tests"/"fixtures"/"v1_0_2_math_reference.txt").read_text(encoding="utf-8")
+        data = bars(180)
+        cases = [{}, {"DIR":-1,"KIND":1,"MH1":200,"MBASE":4200,"MORG":4500,"MAGE":50},
+                 {"DIR":-1,"KIND":2,"MANF":1,"MFROM":4800,"MTO":3100,"MFAGE":100}]
+        for settings in cases:
+            def old_name(key):
+                return key if key in SETTINGS else ("TTSTD" if key == "SK" else "TT"+key)
+            old_overrides = {old_name(k):v for k,v in settings.items()}
+            new_overrides = {NAMES.get(k,k):v for k,v in settings.items()}
+            before = raw_evaluate(reference, data, old_overrides)
+            after = raw_evaluate(SOURCE, data, new_overrides)
+            for key, value in before.items():
+                if key == "TTSTD":
+                    semantic = "SK"
+                elif key.startswith("TT"):
+                    semantic = key[2:]
+                else:
+                    semantic = key
+                current = NAMES.get(semantic,key)
+                np.testing.assert_allclose(value, after[current], err_msg=f"{key}: {settings}", equal_nan=True)
+
     def test_compatibility_rewrite_preserves_every_analysis_value(self):
         data = bars(160)
         legacy = raw_evaluate("\n".join(core()+drawing()), data)

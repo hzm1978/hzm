@@ -243,8 +243,15 @@ def check(source, enforce_boundary=True):
                         raise FormulaError(f"line {st.line}: invalid literal lookback")
                 if fn == "DRAWTEXT" and args[2][0] != "string":
                     raise FormulaError(f"line {st.line}: text must be a literal in this compatibility profile")
+                if fn == "IF":
+                    for branch in args[1:]:
+                        value = constant_number(branch)
+                        if value is not None and value < 0:
+                            raise FormulaError(f"line {st.line}: negative IF branch constant must use a named series or arithmetic selector")
             if node[0] == "unary":
                 raise FormulaError(f"line {st.line}: unary sign is excluded by the client compatibility profile; use (0-X)")
+            if node[0] == "binary" and node[1] in ("AND", "OR"):
+                raise FormulaError(f"line {st.line}: compound logic must use numerical 0/1 flags")
         for style in st.styles:
             if style not in STYLES and not re.fullmatch(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)", style):
                 raise FormulaError(f"line {st.line}: unreviewed style {style}")
@@ -259,6 +266,7 @@ def check(source, enforce_boundary=True):
     return {"statements": len(statements), "variables": len(names-PREDEFINED),
             "outputs": sum(st.output for st in statements), "functions": calls,
             "future_calls": future_calls, "type_check": "passed", "unary_signs": "none",
+            "compound_logic": "lowered_to_numeric_flags",
             "native_compile": "not_run"}
 
 

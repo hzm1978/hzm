@@ -1,9 +1,9 @@
 {
-  "checked_at_utc": "2026-11-04T14:09:09.086787+00:00",
+  "checked_at_utc": "2026-11-04T14:50:19.231288+00:00",
   "python": "3.13.5",
   "numpy": "2.5.4",
   "local_tests": {
-    "run": 49,
+    "run": 54,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -11,6 +11,7 @@
   },
   "native_compile": {
     "status": "not_run",
+    "target_client_version": "4.39.1.2",
     "reason": "No Windows THS Futures PC client in this environment"
   },
   "files": {
@@ -50,6 +51,7 @@
       ],
       "type_check": "passed",
       "unary_signs": "none",
+      "compound_logic": "lowered_to_numeric_flags",
       "native_compile": "not_run",
       "sha256": "493de412c407649ae5b83cb31c1477bf8854034a3b316eff4fc55fe3912a9c3b",
       "bytes": 493,
@@ -92,6 +94,7 @@
       ],
       "type_check": "passed",
       "unary_signs": "none",
+      "compound_logic": "lowered_to_numeric_flags",
       "native_compile": "not_run",
       "sha256": "7d6d745db25e5a6ee79758ef4c54a5e36f57e3a1d53c0784667d9fc99cc72e69",
       "bytes": 541,
@@ -99,15 +102,15 @@
       "encoding": "utf-8-sig"
     },
     "趋势交易_PC主图_GB18030.txt": {
-      "statements": 488,
-      "variables": 414,
+      "statements": 552,
+      "variables": 478,
       "outputs": 16,
       "functions": {
         "ABS": 71,
-        "MAX": 16,
-        "MIN": 91,
+        "MAX": 88,
+        "MIN": 85,
         "REF": 448,
-        "IF": 1952,
+        "IF": 2151,
         "HHV": 8,
         "LLV": 8,
         "SUM": 15,
@@ -123,123 +126,79 @@
       "future_calls": [
         [
           "BACKSET",
-          385
+          394
         ],
         [
           "BACKSET",
-          386
-        ],
-        [
-          "BACKSET",
-          387
-        ],
-        [
-          "BACKSET",
-          388
-        ],
-        [
-          "DRAWLINE",
-          389
-        ],
-        [
-          "DRAWLINE",
-          390
-        ],
-        [
-          "DRAWLINE",
-          391
-        ],
-        [
-          "DRAWLINE",
-          392
-        ],
-        [
-          "DRAWLINE",
           395
         ],
         [
-          "DRAWLINE",
+          "BACKSET",
           396
         ],
         [
-          "REFX1",
-          422
-        ],
-        [
-          "REFX1",
-          423
-        ],
-        [
-          "REFX1",
-          424
-        ],
-        [
-          "REFX1",
-          425
-        ],
-        [
-          "REFX1",
-          425
-        ],
-        [
-          "REFX1",
-          426
-        ],
-        [
-          "REFX1",
-          427
+          "BACKSET",
+          397
         ],
         [
           "DRAWLINE",
-          428
-        ],
-        [
-          "REFX1",
-          428
-        ],
-        [
-          "REFX1",
-          428
+          398
         ],
         [
           "DRAWLINE",
-          429
+          399
+        ],
+        [
+          "DRAWLINE",
+          400
+        ],
+        [
+          "DRAWLINE",
+          401
+        ],
+        [
+          "DRAWLINE",
+          406
+        ],
+        [
+          "DRAWLINE",
+          409
         ],
         [
           "REFX1",
-          429
+          453
         ],
         [
           "REFX1",
-          429
+          454
         ],
         [
           "REFX1",
-          432
-        ],
-        [
-          "REFX1",
-          436
-        ],
-        [
-          "REFX1",
-          440
-        ],
-        [
-          "REFX1",
-          444
-        ],
-        [
-          "REFX1",
-          448
-        ],
-        [
-          "REFX1",
-          452
+          455
         ],
         [
           "REFX1",
           456
+        ],
+        [
+          "REFX1",
+          456
+        ],
+        [
+          "REFX1",
+          457
+        ],
+        [
+          "REFX1",
+          458
+        ],
+        [
+          "REFX1",
+          459
+        ],
+        [
+          "DRAWLINE",
+          460
         ],
         [
           "REFX1",
@@ -250,20 +209,12 @@
           461
         ],
         [
-          "REFX1",
+          "DRAWLINE",
           462
         ],
         [
           "REFX1",
-          463
-        ],
-        [
-          "REFX1",
-          464
-        ],
-        [
-          "REFX1",
-          465
+          462
         ],
         [
           "REFX1",
@@ -271,31 +222,7 @@
         ],
         [
           "REFX1",
-          467
-        ],
-        [
-          "REFX1",
-          468
-        ],
-        [
-          "REFX1",
-          470
-        ],
-        [
-          "REFX1",
-          471
-        ],
-        [
-          "REFX1",
           472
-        ],
-        [
-          "REFX1",
-          474
-        ],
-        [
-          "REFX1",
-          475
         ],
         [
           "REFX1",
@@ -303,23 +230,7 @@
         ],
         [
           "REFX1",
-          478
-        ],
-        [
-          "REFX1",
-          479
-        ],
-        [
-          "REFX1",
           480
-        ],
-        [
-          "REFX1",
-          482
-        ],
-        [
-          "REFX1",
-          483
         ],
         [
           "REFX1",
@@ -327,23 +238,7 @@
         ],
         [
           "REFX1",
-          486
-        ],
-        [
-          "REFX1",
-          487
-        ],
-        [
-          "REFX1",
           488
-        ],
-        [
-          "REFX1",
-          490
-        ],
-        [
-          "REFX1",
-          491
         ],
         [
           "REFX1",
@@ -351,35 +246,144 @@
         ],
         [
           "REFX1",
-          494
-        ],
-        [
-          "REFX1",
-          495
-        ],
-        [
-          "REFX1",
           496
+        ],
+        [
+          "REFX1",
+          497
+        ],
+        [
+          "REFX1",
+          499
+        ],
+        [
+          "REFX1",
+          500
+        ],
+        [
+          "REFX1",
+          502
+        ],
+        [
+          "REFX1",
+          503
+        ],
+        [
+          "REFX1",
+          505
+        ],
+        [
+          "REFX1",
+          506
+        ],
+        [
+          "REFX1",
+          507
+        ],
+        [
+          "REFX1",
+          511
+        ],
+        [
+          "REFX1",
+          512
+        ],
+        [
+          "REFX1",
+          513
+        ],
+        [
+          "REFX1",
+          517
+        ],
+        [
+          "REFX1",
+          518
+        ],
+        [
+          "REFX1",
+          519
+        ],
+        [
+          "REFX1",
+          523
+        ],
+        [
+          "REFX1",
+          524
+        ],
+        [
+          "REFX1",
+          525
+        ],
+        [
+          "REFX1",
+          529
+        ],
+        [
+          "REFX1",
+          530
+        ],
+        [
+          "REFX1",
+          531
+        ],
+        [
+          "REFX1",
+          535
+        ],
+        [
+          "REFX1",
+          536
+        ],
+        [
+          "REFX1",
+          537
+        ],
+        [
+          "REFX1",
+          541
+        ],
+        [
+          "REFX1",
+          542
+        ],
+        [
+          "REFX1",
+          543
+        ],
+        [
+          "REFX1",
+          547
+        ],
+        [
+          "REFX1",
+          548
+        ],
+        [
+          "REFX1",
+          549
         ]
       ],
       "type_check": "passed",
       "unary_signs": "none",
+      "compound_logic": "lowered_to_numeric_flags",
       "native_compile": "not_run",
-      "sha256": "24c9054aeee6ae726d91f48d80b70ec6e42b693a6f3c45009f1b0b2975522819",
-      "bytes": 64489,
-      "lines": 511,
+      "sha256": "073ad3d26f1698a5186cff70b412cec332387514f5f2c8f87de8329489e1d776",
+      "bytes": 60859,
+      "lines": 575,
       "encoding": "gb18030"
     },
     "趋势交易_PC主图_UTF8.txt": {
-      "statements": 488,
-      "variables": 414,
+      "statements": 552,
+      "variables": 478,
       "outputs": 16,
       "functions": {
         "ABS": 71,
-        "MAX": 16,
-        "MIN": 91,
+        "MAX": 88,
+        "MIN": 85,
         "REF": 448,
-        "IF": 1952,
+        "IF": 2151,
         "HHV": 8,
         "LLV": 8,
         "SUM": 15,
@@ -395,123 +399,79 @@
       "future_calls": [
         [
           "BACKSET",
-          385
+          394
         ],
         [
           "BACKSET",
-          386
-        ],
-        [
-          "BACKSET",
-          387
-        ],
-        [
-          "BACKSET",
-          388
-        ],
-        [
-          "DRAWLINE",
-          389
-        ],
-        [
-          "DRAWLINE",
-          390
-        ],
-        [
-          "DRAWLINE",
-          391
-        ],
-        [
-          "DRAWLINE",
-          392
-        ],
-        [
-          "DRAWLINE",
           395
         ],
         [
-          "DRAWLINE",
+          "BACKSET",
           396
         ],
         [
-          "REFX1",
-          422
-        ],
-        [
-          "REFX1",
-          423
-        ],
-        [
-          "REFX1",
-          424
-        ],
-        [
-          "REFX1",
-          425
-        ],
-        [
-          "REFX1",
-          425
-        ],
-        [
-          "REFX1",
-          426
-        ],
-        [
-          "REFX1",
-          427
+          "BACKSET",
+          397
         ],
         [
           "DRAWLINE",
-          428
-        ],
-        [
-          "REFX1",
-          428
-        ],
-        [
-          "REFX1",
-          428
+          398
         ],
         [
           "DRAWLINE",
-          429
+          399
+        ],
+        [
+          "DRAWLINE",
+          400
+        ],
+        [
+          "DRAWLINE",
+          401
+        ],
+        [
+          "DRAWLINE",
+          406
+        ],
+        [
+          "DRAWLINE",
+          409
         ],
         [
           "REFX1",
-          429
+          453
         ],
         [
           "REFX1",
-          429
+          454
         ],
         [
           "REFX1",
-          432
-        ],
-        [
-          "REFX1",
-          436
-        ],
-        [
-          "REFX1",
-          440
-        ],
-        [
-          "REFX1",
-          444
-        ],
-        [
-          "REFX1",
-          448
-        ],
-        [
-          "REFX1",
-          452
+          455
         ],
         [
           "REFX1",
           456
+        ],
+        [
+          "REFX1",
+          456
+        ],
+        [
+          "REFX1",
+          457
+        ],
+        [
+          "REFX1",
+          458
+        ],
+        [
+          "REFX1",
+          459
+        ],
+        [
+          "DRAWLINE",
+          460
         ],
         [
           "REFX1",
@@ -522,20 +482,12 @@
           461
         ],
         [
-          "REFX1",
+          "DRAWLINE",
           462
         ],
         [
           "REFX1",
-          463
-        ],
-        [
-          "REFX1",
-          464
-        ],
-        [
-          "REFX1",
-          465
+          462
         ],
         [
           "REFX1",
@@ -543,31 +495,7 @@
         ],
         [
           "REFX1",
-          467
-        ],
-        [
-          "REFX1",
-          468
-        ],
-        [
-          "REFX1",
-          470
-        ],
-        [
-          "REFX1",
-          471
-        ],
-        [
-          "REFX1",
           472
-        ],
-        [
-          "REFX1",
-          474
-        ],
-        [
-          "REFX1",
-          475
         ],
         [
           "REFX1",
@@ -575,23 +503,7 @@
         ],
         [
           "REFX1",
-          478
-        ],
-        [
-          "REFX1",
-          479
-        ],
-        [
-          "REFX1",
           480
-        ],
-        [
-          "REFX1",
-          482
-        ],
-        [
-          "REFX1",
-          483
         ],
         [
           "REFX1",
@@ -599,23 +511,7 @@
         ],
         [
           "REFX1",
-          486
-        ],
-        [
-          "REFX1",
-          487
-        ],
-        [
-          "REFX1",
           488
-        ],
-        [
-          "REFX1",
-          490
-        ],
-        [
-          "REFX1",
-          491
         ],
         [
           "REFX1",
@@ -623,23 +519,132 @@
         ],
         [
           "REFX1",
-          494
-        ],
-        [
-          "REFX1",
-          495
-        ],
-        [
-          "REFX1",
           496
+        ],
+        [
+          "REFX1",
+          497
+        ],
+        [
+          "REFX1",
+          499
+        ],
+        [
+          "REFX1",
+          500
+        ],
+        [
+          "REFX1",
+          502
+        ],
+        [
+          "REFX1",
+          503
+        ],
+        [
+          "REFX1",
+          505
+        ],
+        [
+          "REFX1",
+          506
+        ],
+        [
+          "REFX1",
+          507
+        ],
+        [
+          "REFX1",
+          511
+        ],
+        [
+          "REFX1",
+          512
+        ],
+        [
+          "REFX1",
+          513
+        ],
+        [
+          "REFX1",
+          517
+        ],
+        [
+          "REFX1",
+          518
+        ],
+        [
+          "REFX1",
+          519
+        ],
+        [
+          "REFX1",
+          523
+        ],
+        [
+          "REFX1",
+          524
+        ],
+        [
+          "REFX1",
+          525
+        ],
+        [
+          "REFX1",
+          529
+        ],
+        [
+          "REFX1",
+          530
+        ],
+        [
+          "REFX1",
+          531
+        ],
+        [
+          "REFX1",
+          535
+        ],
+        [
+          "REFX1",
+          536
+        ],
+        [
+          "REFX1",
+          537
+        ],
+        [
+          "REFX1",
+          541
+        ],
+        [
+          "REFX1",
+          542
+        ],
+        [
+          "REFX1",
+          543
+        ],
+        [
+          "REFX1",
+          547
+        ],
+        [
+          "REFX1",
+          548
+        ],
+        [
+          "REFX1",
+          549
         ]
       ],
       "type_check": "passed",
       "unary_signs": "none",
+      "compound_logic": "lowered_to_numeric_flags",
       "native_compile": "not_run",
-      "sha256": "50c656bfb8d99d17716cf676b2bde076f214aaed0b6a278d03e0713909e7eaec",
-      "bytes": 65274,
-      "lines": 511,
+      "sha256": "3af404ed6248ac7f07a967dfbd90caeebf1e221cbb52b83507ebe1a1cbbd7d4a",
+      "bytes": 61644,
+      "lines": 575,
       "encoding": "utf-8-sig"
     }
   }

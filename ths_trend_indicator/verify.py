@@ -33,7 +33,8 @@ def main():
         "local_tests": {"run": result.testsRun, "failures": len(result.failures),
                         "errors": len(result.errors), "skipped": len(result.skipped),
                         "passed": result.wasSuccessful()},
-        "native_compile": {"status": "not_run", "reason": "No Windows THS Futures PC client in this environment"},
+        "native_compile": {"status": "not_run", "target_client_version": "4.39.1.2",
+                           "reason": "No Windows THS Futures PC client in this environment"},
         "files": reports}
     (ROOT/"docs"/"本地检查结果.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     if not result.wasSuccessful():
