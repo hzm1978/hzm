@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "config": {
+    "symbol": "KQ.m@SHFE.ag",
+    "seconds": 60,
+    "start": "2016-01-05",
+    "end": "2016-01-06"
+  },
+  "elapsed_seconds": 45.18,
+  "bars": 1110,
+  "first": "2016-01-04 21:00:00",
+  "last": "2016-01-06 14:59:00",
+  "first_trading_day": "2016-01-05",
+  "last_trading_day": "2016-01-06",
+  "engine": "official TqBacktest / TqApi / TqSim market data only",
+  "completion": {
+    "kind": "complete",
+    "symbol": "KQ.m@SHFE.ag",
+    "seconds": 60,
+    "start": "2016-01-05",
+    "end": "2016-01-06",
+    "count": 1110,
+    "first": "2016-01-04 21:00:00",
+    "last": "2016-01-06 14:59:00",
+    "cancelled": false,
+    "multiplier": 15.0,
+    "tick": 1.0
+  },
+  "phases": [
+    {
+      "kind": "status",
+      "stage": "connecting",
+      "text": "正在初始化行情连接"
+    },
+    {
+      "kind": "status",
+      "stage": "authenticating",
+      "text": "正在认证天勤账号"
+    },
+    {
+      "kind": "status",
+      "stage": "authenticated",
+      "text": "认证通过，正在连接行情服务"
+    },
+    {
+      "kind": "status",
+      "stage": "ready",
+      "text": "天勤历史回放连接已建立"
+    }
+  ]
+}

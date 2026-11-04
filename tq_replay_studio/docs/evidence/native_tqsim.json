@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "engine": "official TqSim + TqBacktest public APIs",
+  "mode": "sim",
+  "symbol": "SHFE.ag1606",
+  "virtual_trading_day": "2016-01-05",
+  "quote_time": "2016-01-04 21:00:59.999999",
+  "fills": [
+    {
+      "direction": "BUY",
+      "offset": "OPEN",
+      "volume": 1,
+      "price": 3307.0
+    },
+    {
+      "direction": "SELL",
+      "offset": "CLOSETODAY",
+      "volume": 1,
+      "price": 3305.0
+    }
+  ],
+  "final_long": 0,
+  "final_short": 0,
+  "balance": 999961.0704999999,
+  "live_broker_connected": false,
+  "note": "native simulator execution checked at historical market time because current session is closed; not a real broker order"
+}

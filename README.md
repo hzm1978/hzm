@@ -1,3 +1,5 @@
+**全新天勤 API 独立版已提供：[天勤复盘工作台完整源码与说明](TQ_REPLAY_STUDIO.md)。**
+
 # 期货复盘训练系统 v8.4：窗口最大最小化与实时连接排错
 
 [直接下载完整源码包 futures_replay_fixed_v8_4.zip](https://github.com/hzm1978/hzm/raw/refs/heads/fix/futures-replay-trading-days/futures_replay_fixed_v8_4.zip)

@@ -1,0 +1,107 @@
+{
+  "status": "passed",
+  "elapsed_seconds": 18.67,
+  "symbol": "KQ.m@DCE.jm",
+  "sdk": "3.10.4",
+  "catalog_size": 892,
+  "minute_bars": 10000,
+  "daily_bars": 2630,
+  "latest_minute": "2026-11-04 11:29:00",
+  "latest_daily": "2026-11-04 00:00:00",
+  "latest_quote": "2026-11-04 11:29:59.966000",
+  "last_price": 1360.5,
+  "frozen_replay_asof": "2026-02-03 00:00:00",
+  "original_cursor_and_account_preserved": true,
+  "phases": [
+    {
+      "kind": "status",
+      "stage": "connecting",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "正在初始化行情连接"
+    },
+    {
+      "kind": "status",
+      "stage": "authenticating",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "正在认证天勤账号"
+    },
+    {
+      "kind": "status",
+      "stage": "authenticated",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "认证通过，正在连接行情服务"
+    },
+    {
+      "kind": "status",
+      "stage": "ready",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "行情连接已建立"
+    },
+    {
+      "kind": "status",
+      "stage": "catalog",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "正在获取交易所合约目录"
+    },
+    {
+      "kind": "status",
+      "stage": "subscribing",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "正在订阅 KQ.m@DCE.jm"
+    },
+    {
+      "kind": "status",
+      "stage": "subscribing",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "正在加载 KQ.m@DCE.jm / 60秒最近最多10000根"
+    },
+    {
+      "kind": "status",
+      "stage": "subscribing",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "正在加载 KQ.m@DCE.jm / 86400秒最近最多10000根"
+    },
+    {
+      "kind": "status",
+      "stage": "watching",
+      "symbol": null,
+      "seconds": null,
+      "available": null,
+      "quote_time": null,
+      "last_price": null,
+      "text": "订阅已建立：KQ.m@DCE.jm；等待实际K线"
+    }
+  ]
+}
