@@ -1,0 +1,296 @@
+{
+  "source": "user-exported all_func.json",
+  "source_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+  "records": 286,
+  "unique_names": 282,
+  "used": {
+    "ABS": {
+      "Id": "77",
+      "Name": "ABS",
+      "FuncDefine": "ABS(X)",
+      "Category": "数学函数",
+      "Instruction": "ABS(X) 返回 X 的绝对值，X是数值。",
+      "Remark": "",
+      "ParamDesp": "X 数值类型。"
+    },
+    "BACKSET": {
+      "Id": "129",
+      "Name": "BACKSET",
+      "FuncDefine": "BACKSET(X, N)",
+      "Category": "未来函数",
+      "Instruction": "BACKSET(X, N),若 X 非0,则将包含当前位置在内的一共N周期的数值设为1。",
+      "Remark": "1、N包含当前k线。\r\n2、当N为有效值，但当前的k线数不足N根，按照实际的根数计算； \r\n3、N为0或空值的情况下，返回空值。\r\n4、本函数运算量很大，将占用很多的CPU资源，导致行情刷新速度变慢，请谨慎使用!\r\n5、该函数不支持公式预警。",
+      "ParamDesp": "X 任意常量或变量，N 周期值。"
+    },
+    "BARSLAST": {
+      "Id": "28",
+      "Name": "BARSLAST",
+      "FuncDefine": "BARSLAST(COND)",
+      "Category": "引用函数",
+      "Instruction": "返回上一次条件COND成立到当前的周期数。AA:BARSLAST(OPEN>CLOSE);",
+      "Remark": "1、条件成立的当根k线上BARSLAST(COND)的返回值为0。",
+      "ParamDesp": "COND 条件值，比如 OPEN>CLOSE。"
+    },
+    "BARSSINCEN": {
+      "Id": "233",
+      "Name": "BARSSINCEN",
+      "FuncDefine": "BARSSINCEN(COND, N)",
+      "Category": "统计函数",
+      "Instruction": "BARSSINCEN(COND,N) 统计N周期内第一次条件成立到当前的周期数",
+      "Remark": "1、N包含当前k线。\r\n2、当N为有效值，但当前的k线数不足N根，按照实际的根数计算； \r\n3、若N为0返回无效值；\r\n4、N可以为变量",
+      "ParamDesp": "COND 条件， N 周期"
+    },
+    "COUNT": {
+      "Id": "29",
+      "Name": "COUNT",
+      "FuncDefine": "COUNT(COND, N)",
+      "Category": "引用函数",
+      "Instruction": "统计N周期中满足COND条件的周期数。BB:COUNT(ISUP, N);",
+      "Remark": "1、N包含当前k线。\r\n2、若N为0则从第一个有效值算起；\r\n3、当N为有效值，但当前的k线数不足N根，从第一根统计到当前周期。\r\n4、N 为空值时返回值为空值 。\r\n5、N可以为变量。",
+      "ParamDesp": "COND 条件值，比如 ISUP，N 为周期数，可以为常量或者变量。"
+    },
+    "DRAWLINE": {
+      "Id": "196",
+      "Name": "DRAWLINE",
+      "FuncDefine": "DRAWLINE(C1, P1, C2, P2, COLOR)",
+      "Category": "绘图函数",
+      "Instruction": "DRAWLINE(C1, P1, C2, P2, COLOR);// 满足条件C1时及C2时从P1向P2画线。颜色为COLOR。",
+      "Remark": "1、画线所在的k线须C1、C2同时满足。\r\n2、绘制的直线段是在满足的k线上从P1到P2位置画COLOR颜色的线段。\r\n3、该函数支持在函数后设置线型（LINETHICK1 - LINETHICK9、POINTDOT、DOT），即支持下面的写法：\r\nDRAWLINE(C1,P1,C2,P2,COLOR),LINETHICK;\r\n4、不支持将该函数定义为变量，即不支持下面的写法：\r\nA:DRAWLINE(C1,P1,C2,P2,COLOR);",
+      "ParamDesp": "C1 条件1，P1 价格1， C2 条件2，P2 价格2，COLOR 颜色"
+    },
+    "DRAWLINE3": {
+      "Id": "198",
+      "Name": "DRAWLINE3",
+      "FuncDefine": "DRAWLINE3(C1, P1, X1, C2, P2, X2, EXP)",
+      "Category": "绘图函数",
+      "Instruction": "DRAWLINE3(C1,P1,X1,C2,P2,X2,EXP);\r\n满足条件C1时向左偏移X1个周期及满足条件C2时向左偏移X2个周期从P1向P2画线。EXP为0表示画线不延伸，EXP不为0表示画线延伸。",
+      "Remark": "1、画线连接的是满足C1条件的K线向左偏移X1个周期的P1位置，和满足C1条件后最近一个满足C2条件的k线向左偏移X2个周期的P2位置。\r\n2、EXP为0，画线不延伸，即画线段；EXP不为0，画线延伸，即画射线\r\n3、X1,X2支持变量\r\n4、该函数支持在函数后设置颜色、线型（LINETHICK1 - LINETHICK9、POINTDOT、DOT），即支持下面的两种写法：\r\nDRAWLINE3(C1,P1,X1,C2,P2,X2,EXP),LINETHICK,COLOR;\r\nDRAWLINE3(C1,P1,X1,C2,P2,X2,EXP),COLOR,LINETHICK;\r\n5、不支持将该函数定义为变量，即不支持下面的写法：\r\nA:DRAWLINE3(C1,P1,X1,C2,P2,X2,EXP);",
+      "ParamDesp": "C1 条件1，P1 价格1，X1 偏移周期1， C2 条件2，P2 价格2，X2 偏移周期2，EXP 是否延伸"
+    },
+    "DRAWNUMBER1": {
+      "Id": "145",
+      "Name": "DRAWNUMBER1",
+      "FuncDefine": "DRAWNUMBER1(COND, X, NUMBER, PRECISION)",
+      "Category": "标注函数",
+      "Instruction": "DRAWNUMBER1(COND, X, NUMBER, PRECISION); // 当条件满足时在 X 位置写数字 NUMBER。PRECISION为精度（小数点后有几位数字）。",
+      "Remark": "该函数支持在函数后设置文字的颜色、文字的大小和文字对齐方式。即支持下面的写法：\r\nDRAWNUMBER1(COND,DATA,NUMBER,PRECISION),COLOR,ALIGN,VALIGN;",
+      "ParamDesp": "COND 条件，X 位置，NUMBER 数字，PRECISION 精度。"
+    },
+    "DRAWSHIFTNUMBER": {
+      "Id": "146",
+      "Name": "DRAWSHIFTNUMBER",
+      "FuncDefine": "DRAWSHIFTNUMBER(COND, PRICE, NUMBER, PRECISION, COLOR, DIRECTION, X);",
+      "Category": "标注函数",
+      "Instruction": "DRAWSHIFTNUMBER(COND,PRICE, NUMBER, PRECISION, COLOR, DIRECTION, X);// 当条件满足时在 PRICE 位置写数字 NUMBER。PRECISION为精度（小数点后有几位数字）。COLOR为颜色。DIRECTION 为偏移的方向： 0 左 1右 , X 为偏移的K线根数。",
+      "Remark": "1、该函数可以用ALIGN，VALIGN设置文字的对齐方式。\r\n2、可以用FONTSIZE设置文字显示的字体大小。",
+      "ParamDesp": "PRICE 位置，数字NUMBER。PRECISION为精度（小数点后有几位数字）。COLOR为颜色。DIRECTION 为偏移的方向： 0 左 1右 , X 为偏移的K线根数。"
+    },
+    "DRAWTEXT": {
+      "Id": "202",
+      "Name": "DRAWTEXT",
+      "FuncDefine": "DRAWTEXT(COND, X, 'TEXT')",
+      "Category": "绘图函数",
+      "Instruction": "1、DRAWTEXT(COND, X, TEXT);\r\n当COND条件满足时,在X位置书写文字TEXT。\r\n2、DRAWTEXT(COND,X,TEXT),COLORRED;\r\n当COND条件满足时,在 X 位置书写文字 TEXT,文字颜色为COLOR。",
+      "Remark": "1、显示的汉字用单引号标注\r\n2、该函数可以用COLOR设置文字的颜色，即该函数支持如下写法：DRAWTEXT(COND, X, TEXT),COLOR;",
+      "ParamDesp": "COND 条件，X 价格，TEXT 文本"
+    },
+    "FILTER": {
+      "Id": "35",
+      "Name": "FILTER",
+      "FuncDefine": "FILTER(COND, N)",
+      "Category": "引用函数",
+      "Instruction": "过滤连续出现的信号。FILTER（COND,N): COND 满足条件后，将其后 N周期内的数据置为 0，若 N 为 0 表示将其后所有数据置 0。",
+      "Remark": "",
+      "ParamDesp": "COND 条件值，比如 ISUP，N 为周期数。"
+    },
+    "HHV": {
+      "Id": "36",
+      "Name": "HHV",
+      "FuncDefine": "HHV(X, N)",
+      "Category": "引用函数",
+      "Instruction": "求 X 在 N个周期内 的最高值。HH:HHV(HIGH, 4);求4个周期最高价的最大值，即4周期高点（包含当前k线）。",
+      "Remark": "1、N包含当前K线。\r\n2、若N为0则从第一个有效值开始算起;\r\n3、当N为有效值，但当前的k线数不足N根，按照实际的根数计算;\r\n4、N为空值时，返回空值。\r\n5、N可以是变量。",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期值。"
+    },
+    "HHVBARS": {
+      "Id": "37",
+      "Name": "HHVBARS",
+      "FuncDefine": "HHVBARS(X, N)",
+      "Category": "引用函数",
+      "Instruction": "求 N周期内 X 最高值到当前周期数，HHVBARS(VOL, 0); 求历史成交量最大的周期到当前的周期数（最大值那根k线上HHVBARS(VOL,0);的返回值为0，最大值后的第一根k线返回值为1，依次类推）。",
+      "Remark": "1、若N为0则从第一个有效值开始算起(不包含当前K线)；\r\n2、当N为有效值，但当前的k线数不足N根，按照实际的根数计算，第一根k线返回空值；\r\n3、N为空值时，返回空值。\r\n4、N可以是变量。",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期值。"
+    },
+    "IFELSE": {
+      "Id": "278",
+      "Name": "IFELSE",
+      "FuncDefine": "IFELSE(COND, A, B)",
+      "Category": "选择函数",
+      "Instruction": "IFELSE(COND, A, B) 若COND条件成立，则返回A，否则返回B",
+      "Remark": "1、COND是判断条件;A、B可以是条件，也可以是数值。\r\n2、该函数支持变量循环引用前一周期自身变量，即支持下面这样的写法Y: IFELSE(CON,X,REF(Y,1));",
+      "ParamDesp": "COND 条件，A 数据1，B 数据2"
+    },
+    "INTPART": {
+      "Id": "88",
+      "Name": "INTPART",
+      "FuncDefine": "INTPART(X)",
+      "Category": "数学函数",
+      "Instruction": "INTPART(X)：取 X 的整数部分。",
+      "Remark": "",
+      "ParamDesp": "X 为任意实数。"
+    },
+    "ISNULL": {
+      "Id": "298",
+      "Name": "ISNULL",
+      "FuncDefine": "ISNULL(X)",
+      "Category": "逻辑函数",
+      "Instruction": "ISNULL(X);如果X为空值，函数返回1；如果X为非空值，函数返回0。",
+      "Remark": "",
+      "ParamDesp": "X 数据"
+    },
+    "KTEXT": {
+      "Id": "148",
+      "Name": "KTEXT",
+      "FuncDefine": "KTEXT(COND, POSITION, PRICE, LCR, COLOR, 'TEXT')",
+      "Category": "标注函数",
+      "Instruction": "KTEXT(COND, POSITION, PRICE, LCR, COLOR, 'TEXT'); // 当COND条件满足时,移动 POSITION 根K线,在 PRICE 位置书写COLOR色文字TEXT。LCR 是文字占K线左(0)中(1)右(2)位置。",
+      "Remark": "1、POSITION 参数负数代表向前移动 0代表满足条件当根K线 正数代表向后移动。LCR \r\n代表显示在字符位置的左右中位置，0为左，1为中，2为右\r\n2、显示的汉字用单引号标注。",
+      "ParamDesp": "COND条件, POSITION 移动K线根数, PRICE 绘制位置，COLOR颜色，文字 'TEXT'，LCR是文字占K线左(0)中(1)右(2)位置。"
+    },
+    "LLV": {
+      "Id": "38",
+      "Name": "LLV",
+      "FuncDefine": "LLV(X, N)",
+      "Category": "引用函数",
+      "Instruction": "求X在N个周期内的最小值。LL:LLV(LOW,5); 求5根k线最低点（包含当前k线）。",
+      "Remark": "1、N包含当前k线。\r\n2、若N为0则从第一个有效值开始算起;\r\n3、当N为有效值，但当前的k线数不足N根，按照实际的根数计算;\r\n4、N为空值时，返回空值。\r\n5、N可以是变量。",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期数值。"
+    },
+    "LLVBARS": {
+      "Id": "39",
+      "Name": "LLVBARS",
+      "FuncDefine": "LLVBARS(X, N)",
+      "Category": "引用函数",
+      "Instruction": "求N周期内，X 最低值到当前周期数，AA:LLVBARS(VOL,0); 求历史成交量最小的周期到当前的周期数（最小值那根k线上LLVBARS(VOL,0);的返回值为0，最小值后的第一根k线返回值为1，依次类推）。",
+      "Remark": "1、若N为0则从第一个有效值开始算起(不包含当前K线)；\r\n2、当N为有效值，但当前的k线数不足N根，按照实际的根数计算，第一根k线返回空值；\r\n3、N为空值时，返回空值。\r\n4、N可以是变量。",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期数值。"
+    },
+    "MA": {
+      "Id": "40",
+      "Name": "MA",
+      "FuncDefine": "MA(X, N)",
+      "Category": "引用函数",
+      "Instruction": "求 X 在N个周期内的简单移动平均算法：MA(X, 5)=(X1+X2+X3+X4+X5)/5。MA5:=MA(CLOSE,5);//求5周期收盘价的简单移动平均。",
+      "Remark": "1、N包含当前k线。\r\n2、简单移动平均线沿用最简单的统计学方式，将过去某特定时间内的价格取其平均值。\r\n3、当N为有效值，但当前的k线数不足N根，函数返回空值。\r\n4、N为0或空值的情况下，函数返回空值。\r\n5、N可以为变量",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期数值。"
+    },
+    "MAX": {
+      "Id": "92",
+      "Name": "MAX",
+      "FuncDefine": "MAX(A, B)",
+      "Category": "数学函数",
+      "Instruction": "MAX(A, B)：取最大值。取A，B中较大者。",
+      "Remark": "若A=B，返回值为A或者B的值。",
+      "ParamDesp": "A, B 为任意常量或变量。"
+    },
+    "MAX1": {
+      "Id": "93",
+      "Name": "MAX1",
+      "FuncDefine": "MAX1(A,,,P)",
+      "Category": "数学函数",
+      "Instruction": "MAX1(A...P) 在A到P中取最大值。",
+      "Remark": "1、支持2-16个数值进行比较。\r\n2、A...P可以为数字也可以为变量。",
+      "ParamDesp": "A...P 可以为任意变量或者常量。"
+    },
+    "MIN": {
+      "Id": "94",
+      "Name": "MIN",
+      "FuncDefine": "MIN(A, B)",
+      "Category": "数学函数",
+      "Instruction": "MIN(A, B)：取最小值。取A，B中较小者",
+      "Remark": "若A=B，返回值为A或者B的值。",
+      "ParamDesp": "A, B 可以为任意常量或者变量。"
+    },
+    "MIN1": {
+      "Id": "95",
+      "Name": "MIN1",
+      "FuncDefine": "MIN1(A,,,P)",
+      "Category": "数学函数",
+      "Instruction": "MIN1(A,,,P) 在A到P中取最小值。",
+      "Remark": "1、支持2-16个数值进行比较。\r\n2、A...P可以为数字也可以为变量。",
+      "ParamDesp": "A...P 可以为任意常量或者变量。"
+    },
+    "POLYLINE": {
+      "Id": "213",
+      "Name": "POLYLINE",
+      "FuncDefine": "POLYLINE(COND, DATA, COLOR);",
+      "Category": "绘图函数",
+      "Instruction": "POLYLINE(COND, DATA, COLOR); \r\n条件COND满足时，用颜色COLOR的折线连接DATA的值。",
+      "Remark": "1、该函数是将满足条件的 DATA 以折线形式连接起来，连线连续\r\n2、该函数支持在函数后设置线型（LINETHICK1 - LINETHICK9、POINTDOT、DOT），即支持下面的写法：POLYLINE(COND,DATA,COLOR),LINETHICK; \r\n3、不支持将该函数定义为变量，即不支持下面的写法：\r\nA:POLYLINE(COND,DATA,COLOR);",
+      "ParamDesp": "COND 条件，DATA 数据，COLOR 颜色"
+    },
+    "REF": {
+      "Id": "42",
+      "Name": "REF",
+      "FuncDefine": "REF(X, N)",
+      "Category": "引用函数",
+      "Instruction": "引用 X 在 N个 周期前的值。",
+      "Remark": "1、当 N 为有效值，但当前的 K 线数不足N根，返回空值；\r\n2、N为0时返回当前X值；\r\n3、N为空值时返回空值。\r\n4、N可以为变量",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期数值。"
+    },
+    "REFX1": {
+      "Id": "133",
+      "Name": "REFX1",
+      "FuncDefine": "REFX1(X, N)",
+      "Category": "未来函数",
+      "Instruction": "REFX1(X, N)引用 X 在N个周期后的值，不足N周期取最后一根的值",
+      "Remark": "1、当N为有效值，但当前的k线数不足N根，按照实际的根数计算，取最后一根的值；\r\n2、N为0时返回当前 X 值；N为空值时返回空值。\r\n3、N不能为变量\r\n4、本函数运算量很大，将占用很多的CPU资源，导致行情刷新速度变慢，请谨慎使用!\r\n5、该函数不支持公式预警。",
+      "ParamDesp": "X 常量或变量， N 周期值。"
+    },
+    "SIGN": {
+      "Id": "102",
+      "Name": "SIGN",
+      "FuncDefine": "SIGN(X)",
+      "Category": "数学函数",
+      "Instruction": "SIGN(X), 返回 X 的符号, 当 X>0,X=0,X<0 分别返回 1,0,-1",
+      "Remark": "",
+      "ParamDesp": "X 为变量或常量。"
+    },
+    "SORT": {
+      "Id": "257",
+      "Name": "SORT",
+      "FuncDefine": "SORT(Type, POS, N1, N2,...,N30)",
+      "Category": "统计函数",
+      "Instruction": "SORT(Type,POS,N1,N2,...,N30); 按升(降)序排列，取第POS个参数对应的值",
+      "Remark": "1、当Type为0按升序排列，当Type为1按降序排列；\r\n2、TYPE,POS,不支持变量\r\n3、N1,...,N30为参数，支持常量、变量，最多支持30个参数",
+      "ParamDesp": "TYPE 类型， POS 取的位置，N1~N30 数据"
+    },
+    "SORTPOS": {
+      "Id": "258",
+      "Name": "SORTPOS",
+      "FuncDefine": "SORTPOS(Type, POS, N1,N2,...,N30)",
+      "Category": "统计函数",
+      "Instruction": "SORTPOS(Type,POS,N1,N2,...,N30); 按升(降)序排列，取第POS个数据的原始位置",
+      "Remark": "1、当Type为0按升序排列，当Type为1按降序排列；\r\n2、TYPE,POS,不支持变量；\r\n3、N1,...,N30为参数，支持常量、变量，最多支持30个参数\r\n4、如存在两个或两个以上相同的值，保持原有的顺序排列。如SORTPOS(1,3,2,1,2,5,3);返回值为1，取第一个2的位置；SORTPOS(1,4,2,1,2,5,3);返回值为3，取第二个2的位置\r\n5、返回的原始位置，从1开始",
+      "ParamDesp": "TYPE 类型，POS 位置，N1~N30 数据"
+    },
+    "SUM": {
+      "Id": "46",
+      "Name": "SUM",
+      "FuncDefine": "SUM(X, N)",
+      "Category": "引用函数",
+      "Instruction": "求 X 在 N个周期内 的总和。",
+      "Remark": "1、N包含当前k线。\r\n2、若N为0则从第一个有效值开始算起。\r\n3、当N为有效值，但当前的k线数不足N根，按照实际的根数计算。\r\n4、N为空值时，返回空值。\r\n5、N可以为变量。",
+      "ParamDesp": "X 为任意引用字段或者数值，N 为周期数值。"
+    },
+    "VALUEWHEN": {
+      "Id": "283",
+      "Name": "VALUEWHEN",
+      "FuncDefine": "VALUEWHEN(COND, X)",
+      "Category": "选择函数",
+      "Instruction": "VALUEWHEN(COND, X) 当COND条件成立时，取X的当前值。反之，则取上一次COND条件成立时X的值。",
+      "Remark": "X可以是数值也可以是条件。",
+      "ParamDesp": "COND 条件，X 数据"
+    }
+  }
+}

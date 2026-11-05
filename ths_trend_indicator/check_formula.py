@@ -6,15 +6,21 @@ vendor's function or arity an error. NumPy is needed only for numerical tests.
 from dataclasses import dataclass
 from pathlib import Path
 import re
+from catalog import FUNCTIONS as CLIENT_FUNCTIONS, parameter_bounds
 
 ARITY = {
     "ABS": 1, "MAX": 2, "MIN": 2, "IF": 3, "IFELSE": 3, "REF": 2,
     "HHV": 2, "LLV": 2, "MA": 2, "SUM": 2, "COUNT": 2,
     "BARSLAST": 1, "FILTER": 2, "BACKSET": 2, "REFX1": 2,
     "DRAWLINE": 5, "POLYLINE": 3, "DRAWTEXT": 3, "DRAWNUMBER1": 4, "DRAWNUMBER": 5,
+    "SORT": -1, "SORTPOS": -1,
+    "MAX1": -1, "MIN1": -1, "BARSSINCEN": 2, "ISNULL": 1,
+    "SIGN": 1, "HHVBARS": 2, "LLVBARS": 2, "VALUEWHEN": 2,
+    "INTPART": 1,
+    "DRAWLINE3": 7, "KTEXT": 6, "DRAWSHIFTNUMBER": 7,
 }
 PREDEFINED = {"O", "H", "L", "C", "OPEN", "HIGH", "LOW", "CLOSE",
-              "BARPOS", "ISLASTBAR", "DRAWNULL", "NULL"}
+              "BARPOS", "ISLASTBAR", "DRAWNULL", "NULL", "DATACOUNT"}
 RESERVED = PREDEFINED | {"RANGE", "CONST", "NOT", "INTPART", "MOD", "ROUND",
                          "DATE", "TIME", "YEAR", "MONTH", "DAY", "WEEKDAY",
                          "VOL", "VOLUME", "AMOUNT", "BARSTATUS",
@@ -22,7 +28,7 @@ RESERVED = PREDEFINED | {"RANGE", "CONST", "NOT", "INTPART", "MOD", "ROUND",
                          # namespace in the user's client (COND_TRADE:SK).
                          "BK", "SK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"}
 NUMBER, CONDITION, STRING, DRAWING, COLOR = "number", "condition", "string", "drawing", "color"
-COLOR_PATTERN = re.compile(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)")
+COLOR_PATTERN = re.compile(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK|GRAY|LIBLUE|LIGRAY|LIGREEN|LIRED)")
 SIGNATURES = {
     "ABS": ((NUMBER,), NUMBER),
     "MAX": ((NUMBER, NUMBER), NUMBER), "MIN": ((NUMBER, NUMBER), NUMBER),
@@ -39,10 +45,19 @@ SIGNATURES = {
     "DRAWTEXT": ((CONDITION, NUMBER, STRING), DRAWING),
     "DRAWNUMBER1": ((CONDITION, NUMBER, NUMBER, NUMBER), DRAWING),
     "DRAWNUMBER": ((CONDITION, NUMBER, NUMBER, NUMBER, COLOR), DRAWING),
+    "SORT": ((NUMBER,), NUMBER), "SORTPOS": ((NUMBER,), NUMBER),
+    "MAX1": ((NUMBER,), NUMBER), "MIN1": ((NUMBER,), NUMBER),
+    "BARSSINCEN": ((CONDITION,NUMBER),NUMBER), "ISNULL": ((NUMBER,),NUMBER),
+    "SIGN": ((NUMBER,),NUMBER), "HHVBARS": ((NUMBER,NUMBER),NUMBER),
+    "INTPART": ((NUMBER,),NUMBER),
+    "LLVBARS": ((NUMBER,NUMBER),NUMBER), "VALUEWHEN": ((CONDITION,NUMBER),NUMBER),
+    "DRAWLINE3": ((CONDITION,NUMBER,NUMBER,CONDITION,NUMBER,NUMBER,NUMBER),DRAWING),
+    "KTEXT": ((CONDITION,NUMBER,NUMBER,NUMBER,COLOR,STRING),DRAWING),
+    "DRAWSHIFTNUMBER": ((CONDITION,NUMBER,NUMBER,NUMBER,COLOR,NUMBER,NUMBER),DRAWING),
 }
 PREDEFINED_TYPES = {name: CONDITION if name == "ISLASTBAR" else NUMBER
                     for name in PREDEFINED}
-FUTURE = {"BACKSET", "REFX1", "POLYLINE"}
+FUTURE = {"BACKSET", "REFX1", "POLYLINE", "DRAWLINE3", "DATACOUNT"}
 STYLES = {"NODRAW", "LINETHICK1", "LINETHICK2", "LINETHICK3"}
 TOKEN = re.compile(r"\s+|\{[^}]*\}|//[^\n]*|:=|<>|>=|<=|&&|\|\||"
                    r"[0-9]+(?:\.[0-9]+)?|'[^'\r\n]*'|"
@@ -185,6 +200,7 @@ def infer_type(node, types, line):
         return NUMBER if op in ("+", "-", "*", "/") else CONDITION
     fn, args = node[1], node[2]
     signature, output = SIGNATURES[fn]
+    if fn in ('SORT','SORTPOS','MAX1','MIN1'): signature=(NUMBER,)*len(args)
     for i, (arg, expected) in enumerate(zip(args, signature), 1):
         require(infer_type(arg, types, line), expected, f"{fn} argument {i}")
     return output
@@ -221,11 +237,15 @@ def check(source, enforce_boundary=True):
     boundary = source.count("\n", 0, end)+1 if end >= 0 else 0
     for st in statements:
         if st.name:
-            if st.name in names or st.name in ARITY or st.name in RESERVED or COLOR_PATTERN.fullmatch(st.name):
+            if st.name in names or st.name in CLIENT_FUNCTIONS or st.name in ARITY or st.name in RESERVED or COLOR_PATTERN.fullmatch(st.name):
                 raise FormulaError(f"line {st.line}: duplicate or reserved name {st.name}")
             if len(st.name) > 16:
                 raise FormulaError(f"line {st.line}: identifier longer than 16 characters: {st.name}")
         for node in walk(st.expression):
+            if node[0:2]==('identifier','DATACOUNT'):
+                future_calls.append(('DATACOUNT',st.line))
+                if enforce_boundary and (not boundary or st.line<=boundary):
+                    raise FormulaError(f'line {st.line}: DATACOUNT leaks into analysis')
             if node[0] == "identifier" and COLOR_PATTERN.fullmatch(node[1]):
                 names.add(node[1])
                 types[node[1]] = COLOR
@@ -235,8 +255,15 @@ def check(source, enforce_boundary=True):
                 fn, args = node[1], node[2]
                 if fn not in ARITY:
                     raise FormulaError(f"line {st.line}: unreviewed function {fn}")
-                if len(args) != ARITY[fn]:
+                minimum,maximum=parameter_bounds(fn)
+                if not minimum<=len(args)<=maximum:
                     raise FormulaError(f"line {st.line}: {fn} expects {ARITY[fn]} args, got {len(args)}")
+                if fn in ('SORT','SORTPOS'):
+                    mode,position=constant_number(args[0]),constant_number(args[1])
+                    if mode not in (0,1) or position is None or position!=int(position) or not 1<=position<=len(args)-2:
+                        raise FormulaError(f'line {st.line}: SORT mode/position must be valid constants')
+                if fn=='REFX1' and constant_number(args[1]) is None:
+                    raise FormulaError(f'line {st.line}: REFX1 N cannot be variable (client catalog)')
                 calls[fn] = calls.get(fn, 0)+1
                 if fn in FUTURE:
                     future_calls.append((fn, st.line))
@@ -244,17 +271,23 @@ def check(source, enforce_boundary=True):
                         raise FormulaError(f"line {st.line}: {fn} leaks into analysis")
                 if fn == "REF" and args[1][0] == "unary" and args[1][1] == "-":
                     raise FormulaError(f"line {st.line}: negative REF")
-                if fn in ("REF", "REFX1", "HHV", "LLV", "MA", "SUM", "COUNT", "BACKSET", "FILTER"):
+                if fn in ("REF", "REFX1", "HHV", "LLV", "MA", "SUM", "COUNT", "BACKSET", "FILTER", "HHVBARS", "LLVBARS", "BARSSINCEN"):
                     window = constant_number(args[1])
                     if fn == "REF" and window is not None and window < 0:
                         raise FormulaError(f"line {st.line}: negative REF")
                     if window is not None and (window != int(window) or window < 0):
                         raise FormulaError(f"line {st.line}: invalid literal lookback")
+                    if fn=='BARSSINCEN' and window==0:
+                        raise FormulaError(f'line {st.line}: BARSSINCEN N must be positive')
                 if fn == "DRAWTEXT" and args[2][0] != "string":
                     raise FormulaError(f"line {st.line}: text must be a literal in this compatibility profile")
         for style in st.styles:
-            if style not in STYLES and not re.fullmatch(r"COLOR(?:[0-9A-F]{6}|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|WHITE|BLACK)", style):
+            if style not in STYLES and not COLOR_PATTERN.fullmatch(style) and not re.fullmatch(r"ALIGN[012]|VALIGN[012]|FONTSIZE(?:[89]|[1-6][0-9]|7[012])|LINETHICK[1-9]|DOT|POINTDOT", style):
                 raise FormulaError(f"line {st.line}: unreviewed style {style}")
+        if st.expression[0]=='call' and st.expression[1]=='DRAWTEXT' and any(not COLOR_PATTERN.fullmatch(s)for s in st.styles):
+            raise FormulaError(f'line {st.line}: DRAWTEXT export only documents COLOR suffix')
+        if st.expression[0]=='call' and st.expression[1]=='KTEXT' and st.styles:
+            raise FormulaError(f'line {st.line}: KTEXT export documents no suffix styles')
         result_type = infer_type(st.expression, types, st.line)
         if st.output and result_type != NUMBER:
             raise FormulaError(f"line {st.line}: plotted output requires number, got {result_type}")
@@ -290,6 +323,7 @@ def evaluate(source, data, overrides=None):
     for long, short in (("OPEN", "O"), ("HIGH", "H"), ("LOW", "L"), ("CLOSE", "C")):
         env[long] = env[short]
     env["BARPOS"] = np.arange(1, n+1, dtype=float)
+    env['DATACOUNT'] = np.full(n,n,dtype=float)
     env["ISLASTBAR"] = np.arange(n) == n-1
     env["DRAWNULL"] = np.full(n, np.nan)
     env["NULL"] = np.full(n, np.nan)
@@ -332,7 +366,15 @@ def evaluate(source, data, overrides=None):
             if op == "<=": return a <= b
             raise FormulaError(f"unimplemented operator {op}")
         fn, args = node[1], [ev(arg) for arg in node[2]]
+        from catalog_math import extra_math
+        extra=extra_math(fn,args,n)
+        if extra is not NotImplemented: return extra
         if fn == "ABS": return np.abs(args[0])
+        if fn in ('SORT','SORTPOS'):
+            mode=int(args[0][0]);position=int(args[1][0])-1
+            values=np.vstack(args[2:]);order=np.argsort(-values if mode else values,axis=0,kind='stable')
+            selected=order[position]
+            return selected.astype(float)+1 if fn=='SORTPOS' else values[selected,index]
         if fn == "MAX": return np.maximum(*args)
         if fn == "MIN": return np.minimum(*args)
         if fn in ("IF", "IFELSE"): return np.where(args[0] != 0, args[1], args[2])

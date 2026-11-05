@@ -61,7 +61,7 @@ class SyntaxTests(unittest.TestCase):
         self.assertIn("DRAWNUMBER1", report["functions"])
         self.assertNotIn("DRAWNUMBER", report["functions"])
         self.assertLessEqual(report["outputs"], 16)
-        self.assertLessEqual(report["variables"], 500)
+        self.assertLessEqual(report["variables"], 2048)
         self.assertTrue(report["future_calls"])
 
     def test_compatibility_probe(self):
@@ -104,10 +104,11 @@ class SyntaxTests(unittest.TestCase):
         with self.assertRaisesRegex(FormulaError, "unreviewed style"):
             check("均线:C,UNVERIFIEDSTYLE;")
 
-    def test_source_below_64k(self):
-        # This is our conservative source-size budget, not a claimed THS limit.
-        self.assertLess(len(SOURCE.encode("gb18030")), 65536)
-        self.assertLess(len(SOURCE.replace("\n", "\r\n").encode("utf-8-sig")), 65536)
+    def test_source_below_development_budget(self):
+        # Version 1.1 contains bounded degree/correction layers. This is our
+        # own budget, never asserted to be a native editor's documented limit.
+        self.assertLess(len(SOURCE.encode("gb18030")), 262144)
+        self.assertLess(len(SOURCE.replace("\n", "\r\n").encode("utf-8-sig")), 262144)
 
     def test_rejects_futures_trade_names_from_client_error(self):
         for name in ("SK", "BK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"):
@@ -249,12 +250,15 @@ class SyntaxTests(unittest.TestCase):
         for key in mapping:
             np.testing.assert_allclose(before[key], after[mapping[key]])
 
-    def test_all_exported_formulas_exclude_both_conditional_functions_and_null(self):
+    def test_native_selection_only_guards_nullable_catalog_lookups(self):
         for source in (SOURCE, probe(), basic_probe()):
             functions = {n[1] for st in Parser(source).parse() for n in walk(st.expression) if n[0] == "call"}
             self.assertIn("COUNT", functions)
             self.assertNotIn("IF", functions)
-            self.assertNotIn("IFELSE", functions)
+            for st in Parser(source).parse():
+                for node in walk(st.expression):
+                    if node[0:2]==('call','IFELSE'):
+                        self.assertTrue(any(n[0:2]==('call','ISNULL')for n in walk(node[2][0])))
             identifiers = {n[1] for st in Parser(source).parse() for n in walk(st.expression) if n[0] == "identifier"}
             self.assertFalse(identifiers & {"NULL", "DRAWNULL"})
 
@@ -298,10 +302,11 @@ N2:=IFELSE(H<REF(H,1)&&REF(H,1)<REF(H,2),REF(H,2),0);
     def test_conditional_price_segments_do_not_create_nullable_plot_outputs(self):
         statements = Parser(SOURCE).parse()
         self.assertEqual({s.name for s in statements if s.output},
-                         {"工作方向", "末段状态", "方向模式", "标准K", "工作回调百分比"})
+                         {"工作方向", "末段状态", "方向模式", "标准K", "工作回调百分比", "价格尺方向"})
         self.assertFalse(any(s.expression[0:2] == ("call","DRAWLINE") for s in statements))
         lines = [s for s in statements if s.expression[0:2] == ("call", "POLYLINE")]
-        self.assertEqual(len(lines),17)
+        self.assertGreaterEqual(len(lines),10)
+        self.assertTrue(any(s.expression[0:2]==('call','DRAWLINE3')for s in statements))
 
     def test_qht_drawline_cannot_join_predicates_on_different_candles(self):
         data=bars(10)
@@ -347,7 +352,12 @@ class NumericalTests(unittest.TestCase):
         data=waves()
         normal=audit(SOURCE,data)
         detail=audit(SOURCE,data,{NAMES.get('DETAIL','DETAIL'):1})
-        self.assertLess(len(normal['labels']),len(detail['labels'])/2)
+        # The full book layer must survive the concise mode. Additional wave,
+        # retracement and A labels make the old "half of detail" budget stale.
+        self.assertLess(len(normal['labels']),len(detail['labels']))
+        for text in ('子前1','子前2','子前3','子前4','子前5','子前2回调%','子前4回调%'):
+            self.assertTrue(any(label['text']==text for label in normal['labels']))
+            self.assertTrue(any(label['text']==text for label in detail['labels']))
         self.assertFalse(any('Q收破' in label['text'] for label in normal['labels']))
 
     def test_sideways_without_trend_uses_last_complete_leg_fib_only(self):
@@ -468,11 +478,15 @@ class NumericalTests(unittest.TestCase):
         b = evaluate(SOURCE, changed)
         self.assertEqual(a["SK"][-1], b["SK"][-1])
 
-    def test_all_40_ranks_are_unique_even_with_equal_bodies(self):
+    def test_top_five_selection_is_unique_and_ties_keep_recent_bars(self):
         e = evaluate(SOURCE, bars(90))
-        ranks = np.array([e[f"R{i:02}"] for i in range(1, 41)])
+        ages = np.array([e[f"KAGE{i}"] for i in range(1,6)])
         for t in range(40, 90):
-            np.testing.assert_array_equal(np.sort(ranks[:, t]), np.arange(1, 41))
+            self.assertEqual(len(np.unique(ages[:,t])),5)
+            self.assertTrue(np.all((ages[:,t]>=1)&(ages[:,t]<=40)))
+        flat={k:np.full(90,v) for k,v in (('O',100.),('C',101.),('H',102.),('L',99.))}
+        f=evaluate(SOURCE,flat)
+        np.testing.assert_array_equal([f[f'KAGE{i}'][-1]for i in range(1,6)],[1,2,3,4,5])
 
     def test_short_flat_and_zero_price_inputs_are_finite(self):
         for n in (1, 2, 14, 40, 41, 90):
@@ -491,7 +505,7 @@ class NumericalTests(unittest.TestCase):
         for t in (43, 119, 213):
             prefix = evaluate(SOURCE, slice_data(data, t))
             for name in prefix:
-                if name in ("ISLASTBAR", "DRAWNULL"):
+                if name in ("ISLASTBAR", "DRAWNULL", "DATACOUNT"):
                     continue
                 np.testing.assert_allclose(prefix[name], whole[name][:t], err_msg=f"{name} at {t}")
 
@@ -646,12 +660,12 @@ class NumericalTests(unittest.TestCase):
         e = evaluate(SOURCE, bars(140))
         for t in np.flatnonzero(e["BULLKEY"]):
             self.assertTrue(e["PREPOS"][t])
-            self.assertTrue(e["BULLSTD"][t])
+            self.assertTrue(e["BPQUAL"][t])
             self.assertTrue(e["BULLPAT"][t])
             self.assertEqual(e["WD"][t], 1)
         for t in np.flatnonzero(e["BEARKEY"]):
             self.assertTrue(e["PREPOS"][t])
-            self.assertTrue(e["BEARSTD"][t])
+            self.assertTrue(e["SPQUAL"][t])
             self.assertTrue(e["BEARPAT"][t])
             self.assertEqual(e["WD"][t], -1)
 

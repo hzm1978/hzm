@@ -13,17 +13,30 @@ def standard_k():
     lines = ["{ 标准K：只用此前40根，实体排序前5，实体相等时较近者优先 }",
              "BC:=BARPOS;", "BODY:=ABS(C-O);", "RANGE:=H-L;",
              "UPPER:=H-MAX(O,C);", "LOWER:=MIN(O,C)-L;",
-             "KDIST:=IF(C>=O,C-L,H-C);"]
+             "KDIST:=IF(C>O,C-L,IF(C<O,H-C,0));",
+             "TRANGE:=MAX1(H-L,ABS(H-REF(C,1)),ABS(L-REF(C,1)));",
+             "ATRRAW:=MA(TRANGE,14);", "ATRVAL:=IF(ISNULL(ATRRAW),0,ATRRAW);"]
     for i in range(1, 41):
         # Compute per-candle values before looking back: identical historical
         # samples, fewer native REF calls and no duplicated selection masks.
         lines.append(f"E{i:02}:=REF(BODY,{i});")
-        lines.append(f"D{i:02}:=REF(KDIST,{i});")
-    for i in range(1, 41):
-        terms = [f"(E{j:02}{'>=' if j < i else '>'}E{i:02})"
-                 for j in range(1, 41) if j != i]
-        lines.append(f"R{i:02}:=1+" + "+".join(terms) + ";")
-    lines.append("SK:=IF(BC>40,(" + "+".join(f"IF(R{i:02}<=5,D{i:02},0)" for i in range(1, 41)) + ")/5,0);")
+    # The exported catalog explicitly limits SORT/SORTPOS to 30 data args.
+    # The global top five must belong to a group's top five. Merge two sets
+    # of 20, then take five out of their ten candidates; ties remain nearest.
+    candidates=[]
+    for group in range(2):
+        values=','.join(f'E{i:02}' for i in range(group*20+1,group*20+21))
+        for rank in range(1,6):
+            key=f'KS{group}{rank}'
+            lines += [f'{key}:=SORT(1,{rank},{values});',
+                      f'KA{group}{rank}:=SORTPOS(1,{rank},{values})+{group*20};']
+            candidates.append((key,f'KA{group}{rank}'))
+    values=','.join(key for key,age in candidates)
+    for rank in range(1,6):
+        lines.append(f'KSEL{rank}:=SORTPOS(1,{rank},{values});')
+        lines.append(f'KAGE{rank}:='+ '+'.join(f'IF(KSEL{rank}={i},1,0)*{age}'
+                      for i,(key,age) in enumerate(candidates,1))+';')
+    lines.append('SK:=IF(BC>40,('+ '+'.join(f'REF(KDIST,KAGE{rank})' for rank in range(1,6))+')/5,0);')
     lines.extend(["SKOK:=BC>40 AND SK>0;", "PAD:=MAX((HHV(H,160)-LLV(L,160))*0.025,SK*0.25);"])
     return lines
 
@@ -87,19 +100,20 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.6；方向与图形修订，客户端待核对 }",
+    lines = ["{ 趋势交易·期货通PC 1.1.0；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
              "{ MH1>0人工H1：MBASE调整末价、MORG浪1起价、MAGE距今 }",
              "{ STRONG=1允许强势候选；SPAN为价格线最大显示根数 }",
-             "PN:=2;", "BN:=7;", "DIR:=0;", "KIND:=0;",
+             "PN:=2;", "BN:=7;", "GN:=1;", "DIR:=0;", "KIND:=0;",
              "MANF:=0;", "MFROM:=0;", "MTO:=0;", "MFAGE:=90;",
              "MH1:=0;", "MBASE:=0;", "MORG:=0;", "MAGE:=0;",
              "STRONG:=0;", "SPAN:=90;", "SHOWQ:=1;", "SHOWK:=1;",
-             "SHOWF:=1;", "SHOWT:=1;", "SHOWC:=1;", "DETAIL:=0;"]
+             "SHOWF:=1;", "SHOWT:=1;", "SHOWC:=1;", "DETAIL:=0;",
+             "SHOWBOOK:=1;", "SHOWSUB:=1;", "SHOWGRAND:=1;", "BOOKBARS:=600;"]
     lines += standard_k()
-    lines += pivots("S", "PN") + pivots("B", "BN")
+    lines += pivots("S", "PN",8) + pivots("B", "BN",8) + pivots("G","GN",8)
     lines += q_intervals("S", "PN") + q_intervals("B", "BN")
     lines += ["{ 工作方向观察：同侧双点或先前已知工作极值收盘突破；旧方向破位后不强行沿用 }",
               "BH0:=IF(BTYPE=1,BP0,BP1);", "BH1:=IF(BTYPE=1,BP2,BP3);",
@@ -190,19 +204,18 @@ def core():
               "{ 关键回调价位必须在上一根已知；形态完成根不借用后来出现的结构 }",
               "PREPOS:=REF(FVALID,1) AND (ABS(REF(RET,1)-40)<=5 OR ABS(REF(RET,1)-62)<=5 OR ABS(REF(RET,1)-78.6)<=5);",
               "NEARPOS:=PREPOS AND (WD=REF(WD,1));",
-              "HAMMER:=BODY>0 AND LOWER>BODY*1.618 AND LOWER>UPPER*2;",
-              "INVHAM:=BODY>0 AND UPPER>BODY*1.618 AND UPPER>LOWER*2;",
+              "HAMMER:=BODY>RANGE*0.1 AND LOWER>BODY*1.618 AND LOWER>UPPER;",
+              "INVHAM:=BODY>RANGE*0.1 AND UPPER>BODY*1.618 AND UPPER>LOWER;",
               "DOJI:=RANGE>0 AND BODY<=RANGE*0.1;",
               "BULLENG:=C>O AND REF(C,1)<REF(O,1) AND C>=REF(O,1) AND O<=REF(C,1);",
               "BEARENG:=C<O AND REF(C,1)>REF(O,1) AND C<=REF(O,1) AND O>=REF(C,1);",
-              "MORNING:=BC>2 AND REF(C,2)<REF(O,2) AND REF(BODY,1)<REF(BODY,2)*0.5 AND C>O AND C>REF(O,2);",
-              "EVENING:=BC>2 AND REF(C,2)>REF(O,2) AND REF(BODY,1)<REF(BODY,2)*0.5 AND C<O AND C<REF(O,2);",
+              "MORNING:=BC>2 AND REF(C,2)<REF(O,2) AND REF(BODY,2)>=REF(RANGE,2)*0.45 AND REF(BODY,1)<=REF(BODY,2)*0.5 AND REF(MAX(O,C),1)<=(REF(O,2)+REF(C,2))/2 AND C>O AND C>REF(O,2);",
+              "EVENING:=BC>2 AND REF(C,2)>REF(O,2) AND REF(BODY,2)>=REF(RANGE,2)*0.45 AND REF(BODY,1)<=REF(BODY,2)*0.5 AND REF(MIN(O,C),1)>=(REF(O,2)+REF(C,2))/2 AND C<O AND C<REF(O,2);",
               "BULLDO:=DOJI AND LOWER>UPPER*2;", "BEARDO:=DOJI AND UPPER>LOWER*2;",
               "BULLSTD:=SKOK AND C>O AND C-L>SK;", "BEARSTD:=SKOK AND C<O AND H-C>SK;",
-              "BULLPAT:=BULLENG OR MORNING OR HAMMER OR BULLDO;",
-              "BEARPAT:=BEARENG OR EVENING OR INVHAM OR BEARDO;",
-              "BULLKEY:=NEARPOS AND WD=1 AND BULLSTD AND BULLPAT;",
-              "BEARKEY:=NEARPOS AND WD=-1 AND BEARSTD AND BEARPAT;",
+              "BULLPAT:=BPCODE>0;", "BEARPAT:=SPCODE>0;",
+              "BULLKEY:=NEARPOS AND WD=1 AND BPQUAL AND BULLPAT;",
+              "BEARKEY:=NEARPOS AND WD=-1 AND SPQUAL AND BEARPAT;",
               "{ 对边两极值斜率平移参考：尚未验证全部锚间包络，不叫已确认拐点线 }",
               "HSLOPE:=(BH0-BH1)/MAX(1,HAGE1-HAGE0);",
               "LSLOPE:=(BL0-BL1)/MAX(1,LAGE1-LAGE0);",
@@ -212,6 +225,11 @@ def core():
     # RANGE is a built-in formula function in several THS editions. Avoid
     # borrowing candlestick helper names that might collide with native names.
     renamed = {"BODY": "KBODY", "RANGE": "KRANGE", "UPPER": "KUWICK", "LOWER": "KLWICK"}
+    from candle_patterns import formulas as candle_formulas
+    insert=next(i for i,line in enumerate(lines)if line.startswith('BULLPAT:='))
+    lines[insert:insert]=candle_formulas()
+    from book_corrections import context_formulas
+    lines[-1:-1]=context_formulas()
     return [re.sub(r"\b(?:BODY|RANGE|UPPER|LOWER)\b", lambda m: renamed[m.group()], s)
             for s in lines]
 
@@ -240,8 +258,8 @@ def drawing():
              "DRAWNUMBER1(SHOWQ AND BUQ AND VRECENT,H+PAD*2,BUN,0),COLORWHITE;",
              "DRAWTEXT(DETAIL AND SHOWQ AND BDQ,L-PAD*3,'工作Q收破'),COLORYELLOW;",
              "DRAWNUMBER1(SHOWQ AND BDQ AND VRECENT,L-PAD*2,BDN,0),COLORWHITE;",
-             "DRAWTEXT(SHOWK AND BULLKEY,L-PAD*4,'关键位置看涨·候选'),COLORRED;",
-             "DRAWTEXT(SHOWK AND BEARKEY,H+PAD*4,'关键位置看跌·候选'),COLORGREEN;",
+             "VKBUY:=BULLKEY AND (DETAIL OR FILTER(BULLKEY,2));",
+             "VKSELL:=BEARKEY AND (DETAIL OR FILTER(BEARKEY,2));",
              "DRAWTEXT(SHOWK AND ISLASTBAR AND HAMMER,L-PAD,'锤子·观察'),COLORWHITE;",
              "DRAWTEXT(SHOWK AND ISLASTBAR AND INVHAM,H+PAD,'倒锤子·观察'),COLORWHITE;",
              "DRAWTEXT(SHOWK AND ISLASTBAR AND BULLENG,L-PAD*2,'阳抱阴·观察'),COLORRED;",
@@ -265,7 +283,7 @@ def drawing():
              "POLYLINE(REFX1(SK0,100000) AND (VX=VSA OR ISLASTBAR),IF(ISLASTBAR,C,REFX1(SP0,100000)),COLORCYAN);",
              "POLYLINE(REFX1(BK0,100000) AND (VX=VBA OR ISLASTBAR),IF(ISLASTBAR,C,REFX1(BP0,100000)),COLORYELLOW);",
              "{ 只画当前锚点的直线参考段；条件关闭时不产生0价或空值算术 }",
-             "VCL:=REFX1(SHOWC AND LINEOK,100000);",
+             "VCL:=REFX1(SHOWC AND LINEOK AND SHOWBOOK=0,100000);",
              "VCS:=REFX1(IF(WD=1,LSLOPE,HSLOPE),100000);",
              "VPS:=REFX1(IF(WD=1,HSLOPE,LSLOPE),100000);",
              "VCA:=REFX1(MIN(SPAN,IF(WD=1,LAGE1,HAGE1)),100000);",
@@ -299,7 +317,24 @@ def drawing():
               "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=0-1,C,'Q收缩'),COLORYELLOW;",
               "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=2,C,'Q升级候选'),COLORYELLOW;",
               "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=0-2,C,'Q降级候选'),COLORYELLOW;"]
-    return lines
+    legacy_only=('abc候选','收缩abc候选','收缩三角候选','扩张三角候选','A?候选',
+                 '锤子·观察','倒锤子·观察','阳抱阴·观察','阴抱阳·观察','启明星·观察',
+                 '黄昏星·观察','看涨十字·观察','看跌十字·观察','缺少同级H1依据')
+    for i,line in enumerate(lines):
+        if line.startswith('VT:='):
+            lines[i]=line.replace('REFX1(TON,100000)','REFX1(TON AND SHOWBOOK=0,100000)')
+        elif 'SHOWQ AND' in line:
+            lines[i]=line.replace('SHOWQ AND','SHOWQ AND (SHOWBOOK=0 OR DETAIL) AND')
+        elif any(text in line for text in legacy_only) and line.startswith('DRAWTEXT('):
+            lines[i]=line.replace('DRAWTEXT(','DRAWTEXT(SHOWBOOK=0 AND ',1)
+    from candle_patterns import PATTERNS,pattern_text
+    for code in PATTERNS:
+        for bull,flag,series,price,color in ((True,'VKBUY','BPCODE','L-PAD*4','COLORRED'),
+                                           (False,'VKSELL','SPCODE','H+PAD*4','COLORGREEN')):
+            lines.append(f"KTEXT(SHOWK AND {flag} AND {series}={code},0,{price},0,{color},'关键位·{pattern_text(code,bull)}');")
+    from book_layers import layers
+    book,groups=layers()
+    return lines+book
 
 
 def raw_probe():
@@ -313,12 +348,21 @@ X6:=COUNT(C>O,5);
 X7:=FILTER(BACKSET(C>O,2),1);
 X8:=REFX1(C,100000);
 X9:=BARPOS;
+X10:=SORT(1,1,C,O,H,L);
+X11:=SORTPOS(0,1,C,O,H,L);
+X12:=VALUEWHEN(C>O,C);
+X13:=IF(ISNULL(X12),C,X12);
+X14:=BARSSINCEN(C>O,MAX(1,BARPOS));
+X15:=IF(ISNULL(X14),0,X14);
 均线:MA(C,5),COLORWHITE;
 DRAWLINE(BARPOS=6,X2,ISLASTBAR,X2,0),COLORCYAN;
 DRAWLINE(C>O,L,C>O,H,0),COLORYELLOW;
 POLYLINE(C>O,C,COLORCYAN);
+DRAWLINE3(BARPOS=DATACOUNT-1,X13,MIN(9,MAX(0,BARPOS-1)),ISLASTBAR,X13,0,0),COLORLIBLUE,LINETHICK2;
 DRAWTEXT(ISLASTBAR,C,'函数兼容检查'),COLORWHITE;
+KTEXT(ISLASTBAR,0,C,0,COLORWHITE,'左侧文字');
 DRAWNUMBER1(ISLASTBAR,C,C,2),COLORYELLOW;
+DRAWSHIFTNUMBER(ISLASTBAR,H,X10,2,COLORYELLOW,0,MIN(5,MAX(0,BARPOS-1))),ALIGN0,FONTSIZE9;
 根数:X9,NODRAW;
 """
 
@@ -354,6 +398,8 @@ def build():
         (path / f"{name}_GB18030.txt").write_bytes(text.replace("\n", "\r\n").encode("gb18030"))
     import json
     (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+    from book_layers import layers
+    (ROOT/"结构字段.json").write_text(json.dumps(layers()[1], ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     return samples
 
 

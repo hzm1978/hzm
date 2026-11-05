@@ -1,0 +1,261 @@
+{
+  "release": "1.1.0",
+  "bars": 331,
+  "native_client_run": false,
+  "mode": "current-prefix retrospective drawing, not historical trade signals",
+  "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+  "formula_normalized_utf8_sha256": "5206db889f68b647ec4944916181f7d553426332a853fd47641fd6c89d85af71",
+  "ohlc_float64_sha256": "3bc130e5dd0ba5e800b4f3c9d062d14f8f3d06009987bcbb00d7780ce0f2ae6c",
+  "work_direction": -1.0,
+  "phase": 2.0,
+  "groups": [
+    {
+      "key": "MW",
+      "owner": "工作范围",
+      "owner_start_index": 23,
+      "owner_end_index": 330,
+      "direction": -1.0,
+      "count": 3,
+      "pending": false,
+      "first_Q_closed": true,
+      "merge_mode": 1.0,
+      "H1": 702.0,
+      "points": [
+        {
+          "wave": 0,
+          "bar_index": 155,
+          "price": 3801.0
+        },
+        {
+          "wave": 1,
+          "bar_index": 177,
+          "price": 3099.0
+        },
+        {
+          "wave": 2,
+          "bar_index": 199,
+          "price": 3501.0
+        },
+        {
+          "wave": 3,
+          "bar_index": 309,
+          "price": 2199.0
+        }
+      ],
+      "Q": [
+        {
+          "ordinal": 1,
+          "first_uses_close": true,
+          "start_index": 176,
+          "end_index": 211,
+          "candles_excluding_start": 35.0,
+          "first_close_index": 211,
+          "first_wick_index": 211,
+          "level": 3099.0,
+          "adjustment_end_index": 199,
+          "adjustment_end_price": 3501.0,
+          "simple_A_close_confirmed": true,
+          "ongoing": false,
+          "hidden": false
+        }
+      ],
+      "retracements_percent": {
+        "2": 57.26495726495726
+      }
+    },
+    {
+      "key": "SW",
+      "owner": "主级当前段",
+      "owner_start_index": 309,
+      "owner_end_index": 330,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "PW",
+      "owner": "主级前一段",
+      "owner_start_index": 199,
+      "owner_end_index": 309,
+      "direction": -1.0,
+      "count": 5,
+      "pending": false,
+      "first_Q_closed": true,
+      "merge_mode": 0.0,
+      "H1": 702.0,
+      "points": [
+        {
+          "wave": 0,
+          "bar_index": 199,
+          "price": 3501.0
+        },
+        {
+          "wave": 1,
+          "bar_index": 221,
+          "price": 2799.0
+        },
+        {
+          "wave": 2,
+          "bar_index": 243,
+          "price": 3201.0
+        },
+        {
+          "wave": 3,
+          "bar_index": 265,
+          "price": 2499.0
+        },
+        {
+          "wave": 4,
+          "bar_index": 287,
+          "price": 2901.0
+        },
+        {
+          "wave": 5,
+          "bar_index": 309,
+          "price": 2199.0
+        }
+      ],
+      "Q": [
+        {
+          "ordinal": 2,
+          "first_uses_close": false,
+          "start_index": 264,
+          "end_index": 299,
+          "candles_excluding_start": 35.0,
+          "first_close_index": 299,
+          "first_wick_index": 299,
+          "level": 2499.0,
+          "adjustment_end_index": 287,
+          "adjustment_end_price": 2901.0,
+          "simple_A_close_confirmed": true,
+          "ongoing": false,
+          "hidden": false
+        },
+        {
+          "ordinal": 1,
+          "first_uses_close": true,
+          "start_index": 220,
+          "end_index": 255,
+          "candles_excluding_start": 35.0,
+          "first_close_index": 255,
+          "first_wick_index": 255,
+          "level": 2799.0,
+          "adjustment_end_index": 243,
+          "adjustment_end_price": 3201.0,
+          "simple_A_close_confirmed": true,
+          "ongoing": false,
+          "hidden": false
+        }
+      ],
+      "retracements_percent": {
+        "2": 57.26495726495726,
+        "4": 57.26495726495726
+      }
+    },
+    {
+      "key": "GW",
+      "owner": "最近有效子级的最后一段",
+      "owner_start_index": 287,
+      "owner_end_index": 309,
+      "direction": -1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    }
+  ],
+  "current_correction": {
+    "known": 0.0,
+    "code": 0.0,
+    "length": 0.0,
+    "root": 2199.0,
+    "root_age": 21.0,
+    "end": 2901.0,
+    "end_age": 43.0,
+    "confirmed": 0.0,
+    "confirm_age": 31.0,
+    "failed": 0.0,
+    "fail_age": 0.0,
+    "active": 0.0,
+    "broken": 0.0,
+    "confirmation_index": null,
+    "failure_index": null
+  },
+  "price_plan": {
+    "dir": -1.0,
+    "phase": 2.0,
+    "proof": 1.0,
+    "ton": 0.0,
+    "fon": 0.0,
+    "h": 702.0,
+    "base": 3501.0,
+    "origin": 3801.0,
+    "parent_fib_on": true,
+    "targets": [
+      {
+        "ratio": 1.208,
+        "price": 2652.984,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 1.618,
+        "price": 2365.1639999999998,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 2,
+        "price": 2097.0,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 2.382,
+        "price": 1828.836,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 2.618,
+        "price": 1663.164,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 3,
+        "price": 1395.0,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 3.236,
+        "price": 1529.328,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 4.236,
+        "price": 827.328,
+        "available": false,
+        "displayed": false
+      }
+    ]
+  },
+  "segments": 47,
+  "labels": 46,
+  "fib_segments": 7,
+  "target_segments": 0,
+  "synthetic_ohlc_only": true,
+  "scenario": "fall_rebound"
+}

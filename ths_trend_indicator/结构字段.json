@@ -1,0 +1,286 @@
+[
+  {
+    "key": "MW",
+    "on": "MWON",
+    "length": "MWLEN",
+    "direction": "MWDIR",
+    "p": [
+      "MWP0",
+      "MWMP1",
+      "MWMP2",
+      "MWMP3",
+      "MWP4",
+      "MWP5",
+      "MWP6",
+      "MWP7"
+    ],
+    "a": [
+      "MWA0",
+      "MWMA1",
+      "MWMA2",
+      "MWMA3",
+      "MWA4",
+      "MWA5",
+      "MWA6",
+      "MWA7"
+    ],
+    "qs": [
+      {
+        "clock": "MWMERGEDQCLOCK",
+        "wa": "MWMERGEDQWA",
+        "ca": "MWMERGEDQCA",
+        "wn": "MWMERGEDQWN",
+        "cn": "MWMERGEDQCN",
+        "ok": "MWMERGEDQOK",
+        "cok": "MWMERGEDQCOK",
+        "hidden": "MWMERGEDQHIDDEN",
+        "root": "MWMERGEDQROOT",
+        "counter": "MWMERGEDQCOUNTER",
+        "counter_age": "MWMERGEDQCOUNTER_AGE"
+      },
+      {
+        "clock": "MWQ1CLOCK",
+        "wa": "MWQ1WA",
+        "ca": "MWQ1CA",
+        "wn": "MWQ1WN",
+        "cn": "MWQ1CN",
+        "ok": "MWQ1OK",
+        "cok": "MWQ1COK",
+        "hidden": "MWQ1HIDDEN",
+        "root": "MWP4",
+        "counter": "MWP3",
+        "counter_age": "MWA3"
+      },
+      {
+        "clock": "MWQ2CLOCK",
+        "wa": "MWQ2WA",
+        "ca": "MWQ2CA",
+        "wn": "MWQ2WN",
+        "cn": "MWQ2CN",
+        "ok": "MWQ2OK",
+        "cok": "MWQ2COK",
+        "hidden": "MWQ2HIDDEN",
+        "root": "MWP6",
+        "counter": "MWP5",
+        "counter_age": "MWA5"
+      }
+    ],
+    "h1": "MWPROJH",
+    "run": "MWRUN",
+    "pending": "MWPENDING",
+    "proof": "MWPROOF"
+  },
+  {
+    "key": "SW",
+    "on": "SWON",
+    "length": "SWLEN",
+    "direction": "SWDIR",
+    "p": [
+      "SWP0",
+      "SWMP1",
+      "SWMP2",
+      "SWMP3",
+      "SWP4",
+      "SWP5",
+      "SWP6",
+      "SWP7"
+    ],
+    "a": [
+      "SWA0",
+      "SWMA1",
+      "SWMA2",
+      "SWMA3",
+      "SWA4",
+      "SWA5",
+      "SWA6",
+      "SWA7"
+    ],
+    "qs": [
+      {
+        "clock": "SWMERGEDQCLOCK",
+        "wa": "SWMERGEDQWA",
+        "ca": "SWMERGEDQCA",
+        "wn": "SWMERGEDQWN",
+        "cn": "SWMERGEDQCN",
+        "ok": "SWMERGEDQOK",
+        "cok": "SWMERGEDQCOK",
+        "hidden": "SWMERGEDQHIDDEN",
+        "root": "SWMERGEDQROOT",
+        "counter": "SWMERGEDQCOUNTER",
+        "counter_age": "SWMERGEDQCOUNTER_AGE"
+      },
+      {
+        "clock": "SWQ1CLOCK",
+        "wa": "SWQ1WA",
+        "ca": "SWQ1CA",
+        "wn": "SWQ1WN",
+        "cn": "SWQ1CN",
+        "ok": "SWQ1OK",
+        "cok": "SWQ1COK",
+        "hidden": "SWQ1HIDDEN",
+        "root": "SWP4",
+        "counter": "SWP3",
+        "counter_age": "SWA3"
+      },
+      {
+        "clock": "SWQ2CLOCK",
+        "wa": "SWQ2WA",
+        "ca": "SWQ2CA",
+        "wn": "SWQ2WN",
+        "cn": "SWQ2CN",
+        "ok": "SWQ2OK",
+        "cok": "SWQ2COK",
+        "hidden": "SWQ2HIDDEN",
+        "root": "SWP6",
+        "counter": "SWP5",
+        "counter_age": "SWA5"
+      }
+    ],
+    "h1": "SWPROJH",
+    "run": "SWRUN",
+    "pending": "SWPENDING",
+    "proof": "SWPROOF"
+  },
+  {
+    "key": "PW",
+    "on": "PWON",
+    "length": "PWLEN",
+    "direction": "PWDIR",
+    "p": [
+      "PWP0",
+      "PWMP1",
+      "PWMP2",
+      "PWMP3",
+      "PWP4",
+      "PWP5",
+      "PWP6",
+      "PWP7"
+    ],
+    "a": [
+      "PWA0",
+      "PWMA1",
+      "PWMA2",
+      "PWMA3",
+      "PWA4",
+      "PWA5",
+      "PWA6",
+      "PWA7"
+    ],
+    "qs": [
+      {
+        "clock": "PWMERGEDQCLOCK",
+        "wa": "PWMERGEDQWA",
+        "ca": "PWMERGEDQCA",
+        "wn": "PWMERGEDQWN",
+        "cn": "PWMERGEDQCN",
+        "ok": "PWMERGEDQOK",
+        "cok": "PWMERGEDQCOK",
+        "hidden": "PWMERGEDQHIDDEN",
+        "root": "PWMERGEDQROOT",
+        "counter": "PWMERGEDQCOUNTER",
+        "counter_age": "PWMERGEDQCOUNTER_AGE"
+      },
+      {
+        "clock": "PWQ1CLOCK",
+        "wa": "PWQ1WA",
+        "ca": "PWQ1CA",
+        "wn": "PWQ1WN",
+        "cn": "PWQ1CN",
+        "ok": "PWQ1OK",
+        "cok": "PWQ1COK",
+        "hidden": "PWQ1HIDDEN",
+        "root": "PWP4",
+        "counter": "PWP3",
+        "counter_age": "PWA3"
+      },
+      {
+        "clock": "PWQ2CLOCK",
+        "wa": "PWQ2WA",
+        "ca": "PWQ2CA",
+        "wn": "PWQ2WN",
+        "cn": "PWQ2CN",
+        "ok": "PWQ2OK",
+        "cok": "PWQ2COK",
+        "hidden": "PWQ2HIDDEN",
+        "root": "PWP6",
+        "counter": "PWP5",
+        "counter_age": "PWA5"
+      }
+    ],
+    "h1": "PWPROJH",
+    "run": "PWRUN",
+    "pending": "PWPENDING",
+    "proof": "PWPROOF"
+  },
+  {
+    "key": "GW",
+    "on": "GWON",
+    "length": "GWLEN",
+    "direction": "GWDIR",
+    "p": [
+      "GWP0",
+      "GWMP1",
+      "GWMP2",
+      "GWMP3",
+      "GWP4",
+      "GWP5",
+      "GWP6",
+      "GWP7"
+    ],
+    "a": [
+      "GWA0",
+      "GWMA1",
+      "GWMA2",
+      "GWMA3",
+      "GWA4",
+      "GWA5",
+      "GWA6",
+      "GWA7"
+    ],
+    "qs": [
+      {
+        "clock": "GWMERGEDQCLOCK",
+        "wa": "GWMERGEDQWA",
+        "ca": "GWMERGEDQCA",
+        "wn": "GWMERGEDQWN",
+        "cn": "GWMERGEDQCN",
+        "ok": "GWMERGEDQOK",
+        "cok": "GWMERGEDQCOK",
+        "hidden": "GWMERGEDQHIDDEN",
+        "root": "GWMERGEDQROOT",
+        "counter": "GWMERGEDQCOUNTER",
+        "counter_age": "GWMERGEDQCOUNTER_AGE"
+      },
+      {
+        "clock": "GWQ1CLOCK",
+        "wa": "GWQ1WA",
+        "ca": "GWQ1CA",
+        "wn": "GWQ1WN",
+        "cn": "GWQ1CN",
+        "ok": "GWQ1OK",
+        "cok": "GWQ1COK",
+        "hidden": "GWQ1HIDDEN",
+        "root": "GWP4",
+        "counter": "GWP3",
+        "counter_age": "GWA3"
+      },
+      {
+        "clock": "GWQ2CLOCK",
+        "wa": "GWQ2WA",
+        "ca": "GWQ2CA",
+        "wn": "GWQ2WN",
+        "cn": "GWQ2CN",
+        "ok": "GWQ2OK",
+        "cok": "GWQ2COK",
+        "hidden": "GWQ2HIDDEN",
+        "root": "GWP6",
+        "counter": "GWP5",
+        "counter_age": "GWA5"
+      }
+    ],
+    "h1": "GWPROJH",
+    "run": "GWRUN",
+    "pending": "GWPENDING",
+    "proof": "GWPROOF"
+  }
+]

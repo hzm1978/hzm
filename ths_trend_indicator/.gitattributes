@@ -1,3 +1,5 @@
 # Preserve both Windows formula encodings and their CRLF bytes.
 formulas/*.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 formulas/*_GB18030.txt -diff
+# Preserve the user's exported reference byte for byte, including CRLF.
+reference/all_func.json -text -diff

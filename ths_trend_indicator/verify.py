@@ -11,6 +11,7 @@ import numpy
 
 from generate import build
 from check_formula import check
+from catalog import evidence as catalog_evidence
 
 ROOT = Path(__file__).resolve().parent
 
@@ -36,6 +37,11 @@ def main():
         "native_compile": {"status": "not_run", "target_client_version": "4.39.1.2",
                            "reason": "No Windows THS Futures PC client in this environment"},
         "files": reports}
+    function_evidence=catalog_evidence(fn for report in reports.values() for fn in report['functions'])
+    (ROOT/'docs'/'使用函数核对.json').write_text(json.dumps(function_evidence,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    evidence['function_catalog']={k:v for k,v in function_evidence.items() if k!='used'}
+    evidence['development_budgets']={'note':'Project review budgets, NOT published client limits',
+                                    'source_gb18030_bytes':262144,'variables':2048}
     feedback = ROOT/"diagnostics"/"client_compile_feedback.json"
     if feedback.exists():
         evidence["client_compile_feedback"] = json.loads(feedback.read_text(encoding="utf-8"))

@@ -1,0 +1,157 @@
+{
+  "release": "1.1.0",
+  "bars": 270,
+  "native_client_run": false,
+  "mode": "current-prefix retrospective drawing, not historical trade signals",
+  "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+  "formula_normalized_utf8_sha256": "5206db889f68b647ec4944916181f7d553426332a853fd47641fd6c89d85af71",
+  "ohlc_float64_sha256": "ccde38d36a11a8630ed55a56b024a9435ea763dd47a7aeba419d82b9c6feeef1",
+  "work_direction": 1.0,
+  "phase": 1.0,
+  "groups": [
+    {
+      "key": "MW",
+      "owner": "工作范围",
+      "owner_start_index": 87,
+      "owner_end_index": 269,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "SW",
+      "owner": "主级当前段",
+      "owner_start_index": 249,
+      "owner_end_index": 269,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "PW",
+      "owner": "主级前一段",
+      "owner_start_index": 231,
+      "owner_end_index": 249,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "GW",
+      "owner": "最近有效子级的最后一段",
+      "owner_start_index": 231,
+      "owner_end_index": 249,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    }
+  ],
+  "current_correction": {
+    "known": 1.0,
+    "code": 5.0,
+    "length": 5.0,
+    "root": 201.0,
+    "root_age": 92.0,
+    "end": 175.0,
+    "end_age": 2.0,
+    "confirmed": 1.0,
+    "confirm_age": 0.0,
+    "failed": 0.0,
+    "fail_age": 0.0,
+    "active": 1.0,
+    "broken": 0.0,
+    "confirmation_index": 269,
+    "failure_index": null
+  },
+  "price_plan": {
+    "dir": 1.0,
+    "phase": 1.0,
+    "proof": 0.0,
+    "ton": 0.0,
+    "fon": 0.0,
+    "h": 18.0,
+    "base": 175.0,
+    "origin": 169.0,
+    "parent_fib_on": false,
+    "targets": [
+      {
+        "ratio": 1.208,
+        "price": 196.744,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 1.618,
+        "price": 204.124,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 2,
+        "price": 211.0,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 2.382,
+        "price": 217.876,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 2.618,
+        "price": 222.124,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 3,
+        "price": 229.0,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 3.236,
+        "price": 227.248,
+        "available": false,
+        "displayed": false
+      },
+      {
+        "ratio": 4.236,
+        "price": 245.248,
+        "available": false,
+        "displayed": false
+      }
+    ]
+  },
+  "segments": 29,
+  "labels": 17,
+  "fib_segments": 0,
+  "target_segments": 0,
+  "synthetic_ohlc_only": true,
+  "scenario": "triangle_e"
+}

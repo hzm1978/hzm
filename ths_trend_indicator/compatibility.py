@@ -2,8 +2,9 @@
 
 Every stored variable is numerical, every conditional argument is a condition,
 and compact internal names avoid futures order names such as SK. Mathematical
-Finite IF templates emit COUNT-based numerical masks. No IF/IFELSE is emitted;
-nullable selections must use conditional drawing instead. DRAWLINE takes color.
+Finite IF templates emit COUNT-based numerical masks. Nullable lookups use the
+client's documented IFELSE(ISNULL(...),...) form: zero times NULL is still NULL.
+DRAWLINE takes color; cross-candle shifted segments use DRAWLINE3.
 """
 import re
 
@@ -16,12 +17,17 @@ from check_formula import (Parser, FormulaError, NUMBER, CONDITION, STRING,
 SETTINGS = {"PN", "BN", "DIR", "KIND", "MANF", "MFROM", "MTO", "MFAGE",
             "MH1", "MBASE", "MORG", "MAGE", "STRONG", "SPAN",
             "SHOWQ", "SHOWK", "SHOWF", "SHOWT", "SHOWC", "DETAIL"}
+SETTINGS |= {'GN','SHOWBOOK','SHOWSUB','SHOWGRAND','BOOKBARS'}
 
 
 def variable_names(source):
     result = {}
+    seen=set()
     next_id = 41
     for st in Parser(source).parse():
+        if st.name:
+            if st.name in seen: raise FormulaError(f'duplicate template variable {st.name}')
+            seen.add(st.name)
         if st.name and st.name.isascii() and st.name not in SETTINGS:
             if st.name == "SK":
                 result[st.name] = "TTSTD"
@@ -141,6 +147,11 @@ def normalize(source):
             if SIGNATURES[node[1]][1] == CONDITION:
                 return one_if_zero(call(node))
             if node[1] in ("IF", "IFELSE"):
+                # Native selection is necessary for nullable lookup results:
+                # arithmetic masking cannot safely replace 0*NULL. The exact
+                # ISNULL/IFELSE form is documented in the exported catalog.
+                if any(n[0:2]==('call','ISNULL') for n in walk(node[2][0])):
+                    return call(('call','IFELSE',node[2]))
                 a, b = constant_number(node[2][1]), constant_number(node[2][2])
                 if (a, b) == (1, 0):
                     return flag(node[2][0])
@@ -182,6 +193,7 @@ def normalize(source):
     def call(node):
         fn, args = node[1], node[2]
         expected, _ = SIGNATURES[fn]
+        if fn in ('SORT','SORTPOS','MAX1','MIN1'): expected=(NUMBER,)*len(args)
         if len(expected) != len(args):
             raise FormulaError(f"cannot normalize invalid call {fn}")
         output = []

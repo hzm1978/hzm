@@ -36,12 +36,12 @@
     "expected_expression_fragment": "2*QFLAG*MAX",
     "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
   },
-  "release_gate": "1.0.6完整主图原生编译/显示待验证；按客户端函数说明改绘图，禁止再把本地测试替代客户端结果",
+  "release_gate": "1.1.0完整主图原生编译、显示、容量和速度待验证；不得以本地结果替代现场结果",
   "next_full_main": {
-    "release": "1.0.6",
+    "release": "1.1.0",
     "status": "not_run",
     "local_evidence": "../docs/本地检查结果.json",
-    "note": "已取得目标客户端绘图函数原文；本地几何预览不等于完整主图原生实测"
+    "note": "采用用户完整导出函数库；本地合成绘图不等于原生实测"
   },
   "full_main_1_0_5": {
     "status": "compiled_but_rendering_incorrect_reported_by_user",
@@ -58,6 +58,9 @@
       "data",
       "color"
     ],
-    "not_verified": "完整1.0.6客户端编译、实际显示与速度"
+    "not_verified": "完整1.1.0客户端编译、显示、容量与速度",
+    "complete_export_file": "../reference/all_func.json",
+    "complete_export_records": 286,
+    "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11"
   }
 }

@@ -1,12 +1,21 @@
-# 合成数据绘图预览
+# 合成预览与明细
 
-两张图均由本包导出公式的AST及本地几何解释器生成，不是期货通客户端截图，也不是用户截图品种的真实行情。它们检查连线端点、价位范围、互斥和默认标签数量；实际客户端字体、缩放和速度仍需原生核对。
+图片来自实际导出公式AST和本地模型。K线均由scenarios.py生成，不代表真实行情或期货通原生渲染。同名JSON保留结构、所属范围、Q起止/长度、回调、当前A及价格尺状态。
 
-在项目根目录安装NumPy和Matplotlib后运行：
+| 场景 | 核对重点 |
+|---|---|
+| fall_rebound | 长下降合并主三浪及内部子五浪、35/35的Q、前完整段七条分割 |
+| five_up | 自动上涨五浪和各自回调 |
+| nested_five_down | 工作方向尚未充分确认时的下降五子浪 |
+| seven_expanding | 自动扩张七浪、三组Q |
+| triangle_e | 自动收缩三角，e=175高于a=159，外起点201，A收盘确认 |
+| trend_targets | 人工H1的三个最近未触及目标，比例/价格在线上 |
+
+在本目录运行（NumPy，图片另需Matplotlib）：
 
 ```text
-python plot_audit.py --output docs/previews/synthetic_fall_rebound.png
-python plot_audit.py --scenario trend_targets --output docs/previews/synthetic_trend_targets.png
+python inspect_structure.py --scenario fall_rebound --output docs/previews/synthetic_fall_rebound.json --preview docs/previews/synthetic_fall_rebound.png
+python inspect_structure.py --scenario triangle_e --output docs/previews/synthetic_triangle_e.json --preview docs/previews/synthetic_triangle_e.png
 ```
 
-第一张为长期下降后反弹；第二张以人工H1参数核对三条候选目标的几何与标签，不证明真实行情结构。
+没有额外隐藏标签。横轴从0起表示实际K线序号，字体与缩放仍须原生核对。

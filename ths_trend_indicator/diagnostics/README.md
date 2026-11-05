@@ -19,4 +19,6 @@ QSIGN:=MAX(QFLAG,QOTHER)+QFLAG-QOTHER-1;
 
 用户随后提供POLYLINE三参数说明：连接满足条件各根K线上的DATA值。1.0.6已据此将主图17处跨K线绘图换为POLYLINE。说明摘录见 `client_function_reference.txt`。新的本地几何检查按这两种不同语义执行，不再仅检查函数参数。
 
-1.0.6完整主图仍未在用户客户端实际编译和显示。`client_compile_feedback.json`分别保留旧版失败、小样通过、1.0.5显示缺陷与最新待测状态，不能相互覆盖。
+1.0.6完整主图未取得用户客户端实测结果。
+
+本次用户提供完整all_func.json（286条、282个名称），已原样保存于reference目录。1.1.0按其定义实现Q约束的分级、调整/A和独立位移线段；所有调用均对照签名与备注。完整1.1.0的原生编译、显示及速度仍为not_run。`client_compile_feedback.json`分别保留各版事实，不能相互覆盖。
