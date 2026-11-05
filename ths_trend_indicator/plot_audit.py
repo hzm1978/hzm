@@ -9,8 +9,8 @@ import numpy as np
 from check_formula import Parser, evaluate, FormulaError
 
 
-def audit(source, data, overrides=None):
-    env = evaluate(source, data, overrides)
+def audit(source, data, overrides=None, analysis_end_line=None):
+    env = evaluate(source, data, overrides,analysis_end_line=analysis_end_line)
     n = len(data['C'])
     index = np.arange(n)
     lines, labels = [], []
@@ -65,7 +65,7 @@ def audit(source, data, overrides=None):
         lines.append({'start':tuple(start),'end':tuple(end),'color':color,
                       'function':fn,'statement':st.line,'styles':st.styles})
 
-    tail=source.split('{ END_ANALYSIS',1)[1].split('}',1)[1]
+    tail='\n'.join(source.splitlines()[analysis_end_line:])if analysis_end_line is not None else source.split('{ END_ANALYSIS',1)[1].split('}',1)[1]
     for st in Parser(tail).parse():
         if st.name:
             env[st.name]=ev(st.expression)
@@ -108,13 +108,13 @@ def audit(source, data, overrides=None):
     return {'lines':lines,'labels':labels,'env':env}
 
 
-def save_preview(source, data, path, overrides=None, last=160):
+def save_preview(source, data, path, overrides=None, last=160,analysis_end_line=None):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from matplotlib.patches import Rectangle
     from matplotlib.font_manager import FontProperties
-    result=audit(source,data,overrides)
+    result=audit(source,data,overrides,analysis_end_line=analysis_end_line)
     colors={'COLORCYAN':'#43d4ed','COLORYELLOW':'#e6ca4f','COLORWHITE':'#ccd6e3',
             'COLORMAGENTA':'#bf87c9','COLORRED':'#e96165','COLORGREEN':'#2cb78d',
             'COLORLIBLUE':'#8dbfe8','COLORLIGREEN':'#91cfac','COLORGRAY':'#8994a3'}

@@ -1,10 +1,10 @@
 {
-  "release": "1.1.0",
+  "release": "1.1.1",
   "bars": 96,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "5206db889f68b647ec4944916181f7d553426332a853fd47641fd6c89d85af71",
+  "formula_normalized_utf8_sha256": "b0b346defd97761bea2a2a56bf7f58161b90db3a4d352ac3a1edf0ebe6c227c5",
   "ohlc_float64_sha256": "a498c983b8eb9705884d2efbdcc3d8d61ae692d058eaede219b876845aac4c9f",
   "work_direction": 0.0,
   "phase": 3.0,
@@ -218,5 +218,6 @@
   "fib_segments": 7,
   "target_segments": 0,
   "synthetic_ohlc_only": true,
-  "scenario": "nested_five_down"
+  "scenario": "nested_five_down",
+  "primary_formula": "EWTN_ASCII.txt"
 }

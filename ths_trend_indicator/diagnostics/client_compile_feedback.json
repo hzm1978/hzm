@@ -36,12 +36,19 @@
     "expected_expression_fragment": "2*QFLAG*MAX",
     "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
   },
-  "release_gate": "1.1.0完整主图原生编译、显示、容量和速度待验证；不得以本地结果替代现场结果",
+  "release_gate": "1.1.1客户端保存、编译和显示待核验；现场保存拒绝优先于旧版103项本地通过",
   "next_full_main": {
-    "release": "1.1.0",
+    "release": "1.1.1",
     "status": "not_run",
-    "local_evidence": "../docs/本地检查结果.json",
-    "note": "采用用户完整导出函数库；本地合成绘图不等于原生实测"
+    "primary": "../formulas/EWTN_ASCII.txt",
+    "changes": [
+      "全部安装文本去除注释和BOM",
+      "主安装文件全ASCII、显示名称旁表",
+      "首行直接从PN赋值开始",
+      "分析绘图分段移入旁表",
+      "计算及图形事件等价对照"
+    ],
+    "local_evidence": "../docs/本地检查结果.json"
   },
   "full_main_1_0_5": {
     "status": "compiled_but_rendering_incorrect_reported_by_user",
@@ -58,9 +65,22 @@
       "data",
       "color"
     ],
-    "not_verified": "完整1.1.0客户端编译、显示、容量与速度",
+    "not_verified": "完整1.1.1客户端保存、编译、显示、容量与速度",
     "complete_export_file": "../reference/all_func.json",
     "complete_export_records": 286,
-    "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11"
+    "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+    "comment_syntax": [
+      "//",
+      "/*...*/"
+    ]
+  },
+  "full_main_1_1_0": {
+    "status": "save_rejected_reported_by_user",
+    "evidence": [
+      "截图：错误行数1，错误语句为空，解析错误",
+      "用户明确回复：代码包含敏感词汇，不给保存"
+    ],
+    "specific_sensitive_term": null,
+    "note": "不能从截图认定具体命中词或认定某个函数为唯一原因；先修正交付文本。"
   }
 }

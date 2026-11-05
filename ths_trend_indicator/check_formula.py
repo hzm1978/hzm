@@ -59,7 +59,7 @@ PREDEFINED_TYPES = {name: CONDITION if name == "ISLASTBAR" else NUMBER
                     for name in PREDEFINED}
 FUTURE = {"BACKSET", "REFX1", "POLYLINE", "DRAWLINE3", "DATACOUNT"}
 STYLES = {"NODRAW", "LINETHICK1", "LINETHICK2", "LINETHICK3"}
-TOKEN = re.compile(r"\s+|\{[^}]*\}|//[^\n]*|:=|<>|>=|<=|&&|\|\||"
+TOKEN = re.compile(r"\s+|\{[^}]*\}|/\*.*?\*/|//[^\n]*|:=|<>|>=|<=|&&|\|\||"
                    r"[0-9]+(?:\.[0-9]+)?|'[^'\r\n]*'|"
                    r"[A-Za-z_\u4e00-\u9fff][A-Za-z_0-9\u4e00-\u9fff]*|"
                    r"[+\-*/=><(),:;]", re.S)
@@ -89,7 +89,7 @@ class Parser:
             if m.start() != offset:
                 raise FormulaError(f"unexpected text at line {source.count(chr(10), 0, offset)+1}: {source[offset:m.start()]!r}")
             t = m.group()
-            if not (t.isspace() or t.startswith("{") or t.startswith("//")):
+            if not (t.isspace() or t.startswith(("{","//","/*"))):
                 token = t if t.startswith("'") else t.upper()
                 token = {"&&":"AND", "||":"OR"}.get(token, token)
                 self.tokens.append((token, source.count("\n", 0, m.start())+1))
@@ -227,14 +227,14 @@ def constant_number(node):
     return None if b == 0 else a/b
 
 
-def check(source, enforce_boundary=True):
+def check(source, enforce_boundary=True, analysis_end_line=None):
     statements = Parser(source).parse()
     names = set(PREDEFINED)
     calls = {}
     future_calls = []
     types = dict(PREDEFINED_TYPES)
     end = source.find("{ END_ANALYSIS")
-    boundary = source.count("\n", 0, end)+1 if end >= 0 else 0
+    boundary = analysis_end_line if analysis_end_line is not None else(source.count("\n",0,end)+1 if end>=0 else 0)
     for st in statements:
         if st.name:
             if st.name in names or st.name in CLIENT_FUNCTIONS or st.name in ARITY or st.name in RESERVED or COLOR_PATTERN.fullmatch(st.name):
@@ -309,7 +309,7 @@ def check(source, enforce_boundary=True):
             "native_compile": "not_run"}
 
 
-def evaluate(source, data, overrides=None):
+def evaluate(source, data, overrides=None, analysis_end_line=None):
     """Evaluate the causal analysis section against synthetic OHLC bars.
 
     Insufficient REF history uses the first observation. Analysis guards still
@@ -402,7 +402,7 @@ def evaluate(source, data, overrides=None):
             return result
         raise FormulaError(f"analysis interpreter refuses {fn}")
 
-    source = source.split("{ END_ANALYSIS", 1)[0]
+    source = '\n'.join(source.splitlines()[:analysis_end_line])if analysis_end_line is not None else source.split("{ END_ANALYSIS",1)[0]
     for st in Parser(source).parse():
         if not st.name:
             raise FormulaError("drawing statement found in analysis")
@@ -413,11 +413,13 @@ def evaluate(source, data, overrides=None):
 def main():
     import json
     root = Path(__file__).resolve().parent
+    from export_native import check_delivered
+    profiles=json.loads((root/'导出配置.json').read_text(encoding='utf-8'))['files']
     reports = {}
     for path in sorted((root / "formulas").glob("*.txt")):
-        encoding = "utf-8-sig" if "UTF8" in path.name else "gb18030"
+        encoding = profiles[path.name]['encoding']
         source = path.read_bytes().decode(encoding).replace("\r\n", "\n")
-        reports[path.name] = check(source, enforce_boundary="兼容检查" not in path.name)
+        reports[path.name] = check_delivered(source,profiles[path.name])
     print(json.dumps(reports, ensure_ascii=False, indent=2))
 
 

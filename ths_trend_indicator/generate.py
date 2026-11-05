@@ -100,7 +100,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC 1.1.0；按用户导出函数库生成，结构解释需结合确认时刻 }",
+    lines = ["{ 趋势交易·期货通PC 1.1.1；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
@@ -388,15 +388,26 @@ def basic_probe():
 
 
 def build():
+    import json,hashlib
+    from export_native import clean_export,write_legend
     path = ROOT / "formulas"
     path.mkdir(exist_ok=True)
     full = formula_source()
-    samples = {"趋势交易_PC主图": full, "函数兼容检查": probe(),
-               "基础函数兼容检查": basic_probe()}
-    for name, text in samples.items():
-        (path / f"{name}_UTF8.txt").write_bytes(text.replace("\n", "\r\n").encode("utf-8-sig"))
-        (path / f"{name}_GB18030.txt").write_bytes(text.replace("\n", "\r\n").encode("gb18030"))
-    import json
+    models={"趋势交易_PC主图":full,"函数兼容检查":probe(),"基础函数兼容检查":basic_probe()}
+    samples={};profiles={}
+    for name,model in models.items():
+        text,profile=clean_export(model)
+        samples[name]=text
+        for suffix,encoding in [('UTF8','utf-8'),('GB18030','gb18030')]:
+            filename=f'{name}_{suffix}.txt';data=text.replace('\n','\r\n').encode(encoding)
+            (path/filename).write_bytes(data)
+            profiles[filename]=profile|{'encoding':encoding,'sha256':hashlib.sha256(data).hexdigest()}
+    ascii_text,ascii_profile=clean_export(full,ascii_only=True)
+    data=ascii_text.replace('\n','\r\n').encode('ascii')
+    (path/'EWTN_ASCII.txt').write_bytes(data)
+    profiles['EWTN_ASCII.txt']=ascii_profile|{'encoding':'ascii','sha256':hashlib.sha256(data).hexdigest()}
+    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.1','primary':'EWTN_ASCII.txt','files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    write_legend(ascii_profile)
     (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     from book_layers import layers
     (ROOT/"结构字段.json").write_text(json.dumps(layers()[1], ensure_ascii=False, indent=2)+"\n", encoding="utf-8")

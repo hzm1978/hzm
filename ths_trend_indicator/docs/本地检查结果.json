@@ -1,9 +1,9 @@
 {
-  "checked_at_utc": "2026-11-05T03:28:07.232464+00:00",
+  "checked_at_utc": "2026-11-05T07:30:09.697597+00:00",
   "python": "3.13.5",
   "numpy": "2.5.4",
   "local_tests": {
-    "run": 103,
+    "run": 112,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -15,6 +15,2090 @@
     "reason": "No Windows THS Futures PC client in this environment"
   },
   "files": {
+    "EWTN_ASCII.txt": {
+      "statements": 2243,
+      "variables": 1794,
+      "outputs": 6,
+      "functions": {
+        "ABS": 200,
+        "MAX": 1064,
+        "MIN": 757,
+        "COUNT": 4070,
+        "MAX1": 5,
+        "REF": 564,
+        "MA": 1,
+        "IFELSE": 49,
+        "ISNULL": 49,
+        "SORT": 10,
+        "SORTPOS": 18,
+        "HHV": 36,
+        "LLV": 54,
+        "SUM": 33,
+        "BARSLAST": 22,
+        "HHVBARS": 1,
+        "LLVBARS": 1,
+        "VALUEWHEN": 3,
+        "REFX1": 406,
+        "FILTER": 6,
+        "BACKSET": 4,
+        "POLYLINE": 21,
+        "DRAWNUMBER1": 22,
+        "DRAWTEXT": 42,
+        "KTEXT": 264,
+        "MIN1": 3,
+        "BARSSINCEN": 44,
+        "SIGN": 4,
+        "DRAWLINE3": 60,
+        "DRAWSHIFTNUMBER": 40,
+        "INTPART": 12
+      },
+      "future_calls": [
+        [
+          "REFX1",
+          453
+        ],
+        [
+          "REFX1",
+          455
+        ],
+        [
+          "BACKSET",
+          456
+        ],
+        [
+          "BACKSET",
+          457
+        ],
+        [
+          "BACKSET",
+          458
+        ],
+        [
+          "BACKSET",
+          459
+        ],
+        [
+          "POLYLINE",
+          460
+        ],
+        [
+          "POLYLINE",
+          461
+        ],
+        [
+          "REFX1",
+          464
+        ],
+        [
+          "REFX1",
+          465
+        ],
+        [
+          "REFX1",
+          466
+        ],
+        [
+          "REFX1",
+          467
+        ],
+        [
+          "POLYLINE",
+          469
+        ],
+        [
+          "REFX1",
+          516
+        ],
+        [
+          "REFX1",
+          517
+        ],
+        [
+          "REFX1",
+          518
+        ],
+        [
+          "REFX1",
+          519
+        ],
+        [
+          "REFX1",
+          520
+        ],
+        [
+          "REFX1",
+          521
+        ],
+        [
+          "REFX1",
+          522
+        ],
+        [
+          "POLYLINE",
+          523
+        ],
+        [
+          "REFX1",
+          523
+        ],
+        [
+          "REFX1",
+          524
+        ],
+        [
+          "POLYLINE",
+          525
+        ],
+        [
+          "REFX1",
+          525
+        ],
+        [
+          "REFX1",
+          526
+        ],
+        [
+          "REFX1",
+          527
+        ],
+        [
+          "REFX1",
+          528
+        ],
+        [
+          "REFX1",
+          529
+        ],
+        [
+          "REFX1",
+          530
+        ],
+        [
+          "REFX1",
+          531
+        ],
+        [
+          "POLYLINE",
+          532
+        ],
+        [
+          "POLYLINE",
+          533
+        ],
+        [
+          "REFX1",
+          534
+        ],
+        [
+          "POLYLINE",
+          535
+        ],
+        [
+          "REFX1",
+          538
+        ],
+        [
+          "POLYLINE",
+          539
+        ],
+        [
+          "REFX1",
+          542
+        ],
+        [
+          "POLYLINE",
+          543
+        ],
+        [
+          "REFX1",
+          546
+        ],
+        [
+          "POLYLINE",
+          547
+        ],
+        [
+          "REFX1",
+          550
+        ],
+        [
+          "POLYLINE",
+          551
+        ],
+        [
+          "REFX1",
+          554
+        ],
+        [
+          "POLYLINE",
+          555
+        ],
+        [
+          "REFX1",
+          558
+        ],
+        [
+          "POLYLINE",
+          559
+        ],
+        [
+          "REFX1",
+          562
+        ],
+        [
+          "REFX1",
+          563
+        ],
+        [
+          "POLYLINE",
+          565
+        ],
+        [
+          "REFX1",
+          566
+        ],
+        [
+          "REFX1",
+          567
+        ],
+        [
+          "POLYLINE",
+          569
+        ],
+        [
+          "REFX1",
+          570
+        ],
+        [
+          "REFX1",
+          571
+        ],
+        [
+          "POLYLINE",
+          573
+        ],
+        [
+          "REFX1",
+          574
+        ],
+        [
+          "REFX1",
+          575
+        ],
+        [
+          "REFX1",
+          578
+        ],
+        [
+          "REFX1",
+          579
+        ],
+        [
+          "REFX1",
+          582
+        ],
+        [
+          "REFX1",
+          583
+        ],
+        [
+          "REFX1",
+          586
+        ],
+        [
+          "REFX1",
+          587
+        ],
+        [
+          "REFX1",
+          590
+        ],
+        [
+          "REFX1",
+          591
+        ],
+        [
+          "REFX1",
+          594
+        ],
+        [
+          "REFX1",
+          595
+        ],
+        [
+          "REFX1",
+          598
+        ],
+        [
+          "REFX1",
+          599
+        ],
+        [
+          "REFX1",
+          602
+        ],
+        [
+          "REFX1",
+          603
+        ],
+        [
+          "REFX1",
+          653
+        ],
+        [
+          "REFX1",
+          655
+        ],
+        [
+          "REFX1",
+          656
+        ],
+        [
+          "REFX1",
+          657
+        ],
+        [
+          "REFX1",
+          658
+        ],
+        [
+          "REFX1",
+          659
+        ],
+        [
+          "REFX1",
+          660
+        ],
+        [
+          "REFX1",
+          661
+        ],
+        [
+          "REFX1",
+          662
+        ],
+        [
+          "REFX1",
+          663
+        ],
+        [
+          "REFX1",
+          664
+        ],
+        [
+          "REFX1",
+          665
+        ],
+        [
+          "REFX1",
+          666
+        ],
+        [
+          "REFX1",
+          667
+        ],
+        [
+          "REFX1",
+          668
+        ],
+        [
+          "REFX1",
+          669
+        ],
+        [
+          "REFX1",
+          670
+        ],
+        [
+          "REFX1",
+          671
+        ],
+        [
+          "REFX1",
+          672
+        ],
+        [
+          "REFX1",
+          673
+        ],
+        [
+          "REFX1",
+          674
+        ],
+        [
+          "REFX1",
+          675
+        ],
+        [
+          "REFX1",
+          676
+        ],
+        [
+          "REFX1",
+          677
+        ],
+        [
+          "REFX1",
+          678
+        ],
+        [
+          "REFX1",
+          679
+        ],
+        [
+          "REFX1",
+          680
+        ],
+        [
+          "REFX1",
+          681
+        ],
+        [
+          "REFX1",
+          683
+        ],
+        [
+          "REFX1",
+          685
+        ],
+        [
+          "REFX1",
+          714
+        ],
+        [
+          "REFX1",
+          715
+        ],
+        [
+          "REFX1",
+          716
+        ],
+        [
+          "REFX1",
+          720
+        ],
+        [
+          "REFX1",
+          723
+        ],
+        [
+          "REFX1",
+          724
+        ],
+        [
+          "REFX1",
+          727
+        ],
+        [
+          "REFX1",
+          728
+        ],
+        [
+          "REFX1",
+          733
+        ],
+        [
+          "REFX1",
+          734
+        ],
+        [
+          "REFX1",
+          735
+        ],
+        [
+          "REFX1",
+          736
+        ],
+        [
+          "REFX1",
+          738
+        ],
+        [
+          "REFX1",
+          739
+        ],
+        [
+          "REFX1",
+          740
+        ],
+        [
+          "REFX1",
+          741
+        ],
+        [
+          "REFX1",
+          742
+        ],
+        [
+          "REFX1",
+          743
+        ],
+        [
+          "REFX1",
+          744
+        ],
+        [
+          "REFX1",
+          745
+        ],
+        [
+          "REFX1",
+          746
+        ],
+        [
+          "REFX1",
+          747
+        ],
+        [
+          "REFX1",
+          748
+        ],
+        [
+          "REFX1",
+          749
+        ],
+        [
+          "REFX1",
+          750
+        ],
+        [
+          "REFX1",
+          751
+        ],
+        [
+          "REFX1",
+          752
+        ],
+        [
+          "REFX1",
+          753
+        ],
+        [
+          "REFX1",
+          754
+        ],
+        [
+          "REFX1",
+          755
+        ],
+        [
+          "REFX1",
+          756
+        ],
+        [
+          "REFX1",
+          757
+        ],
+        [
+          "REFX1",
+          758
+        ],
+        [
+          "REFX1",
+          759
+        ],
+        [
+          "REFX1",
+          760
+        ],
+        [
+          "REFX1",
+          761
+        ],
+        [
+          "REFX1",
+          762
+        ],
+        [
+          "REFX1",
+          764
+        ],
+        [
+          "REFX1",
+          765
+        ],
+        [
+          "REFX1",
+          770
+        ],
+        [
+          "REFX1",
+          771
+        ],
+        [
+          "REFX1",
+          802
+        ],
+        [
+          "REFX1",
+          803
+        ],
+        [
+          "REFX1",
+          808
+        ],
+        [
+          "REFX1",
+          809
+        ],
+        [
+          "REFX1",
+          812
+        ],
+        [
+          "REFX1",
+          813
+        ],
+        [
+          "REFX1",
+          816
+        ],
+        [
+          "REFX1",
+          817
+        ],
+        [
+          "REFX1",
+          818
+        ],
+        [
+          "DATACOUNT",
+          819
+        ],
+        [
+          "REFX1",
+          822
+        ],
+        [
+          "REFX1",
+          826
+        ],
+        [
+          "REFX1",
+          827
+        ],
+        [
+          "REFX1",
+          832
+        ],
+        [
+          "REFX1",
+          833
+        ],
+        [
+          "REFX1",
+          836
+        ],
+        [
+          "REFX1",
+          837
+        ],
+        [
+          "REFX1",
+          840
+        ],
+        [
+          "REFX1",
+          841
+        ],
+        [
+          "REFX1",
+          842
+        ],
+        [
+          "DATACOUNT",
+          843
+        ],
+        [
+          "REFX1",
+          846
+        ],
+        [
+          "REFX1",
+          850
+        ],
+        [
+          "REFX1",
+          851
+        ],
+        [
+          "REFX1",
+          856
+        ],
+        [
+          "REFX1",
+          857
+        ],
+        [
+          "REFX1",
+          860
+        ],
+        [
+          "REFX1",
+          861
+        ],
+        [
+          "REFX1",
+          864
+        ],
+        [
+          "REFX1",
+          865
+        ],
+        [
+          "REFX1",
+          866
+        ],
+        [
+          "DATACOUNT",
+          867
+        ],
+        [
+          "REFX1",
+          870
+        ],
+        [
+          "REFX1",
+          886
+        ],
+        [
+          "DRAWLINE3",
+          913
+        ],
+        [
+          "DRAWLINE3",
+          914
+        ],
+        [
+          "DRAWLINE3",
+          915
+        ],
+        [
+          "DRAWLINE3",
+          916
+        ],
+        [
+          "DRAWLINE3",
+          917
+        ],
+        [
+          "DRAWLINE3",
+          918
+        ],
+        [
+          "DRAWLINE3",
+          919
+        ],
+        [
+          "DRAWLINE3",
+          920
+        ],
+        [
+          "DRAWLINE3",
+          969
+        ],
+        [
+          "REFX1",
+          977
+        ],
+        [
+          "REFX1",
+          978
+        ],
+        [
+          "DRAWLINE3",
+          989
+        ],
+        [
+          "REFX1",
+          996
+        ],
+        [
+          "REFX1",
+          997
+        ],
+        [
+          "DRAWLINE3",
+          1008
+        ],
+        [
+          "REFX1",
+          1014
+        ],
+        [
+          "REFX1",
+          1015
+        ],
+        [
+          "REFX1",
+          1048
+        ],
+        [
+          "REFX1",
+          1049
+        ],
+        [
+          "REFX1",
+          1050
+        ],
+        [
+          "REFX1",
+          1051
+        ],
+        [
+          "REFX1",
+          1053
+        ],
+        [
+          "REFX1",
+          1054
+        ],
+        [
+          "REFX1",
+          1055
+        ],
+        [
+          "REFX1",
+          1056
+        ],
+        [
+          "REFX1",
+          1057
+        ],
+        [
+          "REFX1",
+          1058
+        ],
+        [
+          "REFX1",
+          1059
+        ],
+        [
+          "REFX1",
+          1060
+        ],
+        [
+          "REFX1",
+          1061
+        ],
+        [
+          "REFX1",
+          1062
+        ],
+        [
+          "REFX1",
+          1063
+        ],
+        [
+          "REFX1",
+          1064
+        ],
+        [
+          "REFX1",
+          1065
+        ],
+        [
+          "REFX1",
+          1066
+        ],
+        [
+          "REFX1",
+          1067
+        ],
+        [
+          "REFX1",
+          1068
+        ],
+        [
+          "REFX1",
+          1069
+        ],
+        [
+          "REFX1",
+          1070
+        ],
+        [
+          "REFX1",
+          1071
+        ],
+        [
+          "REFX1",
+          1072
+        ],
+        [
+          "REFX1",
+          1073
+        ],
+        [
+          "REFX1",
+          1074
+        ],
+        [
+          "REFX1",
+          1075
+        ],
+        [
+          "REFX1",
+          1076
+        ],
+        [
+          "REFX1",
+          1077
+        ],
+        [
+          "REFX1",
+          1079
+        ],
+        [
+          "REFX1",
+          1080
+        ],
+        [
+          "REFX1",
+          1085
+        ],
+        [
+          "REFX1",
+          1086
+        ],
+        [
+          "REFX1",
+          1114
+        ],
+        [
+          "REFX1",
+          1115
+        ],
+        [
+          "REFX1",
+          1120
+        ],
+        [
+          "REFX1",
+          1121
+        ],
+        [
+          "REFX1",
+          1124
+        ],
+        [
+          "REFX1",
+          1125
+        ],
+        [
+          "REFX1",
+          1128
+        ],
+        [
+          "REFX1",
+          1129
+        ],
+        [
+          "REFX1",
+          1130
+        ],
+        [
+          "DATACOUNT",
+          1131
+        ],
+        [
+          "REFX1",
+          1134
+        ],
+        [
+          "REFX1",
+          1138
+        ],
+        [
+          "REFX1",
+          1139
+        ],
+        [
+          "REFX1",
+          1144
+        ],
+        [
+          "REFX1",
+          1145
+        ],
+        [
+          "REFX1",
+          1148
+        ],
+        [
+          "REFX1",
+          1149
+        ],
+        [
+          "REFX1",
+          1152
+        ],
+        [
+          "REFX1",
+          1153
+        ],
+        [
+          "REFX1",
+          1154
+        ],
+        [
+          "DATACOUNT",
+          1155
+        ],
+        [
+          "REFX1",
+          1158
+        ],
+        [
+          "REFX1",
+          1162
+        ],
+        [
+          "REFX1",
+          1163
+        ],
+        [
+          "REFX1",
+          1168
+        ],
+        [
+          "REFX1",
+          1169
+        ],
+        [
+          "REFX1",
+          1172
+        ],
+        [
+          "REFX1",
+          1173
+        ],
+        [
+          "REFX1",
+          1176
+        ],
+        [
+          "REFX1",
+          1177
+        ],
+        [
+          "REFX1",
+          1178
+        ],
+        [
+          "DATACOUNT",
+          1179
+        ],
+        [
+          "REFX1",
+          1182
+        ],
+        [
+          "REFX1",
+          1198
+        ],
+        [
+          "DRAWLINE3",
+          1225
+        ],
+        [
+          "DRAWLINE3",
+          1226
+        ],
+        [
+          "DRAWLINE3",
+          1227
+        ],
+        [
+          "DRAWLINE3",
+          1228
+        ],
+        [
+          "DRAWLINE3",
+          1229
+        ],
+        [
+          "DRAWLINE3",
+          1230
+        ],
+        [
+          "DRAWLINE3",
+          1231
+        ],
+        [
+          "DRAWLINE3",
+          1232
+        ],
+        [
+          "DRAWLINE3",
+          1281
+        ],
+        [
+          "REFX1",
+          1289
+        ],
+        [
+          "REFX1",
+          1290
+        ],
+        [
+          "DRAWLINE3",
+          1301
+        ],
+        [
+          "REFX1",
+          1308
+        ],
+        [
+          "REFX1",
+          1309
+        ],
+        [
+          "DRAWLINE3",
+          1320
+        ],
+        [
+          "REFX1",
+          1326
+        ],
+        [
+          "REFX1",
+          1327
+        ],
+        [
+          "REFX1",
+          1353
+        ],
+        [
+          "REFX1",
+          1354
+        ],
+        [
+          "REFX1",
+          1355
+        ],
+        [
+          "REFX1",
+          1356
+        ],
+        [
+          "REFX1",
+          1358
+        ],
+        [
+          "REFX1",
+          1359
+        ],
+        [
+          "REFX1",
+          1360
+        ],
+        [
+          "REFX1",
+          1361
+        ],
+        [
+          "REFX1",
+          1362
+        ],
+        [
+          "REFX1",
+          1363
+        ],
+        [
+          "REFX1",
+          1364
+        ],
+        [
+          "REFX1",
+          1365
+        ],
+        [
+          "REFX1",
+          1366
+        ],
+        [
+          "REFX1",
+          1367
+        ],
+        [
+          "REFX1",
+          1368
+        ],
+        [
+          "REFX1",
+          1369
+        ],
+        [
+          "REFX1",
+          1370
+        ],
+        [
+          "REFX1",
+          1371
+        ],
+        [
+          "REFX1",
+          1372
+        ],
+        [
+          "REFX1",
+          1373
+        ],
+        [
+          "REFX1",
+          1374
+        ],
+        [
+          "REFX1",
+          1375
+        ],
+        [
+          "REFX1",
+          1376
+        ],
+        [
+          "REFX1",
+          1377
+        ],
+        [
+          "REFX1",
+          1378
+        ],
+        [
+          "REFX1",
+          1379
+        ],
+        [
+          "REFX1",
+          1380
+        ],
+        [
+          "REFX1",
+          1381
+        ],
+        [
+          "REFX1",
+          1382
+        ],
+        [
+          "REFX1",
+          1384
+        ],
+        [
+          "REFX1",
+          1385
+        ],
+        [
+          "REFX1",
+          1390
+        ],
+        [
+          "REFX1",
+          1391
+        ],
+        [
+          "REFX1",
+          1419
+        ],
+        [
+          "REFX1",
+          1420
+        ],
+        [
+          "REFX1",
+          1425
+        ],
+        [
+          "REFX1",
+          1426
+        ],
+        [
+          "REFX1",
+          1429
+        ],
+        [
+          "REFX1",
+          1430
+        ],
+        [
+          "REFX1",
+          1433
+        ],
+        [
+          "REFX1",
+          1434
+        ],
+        [
+          "REFX1",
+          1435
+        ],
+        [
+          "DATACOUNT",
+          1436
+        ],
+        [
+          "REFX1",
+          1439
+        ],
+        [
+          "REFX1",
+          1443
+        ],
+        [
+          "REFX1",
+          1444
+        ],
+        [
+          "REFX1",
+          1449
+        ],
+        [
+          "REFX1",
+          1450
+        ],
+        [
+          "REFX1",
+          1453
+        ],
+        [
+          "REFX1",
+          1454
+        ],
+        [
+          "REFX1",
+          1457
+        ],
+        [
+          "REFX1",
+          1458
+        ],
+        [
+          "REFX1",
+          1459
+        ],
+        [
+          "DATACOUNT",
+          1460
+        ],
+        [
+          "REFX1",
+          1463
+        ],
+        [
+          "REFX1",
+          1467
+        ],
+        [
+          "REFX1",
+          1468
+        ],
+        [
+          "REFX1",
+          1473
+        ],
+        [
+          "REFX1",
+          1474
+        ],
+        [
+          "REFX1",
+          1477
+        ],
+        [
+          "REFX1",
+          1478
+        ],
+        [
+          "REFX1",
+          1481
+        ],
+        [
+          "REFX1",
+          1482
+        ],
+        [
+          "REFX1",
+          1483
+        ],
+        [
+          "DATACOUNT",
+          1484
+        ],
+        [
+          "REFX1",
+          1487
+        ],
+        [
+          "REFX1",
+          1503
+        ],
+        [
+          "DRAWLINE3",
+          1530
+        ],
+        [
+          "DRAWLINE3",
+          1532
+        ],
+        [
+          "DRAWLINE3",
+          1533
+        ],
+        [
+          "DRAWLINE3",
+          1534
+        ],
+        [
+          "DRAWLINE3",
+          1535
+        ],
+        [
+          "DRAWLINE3",
+          1536
+        ],
+        [
+          "DRAWLINE3",
+          1537
+        ],
+        [
+          "DRAWLINE3",
+          1538
+        ],
+        [
+          "DRAWLINE3",
+          1587
+        ],
+        [
+          "REFX1",
+          1595
+        ],
+        [
+          "REFX1",
+          1596
+        ],
+        [
+          "DRAWLINE3",
+          1607
+        ],
+        [
+          "REFX1",
+          1614
+        ],
+        [
+          "REFX1",
+          1615
+        ],
+        [
+          "DRAWLINE3",
+          1626
+        ],
+        [
+          "REFX1",
+          1632
+        ],
+        [
+          "REFX1",
+          1633
+        ],
+        [
+          "REFX1",
+          1663
+        ],
+        [
+          "REFX1",
+          1664
+        ],
+        [
+          "REFX1",
+          1665
+        ],
+        [
+          "REFX1",
+          1666
+        ],
+        [
+          "REFX1",
+          1668
+        ],
+        [
+          "REFX1",
+          1669
+        ],
+        [
+          "REFX1",
+          1670
+        ],
+        [
+          "REFX1",
+          1671
+        ],
+        [
+          "REFX1",
+          1672
+        ],
+        [
+          "REFX1",
+          1673
+        ],
+        [
+          "REFX1",
+          1674
+        ],
+        [
+          "REFX1",
+          1675
+        ],
+        [
+          "REFX1",
+          1676
+        ],
+        [
+          "REFX1",
+          1677
+        ],
+        [
+          "REFX1",
+          1678
+        ],
+        [
+          "REFX1",
+          1679
+        ],
+        [
+          "REFX1",
+          1680
+        ],
+        [
+          "REFX1",
+          1681
+        ],
+        [
+          "REFX1",
+          1682
+        ],
+        [
+          "REFX1",
+          1683
+        ],
+        [
+          "REFX1",
+          1684
+        ],
+        [
+          "REFX1",
+          1685
+        ],
+        [
+          "REFX1",
+          1686
+        ],
+        [
+          "REFX1",
+          1687
+        ],
+        [
+          "REFX1",
+          1688
+        ],
+        [
+          "REFX1",
+          1689
+        ],
+        [
+          "REFX1",
+          1690
+        ],
+        [
+          "REFX1",
+          1691
+        ],
+        [
+          "REFX1",
+          1692
+        ],
+        [
+          "REFX1",
+          1694
+        ],
+        [
+          "REFX1",
+          1695
+        ],
+        [
+          "REFX1",
+          1700
+        ],
+        [
+          "REFX1",
+          1701
+        ],
+        [
+          "REFX1",
+          1726
+        ],
+        [
+          "REFX1",
+          1727
+        ],
+        [
+          "REFX1",
+          1732
+        ],
+        [
+          "REFX1",
+          1733
+        ],
+        [
+          "REFX1",
+          1736
+        ],
+        [
+          "REFX1",
+          1737
+        ],
+        [
+          "REFX1",
+          1740
+        ],
+        [
+          "REFX1",
+          1741
+        ],
+        [
+          "REFX1",
+          1742
+        ],
+        [
+          "DATACOUNT",
+          1743
+        ],
+        [
+          "REFX1",
+          1746
+        ],
+        [
+          "REFX1",
+          1750
+        ],
+        [
+          "REFX1",
+          1751
+        ],
+        [
+          "REFX1",
+          1756
+        ],
+        [
+          "REFX1",
+          1757
+        ],
+        [
+          "REFX1",
+          1760
+        ],
+        [
+          "REFX1",
+          1761
+        ],
+        [
+          "REFX1",
+          1764
+        ],
+        [
+          "REFX1",
+          1765
+        ],
+        [
+          "REFX1",
+          1766
+        ],
+        [
+          "DATACOUNT",
+          1767
+        ],
+        [
+          "REFX1",
+          1770
+        ],
+        [
+          "REFX1",
+          1774
+        ],
+        [
+          "REFX1",
+          1775
+        ],
+        [
+          "REFX1",
+          1780
+        ],
+        [
+          "REFX1",
+          1781
+        ],
+        [
+          "REFX1",
+          1784
+        ],
+        [
+          "REFX1",
+          1785
+        ],
+        [
+          "REFX1",
+          1788
+        ],
+        [
+          "REFX1",
+          1789
+        ],
+        [
+          "REFX1",
+          1790
+        ],
+        [
+          "DATACOUNT",
+          1791
+        ],
+        [
+          "REFX1",
+          1794
+        ],
+        [
+          "REFX1",
+          1810
+        ],
+        [
+          "DRAWLINE3",
+          1837
+        ],
+        [
+          "DRAWLINE3",
+          1839
+        ],
+        [
+          "DRAWLINE3",
+          1840
+        ],
+        [
+          "DRAWLINE3",
+          1841
+        ],
+        [
+          "DRAWLINE3",
+          1842
+        ],
+        [
+          "DRAWLINE3",
+          1843
+        ],
+        [
+          "DRAWLINE3",
+          1844
+        ],
+        [
+          "DRAWLINE3",
+          1845
+        ],
+        [
+          "DRAWLINE3",
+          1894
+        ],
+        [
+          "REFX1",
+          1902
+        ],
+        [
+          "REFX1",
+          1903
+        ],
+        [
+          "DRAWLINE3",
+          1914
+        ],
+        [
+          "REFX1",
+          1921
+        ],
+        [
+          "REFX1",
+          1922
+        ],
+        [
+          "DRAWLINE3",
+          1933
+        ],
+        [
+          "REFX1",
+          1939
+        ],
+        [
+          "REFX1",
+          1940
+        ],
+        [
+          "POLYLINE",
+          1991
+        ],
+        [
+          "DRAWLINE3",
+          1996
+        ],
+        [
+          "REFX1",
+          2000
+        ],
+        [
+          "REFX1",
+          2001
+        ],
+        [
+          "REFX1",
+          2003
+        ],
+        [
+          "REFX1",
+          2004
+        ],
+        [
+          "REFX1",
+          2006
+        ],
+        [
+          "REFX1",
+          2033
+        ],
+        [
+          "REFX1",
+          2034
+        ],
+        [
+          "REFX1",
+          2036
+        ],
+        [
+          "REFX1",
+          2037
+        ],
+        [
+          "REFX1",
+          2039
+        ],
+        [
+          "REFX1",
+          2066
+        ],
+        [
+          "REFX1",
+          2067
+        ],
+        [
+          "REFX1",
+          2068
+        ],
+        [
+          "REFX1",
+          2069
+        ],
+        [
+          "REFX1",
+          2071
+        ],
+        [
+          "REFX1",
+          2072
+        ],
+        [
+          "REFX1",
+          2077
+        ],
+        [
+          "REFX1",
+          2078
+        ],
+        [
+          "POLYLINE",
+          2080
+        ],
+        [
+          "REFX1",
+          2091
+        ],
+        [
+          "REFX1",
+          2093
+        ],
+        [
+          "POLYLINE",
+          2096
+        ],
+        [
+          "REFX1",
+          2101
+        ],
+        [
+          "REFX1",
+          2102
+        ],
+        [
+          "REFX1",
+          2103
+        ],
+        [
+          "REFX1",
+          2104
+        ],
+        [
+          "REFX1",
+          2105
+        ],
+        [
+          "REFX1",
+          2106
+        ],
+        [
+          "REFX1",
+          2107
+        ],
+        [
+          "REFX1",
+          2110
+        ],
+        [
+          "REFX1",
+          2112
+        ],
+        [
+          "REFX1",
+          2118
+        ],
+        [
+          "REFX1",
+          2119
+        ],
+        [
+          "POLYLINE",
+          2120
+        ],
+        [
+          "REFX1",
+          2126
+        ],
+        [
+          "REFX1",
+          2133
+        ],
+        [
+          "DATACOUNT",
+          2134
+        ],
+        [
+          "REFX1",
+          2135
+        ],
+        [
+          "REFX1",
+          2136
+        ],
+        [
+          "DATACOUNT",
+          2136
+        ],
+        [
+          "REFX1",
+          2137
+        ],
+        [
+          "DATACOUNT",
+          2174
+        ],
+        [
+          "DRAWLINE3",
+          2176
+        ],
+        [
+          "DRAWLINE3",
+          2180
+        ],
+        [
+          "DRAWLINE3",
+          2184
+        ],
+        [
+          "DRAWLINE3",
+          2188
+        ],
+        [
+          "DRAWLINE3",
+          2192
+        ],
+        [
+          "DRAWLINE3",
+          2196
+        ],
+        [
+          "DRAWLINE3",
+          2200
+        ],
+        [
+          "DRAWLINE3",
+          2204
+        ],
+        [
+          "REFX1",
+          2211
+        ],
+        [
+          "DATACOUNT",
+          2212
+        ],
+        [
+          "DRAWLINE3",
+          2214
+        ],
+        [
+          "DRAWLINE3",
+          2218
+        ],
+        [
+          "DRAWLINE3",
+          2222
+        ],
+        [
+          "DRAWLINE3",
+          2226
+        ],
+        [
+          "DRAWLINE3",
+          2230
+        ],
+        [
+          "DRAWLINE3",
+          2234
+        ],
+        [
+          "DRAWLINE3",
+          2238
+        ]
+      ],
+      "type_check": "passed",
+      "unary_signs": "none",
+      "compound_logic": "lowered_to_numeric_flags",
+      "conditional_calls": {
+        "IFELSE": 49
+      },
+      "value_selection": "reference_calls",
+      "drawline_fifth_argument": "color",
+      "native_compile": "not_run",
+      "sha256": "7c41fb858326400a359b7440eeca62a9e5395ef643f52e4872f90ff2e31241d1",
+      "bytes": 178416,
+      "lines": 2243,
+      "encoding": "ascii",
+      "bom": false,
+      "ascii_only": true,
+      "analysis_end_line": 452
+    },
     "函数兼容检查_GB18030.txt": {
       "statements": 25,
       "variables": 17,
@@ -49,23 +2133,23 @@
       "future_calls": [
         [
           "BACKSET",
-          8
+          7
         ],
         [
           "REFX1",
-          9
+          8
         ],
         [
           "POLYLINE",
-          20
+          19
         ],
         [
           "DRAWLINE3",
-          21
+          20
         ],
         [
           "DATACOUNT",
-          21
+          20
         ]
       ],
       "type_check": "passed",
@@ -77,10 +2161,13 @@
       "value_selection": "reference_calls",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "1a5045aa9f3e04f092b703749d27a9d18adff81aa10dc2e8280cec998647545d",
-      "bytes": 961,
-      "lines": 26,
-      "encoding": "gb18030"
+      "sha256": "1d915bdcd3c6268aaa1ee6324a4cd518ef8c8b085465018c4bc8213db01aaab2",
+      "bytes": 889,
+      "lines": 25,
+      "encoding": "gb18030",
+      "bom": false,
+      "ascii_only": false,
+      "analysis_end_line": null
     },
     "函数兼容检查_UTF8.txt": {
       "statements": 25,
@@ -116,23 +2203,23 @@
       "future_calls": [
         [
           "BACKSET",
-          8
+          7
         ],
         [
           "REFX1",
-          9
+          8
         ],
         [
           "POLYLINE",
-          20
+          19
         ],
         [
           "DRAWLINE3",
-          21
+          20
         ],
         [
           "DATACOUNT",
-          21
+          20
         ]
       ],
       "type_check": "passed",
@@ -144,10 +2231,13 @@
       "value_selection": "reference_calls",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "e1c70dd398e721e2c86a3c5d93e66b5e37e80cabb9e5e11f1351354520aea312",
-      "bytes": 1011,
-      "lines": 26,
-      "encoding": "utf-8-sig"
+      "sha256": "0807e780451b893b718dca492c9d7a8a28ee2a4190d9ecffadfe47f7f5202fbe",
+      "bytes": 903,
+      "lines": 25,
+      "encoding": "utf-8",
+      "bom": false,
+      "ascii_only": false,
+      "analysis_end_line": null
     },
     "基础函数兼容检查_GB18030.txt": {
       "statements": 4,
@@ -168,7 +2258,10 @@
       "sha256": "8bb18820ffe11cb6147c9f988d9e822a67c2a3834e5bf1b11133f86383f7ecdc",
       "bytes": 100,
       "lines": 4,
-      "encoding": "gb18030"
+      "encoding": "gb18030",
+      "bom": false,
+      "ascii_only": false,
+      "analysis_end_line": null
     },
     "基础函数兼容检查_UTF8.txt": {
       "statements": 4,
@@ -186,10 +2279,13 @@
       "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "40d5f14cc3fe8bd78f8fe2b1a48dadee1dfb4df5d80100d27d236a43d8f97497",
-      "bytes": 105,
+      "sha256": "953a9d7aaee1dee6ae12698a9cf016aaf838238cb5e905311aabf369329dcade",
+      "bytes": 102,
       "lines": 4,
-      "encoding": "utf-8-sig"
+      "encoding": "utf-8",
+      "bom": false,
+      "ascii_only": false,
+      "analysis_end_line": null
     },
     "趋势交易_PC主图_GB18030.txt": {
       "statements": 2243,
@@ -231,166 +2327,234 @@
       "future_calls": [
         [
           "REFX1",
-          479
+          453
         ],
         [
           "REFX1",
-          481
+          455
         ],
         [
           "BACKSET",
-          482
+          456
         ],
         [
           "BACKSET",
-          483
+          457
         ],
         [
           "BACKSET",
-          484
+          458
         ],
         [
           "BACKSET",
-          485
+          459
         ],
         [
           "POLYLINE",
-          486
+          460
         ],
         [
           "POLYLINE",
-          487
+          461
         ],
         [
           "REFX1",
-          490
+          464
         ],
         [
           "REFX1",
-          491
+          465
         ],
         [
           "REFX1",
-          492
+          466
         ],
         [
           "REFX1",
-          493
+          467
         ],
         [
           "POLYLINE",
-          495
+          469
         ],
         [
           "REFX1",
+          516
+        ],
+        [
+          "REFX1",
+          517
+        ],
+        [
+          "REFX1",
+          518
+        ],
+        [
+          "REFX1",
+          519
+        ],
+        [
+          "REFX1",
+          520
+        ],
+        [
+          "REFX1",
+          521
+        ],
+        [
+          "REFX1",
+          522
+        ],
+        [
+          "POLYLINE",
+          523
+        ],
+        [
+          "REFX1",
+          523
+        ],
+        [
+          "REFX1",
+          524
+        ],
+        [
+          "POLYLINE",
+          525
+        ],
+        [
+          "REFX1",
+          525
+        ],
+        [
+          "REFX1",
+          526
+        ],
+        [
+          "REFX1",
+          527
+        ],
+        [
+          "REFX1",
+          528
+        ],
+        [
+          "REFX1",
+          529
+        ],
+        [
+          "REFX1",
+          530
+        ],
+        [
+          "REFX1",
+          531
+        ],
+        [
+          "POLYLINE",
+          532
+        ],
+        [
+          "POLYLINE",
+          533
+        ],
+        [
+          "REFX1",
+          534
+        ],
+        [
+          "POLYLINE",
+          535
+        ],
+        [
+          "REFX1",
+          538
+        ],
+        [
+          "POLYLINE",
+          539
+        ],
+        [
+          "REFX1",
+          542
+        ],
+        [
+          "POLYLINE",
           543
-        ],
-        [
-          "REFX1",
-          544
-        ],
-        [
-          "REFX1",
-          545
         ],
         [
           "REFX1",
           546
         ],
         [
-          "REFX1",
+          "POLYLINE",
           547
         ],
         [
           "REFX1",
-          548
-        ],
-        [
-          "REFX1",
-          549
+          550
         ],
         [
           "POLYLINE",
-          550
-        ],
-        [
-          "REFX1",
-          550
-        ],
-        [
-          "REFX1",
           551
-        ],
-        [
-          "POLYLINE",
-          552
-        ],
-        [
-          "REFX1",
-          552
         ],
         [
           "REFX1",
           554
         ],
         [
-          "REFX1",
+          "POLYLINE",
           555
-        ],
-        [
-          "REFX1",
-          556
-        ],
-        [
-          "REFX1",
-          557
         ],
         [
           "REFX1",
           558
         ],
         [
-          "REFX1",
+          "POLYLINE",
           559
-        ],
-        [
-          "POLYLINE",
-          560
-        ],
-        [
-          "POLYLINE",
-          561
         ],
         [
           "REFX1",
           562
         ],
         [
-          "POLYLINE",
+          "REFX1",
           563
+        ],
+        [
+          "POLYLINE",
+          565
         ],
         [
           "REFX1",
           566
         ],
         [
-          "POLYLINE",
+          "REFX1",
           567
+        ],
+        [
+          "POLYLINE",
+          569
         ],
         [
           "REFX1",
           570
         ],
         [
-          "POLYLINE",
+          "REFX1",
           571
+        ],
+        [
+          "POLYLINE",
+          573
         ],
         [
           "REFX1",
           574
         ],
         [
-          "POLYLINE",
+          "REFX1",
           575
         ],
         [
@@ -398,7 +2562,7 @@
           578
         ],
         [
-          "POLYLINE",
+          "REFX1",
           579
         ],
         [
@@ -406,7 +2570,7 @@
           582
         ],
         [
-          "POLYLINE",
+          "REFX1",
           583
         ],
         [
@@ -414,7 +2578,7 @@
           586
         ],
         [
-          "POLYLINE",
+          "REFX1",
           587
         ],
         [
@@ -426,10 +2590,6 @@
           591
         ],
         [
-          "POLYLINE",
-          593
-        ],
-        [
           "REFX1",
           594
         ],
@@ -438,20 +2598,12 @@
           595
         ],
         [
-          "POLYLINE",
-          597
-        ],
-        [
           "REFX1",
           598
         ],
         [
           "REFX1",
           599
-        ],
-        [
-          "POLYLINE",
-          601
         ],
         [
           "REFX1",
@@ -463,67 +2615,119 @@
         ],
         [
           "REFX1",
-          606
+          653
         ],
         [
           "REFX1",
-          607
+          655
         ],
         [
           "REFX1",
-          610
+          656
         ],
         [
           "REFX1",
-          611
+          657
         ],
         [
           "REFX1",
-          614
+          658
         ],
         [
           "REFX1",
-          615
+          659
         ],
         [
           "REFX1",
-          618
+          660
         ],
         [
           "REFX1",
-          619
+          661
         ],
         [
           "REFX1",
-          622
+          662
         ],
         [
           "REFX1",
-          623
+          663
         ],
         [
           "REFX1",
-          626
+          664
         ],
         [
           "REFX1",
-          627
+          665
         ],
         [
           "REFX1",
-          630
+          666
         ],
         [
           "REFX1",
-          631
+          667
         ],
         [
           "REFX1",
-          682
+          668
         ],
         [
           "REFX1",
-          684
+          669
+        ],
+        [
+          "REFX1",
+          670
+        ],
+        [
+          "REFX1",
+          671
+        ],
+        [
+          "REFX1",
+          672
+        ],
+        [
+          "REFX1",
+          673
+        ],
+        [
+          "REFX1",
+          674
+        ],
+        [
+          "REFX1",
+          675
+        ],
+        [
+          "REFX1",
+          676
+        ],
+        [
+          "REFX1",
+          677
+        ],
+        [
+          "REFX1",
+          678
+        ],
+        [
+          "REFX1",
+          679
+        ],
+        [
+          "REFX1",
+          680
+        ],
+        [
+          "REFX1",
+          681
+        ],
+        [
+          "REFX1",
+          683
         ],
         [
           "REFX1",
@@ -531,111 +2735,71 @@
         ],
         [
           "REFX1",
-          686
-        ],
-        [
-          "REFX1",
-          687
-        ],
-        [
-          "REFX1",
-          688
-        ],
-        [
-          "REFX1",
-          689
-        ],
-        [
-          "REFX1",
-          690
-        ],
-        [
-          "REFX1",
-          691
-        ],
-        [
-          "REFX1",
-          692
-        ],
-        [
-          "REFX1",
-          693
-        ],
-        [
-          "REFX1",
-          694
-        ],
-        [
-          "REFX1",
-          695
-        ],
-        [
-          "REFX1",
-          696
-        ],
-        [
-          "REFX1",
-          697
-        ],
-        [
-          "REFX1",
-          698
-        ],
-        [
-          "REFX1",
-          699
-        ],
-        [
-          "REFX1",
-          700
-        ],
-        [
-          "REFX1",
-          701
-        ],
-        [
-          "REFX1",
-          702
-        ],
-        [
-          "REFX1",
-          703
-        ],
-        [
-          "REFX1",
-          704
-        ],
-        [
-          "REFX1",
-          705
-        ],
-        [
-          "REFX1",
-          706
-        ],
-        [
-          "REFX1",
-          707
-        ],
-        [
-          "REFX1",
-          708
-        ],
-        [
-          "REFX1",
-          709
-        ],
-        [
-          "REFX1",
-          710
-        ],
-        [
-          "REFX1",
-          712
-        ],
-        [
-          "REFX1",
           714
+        ],
+        [
+          "REFX1",
+          715
+        ],
+        [
+          "REFX1",
+          716
+        ],
+        [
+          "REFX1",
+          720
+        ],
+        [
+          "REFX1",
+          723
+        ],
+        [
+          "REFX1",
+          724
+        ],
+        [
+          "REFX1",
+          727
+        ],
+        [
+          "REFX1",
+          728
+        ],
+        [
+          "REFX1",
+          733
+        ],
+        [
+          "REFX1",
+          734
+        ],
+        [
+          "REFX1",
+          735
+        ],
+        [
+          "REFX1",
+          736
+        ],
+        [
+          "REFX1",
+          738
+        ],
+        [
+          "REFX1",
+          739
+        ],
+        [
+          "REFX1",
+          740
+        ],
+        [
+          "REFX1",
+          741
+        ],
+        [
+          "REFX1",
+          742
         ],
         [
           "REFX1",
@@ -651,7 +2815,27 @@
         ],
         [
           "REFX1",
+          746
+        ],
+        [
+          "REFX1",
+          747
+        ],
+        [
+          "REFX1",
+          748
+        ],
+        [
+          "REFX1",
           749
+        ],
+        [
+          "REFX1",
+          750
+        ],
+        [
+          "REFX1",
+          751
         ],
         [
           "REFX1",
@@ -663,6 +2847,14 @@
         ],
         [
           "REFX1",
+          754
+        ],
+        [
+          "REFX1",
+          755
+        ],
+        [
+          "REFX1",
           756
         ],
         [
@@ -671,11 +2863,23 @@
         ],
         [
           "REFX1",
-          762
+          758
         ],
         [
           "REFX1",
-          763
+          759
+        ],
+        [
+          "REFX1",
+          760
+        ],
+        [
+          "REFX1",
+          761
+        ],
+        [
+          "REFX1",
+          762
         ],
         [
           "REFX1",
@@ -687,18 +2891,6 @@
         ],
         [
           "REFX1",
-          767
-        ],
-        [
-          "REFX1",
-          768
-        ],
-        [
-          "REFX1",
-          769
-        ],
-        [
-          "REFX1",
           770
         ],
         [
@@ -707,103 +2899,55 @@
         ],
         [
           "REFX1",
-          772
+          802
         ],
         [
           "REFX1",
-          773
+          803
         ],
         [
           "REFX1",
-          774
+          808
         ],
         [
           "REFX1",
-          775
+          809
         ],
         [
           "REFX1",
-          776
+          812
         ],
         [
           "REFX1",
-          777
+          813
         ],
         [
           "REFX1",
-          778
+          816
         ],
         [
           "REFX1",
-          779
+          817
         ],
         [
           "REFX1",
-          780
+          818
+        ],
+        [
+          "DATACOUNT",
+          819
         ],
         [
           "REFX1",
-          781
+          822
         ],
         [
           "REFX1",
-          782
+          826
         ],
         [
           "REFX1",
-          783
-        ],
-        [
-          "REFX1",
-          784
-        ],
-        [
-          "REFX1",
-          785
-        ],
-        [
-          "REFX1",
-          786
-        ],
-        [
-          "REFX1",
-          787
-        ],
-        [
-          "REFX1",
-          788
-        ],
-        [
-          "REFX1",
-          789
-        ],
-        [
-          "REFX1",
-          790
-        ],
-        [
-          "REFX1",
-          791
-        ],
-        [
-          "REFX1",
-          793
-        ],
-        [
-          "REFX1",
-          794
-        ],
-        [
-          "REFX1",
-          799
-        ],
-        [
-          "REFX1",
-          800
-        ],
-        [
-          "REFX1",
-          831
+          827
         ],
         [
           "REFX1",
@@ -811,11 +2955,19 @@
         ],
         [
           "REFX1",
+          833
+        ],
+        [
+          "REFX1",
+          836
+        ],
+        [
+          "REFX1",
           837
         ],
         [
           "REFX1",
-          838
+          840
         ],
         [
           "REFX1",
@@ -826,8 +2978,8 @@
           842
         ],
         [
-          "REFX1",
-          845
+          "DATACOUNT",
+          843
         ],
         [
           "REFX1",
@@ -835,11 +2987,7 @@
         ],
         [
           "REFX1",
-          847
-        ],
-        [
-          "DATACOUNT",
-          848
+          850
         ],
         [
           "REFX1",
@@ -847,11 +2995,15 @@
         ],
         [
           "REFX1",
-          855
+          856
         ],
         [
           "REFX1",
-          856
+          857
+        ],
+        [
+          "REFX1",
+          860
         ],
         [
           "REFX1",
@@ -859,7 +3011,7 @@
         ],
         [
           "REFX1",
-          862
+          864
         ],
         [
           "REFX1",
@@ -870,8 +3022,8 @@
           866
         ],
         [
-          "REFX1",
-          869
+          "DATACOUNT",
+          867
         ],
         [
           "REFX1",
@@ -879,139 +3031,191 @@
         ],
         [
           "REFX1",
-          871
-        ],
-        [
-          "DATACOUNT",
-          872
-        ],
-        [
-          "REFX1",
-          875
-        ],
-        [
-          "REFX1",
-          879
-        ],
-        [
-          "REFX1",
-          880
-        ],
-        [
-          "REFX1",
-          885
-        ],
-        [
-          "REFX1",
           886
         ],
         [
-          "REFX1",
-          889
+          "DRAWLINE3",
+          913
         ],
         [
-          "REFX1",
-          890
+          "DRAWLINE3",
+          914
         ],
         [
-          "REFX1",
-          893
-        ],
-        [
-          "REFX1",
-          894
-        ],
-        [
-          "REFX1",
-          895
-        ],
-        [
-          "DATACOUNT",
-          896
-        ],
-        [
-          "REFX1",
-          899
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           915
         ],
         [
           "DRAWLINE3",
-          942
+          916
         ],
         [
           "DRAWLINE3",
-          943
+          917
         ],
         [
           "DRAWLINE3",
-          944
+          918
         ],
         [
           "DRAWLINE3",
-          945
+          919
         ],
         [
           "DRAWLINE3",
-          946
+          920
         ],
         [
           "DRAWLINE3",
-          947
-        ],
-        [
-          "DRAWLINE3",
-          948
-        ],
-        [
-          "DRAWLINE3",
-          949
-        ],
-        [
-          "DRAWLINE3",
-          998
+          969
         ],
         [
           "REFX1",
-          1006
+          977
         ],
         [
           "REFX1",
-          1007
+          978
         ],
         [
           "DRAWLINE3",
-          1018
+          989
         ],
         [
           "REFX1",
-          1025
+          996
         ],
         [
           "REFX1",
-          1026
+          997
         ],
         [
           "DRAWLINE3",
-          1037
+          1008
         ],
         [
           "REFX1",
-          1043
+          1014
         ],
         [
           "REFX1",
-          1044
+          1015
+        ],
+        [
+          "REFX1",
+          1048
+        ],
+        [
+          "REFX1",
+          1049
+        ],
+        [
+          "REFX1",
+          1050
+        ],
+        [
+          "REFX1",
+          1051
+        ],
+        [
+          "REFX1",
+          1053
+        ],
+        [
+          "REFX1",
+          1054
+        ],
+        [
+          "REFX1",
+          1055
+        ],
+        [
+          "REFX1",
+          1056
+        ],
+        [
+          "REFX1",
+          1057
+        ],
+        [
+          "REFX1",
+          1058
+        ],
+        [
+          "REFX1",
+          1059
+        ],
+        [
+          "REFX1",
+          1060
+        ],
+        [
+          "REFX1",
+          1061
+        ],
+        [
+          "REFX1",
+          1062
+        ],
+        [
+          "REFX1",
+          1063
+        ],
+        [
+          "REFX1",
+          1064
+        ],
+        [
+          "REFX1",
+          1065
+        ],
+        [
+          "REFX1",
+          1066
+        ],
+        [
+          "REFX1",
+          1067
+        ],
+        [
+          "REFX1",
+          1068
+        ],
+        [
+          "REFX1",
+          1069
+        ],
+        [
+          "REFX1",
+          1070
+        ],
+        [
+          "REFX1",
+          1071
+        ],
+        [
+          "REFX1",
+          1072
+        ],
+        [
+          "REFX1",
+          1073
+        ],
+        [
+          "REFX1",
+          1074
+        ],
+        [
+          "REFX1",
+          1075
+        ],
+        [
+          "REFX1",
+          1076
         ],
         [
           "REFX1",
           1077
-        ],
-        [
-          "REFX1",
-          1078
         ],
         [
           "REFX1",
@@ -1023,111 +3227,11 @@
         ],
         [
           "REFX1",
-          1082
-        ],
-        [
-          "REFX1",
-          1083
-        ],
-        [
-          "REFX1",
-          1084
-        ],
-        [
-          "REFX1",
           1085
         ],
         [
           "REFX1",
           1086
-        ],
-        [
-          "REFX1",
-          1087
-        ],
-        [
-          "REFX1",
-          1088
-        ],
-        [
-          "REFX1",
-          1089
-        ],
-        [
-          "REFX1",
-          1090
-        ],
-        [
-          "REFX1",
-          1091
-        ],
-        [
-          "REFX1",
-          1092
-        ],
-        [
-          "REFX1",
-          1093
-        ],
-        [
-          "REFX1",
-          1094
-        ],
-        [
-          "REFX1",
-          1095
-        ],
-        [
-          "REFX1",
-          1096
-        ],
-        [
-          "REFX1",
-          1097
-        ],
-        [
-          "REFX1",
-          1098
-        ],
-        [
-          "REFX1",
-          1099
-        ],
-        [
-          "REFX1",
-          1100
-        ],
-        [
-          "REFX1",
-          1101
-        ],
-        [
-          "REFX1",
-          1102
-        ],
-        [
-          "REFX1",
-          1103
-        ],
-        [
-          "REFX1",
-          1104
-        ],
-        [
-          "REFX1",
-          1105
-        ],
-        [
-          "REFX1",
-          1106
-        ],
-        [
-          "REFX1",
-          1108
-        ],
-        [
-          "REFX1",
-          1109
         ],
         [
           "REFX1",
@@ -1139,7 +3243,47 @@
         ],
         [
           "REFX1",
-          1143
+          1120
+        ],
+        [
+          "REFX1",
+          1121
+        ],
+        [
+          "REFX1",
+          1124
+        ],
+        [
+          "REFX1",
+          1125
+        ],
+        [
+          "REFX1",
+          1128
+        ],
+        [
+          "REFX1",
+          1129
+        ],
+        [
+          "REFX1",
+          1130
+        ],
+        [
+          "DATACOUNT",
+          1131
+        ],
+        [
+          "REFX1",
+          1134
+        ],
+        [
+          "REFX1",
+          1138
+        ],
+        [
+          "REFX1",
+          1139
         ],
         [
           "REFX1",
@@ -1147,11 +3291,19 @@
         ],
         [
           "REFX1",
+          1145
+        ],
+        [
+          "REFX1",
+          1148
+        ],
+        [
+          "REFX1",
           1149
         ],
         [
           "REFX1",
-          1150
+          1152
         ],
         [
           "REFX1",
@@ -1162,8 +3314,8 @@
           1154
         ],
         [
-          "REFX1",
-          1157
+          "DATACOUNT",
+          1155
         ],
         [
           "REFX1",
@@ -1171,11 +3323,7 @@
         ],
         [
           "REFX1",
-          1159
-        ],
-        [
-          "DATACOUNT",
-          1160
+          1162
         ],
         [
           "REFX1",
@@ -1183,11 +3331,15 @@
         ],
         [
           "REFX1",
-          1167
+          1168
         ],
         [
           "REFX1",
-          1168
+          1169
+        ],
+        [
+          "REFX1",
+          1172
         ],
         [
           "REFX1",
@@ -1195,7 +3347,7 @@
         ],
         [
           "REFX1",
-          1174
+          1176
         ],
         [
           "REFX1",
@@ -1206,8 +3358,8 @@
           1178
         ],
         [
-          "REFX1",
-          1181
+          "DATACOUNT",
+          1179
         ],
         [
           "REFX1",
@@ -1215,123 +3367,83 @@
         ],
         [
           "REFX1",
-          1183
-        ],
-        [
-          "DATACOUNT",
-          1184
-        ],
-        [
-          "REFX1",
-          1187
-        ],
-        [
-          "REFX1",
-          1191
-        ],
-        [
-          "REFX1",
-          1192
-        ],
-        [
-          "REFX1",
-          1197
-        ],
-        [
-          "REFX1",
           1198
         ],
         [
-          "REFX1",
-          1201
+          "DRAWLINE3",
+          1225
         ],
         [
-          "REFX1",
-          1202
+          "DRAWLINE3",
+          1226
         ],
         [
-          "REFX1",
-          1205
-        ],
-        [
-          "REFX1",
-          1206
-        ],
-        [
-          "REFX1",
-          1207
-        ],
-        [
-          "DATACOUNT",
-          1208
-        ],
-        [
-          "REFX1",
-          1211
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           1227
         ],
         [
           "DRAWLINE3",
-          1254
+          1228
         ],
         [
           "DRAWLINE3",
-          1255
+          1229
         ],
         [
           "DRAWLINE3",
-          1256
+          1230
         ],
         [
           "DRAWLINE3",
-          1257
+          1231
         ],
         [
           "DRAWLINE3",
-          1258
+          1232
         ],
         [
           "DRAWLINE3",
-          1259
-        ],
-        [
-          "DRAWLINE3",
-          1260
-        ],
-        [
-          "DRAWLINE3",
-          1261
-        ],
-        [
-          "DRAWLINE3",
-          1310
+          1281
         ],
         [
           "REFX1",
-          1318
+          1289
         ],
         [
           "REFX1",
-          1319
+          1290
         ],
         [
           "DRAWLINE3",
-          1330
+          1301
         ],
         [
           "REFX1",
-          1337
+          1308
         ],
         [
           "REFX1",
-          1338
+          1309
         ],
         [
           "DRAWLINE3",
-          1349
+          1320
+        ],
+        [
+          "REFX1",
+          1326
+        ],
+        [
+          "REFX1",
+          1327
+        ],
+        [
+          "REFX1",
+          1353
+        ],
+        [
+          "REFX1",
+          1354
         ],
         [
           "REFX1",
@@ -1343,11 +3455,103 @@
         ],
         [
           "REFX1",
-          1382
+          1358
         ],
         [
           "REFX1",
-          1383
+          1359
+        ],
+        [
+          "REFX1",
+          1360
+        ],
+        [
+          "REFX1",
+          1361
+        ],
+        [
+          "REFX1",
+          1362
+        ],
+        [
+          "REFX1",
+          1363
+        ],
+        [
+          "REFX1",
+          1364
+        ],
+        [
+          "REFX1",
+          1365
+        ],
+        [
+          "REFX1",
+          1366
+        ],
+        [
+          "REFX1",
+          1367
+        ],
+        [
+          "REFX1",
+          1368
+        ],
+        [
+          "REFX1",
+          1369
+        ],
+        [
+          "REFX1",
+          1370
+        ],
+        [
+          "REFX1",
+          1371
+        ],
+        [
+          "REFX1",
+          1372
+        ],
+        [
+          "REFX1",
+          1373
+        ],
+        [
+          "REFX1",
+          1374
+        ],
+        [
+          "REFX1",
+          1375
+        ],
+        [
+          "REFX1",
+          1376
+        ],
+        [
+          "REFX1",
+          1377
+        ],
+        [
+          "REFX1",
+          1378
+        ],
+        [
+          "REFX1",
+          1379
+        ],
+        [
+          "REFX1",
+          1380
+        ],
+        [
+          "REFX1",
+          1381
+        ],
+        [
+          "REFX1",
+          1382
         ],
         [
           "REFX1",
@@ -1359,111 +3563,11 @@
         ],
         [
           "REFX1",
-          1387
-        ],
-        [
-          "REFX1",
-          1388
-        ],
-        [
-          "REFX1",
-          1389
-        ],
-        [
-          "REFX1",
           1390
         ],
         [
           "REFX1",
           1391
-        ],
-        [
-          "REFX1",
-          1392
-        ],
-        [
-          "REFX1",
-          1393
-        ],
-        [
-          "REFX1",
-          1394
-        ],
-        [
-          "REFX1",
-          1395
-        ],
-        [
-          "REFX1",
-          1396
-        ],
-        [
-          "REFX1",
-          1397
-        ],
-        [
-          "REFX1",
-          1398
-        ],
-        [
-          "REFX1",
-          1399
-        ],
-        [
-          "REFX1",
-          1400
-        ],
-        [
-          "REFX1",
-          1401
-        ],
-        [
-          "REFX1",
-          1402
-        ],
-        [
-          "REFX1",
-          1403
-        ],
-        [
-          "REFX1",
-          1404
-        ],
-        [
-          "REFX1",
-          1405
-        ],
-        [
-          "REFX1",
-          1406
-        ],
-        [
-          "REFX1",
-          1407
-        ],
-        [
-          "REFX1",
-          1408
-        ],
-        [
-          "REFX1",
-          1409
-        ],
-        [
-          "REFX1",
-          1410
-        ],
-        [
-          "REFX1",
-          1411
-        ],
-        [
-          "REFX1",
-          1413
-        ],
-        [
-          "REFX1",
-          1414
         ],
         [
           "REFX1",
@@ -1475,7 +3579,47 @@
         ],
         [
           "REFX1",
-          1448
+          1425
+        ],
+        [
+          "REFX1",
+          1426
+        ],
+        [
+          "REFX1",
+          1429
+        ],
+        [
+          "REFX1",
+          1430
+        ],
+        [
+          "REFX1",
+          1433
+        ],
+        [
+          "REFX1",
+          1434
+        ],
+        [
+          "REFX1",
+          1435
+        ],
+        [
+          "DATACOUNT",
+          1436
+        ],
+        [
+          "REFX1",
+          1439
+        ],
+        [
+          "REFX1",
+          1443
+        ],
+        [
+          "REFX1",
+          1444
         ],
         [
           "REFX1",
@@ -1483,11 +3627,19 @@
         ],
         [
           "REFX1",
+          1450
+        ],
+        [
+          "REFX1",
+          1453
+        ],
+        [
+          "REFX1",
           1454
         ],
         [
           "REFX1",
-          1455
+          1457
         ],
         [
           "REFX1",
@@ -1498,8 +3650,8 @@
           1459
         ],
         [
-          "REFX1",
-          1462
+          "DATACOUNT",
+          1460
         ],
         [
           "REFX1",
@@ -1507,11 +3659,7 @@
         ],
         [
           "REFX1",
-          1464
-        ],
-        [
-          "DATACOUNT",
-          1465
+          1467
         ],
         [
           "REFX1",
@@ -1519,11 +3667,15 @@
         ],
         [
           "REFX1",
-          1472
+          1473
         ],
         [
           "REFX1",
-          1473
+          1474
+        ],
+        [
+          "REFX1",
+          1477
         ],
         [
           "REFX1",
@@ -1531,7 +3683,7 @@
         ],
         [
           "REFX1",
-          1479
+          1481
         ],
         [
           "REFX1",
@@ -1542,8 +3694,8 @@
           1483
         ],
         [
-          "REFX1",
-          1486
+          "DATACOUNT",
+          1484
         ],
         [
           "REFX1",
@@ -1551,139 +3703,191 @@
         ],
         [
           "REFX1",
-          1488
-        ],
-        [
-          "DATACOUNT",
-          1489
-        ],
-        [
-          "REFX1",
-          1492
-        ],
-        [
-          "REFX1",
-          1496
-        ],
-        [
-          "REFX1",
-          1497
-        ],
-        [
-          "REFX1",
-          1502
-        ],
-        [
-          "REFX1",
           1503
         ],
         [
-          "REFX1",
-          1506
+          "DRAWLINE3",
+          1530
         ],
         [
-          "REFX1",
-          1507
-        ],
-        [
-          "REFX1",
-          1510
-        ],
-        [
-          "REFX1",
-          1511
-        ],
-        [
-          "REFX1",
-          1512
-        ],
-        [
-          "DATACOUNT",
-          1513
-        ],
-        [
-          "REFX1",
-          1516
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           1532
         ],
         [
           "DRAWLINE3",
-          1559
+          1533
         ],
         [
           "DRAWLINE3",
-          1561
+          1534
         ],
         [
           "DRAWLINE3",
-          1562
+          1535
         ],
         [
           "DRAWLINE3",
-          1563
+          1536
         ],
         [
           "DRAWLINE3",
-          1564
+          1537
         ],
         [
           "DRAWLINE3",
-          1565
+          1538
         ],
         [
           "DRAWLINE3",
-          1566
-        ],
-        [
-          "DRAWLINE3",
-          1567
-        ],
-        [
-          "DRAWLINE3",
-          1616
+          1587
         ],
         [
           "REFX1",
-          1624
+          1595
         ],
         [
           "REFX1",
-          1625
+          1596
         ],
         [
           "DRAWLINE3",
-          1636
+          1607
         ],
         [
           "REFX1",
-          1643
+          1614
         ],
         [
           "REFX1",
-          1644
+          1615
         ],
         [
           "DRAWLINE3",
-          1655
+          1626
         ],
         [
           "REFX1",
-          1661
+          1632
         ],
         [
           "REFX1",
-          1662
+          1633
+        ],
+        [
+          "REFX1",
+          1663
+        ],
+        [
+          "REFX1",
+          1664
+        ],
+        [
+          "REFX1",
+          1665
+        ],
+        [
+          "REFX1",
+          1666
+        ],
+        [
+          "REFX1",
+          1668
+        ],
+        [
+          "REFX1",
+          1669
+        ],
+        [
+          "REFX1",
+          1670
+        ],
+        [
+          "REFX1",
+          1671
+        ],
+        [
+          "REFX1",
+          1672
+        ],
+        [
+          "REFX1",
+          1673
+        ],
+        [
+          "REFX1",
+          1674
+        ],
+        [
+          "REFX1",
+          1675
+        ],
+        [
+          "REFX1",
+          1676
+        ],
+        [
+          "REFX1",
+          1677
+        ],
+        [
+          "REFX1",
+          1678
+        ],
+        [
+          "REFX1",
+          1679
+        ],
+        [
+          "REFX1",
+          1680
+        ],
+        [
+          "REFX1",
+          1681
+        ],
+        [
+          "REFX1",
+          1682
+        ],
+        [
+          "REFX1",
+          1683
+        ],
+        [
+          "REFX1",
+          1684
+        ],
+        [
+          "REFX1",
+          1685
+        ],
+        [
+          "REFX1",
+          1686
+        ],
+        [
+          "REFX1",
+          1687
+        ],
+        [
+          "REFX1",
+          1688
+        ],
+        [
+          "REFX1",
+          1689
+        ],
+        [
+          "REFX1",
+          1690
+        ],
+        [
+          "REFX1",
+          1691
         ],
         [
           "REFX1",
           1692
-        ],
-        [
-          "REFX1",
-          1693
         ],
         [
           "REFX1",
@@ -1695,18 +3899,6 @@
         ],
         [
           "REFX1",
-          1697
-        ],
-        [
-          "REFX1",
-          1698
-        ],
-        [
-          "REFX1",
-          1699
-        ],
-        [
-          "REFX1",
           1700
         ],
         [
@@ -1715,103 +3907,55 @@
         ],
         [
           "REFX1",
-          1702
+          1726
         ],
         [
           "REFX1",
-          1703
+          1727
         ],
         [
           "REFX1",
-          1704
+          1732
         ],
         [
           "REFX1",
-          1705
+          1733
         ],
         [
           "REFX1",
-          1706
+          1736
         ],
         [
           "REFX1",
-          1707
+          1737
         ],
         [
           "REFX1",
-          1708
+          1740
         ],
         [
           "REFX1",
-          1709
+          1741
         ],
         [
           "REFX1",
-          1710
+          1742
+        ],
+        [
+          "DATACOUNT",
+          1743
         ],
         [
           "REFX1",
-          1711
+          1746
         ],
         [
           "REFX1",
-          1712
+          1750
         ],
         [
           "REFX1",
-          1713
-        ],
-        [
-          "REFX1",
-          1714
-        ],
-        [
-          "REFX1",
-          1715
-        ],
-        [
-          "REFX1",
-          1716
-        ],
-        [
-          "REFX1",
-          1717
-        ],
-        [
-          "REFX1",
-          1718
-        ],
-        [
-          "REFX1",
-          1719
-        ],
-        [
-          "REFX1",
-          1720
-        ],
-        [
-          "REFX1",
-          1721
-        ],
-        [
-          "REFX1",
-          1723
-        ],
-        [
-          "REFX1",
-          1724
-        ],
-        [
-          "REFX1",
-          1729
-        ],
-        [
-          "REFX1",
-          1730
-        ],
-        [
-          "REFX1",
-          1755
+          1751
         ],
         [
           "REFX1",
@@ -1819,11 +3963,19 @@
         ],
         [
           "REFX1",
+          1757
+        ],
+        [
+          "REFX1",
+          1760
+        ],
+        [
+          "REFX1",
           1761
         ],
         [
           "REFX1",
-          1762
+          1764
         ],
         [
           "REFX1",
@@ -1834,8 +3986,8 @@
           1766
         ],
         [
-          "REFX1",
-          1769
+          "DATACOUNT",
+          1767
         ],
         [
           "REFX1",
@@ -1843,11 +3995,7 @@
         ],
         [
           "REFX1",
-          1771
-        ],
-        [
-          "DATACOUNT",
-          1772
+          1774
         ],
         [
           "REFX1",
@@ -1855,11 +4003,15 @@
         ],
         [
           "REFX1",
-          1779
+          1780
         ],
         [
           "REFX1",
-          1780
+          1781
+        ],
+        [
+          "REFX1",
+          1784
         ],
         [
           "REFX1",
@@ -1867,7 +4019,7 @@
         ],
         [
           "REFX1",
-          1786
+          1788
         ],
         [
           "REFX1",
@@ -1878,8 +4030,8 @@
           1790
         ],
         [
-          "REFX1",
-          1793
+          "DATACOUNT",
+          1791
         ],
         [
           "REFX1",
@@ -1887,151 +4039,103 @@
         ],
         [
           "REFX1",
-          1795
-        ],
-        [
-          "DATACOUNT",
-          1796
-        ],
-        [
-          "REFX1",
-          1799
-        ],
-        [
-          "REFX1",
-          1803
-        ],
-        [
-          "REFX1",
-          1804
-        ],
-        [
-          "REFX1",
-          1809
-        ],
-        [
-          "REFX1",
           1810
         ],
         [
-          "REFX1",
-          1813
+          "DRAWLINE3",
+          1837
         ],
         [
-          "REFX1",
-          1814
-        ],
-        [
-          "REFX1",
-          1817
-        ],
-        [
-          "REFX1",
-          1818
-        ],
-        [
-          "REFX1",
-          1819
-        ],
-        [
-          "DATACOUNT",
-          1820
-        ],
-        [
-          "REFX1",
-          1823
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           1839
         ],
         [
           "DRAWLINE3",
-          1866
+          1840
         ],
         [
           "DRAWLINE3",
-          1868
+          1841
         ],
         [
           "DRAWLINE3",
-          1869
+          1842
         ],
         [
           "DRAWLINE3",
-          1870
+          1843
         ],
         [
           "DRAWLINE3",
-          1871
+          1844
         ],
         [
           "DRAWLINE3",
-          1872
+          1845
         ],
         [
           "DRAWLINE3",
-          1873
-        ],
-        [
-          "DRAWLINE3",
-          1874
-        ],
-        [
-          "DRAWLINE3",
-          1923
+          1894
         ],
         [
           "REFX1",
-          1931
+          1902
         ],
         [
           "REFX1",
-          1932
+          1903
         ],
         [
           "DRAWLINE3",
-          1943
+          1914
         ],
         [
           "REFX1",
-          1950
+          1921
         ],
         [
           "REFX1",
-          1951
+          1922
         ],
         [
           "DRAWLINE3",
-          1962
+          1933
         ],
         [
           "REFX1",
-          1968
+          1939
         ],
         [
           "REFX1",
-          1969
+          1940
         ],
         [
           "POLYLINE",
-          2020
+          1991
         ],
         [
           "DRAWLINE3",
-          2025
+          1996
         ],
         [
           "REFX1",
-          2029
+          2000
         ],
         [
           "REFX1",
-          2030
+          2001
         ],
         [
           "REFX1",
-          2032
+          2003
+        ],
+        [
+          "REFX1",
+          2004
+        ],
+        [
+          "REFX1",
+          2006
         ],
         [
           "REFX1",
@@ -2039,19 +4143,19 @@
         ],
         [
           "REFX1",
-          2035
+          2034
         ],
         [
           "REFX1",
-          2062
+          2036
         ],
         [
           "REFX1",
-          2063
+          2037
         ],
         [
           "REFX1",
-          2065
+          2039
         ],
         [
           "REFX1",
@@ -2059,31 +4163,67 @@
         ],
         [
           "REFX1",
+          2067
+        ],
+        [
+          "REFX1",
           2068
         ],
         [
           "REFX1",
-          2095
+          2069
         ],
         [
           "REFX1",
+          2071
+        ],
+        [
+          "REFX1",
+          2072
+        ],
+        [
+          "REFX1",
+          2077
+        ],
+        [
+          "REFX1",
+          2078
+        ],
+        [
+          "POLYLINE",
+          2080
+        ],
+        [
+          "REFX1",
+          2091
+        ],
+        [
+          "REFX1",
+          2093
+        ],
+        [
+          "POLYLINE",
           2096
         ],
         [
           "REFX1",
-          2097
-        ],
-        [
-          "REFX1",
-          2098
-        ],
-        [
-          "REFX1",
-          2100
-        ],
-        [
-          "REFX1",
           2101
+        ],
+        [
+          "REFX1",
+          2102
+        ],
+        [
+          "REFX1",
+          2103
+        ],
+        [
+          "REFX1",
+          2104
+        ],
+        [
+          "REFX1",
+          2105
         ],
         [
           "REFX1",
@@ -2094,39 +4234,35 @@
           2107
         ],
         [
-          "POLYLINE",
-          2109
+          "REFX1",
+          2110
         ],
         [
           "REFX1",
+          2112
+        ],
+        [
+          "REFX1",
+          2118
+        ],
+        [
+          "REFX1",
+          2119
+        ],
+        [
+          "POLYLINE",
           2120
         ],
         [
           "REFX1",
-          2122
-        ],
-        [
-          "POLYLINE",
-          2125
-        ],
-        [
-          "REFX1",
-          2130
-        ],
-        [
-          "REFX1",
-          2131
-        ],
-        [
-          "REFX1",
-          2132
+          2126
         ],
         [
           "REFX1",
           2133
         ],
         [
-          "REFX1",
+          "DATACOUNT",
           2134
         ],
         [
@@ -2138,124 +4274,84 @@
           2136
         ],
         [
-          "REFX1",
-          2139
+          "DATACOUNT",
+          2136
         ],
         [
           "REFX1",
-          2141
-        ],
-        [
-          "REFX1",
-          2147
-        ],
-        [
-          "REFX1",
-          2148
-        ],
-        [
-          "POLYLINE",
-          2149
-        ],
-        [
-          "REFX1",
-          2155
-        ],
-        [
-          "REFX1",
-          2162
+          2137
         ],
         [
           "DATACOUNT",
-          2163
+          2174
+        ],
+        [
+          "DRAWLINE3",
+          2176
+        ],
+        [
+          "DRAWLINE3",
+          2180
+        ],
+        [
+          "DRAWLINE3",
+          2184
+        ],
+        [
+          "DRAWLINE3",
+          2188
+        ],
+        [
+          "DRAWLINE3",
+          2192
+        ],
+        [
+          "DRAWLINE3",
+          2196
+        ],
+        [
+          "DRAWLINE3",
+          2200
+        ],
+        [
+          "DRAWLINE3",
+          2204
         ],
         [
           "REFX1",
-          2164
-        ],
-        [
-          "REFX1",
-          2165
+          2211
         ],
         [
           "DATACOUNT",
-          2165
-        ],
-        [
-          "REFX1",
-          2166
-        ],
-        [
-          "DATACOUNT",
-          2203
+          2212
         ],
         [
           "DRAWLINE3",
-          2205
+          2214
         ],
         [
           "DRAWLINE3",
-          2209
+          2218
         ],
         [
           "DRAWLINE3",
-          2213
+          2222
         ],
         [
           "DRAWLINE3",
-          2217
+          2226
         ],
         [
           "DRAWLINE3",
-          2221
+          2230
         ],
         [
           "DRAWLINE3",
-          2225
+          2234
         ],
         [
           "DRAWLINE3",
-          2229
-        ],
-        [
-          "DRAWLINE3",
-          2233
-        ],
-        [
-          "REFX1",
-          2240
-        ],
-        [
-          "DATACOUNT",
-          2241
-        ],
-        [
-          "DRAWLINE3",
-          2243
-        ],
-        [
-          "DRAWLINE3",
-          2247
-        ],
-        [
-          "DRAWLINE3",
-          2251
-        ],
-        [
-          "DRAWLINE3",
-          2255
-        ],
-        [
-          "DRAWLINE3",
-          2259
-        ],
-        [
-          "DRAWLINE3",
-          2263
-        ],
-        [
-          "DRAWLINE3",
-          2267
+          2238
         ]
       ],
       "type_check": "passed",
@@ -2267,10 +4363,13 @@
       "value_selection": "reference_calls",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "bb6bdcd57b1b36c388056e5884eae8427e46df0a32cbf05462e43a5d01374c7b",
-      "bytes": 181395,
-      "lines": 2272,
-      "encoding": "gb18030"
+      "sha256": "1295ab0b87e246f98fe0e58b15c302b3c21dcd19c55ff05999d57f95c1085d10",
+      "bytes": 179636,
+      "lines": 2243,
+      "encoding": "gb18030",
+      "bom": false,
+      "ascii_only": false,
+      "analysis_end_line": 452
     },
     "趋势交易_PC主图_UTF8.txt": {
       "statements": 2243,
@@ -2312,166 +4411,234 @@
       "future_calls": [
         [
           "REFX1",
-          479
+          453
         ],
         [
           "REFX1",
-          481
+          455
         ],
         [
           "BACKSET",
-          482
+          456
         ],
         [
           "BACKSET",
-          483
+          457
         ],
         [
           "BACKSET",
-          484
+          458
         ],
         [
           "BACKSET",
-          485
+          459
         ],
         [
           "POLYLINE",
-          486
+          460
         ],
         [
           "POLYLINE",
-          487
+          461
         ],
         [
           "REFX1",
-          490
+          464
         ],
         [
           "REFX1",
-          491
+          465
         ],
         [
           "REFX1",
-          492
+          466
         ],
         [
           "REFX1",
-          493
+          467
         ],
         [
           "POLYLINE",
-          495
+          469
         ],
         [
           "REFX1",
+          516
+        ],
+        [
+          "REFX1",
+          517
+        ],
+        [
+          "REFX1",
+          518
+        ],
+        [
+          "REFX1",
+          519
+        ],
+        [
+          "REFX1",
+          520
+        ],
+        [
+          "REFX1",
+          521
+        ],
+        [
+          "REFX1",
+          522
+        ],
+        [
+          "POLYLINE",
+          523
+        ],
+        [
+          "REFX1",
+          523
+        ],
+        [
+          "REFX1",
+          524
+        ],
+        [
+          "POLYLINE",
+          525
+        ],
+        [
+          "REFX1",
+          525
+        ],
+        [
+          "REFX1",
+          526
+        ],
+        [
+          "REFX1",
+          527
+        ],
+        [
+          "REFX1",
+          528
+        ],
+        [
+          "REFX1",
+          529
+        ],
+        [
+          "REFX1",
+          530
+        ],
+        [
+          "REFX1",
+          531
+        ],
+        [
+          "POLYLINE",
+          532
+        ],
+        [
+          "POLYLINE",
+          533
+        ],
+        [
+          "REFX1",
+          534
+        ],
+        [
+          "POLYLINE",
+          535
+        ],
+        [
+          "REFX1",
+          538
+        ],
+        [
+          "POLYLINE",
+          539
+        ],
+        [
+          "REFX1",
+          542
+        ],
+        [
+          "POLYLINE",
           543
-        ],
-        [
-          "REFX1",
-          544
-        ],
-        [
-          "REFX1",
-          545
         ],
         [
           "REFX1",
           546
         ],
         [
-          "REFX1",
+          "POLYLINE",
           547
         ],
         [
           "REFX1",
-          548
-        ],
-        [
-          "REFX1",
-          549
+          550
         ],
         [
           "POLYLINE",
-          550
-        ],
-        [
-          "REFX1",
-          550
-        ],
-        [
-          "REFX1",
           551
-        ],
-        [
-          "POLYLINE",
-          552
-        ],
-        [
-          "REFX1",
-          552
         ],
         [
           "REFX1",
           554
         ],
         [
-          "REFX1",
+          "POLYLINE",
           555
-        ],
-        [
-          "REFX1",
-          556
-        ],
-        [
-          "REFX1",
-          557
         ],
         [
           "REFX1",
           558
         ],
         [
-          "REFX1",
+          "POLYLINE",
           559
-        ],
-        [
-          "POLYLINE",
-          560
-        ],
-        [
-          "POLYLINE",
-          561
         ],
         [
           "REFX1",
           562
         ],
         [
-          "POLYLINE",
+          "REFX1",
           563
+        ],
+        [
+          "POLYLINE",
+          565
         ],
         [
           "REFX1",
           566
         ],
         [
-          "POLYLINE",
+          "REFX1",
           567
+        ],
+        [
+          "POLYLINE",
+          569
         ],
         [
           "REFX1",
           570
         ],
         [
-          "POLYLINE",
+          "REFX1",
           571
+        ],
+        [
+          "POLYLINE",
+          573
         ],
         [
           "REFX1",
           574
         ],
         [
-          "POLYLINE",
+          "REFX1",
           575
         ],
         [
@@ -2479,7 +4646,7 @@
           578
         ],
         [
-          "POLYLINE",
+          "REFX1",
           579
         ],
         [
@@ -2487,7 +4654,7 @@
           582
         ],
         [
-          "POLYLINE",
+          "REFX1",
           583
         ],
         [
@@ -2495,7 +4662,7 @@
           586
         ],
         [
-          "POLYLINE",
+          "REFX1",
           587
         ],
         [
@@ -2507,10 +4674,6 @@
           591
         ],
         [
-          "POLYLINE",
-          593
-        ],
-        [
           "REFX1",
           594
         ],
@@ -2519,20 +4682,12 @@
           595
         ],
         [
-          "POLYLINE",
-          597
-        ],
-        [
           "REFX1",
           598
         ],
         [
           "REFX1",
           599
-        ],
-        [
-          "POLYLINE",
-          601
         ],
         [
           "REFX1",
@@ -2544,67 +4699,119 @@
         ],
         [
           "REFX1",
-          606
+          653
         ],
         [
           "REFX1",
-          607
+          655
         ],
         [
           "REFX1",
-          610
+          656
         ],
         [
           "REFX1",
-          611
+          657
         ],
         [
           "REFX1",
-          614
+          658
         ],
         [
           "REFX1",
-          615
+          659
         ],
         [
           "REFX1",
-          618
+          660
         ],
         [
           "REFX1",
-          619
+          661
         ],
         [
           "REFX1",
-          622
+          662
         ],
         [
           "REFX1",
-          623
+          663
         ],
         [
           "REFX1",
-          626
+          664
         ],
         [
           "REFX1",
-          627
+          665
         ],
         [
           "REFX1",
-          630
+          666
         ],
         [
           "REFX1",
-          631
+          667
         ],
         [
           "REFX1",
-          682
+          668
         ],
         [
           "REFX1",
-          684
+          669
+        ],
+        [
+          "REFX1",
+          670
+        ],
+        [
+          "REFX1",
+          671
+        ],
+        [
+          "REFX1",
+          672
+        ],
+        [
+          "REFX1",
+          673
+        ],
+        [
+          "REFX1",
+          674
+        ],
+        [
+          "REFX1",
+          675
+        ],
+        [
+          "REFX1",
+          676
+        ],
+        [
+          "REFX1",
+          677
+        ],
+        [
+          "REFX1",
+          678
+        ],
+        [
+          "REFX1",
+          679
+        ],
+        [
+          "REFX1",
+          680
+        ],
+        [
+          "REFX1",
+          681
+        ],
+        [
+          "REFX1",
+          683
         ],
         [
           "REFX1",
@@ -2612,111 +4819,71 @@
         ],
         [
           "REFX1",
-          686
-        ],
-        [
-          "REFX1",
-          687
-        ],
-        [
-          "REFX1",
-          688
-        ],
-        [
-          "REFX1",
-          689
-        ],
-        [
-          "REFX1",
-          690
-        ],
-        [
-          "REFX1",
-          691
-        ],
-        [
-          "REFX1",
-          692
-        ],
-        [
-          "REFX1",
-          693
-        ],
-        [
-          "REFX1",
-          694
-        ],
-        [
-          "REFX1",
-          695
-        ],
-        [
-          "REFX1",
-          696
-        ],
-        [
-          "REFX1",
-          697
-        ],
-        [
-          "REFX1",
-          698
-        ],
-        [
-          "REFX1",
-          699
-        ],
-        [
-          "REFX1",
-          700
-        ],
-        [
-          "REFX1",
-          701
-        ],
-        [
-          "REFX1",
-          702
-        ],
-        [
-          "REFX1",
-          703
-        ],
-        [
-          "REFX1",
-          704
-        ],
-        [
-          "REFX1",
-          705
-        ],
-        [
-          "REFX1",
-          706
-        ],
-        [
-          "REFX1",
-          707
-        ],
-        [
-          "REFX1",
-          708
-        ],
-        [
-          "REFX1",
-          709
-        ],
-        [
-          "REFX1",
-          710
-        ],
-        [
-          "REFX1",
-          712
-        ],
-        [
-          "REFX1",
           714
+        ],
+        [
+          "REFX1",
+          715
+        ],
+        [
+          "REFX1",
+          716
+        ],
+        [
+          "REFX1",
+          720
+        ],
+        [
+          "REFX1",
+          723
+        ],
+        [
+          "REFX1",
+          724
+        ],
+        [
+          "REFX1",
+          727
+        ],
+        [
+          "REFX1",
+          728
+        ],
+        [
+          "REFX1",
+          733
+        ],
+        [
+          "REFX1",
+          734
+        ],
+        [
+          "REFX1",
+          735
+        ],
+        [
+          "REFX1",
+          736
+        ],
+        [
+          "REFX1",
+          738
+        ],
+        [
+          "REFX1",
+          739
+        ],
+        [
+          "REFX1",
+          740
+        ],
+        [
+          "REFX1",
+          741
+        ],
+        [
+          "REFX1",
+          742
         ],
         [
           "REFX1",
@@ -2732,7 +4899,27 @@
         ],
         [
           "REFX1",
+          746
+        ],
+        [
+          "REFX1",
+          747
+        ],
+        [
+          "REFX1",
+          748
+        ],
+        [
+          "REFX1",
           749
+        ],
+        [
+          "REFX1",
+          750
+        ],
+        [
+          "REFX1",
+          751
         ],
         [
           "REFX1",
@@ -2744,6 +4931,14 @@
         ],
         [
           "REFX1",
+          754
+        ],
+        [
+          "REFX1",
+          755
+        ],
+        [
+          "REFX1",
           756
         ],
         [
@@ -2752,11 +4947,23 @@
         ],
         [
           "REFX1",
-          762
+          758
         ],
         [
           "REFX1",
-          763
+          759
+        ],
+        [
+          "REFX1",
+          760
+        ],
+        [
+          "REFX1",
+          761
+        ],
+        [
+          "REFX1",
+          762
         ],
         [
           "REFX1",
@@ -2768,18 +4975,6 @@
         ],
         [
           "REFX1",
-          767
-        ],
-        [
-          "REFX1",
-          768
-        ],
-        [
-          "REFX1",
-          769
-        ],
-        [
-          "REFX1",
           770
         ],
         [
@@ -2788,103 +4983,55 @@
         ],
         [
           "REFX1",
-          772
+          802
         ],
         [
           "REFX1",
-          773
+          803
         ],
         [
           "REFX1",
-          774
+          808
         ],
         [
           "REFX1",
-          775
+          809
         ],
         [
           "REFX1",
-          776
+          812
         ],
         [
           "REFX1",
-          777
+          813
         ],
         [
           "REFX1",
-          778
+          816
         ],
         [
           "REFX1",
-          779
+          817
         ],
         [
           "REFX1",
-          780
+          818
+        ],
+        [
+          "DATACOUNT",
+          819
         ],
         [
           "REFX1",
-          781
+          822
         ],
         [
           "REFX1",
-          782
+          826
         ],
         [
           "REFX1",
-          783
-        ],
-        [
-          "REFX1",
-          784
-        ],
-        [
-          "REFX1",
-          785
-        ],
-        [
-          "REFX1",
-          786
-        ],
-        [
-          "REFX1",
-          787
-        ],
-        [
-          "REFX1",
-          788
-        ],
-        [
-          "REFX1",
-          789
-        ],
-        [
-          "REFX1",
-          790
-        ],
-        [
-          "REFX1",
-          791
-        ],
-        [
-          "REFX1",
-          793
-        ],
-        [
-          "REFX1",
-          794
-        ],
-        [
-          "REFX1",
-          799
-        ],
-        [
-          "REFX1",
-          800
-        ],
-        [
-          "REFX1",
-          831
+          827
         ],
         [
           "REFX1",
@@ -2892,11 +5039,19 @@
         ],
         [
           "REFX1",
+          833
+        ],
+        [
+          "REFX1",
+          836
+        ],
+        [
+          "REFX1",
           837
         ],
         [
           "REFX1",
-          838
+          840
         ],
         [
           "REFX1",
@@ -2907,8 +5062,8 @@
           842
         ],
         [
-          "REFX1",
-          845
+          "DATACOUNT",
+          843
         ],
         [
           "REFX1",
@@ -2916,11 +5071,7 @@
         ],
         [
           "REFX1",
-          847
-        ],
-        [
-          "DATACOUNT",
-          848
+          850
         ],
         [
           "REFX1",
@@ -2928,11 +5079,15 @@
         ],
         [
           "REFX1",
-          855
+          856
         ],
         [
           "REFX1",
-          856
+          857
+        ],
+        [
+          "REFX1",
+          860
         ],
         [
           "REFX1",
@@ -2940,7 +5095,7 @@
         ],
         [
           "REFX1",
-          862
+          864
         ],
         [
           "REFX1",
@@ -2951,8 +5106,8 @@
           866
         ],
         [
-          "REFX1",
-          869
+          "DATACOUNT",
+          867
         ],
         [
           "REFX1",
@@ -2960,139 +5115,191 @@
         ],
         [
           "REFX1",
-          871
-        ],
-        [
-          "DATACOUNT",
-          872
-        ],
-        [
-          "REFX1",
-          875
-        ],
-        [
-          "REFX1",
-          879
-        ],
-        [
-          "REFX1",
-          880
-        ],
-        [
-          "REFX1",
-          885
-        ],
-        [
-          "REFX1",
           886
         ],
         [
-          "REFX1",
-          889
+          "DRAWLINE3",
+          913
         ],
         [
-          "REFX1",
-          890
+          "DRAWLINE3",
+          914
         ],
         [
-          "REFX1",
-          893
-        ],
-        [
-          "REFX1",
-          894
-        ],
-        [
-          "REFX1",
-          895
-        ],
-        [
-          "DATACOUNT",
-          896
-        ],
-        [
-          "REFX1",
-          899
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           915
         ],
         [
           "DRAWLINE3",
-          942
+          916
         ],
         [
           "DRAWLINE3",
-          943
+          917
         ],
         [
           "DRAWLINE3",
-          944
+          918
         ],
         [
           "DRAWLINE3",
-          945
+          919
         ],
         [
           "DRAWLINE3",
-          946
+          920
         ],
         [
           "DRAWLINE3",
-          947
-        ],
-        [
-          "DRAWLINE3",
-          948
-        ],
-        [
-          "DRAWLINE3",
-          949
-        ],
-        [
-          "DRAWLINE3",
-          998
+          969
         ],
         [
           "REFX1",
-          1006
+          977
         ],
         [
           "REFX1",
-          1007
+          978
         ],
         [
           "DRAWLINE3",
-          1018
+          989
         ],
         [
           "REFX1",
-          1025
+          996
         ],
         [
           "REFX1",
-          1026
+          997
         ],
         [
           "DRAWLINE3",
-          1037
+          1008
         ],
         [
           "REFX1",
-          1043
+          1014
         ],
         [
           "REFX1",
-          1044
+          1015
+        ],
+        [
+          "REFX1",
+          1048
+        ],
+        [
+          "REFX1",
+          1049
+        ],
+        [
+          "REFX1",
+          1050
+        ],
+        [
+          "REFX1",
+          1051
+        ],
+        [
+          "REFX1",
+          1053
+        ],
+        [
+          "REFX1",
+          1054
+        ],
+        [
+          "REFX1",
+          1055
+        ],
+        [
+          "REFX1",
+          1056
+        ],
+        [
+          "REFX1",
+          1057
+        ],
+        [
+          "REFX1",
+          1058
+        ],
+        [
+          "REFX1",
+          1059
+        ],
+        [
+          "REFX1",
+          1060
+        ],
+        [
+          "REFX1",
+          1061
+        ],
+        [
+          "REFX1",
+          1062
+        ],
+        [
+          "REFX1",
+          1063
+        ],
+        [
+          "REFX1",
+          1064
+        ],
+        [
+          "REFX1",
+          1065
+        ],
+        [
+          "REFX1",
+          1066
+        ],
+        [
+          "REFX1",
+          1067
+        ],
+        [
+          "REFX1",
+          1068
+        ],
+        [
+          "REFX1",
+          1069
+        ],
+        [
+          "REFX1",
+          1070
+        ],
+        [
+          "REFX1",
+          1071
+        ],
+        [
+          "REFX1",
+          1072
+        ],
+        [
+          "REFX1",
+          1073
+        ],
+        [
+          "REFX1",
+          1074
+        ],
+        [
+          "REFX1",
+          1075
+        ],
+        [
+          "REFX1",
+          1076
         ],
         [
           "REFX1",
           1077
-        ],
-        [
-          "REFX1",
-          1078
         ],
         [
           "REFX1",
@@ -3104,111 +5311,11 @@
         ],
         [
           "REFX1",
-          1082
-        ],
-        [
-          "REFX1",
-          1083
-        ],
-        [
-          "REFX1",
-          1084
-        ],
-        [
-          "REFX1",
           1085
         ],
         [
           "REFX1",
           1086
-        ],
-        [
-          "REFX1",
-          1087
-        ],
-        [
-          "REFX1",
-          1088
-        ],
-        [
-          "REFX1",
-          1089
-        ],
-        [
-          "REFX1",
-          1090
-        ],
-        [
-          "REFX1",
-          1091
-        ],
-        [
-          "REFX1",
-          1092
-        ],
-        [
-          "REFX1",
-          1093
-        ],
-        [
-          "REFX1",
-          1094
-        ],
-        [
-          "REFX1",
-          1095
-        ],
-        [
-          "REFX1",
-          1096
-        ],
-        [
-          "REFX1",
-          1097
-        ],
-        [
-          "REFX1",
-          1098
-        ],
-        [
-          "REFX1",
-          1099
-        ],
-        [
-          "REFX1",
-          1100
-        ],
-        [
-          "REFX1",
-          1101
-        ],
-        [
-          "REFX1",
-          1102
-        ],
-        [
-          "REFX1",
-          1103
-        ],
-        [
-          "REFX1",
-          1104
-        ],
-        [
-          "REFX1",
-          1105
-        ],
-        [
-          "REFX1",
-          1106
-        ],
-        [
-          "REFX1",
-          1108
-        ],
-        [
-          "REFX1",
-          1109
         ],
         [
           "REFX1",
@@ -3220,7 +5327,47 @@
         ],
         [
           "REFX1",
-          1143
+          1120
+        ],
+        [
+          "REFX1",
+          1121
+        ],
+        [
+          "REFX1",
+          1124
+        ],
+        [
+          "REFX1",
+          1125
+        ],
+        [
+          "REFX1",
+          1128
+        ],
+        [
+          "REFX1",
+          1129
+        ],
+        [
+          "REFX1",
+          1130
+        ],
+        [
+          "DATACOUNT",
+          1131
+        ],
+        [
+          "REFX1",
+          1134
+        ],
+        [
+          "REFX1",
+          1138
+        ],
+        [
+          "REFX1",
+          1139
         ],
         [
           "REFX1",
@@ -3228,11 +5375,19 @@
         ],
         [
           "REFX1",
+          1145
+        ],
+        [
+          "REFX1",
+          1148
+        ],
+        [
+          "REFX1",
           1149
         ],
         [
           "REFX1",
-          1150
+          1152
         ],
         [
           "REFX1",
@@ -3243,8 +5398,8 @@
           1154
         ],
         [
-          "REFX1",
-          1157
+          "DATACOUNT",
+          1155
         ],
         [
           "REFX1",
@@ -3252,11 +5407,7 @@
         ],
         [
           "REFX1",
-          1159
-        ],
-        [
-          "DATACOUNT",
-          1160
+          1162
         ],
         [
           "REFX1",
@@ -3264,11 +5415,15 @@
         ],
         [
           "REFX1",
-          1167
+          1168
         ],
         [
           "REFX1",
-          1168
+          1169
+        ],
+        [
+          "REFX1",
+          1172
         ],
         [
           "REFX1",
@@ -3276,7 +5431,7 @@
         ],
         [
           "REFX1",
-          1174
+          1176
         ],
         [
           "REFX1",
@@ -3287,8 +5442,8 @@
           1178
         ],
         [
-          "REFX1",
-          1181
+          "DATACOUNT",
+          1179
         ],
         [
           "REFX1",
@@ -3296,123 +5451,83 @@
         ],
         [
           "REFX1",
-          1183
-        ],
-        [
-          "DATACOUNT",
-          1184
-        ],
-        [
-          "REFX1",
-          1187
-        ],
-        [
-          "REFX1",
-          1191
-        ],
-        [
-          "REFX1",
-          1192
-        ],
-        [
-          "REFX1",
-          1197
-        ],
-        [
-          "REFX1",
           1198
         ],
         [
-          "REFX1",
-          1201
+          "DRAWLINE3",
+          1225
         ],
         [
-          "REFX1",
-          1202
+          "DRAWLINE3",
+          1226
         ],
         [
-          "REFX1",
-          1205
-        ],
-        [
-          "REFX1",
-          1206
-        ],
-        [
-          "REFX1",
-          1207
-        ],
-        [
-          "DATACOUNT",
-          1208
-        ],
-        [
-          "REFX1",
-          1211
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           1227
         ],
         [
           "DRAWLINE3",
-          1254
+          1228
         ],
         [
           "DRAWLINE3",
-          1255
+          1229
         ],
         [
           "DRAWLINE3",
-          1256
+          1230
         ],
         [
           "DRAWLINE3",
-          1257
+          1231
         ],
         [
           "DRAWLINE3",
-          1258
+          1232
         ],
         [
           "DRAWLINE3",
-          1259
-        ],
-        [
-          "DRAWLINE3",
-          1260
-        ],
-        [
-          "DRAWLINE3",
-          1261
-        ],
-        [
-          "DRAWLINE3",
-          1310
+          1281
         ],
         [
           "REFX1",
-          1318
+          1289
         ],
         [
           "REFX1",
-          1319
+          1290
         ],
         [
           "DRAWLINE3",
-          1330
+          1301
         ],
         [
           "REFX1",
-          1337
+          1308
         ],
         [
           "REFX1",
-          1338
+          1309
         ],
         [
           "DRAWLINE3",
-          1349
+          1320
+        ],
+        [
+          "REFX1",
+          1326
+        ],
+        [
+          "REFX1",
+          1327
+        ],
+        [
+          "REFX1",
+          1353
+        ],
+        [
+          "REFX1",
+          1354
         ],
         [
           "REFX1",
@@ -3424,11 +5539,103 @@
         ],
         [
           "REFX1",
-          1382
+          1358
         ],
         [
           "REFX1",
-          1383
+          1359
+        ],
+        [
+          "REFX1",
+          1360
+        ],
+        [
+          "REFX1",
+          1361
+        ],
+        [
+          "REFX1",
+          1362
+        ],
+        [
+          "REFX1",
+          1363
+        ],
+        [
+          "REFX1",
+          1364
+        ],
+        [
+          "REFX1",
+          1365
+        ],
+        [
+          "REFX1",
+          1366
+        ],
+        [
+          "REFX1",
+          1367
+        ],
+        [
+          "REFX1",
+          1368
+        ],
+        [
+          "REFX1",
+          1369
+        ],
+        [
+          "REFX1",
+          1370
+        ],
+        [
+          "REFX1",
+          1371
+        ],
+        [
+          "REFX1",
+          1372
+        ],
+        [
+          "REFX1",
+          1373
+        ],
+        [
+          "REFX1",
+          1374
+        ],
+        [
+          "REFX1",
+          1375
+        ],
+        [
+          "REFX1",
+          1376
+        ],
+        [
+          "REFX1",
+          1377
+        ],
+        [
+          "REFX1",
+          1378
+        ],
+        [
+          "REFX1",
+          1379
+        ],
+        [
+          "REFX1",
+          1380
+        ],
+        [
+          "REFX1",
+          1381
+        ],
+        [
+          "REFX1",
+          1382
         ],
         [
           "REFX1",
@@ -3440,111 +5647,11 @@
         ],
         [
           "REFX1",
-          1387
-        ],
-        [
-          "REFX1",
-          1388
-        ],
-        [
-          "REFX1",
-          1389
-        ],
-        [
-          "REFX1",
           1390
         ],
         [
           "REFX1",
           1391
-        ],
-        [
-          "REFX1",
-          1392
-        ],
-        [
-          "REFX1",
-          1393
-        ],
-        [
-          "REFX1",
-          1394
-        ],
-        [
-          "REFX1",
-          1395
-        ],
-        [
-          "REFX1",
-          1396
-        ],
-        [
-          "REFX1",
-          1397
-        ],
-        [
-          "REFX1",
-          1398
-        ],
-        [
-          "REFX1",
-          1399
-        ],
-        [
-          "REFX1",
-          1400
-        ],
-        [
-          "REFX1",
-          1401
-        ],
-        [
-          "REFX1",
-          1402
-        ],
-        [
-          "REFX1",
-          1403
-        ],
-        [
-          "REFX1",
-          1404
-        ],
-        [
-          "REFX1",
-          1405
-        ],
-        [
-          "REFX1",
-          1406
-        ],
-        [
-          "REFX1",
-          1407
-        ],
-        [
-          "REFX1",
-          1408
-        ],
-        [
-          "REFX1",
-          1409
-        ],
-        [
-          "REFX1",
-          1410
-        ],
-        [
-          "REFX1",
-          1411
-        ],
-        [
-          "REFX1",
-          1413
-        ],
-        [
-          "REFX1",
-          1414
         ],
         [
           "REFX1",
@@ -3556,7 +5663,47 @@
         ],
         [
           "REFX1",
-          1448
+          1425
+        ],
+        [
+          "REFX1",
+          1426
+        ],
+        [
+          "REFX1",
+          1429
+        ],
+        [
+          "REFX1",
+          1430
+        ],
+        [
+          "REFX1",
+          1433
+        ],
+        [
+          "REFX1",
+          1434
+        ],
+        [
+          "REFX1",
+          1435
+        ],
+        [
+          "DATACOUNT",
+          1436
+        ],
+        [
+          "REFX1",
+          1439
+        ],
+        [
+          "REFX1",
+          1443
+        ],
+        [
+          "REFX1",
+          1444
         ],
         [
           "REFX1",
@@ -3564,11 +5711,19 @@
         ],
         [
           "REFX1",
+          1450
+        ],
+        [
+          "REFX1",
+          1453
+        ],
+        [
+          "REFX1",
           1454
         ],
         [
           "REFX1",
-          1455
+          1457
         ],
         [
           "REFX1",
@@ -3579,8 +5734,8 @@
           1459
         ],
         [
-          "REFX1",
-          1462
+          "DATACOUNT",
+          1460
         ],
         [
           "REFX1",
@@ -3588,11 +5743,7 @@
         ],
         [
           "REFX1",
-          1464
-        ],
-        [
-          "DATACOUNT",
-          1465
+          1467
         ],
         [
           "REFX1",
@@ -3600,11 +5751,15 @@
         ],
         [
           "REFX1",
-          1472
+          1473
         ],
         [
           "REFX1",
-          1473
+          1474
+        ],
+        [
+          "REFX1",
+          1477
         ],
         [
           "REFX1",
@@ -3612,7 +5767,7 @@
         ],
         [
           "REFX1",
-          1479
+          1481
         ],
         [
           "REFX1",
@@ -3623,8 +5778,8 @@
           1483
         ],
         [
-          "REFX1",
-          1486
+          "DATACOUNT",
+          1484
         ],
         [
           "REFX1",
@@ -3632,139 +5787,191 @@
         ],
         [
           "REFX1",
-          1488
-        ],
-        [
-          "DATACOUNT",
-          1489
-        ],
-        [
-          "REFX1",
-          1492
-        ],
-        [
-          "REFX1",
-          1496
-        ],
-        [
-          "REFX1",
-          1497
-        ],
-        [
-          "REFX1",
-          1502
-        ],
-        [
-          "REFX1",
           1503
         ],
         [
-          "REFX1",
-          1506
+          "DRAWLINE3",
+          1530
         ],
         [
-          "REFX1",
-          1507
-        ],
-        [
-          "REFX1",
-          1510
-        ],
-        [
-          "REFX1",
-          1511
-        ],
-        [
-          "REFX1",
-          1512
-        ],
-        [
-          "DATACOUNT",
-          1513
-        ],
-        [
-          "REFX1",
-          1516
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           1532
         ],
         [
           "DRAWLINE3",
-          1559
+          1533
         ],
         [
           "DRAWLINE3",
-          1561
+          1534
         ],
         [
           "DRAWLINE3",
-          1562
+          1535
         ],
         [
           "DRAWLINE3",
-          1563
+          1536
         ],
         [
           "DRAWLINE3",
-          1564
+          1537
         ],
         [
           "DRAWLINE3",
-          1565
+          1538
         ],
         [
           "DRAWLINE3",
-          1566
-        ],
-        [
-          "DRAWLINE3",
-          1567
-        ],
-        [
-          "DRAWLINE3",
-          1616
+          1587
         ],
         [
           "REFX1",
-          1624
+          1595
         ],
         [
           "REFX1",
-          1625
+          1596
         ],
         [
           "DRAWLINE3",
-          1636
+          1607
         ],
         [
           "REFX1",
-          1643
+          1614
         ],
         [
           "REFX1",
-          1644
+          1615
         ],
         [
           "DRAWLINE3",
-          1655
+          1626
         ],
         [
           "REFX1",
-          1661
+          1632
         ],
         [
           "REFX1",
-          1662
+          1633
+        ],
+        [
+          "REFX1",
+          1663
+        ],
+        [
+          "REFX1",
+          1664
+        ],
+        [
+          "REFX1",
+          1665
+        ],
+        [
+          "REFX1",
+          1666
+        ],
+        [
+          "REFX1",
+          1668
+        ],
+        [
+          "REFX1",
+          1669
+        ],
+        [
+          "REFX1",
+          1670
+        ],
+        [
+          "REFX1",
+          1671
+        ],
+        [
+          "REFX1",
+          1672
+        ],
+        [
+          "REFX1",
+          1673
+        ],
+        [
+          "REFX1",
+          1674
+        ],
+        [
+          "REFX1",
+          1675
+        ],
+        [
+          "REFX1",
+          1676
+        ],
+        [
+          "REFX1",
+          1677
+        ],
+        [
+          "REFX1",
+          1678
+        ],
+        [
+          "REFX1",
+          1679
+        ],
+        [
+          "REFX1",
+          1680
+        ],
+        [
+          "REFX1",
+          1681
+        ],
+        [
+          "REFX1",
+          1682
+        ],
+        [
+          "REFX1",
+          1683
+        ],
+        [
+          "REFX1",
+          1684
+        ],
+        [
+          "REFX1",
+          1685
+        ],
+        [
+          "REFX1",
+          1686
+        ],
+        [
+          "REFX1",
+          1687
+        ],
+        [
+          "REFX1",
+          1688
+        ],
+        [
+          "REFX1",
+          1689
+        ],
+        [
+          "REFX1",
+          1690
+        ],
+        [
+          "REFX1",
+          1691
         ],
         [
           "REFX1",
           1692
-        ],
-        [
-          "REFX1",
-          1693
         ],
         [
           "REFX1",
@@ -3776,18 +5983,6 @@
         ],
         [
           "REFX1",
-          1697
-        ],
-        [
-          "REFX1",
-          1698
-        ],
-        [
-          "REFX1",
-          1699
-        ],
-        [
-          "REFX1",
           1700
         ],
         [
@@ -3796,103 +5991,55 @@
         ],
         [
           "REFX1",
-          1702
+          1726
         ],
         [
           "REFX1",
-          1703
+          1727
         ],
         [
           "REFX1",
-          1704
+          1732
         ],
         [
           "REFX1",
-          1705
+          1733
         ],
         [
           "REFX1",
-          1706
+          1736
         ],
         [
           "REFX1",
-          1707
+          1737
         ],
         [
           "REFX1",
-          1708
+          1740
         ],
         [
           "REFX1",
-          1709
+          1741
         ],
         [
           "REFX1",
-          1710
+          1742
+        ],
+        [
+          "DATACOUNT",
+          1743
         ],
         [
           "REFX1",
-          1711
+          1746
         ],
         [
           "REFX1",
-          1712
+          1750
         ],
         [
           "REFX1",
-          1713
-        ],
-        [
-          "REFX1",
-          1714
-        ],
-        [
-          "REFX1",
-          1715
-        ],
-        [
-          "REFX1",
-          1716
-        ],
-        [
-          "REFX1",
-          1717
-        ],
-        [
-          "REFX1",
-          1718
-        ],
-        [
-          "REFX1",
-          1719
-        ],
-        [
-          "REFX1",
-          1720
-        ],
-        [
-          "REFX1",
-          1721
-        ],
-        [
-          "REFX1",
-          1723
-        ],
-        [
-          "REFX1",
-          1724
-        ],
-        [
-          "REFX1",
-          1729
-        ],
-        [
-          "REFX1",
-          1730
-        ],
-        [
-          "REFX1",
-          1755
+          1751
         ],
         [
           "REFX1",
@@ -3900,11 +6047,19 @@
         ],
         [
           "REFX1",
+          1757
+        ],
+        [
+          "REFX1",
+          1760
+        ],
+        [
+          "REFX1",
           1761
         ],
         [
           "REFX1",
-          1762
+          1764
         ],
         [
           "REFX1",
@@ -3915,8 +6070,8 @@
           1766
         ],
         [
-          "REFX1",
-          1769
+          "DATACOUNT",
+          1767
         ],
         [
           "REFX1",
@@ -3924,11 +6079,7 @@
         ],
         [
           "REFX1",
-          1771
-        ],
-        [
-          "DATACOUNT",
-          1772
+          1774
         ],
         [
           "REFX1",
@@ -3936,11 +6087,15 @@
         ],
         [
           "REFX1",
-          1779
+          1780
         ],
         [
           "REFX1",
-          1780
+          1781
+        ],
+        [
+          "REFX1",
+          1784
         ],
         [
           "REFX1",
@@ -3948,7 +6103,7 @@
         ],
         [
           "REFX1",
-          1786
+          1788
         ],
         [
           "REFX1",
@@ -3959,8 +6114,8 @@
           1790
         ],
         [
-          "REFX1",
-          1793
+          "DATACOUNT",
+          1791
         ],
         [
           "REFX1",
@@ -3968,151 +6123,103 @@
         ],
         [
           "REFX1",
-          1795
-        ],
-        [
-          "DATACOUNT",
-          1796
-        ],
-        [
-          "REFX1",
-          1799
-        ],
-        [
-          "REFX1",
-          1803
-        ],
-        [
-          "REFX1",
-          1804
-        ],
-        [
-          "REFX1",
-          1809
-        ],
-        [
-          "REFX1",
           1810
         ],
         [
-          "REFX1",
-          1813
+          "DRAWLINE3",
+          1837
         ],
         [
-          "REFX1",
-          1814
-        ],
-        [
-          "REFX1",
-          1817
-        ],
-        [
-          "REFX1",
-          1818
-        ],
-        [
-          "REFX1",
-          1819
-        ],
-        [
-          "DATACOUNT",
-          1820
-        ],
-        [
-          "REFX1",
-          1823
-        ],
-        [
-          "REFX1",
+          "DRAWLINE3",
           1839
         ],
         [
           "DRAWLINE3",
-          1866
+          1840
         ],
         [
           "DRAWLINE3",
-          1868
+          1841
         ],
         [
           "DRAWLINE3",
-          1869
+          1842
         ],
         [
           "DRAWLINE3",
-          1870
+          1843
         ],
         [
           "DRAWLINE3",
-          1871
+          1844
         ],
         [
           "DRAWLINE3",
-          1872
+          1845
         ],
         [
           "DRAWLINE3",
-          1873
-        ],
-        [
-          "DRAWLINE3",
-          1874
-        ],
-        [
-          "DRAWLINE3",
-          1923
+          1894
         ],
         [
           "REFX1",
-          1931
+          1902
         ],
         [
           "REFX1",
-          1932
+          1903
         ],
         [
           "DRAWLINE3",
-          1943
+          1914
         ],
         [
           "REFX1",
-          1950
+          1921
         ],
         [
           "REFX1",
-          1951
+          1922
         ],
         [
           "DRAWLINE3",
-          1962
+          1933
         ],
         [
           "REFX1",
-          1968
+          1939
         ],
         [
           "REFX1",
-          1969
+          1940
         ],
         [
           "POLYLINE",
-          2020
+          1991
         ],
         [
           "DRAWLINE3",
-          2025
+          1996
         ],
         [
           "REFX1",
-          2029
+          2000
         ],
         [
           "REFX1",
-          2030
+          2001
         ],
         [
           "REFX1",
-          2032
+          2003
+        ],
+        [
+          "REFX1",
+          2004
+        ],
+        [
+          "REFX1",
+          2006
         ],
         [
           "REFX1",
@@ -4120,19 +6227,19 @@
         ],
         [
           "REFX1",
-          2035
+          2034
         ],
         [
           "REFX1",
-          2062
+          2036
         ],
         [
           "REFX1",
-          2063
+          2037
         ],
         [
           "REFX1",
-          2065
+          2039
         ],
         [
           "REFX1",
@@ -4140,31 +6247,67 @@
         ],
         [
           "REFX1",
+          2067
+        ],
+        [
+          "REFX1",
           2068
         ],
         [
           "REFX1",
-          2095
+          2069
         ],
         [
           "REFX1",
+          2071
+        ],
+        [
+          "REFX1",
+          2072
+        ],
+        [
+          "REFX1",
+          2077
+        ],
+        [
+          "REFX1",
+          2078
+        ],
+        [
+          "POLYLINE",
+          2080
+        ],
+        [
+          "REFX1",
+          2091
+        ],
+        [
+          "REFX1",
+          2093
+        ],
+        [
+          "POLYLINE",
           2096
         ],
         [
           "REFX1",
-          2097
-        ],
-        [
-          "REFX1",
-          2098
-        ],
-        [
-          "REFX1",
-          2100
-        ],
-        [
-          "REFX1",
           2101
+        ],
+        [
+          "REFX1",
+          2102
+        ],
+        [
+          "REFX1",
+          2103
+        ],
+        [
+          "REFX1",
+          2104
+        ],
+        [
+          "REFX1",
+          2105
         ],
         [
           "REFX1",
@@ -4175,39 +6318,35 @@
           2107
         ],
         [
-          "POLYLINE",
-          2109
+          "REFX1",
+          2110
         ],
         [
           "REFX1",
+          2112
+        ],
+        [
+          "REFX1",
+          2118
+        ],
+        [
+          "REFX1",
+          2119
+        ],
+        [
+          "POLYLINE",
           2120
         ],
         [
           "REFX1",
-          2122
-        ],
-        [
-          "POLYLINE",
-          2125
-        ],
-        [
-          "REFX1",
-          2130
-        ],
-        [
-          "REFX1",
-          2131
-        ],
-        [
-          "REFX1",
-          2132
+          2126
         ],
         [
           "REFX1",
           2133
         ],
         [
-          "REFX1",
+          "DATACOUNT",
           2134
         ],
         [
@@ -4219,124 +6358,84 @@
           2136
         ],
         [
-          "REFX1",
-          2139
+          "DATACOUNT",
+          2136
         ],
         [
           "REFX1",
-          2141
-        ],
-        [
-          "REFX1",
-          2147
-        ],
-        [
-          "REFX1",
-          2148
-        ],
-        [
-          "POLYLINE",
-          2149
-        ],
-        [
-          "REFX1",
-          2155
-        ],
-        [
-          "REFX1",
-          2162
+          2137
         ],
         [
           "DATACOUNT",
-          2163
+          2174
+        ],
+        [
+          "DRAWLINE3",
+          2176
+        ],
+        [
+          "DRAWLINE3",
+          2180
+        ],
+        [
+          "DRAWLINE3",
+          2184
+        ],
+        [
+          "DRAWLINE3",
+          2188
+        ],
+        [
+          "DRAWLINE3",
+          2192
+        ],
+        [
+          "DRAWLINE3",
+          2196
+        ],
+        [
+          "DRAWLINE3",
+          2200
+        ],
+        [
+          "DRAWLINE3",
+          2204
         ],
         [
           "REFX1",
-          2164
-        ],
-        [
-          "REFX1",
-          2165
+          2211
         ],
         [
           "DATACOUNT",
-          2165
-        ],
-        [
-          "REFX1",
-          2166
-        ],
-        [
-          "DATACOUNT",
-          2203
+          2212
         ],
         [
           "DRAWLINE3",
-          2205
+          2214
         ],
         [
           "DRAWLINE3",
-          2209
+          2218
         ],
         [
           "DRAWLINE3",
-          2213
+          2222
         ],
         [
           "DRAWLINE3",
-          2217
+          2226
         ],
         [
           "DRAWLINE3",
-          2221
+          2230
         ],
         [
           "DRAWLINE3",
-          2225
+          2234
         ],
         [
           "DRAWLINE3",
-          2229
-        ],
-        [
-          "DRAWLINE3",
-          2233
-        ],
-        [
-          "REFX1",
-          2240
-        ],
-        [
-          "DATACOUNT",
-          2241
-        ],
-        [
-          "DRAWLINE3",
-          2243
-        ],
-        [
-          "DRAWLINE3",
-          2247
-        ],
-        [
-          "DRAWLINE3",
-          2251
-        ],
-        [
-          "DRAWLINE3",
-          2255
-        ],
-        [
-          "DRAWLINE3",
-          2259
-        ],
-        [
-          "DRAWLINE3",
-          2263
-        ],
-        [
-          "DRAWLINE3",
-          2267
+          2238
         ]
       ],
       "type_check": "passed",
@@ -4348,10 +6447,13 @@
       "value_selection": "reference_calls",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "3e846880b0b47f66e0961af1a2147c269bf2f7afd1dfc8453faa7cc2796b8bf6",
-      "bytes": 183322,
-      "lines": 2272,
-      "encoding": "utf-8-sig"
+      "sha256": "e9107b5177b1ae43ea2f425ccd5673bf0afa38a317fa53088b252c3491e737d9",
+      "bytes": 180854,
+      "lines": 2243,
+      "encoding": "utf-8",
+      "bom": false,
+      "ascii_only": false,
+      "analysis_end_line": 452
     }
   },
   "function_catalog": {
@@ -4403,12 +6505,19 @@
       "expected_expression_fragment": "2*QFLAG*MAX",
       "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
     },
-    "release_gate": "1.1.0完整主图原生编译、显示、容量和速度待验证；不得以本地结果替代现场结果",
+    "release_gate": "1.1.1客户端保存、编译和显示待核验；现场保存拒绝优先于旧版103项本地通过",
     "next_full_main": {
-      "release": "1.1.0",
+      "release": "1.1.1",
       "status": "not_run",
-      "local_evidence": "../docs/本地检查结果.json",
-      "note": "采用用户完整导出函数库；本地合成绘图不等于原生实测"
+      "primary": "../formulas/EWTN_ASCII.txt",
+      "changes": [
+        "全部安装文本去除注释和BOM",
+        "主安装文件全ASCII、显示名称旁表",
+        "首行直接从PN赋值开始",
+        "分析绘图分段移入旁表",
+        "计算及图形事件等价对照"
+      ],
+      "local_evidence": "../docs/本地检查结果.json"
     },
     "full_main_1_0_5": {
       "status": "compiled_but_rendering_incorrect_reported_by_user",
@@ -4425,10 +6534,23 @@
         "data",
         "color"
       ],
-      "not_verified": "完整1.1.0客户端编译、显示、容量与速度",
+      "not_verified": "完整1.1.1客户端保存、编译、显示、容量与速度",
       "complete_export_file": "../reference/all_func.json",
       "complete_export_records": 286,
-      "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11"
+      "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "comment_syntax": [
+        "//",
+        "/*...*/"
+      ]
+    },
+    "full_main_1_1_0": {
+      "status": "save_rejected_reported_by_user",
+      "evidence": [
+        "截图：错误行数1，错误语句为空，解析错误",
+        "用户明确回复：代码包含敏感词汇，不给保存"
+      ],
+      "specific_sensitive_term": null,
+      "note": "不能从截图认定具体命中词或认定某个函数为唯一原因；先修正交付文本。"
     }
   }
 }

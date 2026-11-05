@@ -15,7 +15,7 @@ from plot_audit import audit,save_preview
 from scenarios import NAMES,sample
 
 
-def snapshot(data,result,mapping=None):
+def snapshot(data,result,mapping=None,source=None):
     names=formula_names()if mapping is None else mapping
     n=len(data['C']);env=result['env']
     def val(name):
@@ -59,10 +59,10 @@ def snapshot(data,result,mapping=None):
     plan['targets']=[{'ratio':ratio,'price':val('PRT'+str(i)),
                      'available':bool(val('PROK'+str(i))),'displayed':bool(val('PRSHOW'+str(i)))}
                     for i,ratio in enumerate((1.208,1.618,2,2.382,2.618,3,3.236,4.236),1)]
-    return {'release':'1.1.0','bars':n,'native_client_run':False,
+    return {'release':'1.1.1','bars':n,'native_client_run':False,
             'mode':'current-prefix retrospective drawing, not historical trade signals',
             'catalog_sha256':hashlib.sha256(RAW).hexdigest(),
-            'formula_normalized_utf8_sha256':hashlib.sha256(formula_source().encode()).hexdigest(),
+            'formula_normalized_utf8_sha256':hashlib.sha256((source if source is not None else formula_source()).encode()).hexdigest(),
             'ohlc_float64_sha256':hashlib.sha256(np.column_stack([data[k]for k in('O','H','L','C')]).astype('<f8').tobytes()).hexdigest(),
             'work_direction':val('WD'),'phase':val('PHASE'),'groups':groups,
             'current_correction':correction,'price_plan':plan,
@@ -97,15 +97,17 @@ def main():
     parser.add_argument('--preview',type=Path)
     options=parser.parse_args()
     data,settings=(read_csv(options.csv),None)if options.csv else sample(options.scenario)
-    result=audit(formula_source(),data,settings)
-    trace=snapshot(data,result)
+    from export_native import load_primary
+    source,profile=load_primary()
+    result=audit(source,data,settings,analysis_end_line=profile['analysis_end_line'])
+    trace=snapshot(data,result,source=source)
     trace['synthetic_ohlc_only']=options.csv is None
     trace['scenario']=None if options.csv else options.scenario
     options.output.parent.mkdir(parents=True,exist_ok=True)
     options.output.write_text(json.dumps(trace,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')
     if options.preview:
         options.preview.parent.mkdir(parents=True,exist_ok=True)
-        save_preview(formula_source(),data,options.preview,settings,last=360)
+        save_preview(source,data,options.preview,settings,last=360,analysis_end_line=profile['analysis_end_line'])
     print(options.output)
 
 

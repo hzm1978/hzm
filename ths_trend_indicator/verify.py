@@ -10,7 +10,7 @@ import unittest
 import numpy
 
 from generate import build
-from check_formula import check
+from export_native import check_delivered
 from catalog import evidence as catalog_evidence
 
 ROOT = Path(__file__).resolve().parent
@@ -21,13 +21,15 @@ def main():
     suite = unittest.defaultTestLoader.discover(str(ROOT/"tests"))
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     reports = {}
+    profiles=json.loads((ROOT/'导出配置.json').read_text(encoding='utf-8'))['files']
     for path in sorted((ROOT/"formulas").glob("*.txt")):
         data = path.read_bytes()
-        encoding = "utf-8-sig" if "UTF8" in path.name else "gb18030"
+        encoding = profiles[path.name]['encoding']
         source = data.decode(encoding).replace("\r\n", "\n")
-        reports[path.name] = check(source, enforce_boundary="兼容检查" not in path.name) | {
+        reports[path.name] = check_delivered(source,profiles[path.name]) | {
             "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
-            "lines": len(source.splitlines()), "encoding": encoding}
+            "lines": len(source.splitlines()), "encoding": encoding,'bom':False,
+            'ascii_only':source.isascii(),'analysis_end_line':profiles[path.name]['analysis_end_line']}
     evidence = {
         "checked_at_utc": datetime.now(timezone.utc).isoformat(),
         "python": platform.python_version(), "numpy": numpy.__version__,

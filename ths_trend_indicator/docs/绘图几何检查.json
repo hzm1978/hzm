@@ -1,9 +1,10 @@
 {
-  "release": "1.1.0",
+  "release": "1.1.1",
   "synthetic_ohlc_only": true,
   "native_client_rendering": "not_run",
+  "primary_formula": "../formulas/EWTN_ASCII.txt",
   "basis": "../reference/all_func.json",
-  "formula_normalized_utf8_sha256": "5206db889f68b647ec4944916181f7d553426332a853fd47641fd6c89d85af71",
+  "formula_normalized_utf8_sha256": "b0b346defd97761bea2a2a56bf7f58161b90db3a4d352ac3a1edf0ebe6c227c5",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
   "scenes": {
     "fall_rebound": {
