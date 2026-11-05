@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-05",
+  "target": "Frontiers of Physics",
+  "article_type": "Topical Review",
+  "appendices": "A-G integrated with main text in every manuscript PDF",
+  "archives": [
+    {
+      "file": "RQI_Frontiers_v15_full.zip",
+      "bytes": 2620837,
+      "sha256": "ee0ce643c39c4d154142bb5fe0afba8a2a78905d4ca608278b8eb0716fe614f4",
+      "files": 78,
+      "crc": "PASS"
+    },
+    {
+      "file": "Frontiers_v15_anonymous_review_files.zip",
+      "bytes": 500586,
+      "sha256": "157cc098dcee1e3bfc237f05a9e32f02db1cf93b6aacaf86e9df57171a853806",
+      "files": 5,
+      "crc": "PASS"
+    },
+    {
+      "file": "Frontiers_v15_reproducibility.zip",
+      "bytes": 43170,
+      "sha256": "ceb38d1bb2b23b16ddfb1c0b3ff52fd69df26c2654c9ec039c770903d3206a8c",
+      "files": 17,
+      "crc": "PASS"
+    }
+  ],
+  "clean_directory_build_and_all_checks": "PASS",
+  "archive_crc_and_current_byte_comparison": "PASS",
+  "anonymous_review_archive_recursive_identity_scan": "PASS",
+  "actual_extraction_and_code_smoke_check": "PASS",
+  "word_count_including_table_text": 14915,
+  "english_pages": 60,
+  "chinese_pages": 48,
+  "journal_submission": false,
+  "limitation": "The editor may request length/appendix placement changes despite the integrated-appendix arrangement requested by the author."
+}
