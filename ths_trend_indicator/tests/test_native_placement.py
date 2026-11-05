@@ -8,8 +8,9 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from book_layers import Builder
-from check_formula import check,FormulaError
+from check_formula import check,FormulaError,Parser
 from native_preparse import shape_summary
+from native_layers import typed_model,emit
 from plot_audit import audit
 
 
@@ -54,6 +55,21 @@ class NativePlacementTests(unittest.TestCase):
         valid=shape_summary(b'[{"ShapeName":"TextShape","HorizontalOffset":0.0,"VerticalOffset":0.0}]')
         self.assertEqual(valid['status'],'passed')
         self.assertEqual(valid['max_absolute_offset'],0)
+
+    def test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch(self):
+        statements,_=typed_model('BC:=BARPOS;\n{ END_ANALYSIS }\nAA:=REFX1(IF(ISLASTBAR,HHV(H,BC),0),100000);')
+        guarded=[s.expression for s in statements if s.expression[0:2]==('call','IF')]
+        self.assertEqual(len(guarded),1)
+        self.assertEqual(guarded[0][2][0],('identifier','ISLASTBAR'))
+        self.assertEqual(guarded[0][2][1][0:2],('call','HHV'))
+
+    def test_negative_parameter_assignment_has_no_complete_rhs_wrapper(self):
+        statement=Parser('DIR:=(0-1);').parse()[0]
+        # Parser represents binary parentheses structurally, so this is
+        # also safe when a caller edits a negative source parameter.
+        self.assertEqual(emit(statement),'DIR:=0-1;')
+        statement=Parser('DIR:=-1;').parse()[0]
+        self.assertEqual(emit(statement),'DIR:=0-1;')
 
 
 if __name__=='__main__':unittest.main()

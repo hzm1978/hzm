@@ -150,7 +150,8 @@ def normalize(source):
                 # Native selection is necessary for nullable lookup results:
                 # arithmetic masking cannot safely replace 0*NULL. The exact
                 # ISNULL/IFELSE form is documented in the exported catalog.
-                if any(n[0:2]==('call','ISNULL') for n in walk(node[2][0])):
+                if (node[2][0]==('identifier','ISLASTBAR') or
+                        any(n[0:2]==('call','ISNULL') for n in walk(node[2][0]))):
                     return call(('call','IFELSE',node[2]))
                 a, b = constant_number(node[2][1]), constant_number(node[2][2])
                 if (a, b) == (1, 0):

@@ -141,13 +141,13 @@ class ClientCatalogTests(unittest.TestCase):
         line=audit(source,d)['lines'][0]
         self.assertEqual(line['start'],(n-11,100));self.assertEqual(line['end'],(n-4,110))
 
-    def test_text_alignment_uses_documented_ktext_arguments(self):
+    def test_text_alignment_and_font_match_native_shape_description(self):
         with self.assertRaises(FormulaError):check("DRAWTEXT(C>O,C,'x'),ALIGN2;")
-        with self.assertRaises(FormulaError):check("KTEXT(C>O,0,C,1,COLORRED,'x'),FONTSIZE9;")
+        check("KTEXT(C>O,0,C,1,COLORRED,'x'),FONTSIZE9;")
         d=path([100,110],5)
         r=audit("AA:=1;{ END_ANALYSIS }KTEXT(ISLASTBAR,(0-3),100,0,COLORRED,'left of candle');",d)
         self.assertEqual(r['labels'][0]['x'],len(d['C'])-4)
-        self.assertEqual(r['labels'][0]['align'],'right')
+        self.assertEqual(r['labels'][0]['align'],'left')
 
 
 class BookStructureTests(unittest.TestCase):
@@ -258,7 +258,7 @@ class CorrectionAndPriceTests(unittest.TestCase):
         marked=[l for l in r['labels']if l['text'].startswith('关键位·')]
         raw=[l for l in detail['labels']if l['text'].startswith('关键位·')]
         self.assertGreater(len(marked),0);self.assertLess(len(marked),len(raw))
-        self.assertTrue(all(l['align']=='right'for l in marked))
+        self.assertTrue(all(l['align']=='left'for l in marked))
         self.assertTrue(all(l['align']=='right'for l in r['labels']if l['text'].startswith('转折观察·')))
 
     def test_triangle_uses_e_even_when_a_is_lower(self):

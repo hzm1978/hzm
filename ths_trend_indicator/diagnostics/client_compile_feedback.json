@@ -36,22 +36,28 @@
     "expected_expression_fragment": "2*QFLAG*MAX",
     "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
   },
-  "release_gate": "四份最终安装文件通过官方代码350/名称加代码550校验、现行5.4.0.5解析器及绘图描述检查，118项本地检查通过；目标4.39.1.2客户端界面、真实行情渲染和速度未实测。",
+  "release_gate": "两份推荐安装层与一份可选孙浪层分别核对本地回归、原生语法/计算与公开源码内容校验；以docs中对应实际哈希和结果为准。目标4.39.1.2界面及源码消失原因尚未核验。",
   "next_full_main": {
-    "release": "1.1.2",
-    "status": "official_content_and_current_native_parser_passed_target_ui_not_run",
-    "primary": "../formulas/install/EWT01.txt ~ EWT04.txt",
+    "release": "1.1.3",
+    "status": "validation_in_progress",
+    "primary": [
+      "../formulas/install/EWT01.txt",
+      "../formulas/install/EWT02.txt"
+    ],
+    "optional": [
+      "../formulas/install/EWT03.txt"
+    ],
     "changes": [
-      "动态数字改为在目标K线上直接DRAWNUMBER",
-      "KTEXT位置固定0，条件切换到实际目标K线",
-      "年龄/门限/价格/数值均按查看末端冻结",
-      "原有波浪、Q、回调、价格计算和配色保留",
-      "四个独立主图叠加层，每条图形分配一次",
-      "完整开发模型保留，不用于整份安装",
-      "嵌套IF/IFELSE先保存中间变量"
+      "主浪和子浪两个推荐层，孙浪为可选层",
+      "同一子浪的线、Q、回调及数字在同一层",
+      "末端扫描放在ISLASTBAR分支，减少历史重复运算",
+      "BACKSET先保存序列再FILTER，消除原生嵌套误差",
+      "KTEXT按原生对齐语义，文字和数字采用9号字",
+      "固定书本简洁模式，保留其他可编辑设置"
     ],
     "local_evidence": "../docs/本地检查结果.json",
-    "official_native_evidence": "../docs/官方解析检查.json"
+    "official_native_evidence": "../docs/官方解析检查.json",
+    "native_calculation_evidence": "../docs/原生计算核对.json"
   },
   "full_main_1_0_5": {
     "status": "compiled_but_rendering_incorrect_reported_by_user",
@@ -68,7 +74,7 @@
       "data",
       "color"
     ],
-    "not_verified": "1.1.2在目标4.39.1.2客户端的编译、关闭保存、完整渲染与速度",
+    "not_verified": "1.1.3在目标4.39.1.2客户端的关闭保存、完整渲染与速度",
     "complete_export_file": "../reference/all_func.json",
     "complete_export_records": 286,
     "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
@@ -119,7 +125,7 @@
     "accepted_ascii_characters": 80000,
     "rejected_ascii_characters": 80001,
     "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
-    "new_install_layers": "passed_all_eight_code_and_combined_checks_on_anonymously_downloaded_public_files",
+    "new_install_layers": "see_current_release_official_content_report",
     "new_install_evidence": "../docs/官方内容校验结果.json"
   },
   "full_main_1_1_2": {
@@ -133,6 +139,18 @@
     "official_content_check": "passed_350_and_550_for_each",
     "official_parser_client_version": "5.4.0.5",
     "target_client_ui_run": false,
-    "root_cause": "Observed 80000/80001 character content-service boundary plus native shifted-label/nested-selector problems; not an invalid PN assignment."
+    "root_cause": "Observed 80000/80001 character content-service boundary plus native shifted-label/nested-selector problems; not an invalid PN assignment.",
+    "user_feedback": {
+      "EWT02": "反应比较慢，不太对；截图周线，用户确认只加载EWT01、EWT02",
+      "loading_four": "比较慢，然后自编公式也消失",
+      "formula_source_disappearance_confirmed_by_user": true,
+      "client_deletion_mechanism_reproduced": false,
+      "causes_confirmed": [
+        "旧层按长度分组，前两层不含完整子浪连线",
+        "原生回标嵌套与物化后序列过滤不同",
+        "KTEXT与数字对齐定义在原几何审查中不一致"
+      ],
+      "cause_of_source_disappearance": "unconfirmed"
+    }
   }
 }

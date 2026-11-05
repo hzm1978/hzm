@@ -59,7 +59,7 @@ def snapshot(data,result,mapping=None,source=None):
     plan['targets']=[{'ratio':ratio,'price':val('PRT'+str(i)),
                      'available':bool(val('PROK'+str(i))),'displayed':bool(val('PRSHOW'+str(i)))}
                     for i,ratio in enumerate((1.208,1.618,2,2.382,2.618,3,3.236,4.236),1)]
-    return {'release':'1.1.2','bars':n,'native_client_run':False,
+    return {'release':'1.1.3','bars':n,'native_client_run':False,
             'mode':'current-prefix retrospective drawing, not historical trade signals',
             'catalog_sha256':hashlib.sha256(RAW).hexdigest(),
             'formula_normalized_utf8_sha256':hashlib.sha256((source if source is not None else formula_source()).encode()).hexdigest(),

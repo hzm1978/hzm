@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-11-05T12:06:10.488138+00:00",
-  "release": "1.1.2",
+  "checked_at_utc": "2026-11-05T16:33:27.877660+00:00",
+  "release": "1.1.3",
   "check_kind": "official_native_syntax_preparse_and_shape_description",
   "execution_platform": "Windows-10-10.0.19043",
   "python": "3.12.10",
@@ -321,10 +321,10 @@
   },
   "files": {
     "install/EWT01.txt": {
-      "source_bytes": 75751,
+      "source_bytes": 78442,
       "source_encoding": "ascii",
-      "source_sha256": "b394897b97f81a477a84291908a84209c703a17a49baef6ca5bd25688a84de0f",
-      "parser_input_utf8_sha256": "b394897b97f81a477a84291908a84209c703a17a49baef6ca5bd25688a84de0f",
+      "source_sha256": "548bdc5fbe9cae8e33f03e89f75eb5bd2a7ddb7b6708a0686df4b64615639962",
+      "parser_input_utf8_sha256": "548bdc5fbe9cae8e33f03e89f75eb5bd2a7ddb7b6708a0686df4b64615639962",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -339,7 +339,7 @@
         "ErrCode": 0,
         "IsNeedRequestExtraData": "false",
         "IsContainsNoticeFunction": "false",
-        "ExtraMsg": "COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0",
+        "ExtraMsg": "",
         "IsNeedRequestTradeDay": "false",
         "IsContainsFutureFunction": "true",
         "IsContainsTradeFunction": "false",
@@ -347,22 +347,22 @@
       },
       "shape_validation": {
         "status": "passed",
-        "shapes": 184,
+        "shapes": 158,
         "by_shape": {
-          "PolylineShape": 21,
-          "TextShape": 152,
-          "StraightLineShape": 11
+          "PolylineShape": 14,
+          "TextShape": 132,
+          "StraightLineShape": 12
         },
-        "constant_offsets_checked": 304,
+        "constant_offsets_checked": 264,
         "max_absolute_offset": 0.0
       },
       "passed": true
     },
     "install/EWT02.txt": {
-      "source_bytes": 77977,
+      "source_bytes": 76197,
       "source_encoding": "ascii",
-      "source_sha256": "d9deefb6d5dfeaea2c831d213c9c4df235076c521c920506be5f1876febbd34b",
-      "parser_input_utf8_sha256": "d9deefb6d5dfeaea2c831d213c9c4df235076c521c920506be5f1876febbd34b",
+      "source_sha256": "4ca821595168df36f0891827e67cc85f1fa2d179b62969c4f4075a05656eb293",
+      "parser_input_utf8_sha256": "4ca821595168df36f0891827e67cc85f1fa2d179b62969c4f4075a05656eb293",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -377,7 +377,7 @@
         "ErrCode": 0,
         "IsNeedRequestExtraData": "false",
         "IsContainsNoticeFunction": "false",
-        "ExtraMsg": "COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0",
+        "ExtraMsg": "COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0",
         "IsNeedRequestTradeDay": "false",
         "IsContainsFutureFunction": "true",
         "IsContainsTradeFunction": "false",
@@ -385,22 +385,22 @@
       },
       "shape_validation": {
         "status": "passed",
-        "shapes": 103,
+        "shapes": 181,
         "by_shape": {
-          "PolylineShape": 2,
-          "TextShape": 86,
-          "StraightLineShape": 15
+          "PolylineShape": 7,
+          "TextShape": 137,
+          "StraightLineShape": 37
         },
-        "constant_offsets_checked": 172,
+        "constant_offsets_checked": 274,
         "max_absolute_offset": 0.0
       },
       "passed": true
     },
     "install/EWT03.txt": {
-      "source_bytes": 77998,
+      "source_bytes": 65021,
       "source_encoding": "ascii",
-      "source_sha256": "296b357e3909ebf776585d254167228b1f8fc6f76f9ba915ee756b4f57f76ebd",
-      "parser_input_utf8_sha256": "296b357e3909ebf776585d254167228b1f8fc6f76f9ba915ee756b4f57f76ebd",
+      "source_sha256": "bc76baa7f2c3bd1c8f2d0cd86ee0e729a871a7f65838ef5da29dfbaa36687488",
+      "parser_input_utf8_sha256": "bc76baa7f2c3bd1c8f2d0cd86ee0e729a871a7f65838ef5da29dfbaa36687488",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -423,51 +423,12 @@
       },
       "shape_validation": {
         "status": "passed",
-        "shapes": 63,
+        "shapes": 56,
         "by_shape": {
-          "PolylineShape": 3,
-          "TextShape": 49,
-          "StraightLineShape": 11
+          "StraightLineShape": 11,
+          "TextShape": 45
         },
-        "constant_offsets_checked": 98,
-        "max_absolute_offset": 0.0
-      },
-      "passed": true
-    },
-    "install/EWT04.txt": {
-      "source_bytes": 77984,
-      "source_encoding": "ascii",
-      "source_sha256": "551740a496b20478b816217e5f1b805938fb364fd6ff42c3488490de48cbea29",
-      "parser_input_utf8_sha256": "551740a496b20478b816217e5f1b805938fb364fd6ff42c3488490de48cbea29",
-      "native_response": {
-        "MaxPeriodCount": 160,
-        "CrossSecurityList": [],
-        "CrossPeriodList": [],
-        "ExtraKLineFieldList": [
-          11,
-          7,
-          8,
-          9
-        ],
-        "RealtimeFieldList": [],
-        "ErrCode": 0,
-        "IsNeedRequestExtraData": "false",
-        "IsContainsNoticeFunction": "false",
-        "ExtraMsg": "",
-        "IsNeedRequestTradeDay": "false",
-        "IsContainsFutureFunction": "true",
-        "IsContainsTradeFunction": "false",
-        "ErrLine": 0
-      },
-      "shape_validation": {
-        "status": "passed",
-        "shapes": 105,
-        "by_shape": {
-          "TextShape": 81,
-          "StraightLineShape": 23,
-          "PolylineShape": 1
-        },
-        "constant_offsets_checked": 162,
+        "constant_offsets_checked": 90,
         "max_absolute_offset": 0.0
       },
       "passed": true

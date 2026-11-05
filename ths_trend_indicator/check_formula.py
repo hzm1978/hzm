@@ -299,8 +299,8 @@ def check(source, enforce_boundary=True, analysis_end_line=None):
                 raise FormulaError(f"line {st.line}: unreviewed style {style}")
         if st.expression[0]=='call' and st.expression[1]=='DRAWTEXT' and any(not COLOR_PATTERN.fullmatch(s)for s in st.styles):
             raise FormulaError(f'line {st.line}: DRAWTEXT export only documents COLOR suffix')
-        if st.expression[0]=='call' and st.expression[1]=='KTEXT' and st.styles:
-            raise FormulaError(f'line {st.line}: KTEXT export documents no suffix styles')
+        if st.expression[0]=='call' and st.expression[1]=='KTEXT' and any(not re.fullmatch(r'FONTSIZE(?:[89]|[1-6][0-9]|7[012])',s)for s in st.styles):
+            raise FormulaError(f'line {st.line}: KTEXT accepts only verified font suffixes in this profile')
         result_type = infer_type(st.expression, types, st.line)
         if st.output and result_type != NUMBER:
             raise FormulaError(f"line {st.line}: plotted output requires number, got {result_type}")

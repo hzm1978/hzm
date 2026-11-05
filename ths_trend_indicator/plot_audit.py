@@ -100,7 +100,7 @@ def audit(source, data, overrides=None, analysis_end_line=None):
                       else f'{args[2][i]:.{int(args[3][i])}f}')
                 x=i+int(args[1][i]) if fn=='KTEXT' else (i+(-1 if args[5][i]==0 else 1)*int(args[6][i]) if fn=='DRAWSHIFTNUMBER' else i)
                 y=args[2][i] if fn=='KTEXT' else args[1][i]
-                align=('right','center','left')[int(args[3][i])]if fn=='KTEXT'else next(({'ALIGN0':'left','ALIGN1':'center','ALIGN2':'right'}[s]for s in st.styles if s.startswith('ALIGN')),'left')
+                align=('left','center','right')[int(args[3][i])]if fn=='KTEXT'else next(({'ALIGN0':'left','ALIGN1':'center','ALIGN2':'right'}[s]for s in st.styles if s.startswith('ALIGN')),'center')
                 labels.append({'x':int(x),'y':float(y),'text':text,'align':align,
                                'color':color,'function':fn,'statement':st.line})
         else:

@@ -13,12 +13,17 @@ def relation(a,b):
 
 
 class Builder:
-    def __init__(self): self.lines=[]
+    def __init__(self): self.lines=[];self.owner='overview'
+    def draw(self,text):
+        self.lines.append(text+' { OWNER:'+self.owner+' }')
     def put(self,name,expr):
         self.lines.append(f'{name}:={expr};');return name
-    def frozen(self,name,expr): return self.put(name,f'REFX1({expr},100000)')
+    def frozen(self,name,expr):
+        # A snapshot is needed only at the as-of end. Without this guard
+        # native HHV/COUNT scans inside REFX1 repeat for every history bar.
+        return self.put(name,f'REFX1(IF(ISLASTBAR,{expr},0),100000)')
     def first(self,name,condition):
-        raw=self.put(name+'RAW',f'BARSSINCEN({condition},BC)')
+        raw=self.put(name+'RAW',f'IF(ISLASTBAR,BARSSINCEN({condition},BC),0)')
         safe=self.put(name+'SAFE',f'IF(ISNULL({raw}),0,{raw})')
         age=self.frozen(name,safe)
         has=self.frozen(name+'HAS',f'COUNT({condition},BC)>0')
@@ -29,31 +34,32 @@ class Builder:
     def text(self,cond,age,price,text,color,align=1):
         # KTEXT documents position and text to the left/centre/right of its
         # candle. DRAWTEXT only documents COLOR, not ALIGN or FONTSIZE.
-        # Caller align uses conventional left/centre/right text alignment;
-        # KTEXT LCR instead describes which SIDE the text occupies.
+        # Native KTEXT LCR and number ALIGN share TextShape.HorizontalAlign:
+        # 0/1/2. Reversing it made the RET prefix overlap its number.
         import re
         price=re.sub(r'\bPAD\b','BPAD',price)
         # KTEXT also stores POSITION as a constant HorizontalOffset. A
         # dynamic POSITION can silently become NaN in native shape JSON.
         # Place the label on its historical candle with a literal offset 0.
-        self.lines.append(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{2-align},{color},'{text}');")
+        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE9;")
     def number(self,cond,age,price,value,color,precision=1):
         # The official parser rejects an X variable in DRAWSHIFTNUMBER.
         # Wrapping it in INTPART compiles but yields an invalid constant
         # HorizontalOffset in the native shape description. Draw on the
         # target candle instead, freezing ALL four inputs at the as-of end.
         # In particular PAD/price and the gate may vary over history.
-        self.lines.append(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN0,FONTSIZE9;')
+        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN0,FONTSIZE9;')
     def segment(self,cond,from_age,from_price,to_age,to_price,color,style='LINETHICK1'):
         # DRAWLINE3 pairs a start bar with a LATER end bar. Use penultimate
         # and last bars as those triggers, then shift both to actual endpoints.
         # Do not assume C1/C2 on the same bar are accepted by this API.
-        self.lines.append(f'DRAWLINE3(VX=1 AND {cond},{from_price},MAX(0,{from_age}-1),ISLASTBAR AND {cond},{to_price},{to_age},0),{color},{style};')
+        self.draw(f'DRAWLINE3(VX=1 AND {cond},{from_price},MAX(0,{from_age}-1),ISLASTBAR AND {cond},{to_price},{to_age},0),{color},{style};')
 
 
 def group(b,key,source,n,start_age,end_age,start_price,end_price,gate,label,color,
           lane=1,force_direction=False,correction=None):
     """One count inside one owner leg; lower counts cannot redefine the owner."""
+    b.owner=key
     put=lambda suffix,expr:b.put(key+suffix,expr)
     frozen=lambda suffix,expr:b.frozen(key+suffix,expr)
     first=lambda suffix,cond:b.first(key+suffix,cond)
@@ -221,13 +227,13 @@ def layers():
     ga2=b.put('OWN_GA2',f'IF({live["on"]},{live["a"][0]},{previous["a"][0]})')
     groups.append(group(b,'GW','G','GN',ga1,ga2,gp1,gp2,f'({live["on"]} OR {previous["on"]}) AND SHOWGRAND','孙',
                         'COLORLIGREEN',1.1))
-    correction_drawing(b,correction)
+    b.owner='corrections';correction_drawing(b,correction)
     from candle_patterns import turning_labels
-    turning_labels(b)
+    b.owner='reversals';turning_labels(b)
     from book_lines import draw as line_tools
-    line_tools(b,groups[0])
+    b.owner='tools';line_tools(b,groups[0])
     from book_prices import draw as price_plan
-    plan=price_plan(b,groups)
+    b.owner='prices';plan=price_plan(b,groups)
     b.lines.append(f'价格尺方向:{plan["direction"]},NODRAW;')
     b.text(f'SHOWBOOK AND {plan["source"]}>0 AND IF({groups[0]["on"]},0,1) AND ({plan["target_on"]} OR {plan["fib_on"]})',
            '0','C+PAD*5','子级价格尺·候选','COLORWHITE',2)

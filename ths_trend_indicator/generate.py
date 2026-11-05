@@ -100,7 +100,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC 1.1.2；按用户导出函数库生成，结构解释需结合确认时刻 }",
+    lines = ["{ 趋势交易·期货通PC 1.1.3；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
@@ -332,6 +332,10 @@ def drawing():
         for bull,flag,series,price,color in ((True,'VKBUY','BPCODE','L-PAD*4','COLORRED'),
                                            (False,'VKSELL','SPCODE','H+PAD*4','COLORGREEN')):
             lines.append(f"KTEXT(SHOWK AND {flag} AND {series}={code},0,{price},0,{color},'关键位·{pattern_text(code,bull)}');")
+    for i,line in enumerate(lines):
+        if line.startswith(('POLYLINE(','DRAWTEXT(','DRAWNUMBER1(','KTEXT('))or ',NODRAW;'in line:
+            owner='prices'if 'COLORFFCC00'in line or 'COLORFF9900'in line else'reversals'if '关键位·'in line else'overview'
+            lines[i]=line+' { OWNER:'+owner+' }'
     from book_layers import layers
     book,groups=layers()
     return lines+book
@@ -411,6 +415,8 @@ def build():
     # dependencies and identical editable settings in each independent file.
     from native_layers import generate as installation_layers
     layers,layer_report=installation_layers('\n'.join(core()+drawing()))
+    for obsolete in (path/'install').glob('EWT[0-9][0-9].txt'):
+        if obsolete.name not in layers:obsolete.unlink()
     install=[]
     for filename,(layer_data,layer_profile)in layers.items():
         relative='install/'+filename
@@ -418,8 +424,9 @@ def build():
         (path/relative).write_bytes(layer_data)
         profiles[relative]=layer_profile
         install.append(relative)
-    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.2','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
-                                               'install':install,'installation_layers':layer_report,'files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.3','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
+                                               'install':install,'recommended_install':install[:2],'optional_install':install[2:],
+                                               'installation_layers':layer_report,'files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     write_legend(ascii_profile)
     (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     from book_layers import layers

@@ -259,7 +259,8 @@ class SyntaxTests(unittest.TestCase):
             for st in Parser(source).parse():
                 for node in walk(st.expression):
                     if node[0:2]==('call','IFELSE'):
-                        self.assertTrue(any(n[0:2]==('call','ISNULL')for n in walk(node[2][0])))
+                        self.assertTrue(node[2][0]==('identifier','ISLASTBAR')or
+                                        any(n[0:2]==('call','ISNULL')for n in walk(node[2][0])))
             identifiers = {n[1] for st in Parser(source).parse() for n in walk(st.expression) if n[0] == "identifier"}
             self.assertFalse(identifiers & {"NULL", "DRAWNULL"})
 
