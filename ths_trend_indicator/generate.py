@@ -24,7 +24,7 @@ def standard_k():
                  for j in range(1, 41) if j != i]
         lines.append(f"R{i:02}:=1+" + "+".join(terms) + ";")
     lines.append("SK:=IF(BC>40,(" + "+".join(f"IF(R{i:02}<=5,D{i:02},0)" for i in range(1, 41)) + ")/5,0);")
-    lines.extend(["SKOK:=BC>40 AND SK>0;", "PAD:=MAX((HHV(H,40)-LLV(L,40))*0.018,SK*0.12);"])
+    lines.extend(["SKOK:=BC>40 AND SK>0;", "PAD:=MAX((HHV(H,160)-LLV(L,160))*0.025,SK*0.25);"])
     return lines
 
 
@@ -87,41 +87,59 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.5；COUNT数值版，完整主图待客户端编译 }",
-             "{ PN细转折；BN工作转折；DIR=0自动，1上升，-1下降 }",
-             "{ KIND=0自动，1顺势，2调整，3横盘；手动设置需自己确认级别 }",
-             "{ MANF=1时用MFROM/MTO作前主浪起止价，MFAGE为起点距今根数 }",
-             "{ MH1=0自动候选；大于0时用MBASE/MORG/MAGE指定投射锚点 }",
-             "{ STRONG=1才允许强势目标；SPAN为末端价位线最多显示根数 }",
+    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.6；方向与图形修订，客户端待核对 }",
+             "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
+             "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
+             "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
+             "{ MH1>0人工H1：MBASE调整末价、MORG浪1起价、MAGE距今 }",
+             "{ STRONG=1允许强势候选；SPAN为价格线最大显示根数 }",
              "PN:=2;", "BN:=7;", "DIR:=0;", "KIND:=0;",
              "MANF:=0;", "MFROM:=0;", "MTO:=0;", "MFAGE:=90;",
              "MH1:=0;", "MBASE:=0;", "MORG:=0;", "MAGE:=0;",
              "STRONG:=0;", "SPAN:=90;", "SHOWQ:=1;", "SHOWK:=1;",
-             "SHOWF:=1;", "SHOWT:=1;", "SHOWC:=1;"]
+             "SHOWF:=1;", "SHOWT:=1;", "SHOWC:=1;", "DETAIL:=0;"]
     lines += standard_k()
     lines += pivots("S", "PN") + pivots("B", "BN")
     lines += q_intervals("S", "PN") + q_intervals("B", "BN")
-    lines += ["{ 工作方向：高低点同时提高或降低才更新；小级别反转不直接替换工作方向 }",
+    lines += ["{ 工作方向观察：同侧双点或先前已知工作极值收盘突破；旧方向破位后不强行沿用 }",
               "BH0:=IF(BTYPE=1,BP0,BP1);", "BH1:=IF(BTYPE=1,BP2,BP3);",
               "BL0:=IF(BTYPE=-1,BP0,BP1);", "BL1:=IF(BTYPE=-1,BP2,BP3);",
               "DS:=BK3 AND ((BH0>BH1 AND BL0>BL1) OR (BH0<BH1 AND BL0<BL1));",
-              "DSV:=IF(BH0>BH1,1,-1);", "DSA:=MIN(BC-1,BARSLAST(DS));",
-              "WD:=IF(DIR=1,1,IF(DIR=-1,-1,IF(SUM(DS,0)>0,REF(DSV,DSA),0)));",
+              "DSV:=IF(BH0>BH1,1,-1);",
+              "DSCHANGE:=DS AND (REF(DS,1)=0 OR DSV<>REF(DSV,1));",
+              "BREAKUP:=REF(BK1,1) AND C>REF(BH0,1) AND REF(C,1)<=REF(BH0,1);",
+              "BREAKDN:=REF(BK1,1) AND C<REF(BL0,1) AND REF(C,1)>=REF(BL0,1);",
+              "DEVENT:=DSCHANGE OR BREAKUP OR BREAKDN;",
+              "DVALUE:=IF(BREAKUP,1,IF(BREAKDN,-1,DSV));",
+              "DSA:=MIN(BC-1,BARSLAST(DEVENT));",
+              "WD:=IF(DIR=1,1,IF(DIR=-1,-1,IF(SUM(DEVENT,0)>0,REF(DVALUE,DSA),0)));",
               "LEG:=IF(STYPE=1,IF(C>SP0,1,-1),IF(C<SP0,-1,1));",
               "SIDE:=BK3 AND MAX(BH0,BH1)-MIN(BL0,BL1)>0 AND ABS(BH0-BH1)+ABS(BL0-BL1)<(MAX(BH0,BH1)-MIN(BL0,BL1))*0.25;",
               "PHASE:=IF(KIND>0,KIND,IF(SIDE,3,IF(WD=0,0,IF(LEG=WD,1,2))));",
-              "{ 最近完整工作同向腿：末端0%，前端100%；原始端价计算后才显示小数 }",
+              "{ 工作方向最近一次切换时锁定起端；其后小回调不缩短工作段 }",
+              "WCHANGE:=WD<>0 AND (WD<>REF(WD,1) OR (BK3 AND REF(BK3,1)=0));",
+              "WAGE:=MIN(BC-1,BARSLAST(WCHANGE));",
+              "HAGE0:=IF(BTYPE=1,BA0,BA1)+BN;", "HAGE1:=IF(BTYPE=1,BA2,BA3)+BN;",
+              "LAGE0:=IF(BTYPE=-1,BA0,BA1)+BN;", "LAGE1:=IF(BTYPE=-1,BA2,BA3)+BN;",
+              "ORIGIN:=IF(WD=1,MIN(BL0,BL1),MAX(BH0,BH1));",
+              "ORIGAGE:=IF(WD=1,IF(BL0<=BL1,LAGE0,LAGE1),IF(BH0>=BH1,HAGE0,HAGE1));",
+              "WORKSTART:=REF(ORIGIN,WAGE);",
+              "WORKAGE:=MIN(BC-1,WAGE+REF(ORIGAGE,WAGE));",
+              "WORKEND:=IF(WD=1,HHV(H,WAGE+1),LLV(L,WAGE+1));",
+              "WORKVALID:=SUM(WCHANGE,0)>0 AND REF(BK3,WAGE) AND WORKAGE>WAGE;",
+              "{ 逆势或横盘时：工作段末端0%，锁定起端100%，不以内部小腿替换 }",
               "ALIGN:=BTYPE=WD;",
-              "FEND:=IF(MANF=1,MTO,IF(ALIGN,BP0,BP1));",
-              "FSTART:=IF(MANF=1,MFROM,IF(ALIGN,BP1,BP2));",
-              "FAGE:=MIN(BC-1,MAX(1,IF(MANF=1,MFAGE,IF(ALIGN,BA1,BA2)+BN)));",
+              "FEND:=IF(MANF=1,MTO,IF(PHASE=3,BP0,WORKEND));",
+              "FSTART:=IF(MANF=1,MFROM,IF(PHASE=3,BP1,WORKSTART));",
+              "FAGE:=MIN(BC-1,MAX(1,IF(MANF=1,MFAGE,IF(PHASE=3,BA1+BN,WORKAGE))));",
               "FH:=ABS(FSTART-FEND);",
-              "FVALID:=WD<>0 AND (IF(MANF=1,MFAGE>=1 AND MFAGE<BC,BK2)) AND WD*(FEND-FSTART)>0 AND FH>0;",
+              "FDIR:=IF(PHASE=3,IF(FEND>FSTART,1,-1),WD);",
+              "FVALID:=(WD<>0 OR PHASE=3) AND (IF(MANF=1,MFAGE>=1 AND MFAGE<BC,IF(PHASE=3,BK1,WORKVALID))) AND FDIR*(FEND-FSTART)>0 AND FH>0;",
               "F0:=FEND;", "F236:=FEND+(FSTART-FEND)*0.236;",
               "F382:=FEND+(FSTART-FEND)*0.382;", "F500:=FEND+(FSTART-FEND)*0.5;",
               "F618:=FEND+(FSTART-FEND)*0.618;", "F786:=FEND+(FSTART-FEND)*0.786;", "F100:=FSTART;",
               "FON:=SHOWF AND FVALID AND (PHASE=2 OR PHASE=3);",
-              "RET:=IF(FVALID,WD*(FEND-C)/MAX(FH,0.0000001)*100,0);",
+              "RET:=IF(FVALID,FDIR*(FEND-C)/MAX(FH,0.0000001)*100,0);",
               "{ 细级最近完成腿的回调；只称细腿，不编造书中子1至子5浪号 }",
               "SH:=ABS(SP0-SP1);", "SRET:=IF(SK1 AND SH>0,ABS(C-SP0)/MAX(SH,0.0000001)*100,0);",
               "{ Q比较：小Q按dif，其余按比值；共享边界同级优先 }",
@@ -134,7 +152,7 @@ def core():
               "HQAGE:=IF(WD=1,BUE,BDE);", "HQCOUNT:=IF(WD=1,SUM(BUQ,0),SUM(BDQ,0));",
               "HQA:=IF(ALIGN,BA3,BA2)+BN;", "HQB:=IF(ALIGN,BA2,BA1)+BN;",
               "HQFIT:=HQCOUNT>0 AND HQAGE<HQA AND HQAGE>=HQB;",
-              "HOK:=BK5 AND WD<>0 AND HQFIT AND IF(ALIGN,WD*(BP2-BP4)>0,WD*(BP1-BP3)>0);",
+              "HOK:=BK5 AND WD<>0 AND WORKVALID AND HQFIT AND IF(ALIGN,BA5,BA4)+BN<=WORKAGE AND IF(ALIGN,WD*(BP2-BP4)>0,WD*(BP1-BP3)>0);",
               "AUTOH:=IF(ALIGN,ABS(BP4-BP5),ABS(BP3-BP4));",
               "AUTOBASE:=IF(ALIGN,BP1,BP0);", "AUTOORG:=IF(ALIGN,BP5,BP4);",
               "AUTOAGE:=IF(ALIGN,BA1,BA0)+BN;",
@@ -160,11 +178,11 @@ def core():
         lines.append(f"TT{rank}:=" + "+".join(f"IF(T{i}R={rank},T{i}OK,0)*T{i}" for i in range(1, 9)) + ";")
         lines.append(f"TT{rank}OK:=" + " OR ".join(f"(T{i}OK AND T{i}R={rank})" for i in range(1, 9)) + ";")
     lines += ["{ 调整仅标候选：三/五腿与几何收敛不证明书中的内部完整分级 }",
-              "CSIGN:=0-WD;", "COK:=BK3 AND WD<>0 AND BTYPE=CSIGN;",
+              "CSIGN:=0-WD;", "COK:=BK3 AND WD<>0 AND BTYPE=CSIGN AND (PHASE=2 OR PHASE=3);",
               "ALEG:=ABS(BP2-BP3);", "BLEG:=ABS(BP1-BP2);", "CLEG:=ABS(BP0-BP1);",
               "ABC:=COK AND ALEG>0 AND WD*(BP1-BP3)<=0 AND CSIGN*(BP0-BP2)>0;",
               "ABCS:=COK AND ALEG>0 AND WD*(BP1-BP3)<=0 AND CSIGN*(BP0-BP2)<=0;",
-              "C5:=BK5 AND WD<>0 AND BTYPE=CSIGN;",
+              "C5:=BK5 AND WD<>0 AND BTYPE=CSIGN AND (PHASE=2 OR PHASE=3);",
               "SHRINK:=C5 AND ABS(BP4-BP5)>ABS(BP3-BP4) AND ABS(BP3-BP4)>ABS(BP2-BP3) AND ABS(BP2-BP3)>ABS(BP1-BP2) AND ABS(BP1-BP2)>ABS(BP0-BP1);",
               "EXPAND:=C5 AND ABS(BP4-BP5)<ABS(BP3-BP4) AND ABS(BP3-BP4)<ABS(BP2-BP3) AND ABS(BP2-BP3)<ABS(BP1-BP2) AND ABS(BP1-BP2)<ABS(BP0-BP1);",
               "ACAND:=BK1 AND WD<>0 AND BTYPE=CSIGN AND (ABC OR ABCS OR SHRINK OR EXPAND);",
@@ -186,12 +204,10 @@ def core():
               "BULLKEY:=NEARPOS AND WD=1 AND BULLSTD AND BULLPAT;",
               "BEARKEY:=NEARPOS AND WD=-1 AND BEARSTD AND BEARPAT;",
               "{ 对边两极值斜率平移参考：尚未验证全部锚间包络，不叫已确认拐点线 }",
-              "HAGE0:=IF(BTYPE=1,BA0,BA1)+BN;", "HAGE1:=IF(BTYPE=1,BA2,BA3)+BN;",
-              "LAGE0:=IF(BTYPE=-1,BA0,BA1)+BN;", "LAGE1:=IF(BTYPE=-1,BA2,BA3)+BN;",
               "HSLOPE:=(BH0-BH1)/MAX(1,HAGE1-HAGE0);",
               "LSLOPE:=(BL0-BL1)/MAX(1,LAGE1-LAGE0);",
               "TRENDV:=IF(WD=1,BL0+LSLOPE*LAGE0,BH0+HSLOPE*HAGE0);",
-              "PIVOTV:=IF(WD=1,BH0+LSLOPE*HAGE0,BL0+HSLOPE*LAGE0);",
+              "PIVOTV:=IF(WD=1,BL0+HSLOPE*LAGE0,BH0+LSLOPE*HAGE0);",
               "LINEOK:=BK3 AND WD<>0;", "{ END_ANALYSIS：以下未来引用只用于当前图形显示，绝不参与上面的计算 }"]
     # RANGE is a built-in formula function in several THS editions. Avoid
     # borrowing candlestick helper names that might collide with native names.
@@ -202,24 +218,28 @@ def core():
 
 def drawing():
     lines = ["{ 回标转折：必须等PN/BN根后才知道；历史连线会重绘，不作为当时的交易信号 }",
+             "VX:=REFX1(BC,100000)-BC;",
+             "VRECENT:=DETAIL OR VX<=SPAN;",
+             "VSCOPE:=DETAIL OR VX<=REFX1(SA5+PN,100000);",
              "VSH:=FILTER(BACKSET(SHC,PN+1),PN);", "VSL:=FILTER(BACKSET(SLC,PN+1),PN);",
              "VBH:=FILTER(BACKSET(BHC,BN+1),BN);", "VBL:=FILTER(BACKSET(BLC,BN+1),BN);",
-             "DRAWLINE(VSH,H,VSL,L,0),COLORCYAN,LINETHICK1;",
-             "DRAWLINE(VSL,L,VSH,H,0),COLORCYAN,LINETHICK1;",
-             "DRAWLINE(VBH,H,VBL,L,0),COLORYELLOW,LINETHICK2;",
-             "DRAWLINE(VBL,L,VBH,H,0),COLORYELLOW,LINETHICK2;",
-             "DRAWNUMBER1(VBH,H+PAD,H,2),COLORYELLOW;",
-             "DRAWNUMBER1(VBL,L-PAD,L,2),COLORYELLOW;",
-             "DRAWLINE(SHOWQ AND VSH,H,SHOWQ AND SUQ,SUH,0),COLORWHITE;",
-             "DRAWLINE(SHOWQ AND VSL,L,SHOWQ AND SDQ,SDL,0),COLORWHITE;",
-             "DRAWTEXT(SHOWQ AND SUQ,H+PAD*2,'细Q收破'),COLORWHITE;",
-             "DRAWNUMBER1(SHOWQ AND SUQ,H+PAD*3,SUN,0),COLORWHITE;",
-             "DRAWTEXT(SHOWQ AND SDQ,L-PAD*2,'细Q收破'),COLORWHITE;",
-             "DRAWNUMBER1(SHOWQ AND SDQ,L-PAD*3,SDN,0),COLORWHITE;",
-             "DRAWTEXT(SHOWQ AND BUQ,H+PAD*4,'工作Q收破'),COLORYELLOW;",
-             "DRAWNUMBER1(SHOWQ AND BUQ,H+PAD*5,BUN,0),COLORYELLOW;",
-             "DRAWTEXT(SHOWQ AND BDQ,L-PAD*4,'工作Q收破'),COLORYELLOW;",
-             "DRAWNUMBER1(SHOWQ AND BDQ,L-PAD*5,BDN,0),COLORYELLOW;",
+             "POLYLINE(VSH OR VSL,IF(VSH,H,L),COLORCYAN),LINETHICK1;",
+             "POLYLINE(VBH OR VBL,IF(VBH,H,L),COLORYELLOW),LINETHICK2;",
+             "DRAWNUMBER1(VBH AND VRECENT,H+PAD,H,2),COLORYELLOW;",
+             "DRAWNUMBER1(VBL AND VRECENT,L-PAD,L,2),COLORYELLOW;",
+             "VQAGE:=REFX1(IF(WD=1,BUE,BDE),100000);",
+             "VQN:=REFX1(IF(WD=1,BUV,BDV),100000);",
+             "VQP:=REFX1(IF(WD=1,REF(BUH,BUE),REF(BDL,BDE)),100000);",
+             "VQON:=REFX1(SHOWQ AND WD<>0 AND IF(WD=1,SUM(BUQ,0)>0,SUM(BDQ,0)>0),100000);",
+             "POLYLINE(VQON AND (VX=VQAGE OR VX=VQAGE+VQN),VQP,COLORWHITE);",
+             "DRAWTEXT(DETAIL AND SHOWQ AND SUQ,H+PAD*2,'细Q收破'),COLORWHITE;",
+             "DRAWNUMBER1(SHOWQ AND SUQ AND VSCOPE AND IF(BUQ,0,1),H+PAD*2,SUN,0),COLORCYAN;",
+             "DRAWTEXT(DETAIL AND SHOWQ AND SDQ,L-PAD*2,'细Q收破'),COLORWHITE;",
+             "DRAWNUMBER1(SHOWQ AND SDQ AND VSCOPE AND IF(BDQ,0,1),L-PAD*2,SDN,0),COLORCYAN;",
+             "DRAWTEXT(DETAIL AND SHOWQ AND BUQ,H+PAD*3,'工作Q收破'),COLORYELLOW;",
+             "DRAWNUMBER1(SHOWQ AND BUQ AND VRECENT,H+PAD*2,BUN,0),COLORWHITE;",
+             "DRAWTEXT(DETAIL AND SHOWQ AND BDQ,L-PAD*3,'工作Q收破'),COLORYELLOW;",
+             "DRAWNUMBER1(SHOWQ AND BDQ AND VRECENT,L-PAD*2,BDN,0),COLORWHITE;",
              "DRAWTEXT(SHOWK AND BULLKEY,L-PAD*4,'关键位置看涨·候选'),COLORRED;",
              "DRAWTEXT(SHOWK AND BEARKEY,H+PAD*4,'关键位置看跌·候选'),COLORGREEN;",
              "DRAWTEXT(SHOWK AND ISLASTBAR AND HAMMER,L-PAD,'锤子·观察'),COLORWHITE;",
@@ -230,55 +250,55 @@ def drawing():
              "DRAWTEXT(SHOWK AND ISLASTBAR AND EVENING,H+PAD*3,'黄昏星·观察'),COLORGREEN;",
              "DRAWTEXT(SHOWK AND ISLASTBAR AND BULLDO,L-PAD,'看涨十字·观察'),COLORWHITE;",
              "DRAWTEXT(SHOWK AND ISLASTBAR AND BEARDO,H+PAD,'看跌十字·观察'),COLORWHITE;",
-             "DRAWTEXT(SHOWC AND ISLASTBAR AND ABC,AV,'abc候选·内部待分级'),COLORCYAN;",
-             "DRAWTEXT(SHOWC AND ISLASTBAR AND ABCS,AV,'收缩abc候选·内部待分级'),COLORCYAN;",
+             "DRAWTEXT(SHOWC AND ISLASTBAR AND ABC AND IF(SHRINK OR EXPAND,0,1),AV,'abc候选'),COLORCYAN;",
+             "DRAWTEXT(SHOWC AND ISLASTBAR AND ABCS AND IF(SHRINK OR EXPAND,0,1),AV,'收缩abc候选'),COLORCYAN;",
              "DRAWTEXT(SHOWC AND ISLASTBAR AND SHRINK,AV+PAD,'收缩三角候选'),COLORCYAN;",
              "DRAWTEXT(SHOWC AND ISLASTBAR AND EXPAND,AV+PAD,'扩张三角候选'),COLORCYAN;",
              "DRAWTEXT(SHOWC AND ISLASTBAR AND ACAND AND IF(AFAIL,0,1),AV-PAD,'A?候选·非确认分界'),COLORMAGENTA;",
              "DRAWTEXT(SHOWC AND ISLASTBAR AND AFAIL,AV-PAD,'A?候选失效'),COLORMAGENTA;",
              "{ REFX1末值冻结只画最后一套短水平线；不混入历史信号 }",
-             "VX:=REFX1(BC,100000)-BC;", "VLEN:=REFX1(MIN(SPAN,FAGE),100000);",
+             "VLEN:=REFX1(MIN(SPAN,FAGE),100000);",
              "VF:=REFX1(FON,100000) AND VX<=VLEN;",
-             "VTLEN:=REFX1(MIN(SPAN,TAGE),100000);",
+             "VTLEN:=REFX1(MIN(BC-1,MIN(SPAN,MAX(40,TAGE))),100000);",
              "VT:=REFX1(TON,100000) AND VX<=VTLEN;",
              "VSA:=REFX1(SA0+PN,100000);", "VBA:=REFX1(BA0+BN,100000);",
-             "DRAWLINE(REFX1(SK0,100000) AND VX=VSA,REFX1(SP0,100000),ISLASTBAR,C,0),COLORCYAN;",
-             "DRAWLINE(REFX1(BK0,100000) AND VX=VBA,REFX1(BP0,100000),ISLASTBAR,C,0),COLORYELLOW;",
+             "POLYLINE(REFX1(SK0,100000) AND (VX=VSA OR ISLASTBAR),IF(ISLASTBAR,C,REFX1(SP0,100000)),COLORCYAN);",
+             "POLYLINE(REFX1(BK0,100000) AND (VX=VBA OR ISLASTBAR),IF(ISLASTBAR,C,REFX1(BP0,100000)),COLORYELLOW);",
              "{ 只画当前锚点的直线参考段；条件关闭时不产生0价或空值算术 }",
              "VCL:=REFX1(SHOWC AND LINEOK,100000);",
              "VCS:=REFX1(IF(WD=1,LSLOPE,HSLOPE),100000);",
+             "VPS:=REFX1(IF(WD=1,HSLOPE,LSLOPE),100000);",
              "VCA:=REFX1(MIN(SPAN,IF(WD=1,LAGE1,HAGE1)),100000);",
-             "VPA:=REFX1(MIN(SPAN,IF(WD=1,HAGE1,LAGE1)),100000);",
              "VCV:=REFX1(TRENDV,100000);", "VPV:=REFX1(PIVOTV,100000);",
-             "DRAWLINE(VCL AND VX=VCA,VCV-VCS*VX,ISLASTBAR AND VCL,VCV,0),COLORYELLOW;",
-             "DRAWLINE(VCL AND VX=VPA,VPV-VCS*VX,ISLASTBAR AND VCL,VPV,0),COLORMAGENTA;"]
+             "POLYLINE(VCL AND (VX=VCA OR ISLASTBAR),VCV-VCS*VX,COLORYELLOW);",
+             "POLYLINE(VCL AND (VX=VCA OR ISLASTBAR),VPV-VPS*VX,COLORMAGENTA);"]
     for key, text in [("0", "0%"), ("236", "23.6%"), ("382", "38.2%"), ("500", "50%"), ("618", "61.8%"), ("786", "78.6%"), ("100", "100%")]:
         lines.append(f"VF{key}:=REFX1(F{key},100000);")
-        lines.append(f"DRAWLINE(VF AND VX=VLEN,VF{key},ISLASTBAR AND FON,VF{key},0),COLORFFCC00;")
-        lines.append(f"DRAWTEXT(VF AND VX=MIN(12,VLEN),VF{key},'{text}'),COLORFFCC00;")
-        lines.append(f"DRAWNUMBER1(ISLASTBAR AND FON,F{key},F{key},2),COLORFFCC00;")
+        lines.append(f"POLYLINE(VF AND (VX=VLEN OR ISLASTBAR),VF{key},COLORFFCC00);")
+        lines.append(f"DRAWTEXT(VF AND VX=MIN(10,VLEN),VF{key},'{text}'),COLORFFCC00;")
+        lines.append(f"DRAWNUMBER1(VF AND VX=MIN(40,VLEN),VF{key},VF{key},2),COLORFFCC00;")
     ratios = [1.208, 1.618, 2, 2.382, 2.618, 3, 3.236, 4.236]
     for rank in range(1, 4):
         lines += [f"VTT{rank}:=REFX1(TT{rank},100000);",
                   f"VTT{rank}ON:=REFX1(TT{rank}OK,100000);",
-                  f"DRAWLINE(VT AND VTT{rank}ON AND VX=VTLEN,VTT{rank},ISLASTBAR AND TON AND VTT{rank}ON,VTT{rank},0),COLORFF9900;"]
+                  f"POLYLINE(VT AND VTT{rank}ON AND (VX=VTLEN OR ISLASTBAR),VTT{rank},COLORFF9900);"]
     for i, ratio in enumerate(ratios, 1):
         lines += [f"VT{i}:=REFX1(T{i},100000);",
                   f"VT{i}ON:=VT AND REFX1(T{i}OK AND T{i}R<=3,100000);",
-                  f"DRAWTEXT(VT{i}ON AND VX=MIN(12,REFX1(MIN(SPAN,TAGE),100000)),VT{i},'{ratio:g}H1候选'),COLORFF9900;",
-                  f"DRAWNUMBER1(ISLASTBAR AND T{i}OK AND T{i}R<=3,T{i},T{i},2),COLORFF9900;"]
+                  f"DRAWTEXT(VT{i}ON AND VX=MIN(12,VTLEN),VT{i},'{ratio:g}H1候选'),COLORFF9900;",
+                  f"DRAWNUMBER1(VT{i}ON AND VX=MIN(35,VTLEN),VT{i},VT{i},2),COLORFF9900;"]
     lines += ["DRAWTEXT(ISLASTBAR AND WD=0,C,'工作方向待确认：可设置DIR'),COLORWHITE;",
               "DRAWTEXT(ISLASTBAR AND PHASE=1 AND SHOWT AND IF(TON,0,1),C,'缺少同级H1依据：暂不投射目标'),COLORWHITE;",
               "DRAWTEXT(ISLASTBAR AND IF(SKOK,0,1),C,'标准K样本不足或全为零'),COLORWHITE;",
-              "工作方向:WD,NODRAW;", "末段状态:PHASE,NODRAW;", "标准K:SK,NODRAW;",
+              "工作方向:WD,NODRAW;", "末段状态:PHASE,NODRAW;", "方向模式:DIR,NODRAW;", "标准K:SK,NODRAW;",
               "工作回调百分比:RET,NODRAW;",
-              "DRAWTEXT(ISLASTBAR AND SK1,L-PAD*7,'细腿回调%'),COLORCYAN;",
-              "DRAWNUMBER1(ISLASTBAR AND SK1,L-PAD*8,SRET,1),COLORCYAN;",
-              "DRAWTEXT(SHOWQ AND (BUQ OR BDQ) AND QOK AND QREL=0,C,'Q同级'),COLORYELLOW;",
-              "DRAWTEXT(SHOWQ AND (BUQ OR BDQ) AND QOK AND QREL=1,C,'Q扩张'),COLORYELLOW;",
-              "DRAWTEXT(SHOWQ AND (BUQ OR BDQ) AND QOK AND QREL=0-1,C,'Q收缩'),COLORYELLOW;",
-              "DRAWTEXT(SHOWQ AND (BUQ OR BDQ) AND QOK AND QREL=2,C,'Q升级候选'),COLORYELLOW;",
-              "DRAWTEXT(SHOWQ AND (BUQ OR BDQ) AND QOK AND QREL=0-2,C,'Q降级候选'),COLORYELLOW;"]
+              "DRAWTEXT(DETAIL AND ISLASTBAR AND SK1,L-PAD*3,'细腿回调%'),COLORCYAN;",
+              "DRAWNUMBER1(DETAIL AND ISLASTBAR AND SK1,L-PAD*4,SRET,1),COLORCYAN;",
+              "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=0,C,'Q同级'),COLORYELLOW;",
+              "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=1,C,'Q扩张'),COLORYELLOW;",
+              "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=0-1,C,'Q收缩'),COLORYELLOW;",
+              "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=2,C,'Q升级候选'),COLORYELLOW;",
+              "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=0-2,C,'Q降级候选'),COLORYELLOW;"]
     return lines
 
 
@@ -295,7 +315,8 @@ X8:=REFX1(C,100000);
 X9:=BARPOS;
 均线:MA(C,5),COLORWHITE;
 DRAWLINE(BARPOS=6,X2,ISLASTBAR,X2,0),COLORCYAN;
-DRAWLINE(C>O,L,C<O,H,0),COLORYELLOW;
+DRAWLINE(C>O,L,C>O,H,0),COLORYELLOW;
+POLYLINE(C>O,C,COLORCYAN);
 DRAWTEXT(ISLASTBAR,C,'函数兼容检查'),COLORWHITE;
 DRAWNUMBER1(ISLASTBAR,C,C,2),COLORYELLOW;
 根数:X9,NODRAW;

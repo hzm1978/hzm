@@ -36,11 +36,28 @@
     "expected_expression_fragment": "2*QFLAG*MAX",
     "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
   },
-  "release_gate": "COUNT四行原生小样已通过；1.0.5完整主图尚待原生编译，不将本地检查标为客户端通过",
+  "release_gate": "1.0.6完整主图原生编译/显示待验证；按客户端函数说明改绘图，禁止再把本地测试替代客户端结果",
   "next_full_main": {
-    "release": "1.0.5",
+    "release": "1.0.6",
     "status": "not_run",
     "local_evidence": "../docs/本地检查结果.json",
-    "note": "COUNT独立小样通过不扩大为完整主图通过"
+    "note": "已取得目标客户端绘图函数原文；本地几何预览不等于完整主图原生实测"
+  },
+  "full_main_1_0_5": {
+    "status": "compiled_but_rendering_incorrect_reported_by_user",
+    "evidence": "用户提供主图截图：文字/数值显示，波浪和价位线缺失，方向/回调和标注密度被反馈不正确",
+    "root_cause_confirmed": "误用同K线DRAWLINE连接不同K线，原测试只检查参数类型而未检查函数绘图语义"
+  },
+  "native_function_help": {
+    "source": "用户从4.39.1.2客户端函数库复制",
+    "reference_file": "client_function_reference.txt",
+    "DRAWLINE": "same_candle_vertical_segment",
+    "POLYLINE": "connect_values_on_matching_candles",
+    "POLYLINE_arguments": [
+      "condition",
+      "data",
+      "color"
+    ],
+    "not_verified": "完整1.0.6客户端编译、实际显示与速度"
   }
 }

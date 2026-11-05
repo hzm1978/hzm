@@ -1,0 +1,29 @@
+{
+  "release": "1.0.6",
+  "synthetic_ohlc_only": true,
+  "native_client_rendering": "not_run",
+  "basis": "../diagnostics/client_function_reference.txt",
+  "source_sha256": "ec50ff04e4c476a6f6bd6b15fce8a09ff0e078d174100c369889f465ce06050a",
+  "scenes": {
+    "fall_rebound": {
+      "bars": 331,
+      "segments": 38,
+      "labels": 21,
+      "fib_segments": 7,
+      "target_segments": 0,
+      "work_direction": -1.0,
+      "phase": 2.0,
+      "preview_file": "previews/synthetic_fall_rebound.png"
+    },
+    "trend_targets": {
+      "bars": 100,
+      "segments": 3,
+      "labels": 6,
+      "fib_segments": 0,
+      "target_segments": 3,
+      "work_direction": -1.0,
+      "phase": 1.0,
+      "preview_file": "previews/synthetic_trend_targets.png"
+    }
+  }
+}

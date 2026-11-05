@@ -15,7 +15,7 @@ from check_formula import (Parser, FormulaError, NUMBER, CONDITION, STRING,
 # documented parameter values. All other ASCII variables are internal.
 SETTINGS = {"PN", "BN", "DIR", "KIND", "MANF", "MFROM", "MTO", "MFAGE",
             "MH1", "MBASE", "MORG", "MAGE", "STRONG", "SPAN",
-            "SHOWQ", "SHOWK", "SHOWF", "SHOWT", "SHOWC"}
+            "SHOWQ", "SHOWK", "SHOWF", "SHOWT", "SHOWC", "DETAIL"}
 
 
 def variable_names(source):
@@ -167,7 +167,10 @@ def normalize(source):
             return identifier(node[1])
         if kind == "binary":
             if node[1] in ("AND", "OR"):
-                return ("binary", ">", lift(flag(node)), ("number", 0.0))
+                value = flag(node)
+                if len(render(value)) > 50:
+                    value = lift(value)
+                return ("binary", ">", value, ("number", 0.0))
             if node[1] in ("=", "<>", ">", "<", ">=", "<="):
                 left, right = num(node[2]), num(node[3])
                 return ("binary", node[1], left, right)

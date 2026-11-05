@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT))
 from check_formula import FormulaError, Parser, RESERVED, check, walk, evaluate as raw_evaluate
 from compatibility import SETTINGS, normalize, variable_names, render
 from generate import build, core, drawing, probe, basic_probe, formula_source, formula_names
+from plot_audit import audit
 
 SOURCE = formula_source()
 NAMES = formula_names()
@@ -297,15 +298,83 @@ N2:=IFELSE(H<REF(H,1)&&REF(H,1)<REF(H,2),REF(H,2),0);
     def test_conditional_price_segments_do_not_create_nullable_plot_outputs(self):
         statements = Parser(SOURCE).parse()
         self.assertEqual({s.name for s in statements if s.output},
-                         {"工作方向", "末段状态", "标准K", "工作回调百分比"})
-        lines = [s for s in statements if s.expression[0:2] == ("call", "DRAWLINE")]
-        self.assertEqual(len(lines), 20)  # waves/Q/current legs + 2 references + 7 fib + 3 targets
-        for s in lines[-10:]:
-            # Each horizontal segment uses one frozen price at both endpoints.
-            self.assertEqual(s.expression[2][1], s.expression[2][3])
+                         {"工作方向", "末段状态", "方向模式", "标准K", "工作回调百分比"})
+        self.assertFalse(any(s.expression[0:2] == ("call","DRAWLINE") for s in statements))
+        lines = [s for s in statements if s.expression[0:2] == ("call", "POLYLINE")]
+        self.assertEqual(len(lines),17)
+
+    def test_qht_drawline_cannot_join_predicates_on_different_candles(self):
+        data=bars(10)
+        separate="BC:=BARPOS;\n{ END_ANALYSIS }\nDRAWLINE(BARPOS=2,L,BARPOS=5,H,COLORCYAN);"
+        self.assertEqual(audit(separate,data)['lines'],[])
+        simultaneous=separate.replace('BARPOS=5','BARPOS=2')
+        lines=audit(simultaneous,data)['lines']
+        self.assertEqual(len(lines),1)
+        self.assertEqual(lines[0]['start'][0],lines[0]['end'][0])
 
 
 class NumericalTests(unittest.TestCase):
+    def test_break_of_known_work_low_invalidates_stale_up_direction(self):
+        c=np.r_[np.full(65,110.),99.,98.,97.,98.,99.]
+        data={'C':c,'O':c+1,'H':c+2,'L':c-2}
+        known=np.r_[np.zeros(20),np.ones(50)]
+        e=evaluate(SOURCE,data,{'BK3':known,'BK1':known,'BH0':130.,'BH1':120.,
+                                'BL0':100.,'BL1':90.})
+        self.assertTrue(np.all(e['WD'][20:65]==1))
+        self.assertTrue(np.all(e['WD'][65:]==-1))
+        # Old higher high/low flags remain true; they must not overwrite the
+        # fresh downside close on the next candle.
+        self.assertTrue(np.all(e['DS'][65:]==1))
+
+    def test_long_fall_rebound_keeps_whole_work_wave_and_seven_fib_segments(self):
+        data=waves();e=evaluate(SOURCE,data)
+        self.assertEqual(e['WD'][-1],-1)
+        self.assertEqual(e['PHASE'][-1],2)
+        self.assertEqual(e['FSTART'][-1],4801)
+        self.assertEqual(e['FEND'][-1],2199)
+        self.assertAlmostEqual(e['RET'][-1],(2550-2199)/(4801-2199)*100)
+        result=audit(SOURCE,data)
+        fib=[line for line in result['lines'] if line['color']=='COLORFFCC00']
+        targets=[line for line in result['lines'] if line['color']=='COLORFF9900']
+        self.assertEqual(len(fib),7);self.assertEqual(targets,[])
+        for line in fib:
+            self.assertLess(line['start'][0],line['end'][0])
+            self.assertEqual(line['start'][1],line['end'][1])
+            self.assertEqual(line['end'][0],len(data['C'])-1)
+        self.assertGreater(len([line for line in result['lines'] if line['color']=='COLORCYAN']),8)
+
+    def test_default_annotation_density_is_lower_than_detail_mode(self):
+        data=waves()
+        normal=audit(SOURCE,data)
+        detail=audit(SOURCE,data,{NAMES.get('DETAIL','DETAIL'):1})
+        self.assertLess(len(normal['labels']),len(detail['labels'])/2)
+        self.assertFalse(any('Q收破' in label['text'] for label in normal['labels']))
+
+    def test_sideways_without_trend_uses_last_complete_leg_fib_only(self):
+        args={'WD':0,'KIND':3,'BK1':1,'BP0':3900.,'BP1':4100.,'BA1':30.}
+        e=evaluate(SOURCE,bars(90),args)
+        self.assertEqual(e['PHASE'][-1],3)
+        self.assertTrue(e['FON'][-1])
+        self.assertFalse(e['TON'][-1])
+        self.assertEqual(e['F0'][-1],3900)
+        self.assertEqual(e['F100'][-1],4100)
+
+    def test_three_target_lines_have_prices_and_ratios_inside_their_segments(self):
+        data={k:np.full(100,v) for k,v in (('O',3305.),('C',3300.),('H',3310.),('L',3290.))}
+        settings={'DIR':-1,'KIND':1,'MH1':200,'MBASE':3500,'MORG':4000,'MAGE':5}
+        result=audit(SOURCE,data,{NAMES.get(k,k):v for k,v in settings.items()})
+        targets=[line for line in result['lines'] if line['color']=='COLORFF9900']
+        self.assertEqual(len(targets),3)
+        self.assertFalse(any(line['color']=='COLORFFCC00'for line in result['lines']))
+        for line in targets:
+            self.assertGreater(line['end'][0]-line['start'][0],30)
+            matched=[label for label in result['labels'] if label['color']=='COLORFF9900'
+                     and label['y']==line['start'][1]]
+            self.assertEqual(len(matched),2)
+            for label in matched:
+                self.assertLess(line['start'][0],label['x'])
+                self.assertLess(label['x'],line['end'][0]-3)
+
     def test_count_selection_handles_nested_branches_zero_and_negative_prices(self):
         original = "A1:=IF(C>O,C-L,H-C);A2:=IF(C<O,-C,IF(C=O,0,O));A3:=REF(IF(C>O,A1,A2),2);"
         converted = normalize(original)
@@ -335,18 +404,21 @@ class NumericalTests(unittest.TestCase):
         for t in np.flatnonzero(e["LINEOK"]):
             if e["WD"][t] == 1:
                 slope, age, price = e["LSLOPE"][t], e["LAGE1"][t], e["BL1"][t]
-                shifted_age, shifted_price = e["HAGE0"][t], e["BH0"][t]
+                pivot_slope=e["HSLOPE"][t]
+                shifted_age, shifted_price = e["LAGE0"][t], e["BL0"][t]
             else:
                 slope, age, price = e["HSLOPE"][t], e["HAGE1"][t], e["BH1"][t]
-                shifted_age, shifted_price = e["LAGE0"][t], e["BL0"][t]
+                pivot_slope=e["LSLOPE"][t]
+                shifted_age, shifted_price = e["HAGE0"][t], e["BH0"][t]
             self.assertAlmostEqual(e["TRENDV"][t]-slope*age,price)
-            self.assertAlmostEqual(e["PIVOTV"][t]-slope*shifted_age,shifted_price)
+            self.assertAlmostEqual(e["PIVOTV"][t]-pivot_slope*shifted_age,shifted_price)
 
-    def test_previous_release_analysis_values_are_preserved(self):
+    def test_unchanged_measurements_still_match_previous_release(self):
         reference = (ROOT/"tests"/"fixtures"/"v1_0_2_math_reference.txt").read_text(encoding="utf-8")
         data = bars(180)
         cases = [{}, {"DIR":-1,"KIND":1,"MH1":200,"MBASE":4200,"MORG":4500,"MAGE":50},
                  {"DIR":-1,"KIND":2,"MANF":1,"MFROM":4800,"MTO":3100,"MFAGE":100}]
+        unchanged = {s.name for s in Parser("\n".join(core()).split("DS:=",1)[0]).parse() if s.name}
         for settings in cases:
             def old_name(key):
                 return key if key in SETTINGS else ("TTSTD" if key == "SK" else "TT"+key)
@@ -361,6 +433,12 @@ class NumericalTests(unittest.TestCase):
                     semantic = key[2:]
                 else:
                     semantic = key
+                # 1.0.6 deliberately changes direction invalidation, automatic
+                # work-wave anchors, label spacing and correction phase gates.
+                # Keep the independent baseline for standard K, pivots and Q
+                # measurements, not the old behavior the user reported wrong.
+                if semantic not in unchanged or semantic in {"PAD", "DETAIL"}:
+                    continue
                 current = NAMES.get(semantic,key)
                 np.testing.assert_allclose(value, after[current], err_msg=f"{key}: {settings}", equal_nan=True)
 
@@ -462,7 +540,7 @@ class NumericalTests(unittest.TestCase):
 
     def test_gold_example_fall_rebound_has_correct_orientation_and_prices(self):
         e = evaluate(SOURCE, bars(90), {"WD": -1, "FSTART": 3919.71,
-                                      "FEND": 3174.45, "PHASE": 2, "BK2": 1})
+                                      "FEND": 3174.45, "PHASE": 2, "WORKVALID": 1})
         expected = {"F0": 3174.45, "F236": 3350.33, "F382": 3459.14,
                     "F500": 3547.08, "F618": 3635.02, "F786": 3760.22, "F100": 3919.71}
         for key, value in expected.items():
@@ -486,7 +564,7 @@ class NumericalTests(unittest.TestCase):
 
     def test_upward_main_wave_retracement_is_mirrored(self):
         e = evaluate(SOURCE, bars(90), {"WD": 1, "FSTART": 3174.45,
-                                      "FEND": 3919.71, "PHASE": 2, "BK2": 1})
+                                      "FEND": 3919.71, "PHASE": 2, "WORKVALID": 1})
         self.assertAlmostEqual(e["F0"][-1], 3919.71)
         self.assertAlmostEqual(e["F100"][-1], 3174.45)
         self.assertLess(e["F618"][-1], e["F382"][-1])
@@ -494,7 +572,7 @@ class NumericalTests(unittest.TestCase):
     def test_retracement_can_exceed_100_percent(self):
         data = bars(90)
         e = evaluate(SOURCE, data, {"WD": 1, "FSTART": 4200, "FEND": 4400,
-                                  "BK2": 1})
+                                  "WORKVALID": 1})
         self.assertTrue((e["RET"]>100).any())
 
     def test_fib_and_targets_are_mutually_exclusive_for_all_phases(self):
@@ -544,7 +622,7 @@ class NumericalTests(unittest.TestCase):
 
     def test_abc_geometry_candidate_is_symmetric_and_does_not_claim_confirmation(self):
         data = bars(90)
-        args = {"WD": 1, "BTYPE": -1, "BK3": 1, "BK5": 0,
+        args = {"WD": 1, "PHASE":2, "BTYPE": -1, "BK3": 1, "BK5": 0,
                 "BP3": 400, "BP2": 350, "BP1": 380, "BP0": 330}
         e = evaluate(SOURCE, data, args)
         self.assertTrue(e["ABC"][-1])

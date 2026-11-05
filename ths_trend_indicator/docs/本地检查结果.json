@@ -1,9 +1,9 @@
 {
-  "checked_at_utc": "2026-11-05T00:43:50.859912+00:00",
+  "checked_at_utc": "2026-11-05T01:18:41.686445+00:00",
   "python": "3.13.5",
   "numpy": "2.5.4",
   "local_tests": {
-    "run": 64,
+    "run": 70,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -16,7 +16,7 @@
   },
   "files": {
     "函数兼容检查_GB18030.txt": {
-      "statements": 15,
+      "statements": 16,
       "variables": 11,
       "outputs": 2,
       "functions": {
@@ -33,6 +33,7 @@
         "REFX1": 1,
         "MA": 1,
         "DRAWLINE": 2,
+        "POLYLINE": 1,
         "DRAWTEXT": 1,
         "DRAWNUMBER1": 1
       },
@@ -46,12 +47,8 @@
           9
         ],
         [
-          "DRAWLINE",
-          12
-        ],
-        [
-          "DRAWLINE",
-          13
+          "POLYLINE",
+          14
         ]
       ],
       "type_check": "passed",
@@ -61,13 +58,13 @@
       "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "921b2a0c0cf1134acffb3703d99f48d3170fe4f46203a93cc05f1d63f6395d9b",
-      "bytes": 509,
-      "lines": 16,
+      "sha256": "e0029c49ab559811a1581f61b4940cffddebd88ee2b23ec74a8b12d3dd6c5375",
+      "bytes": 537,
+      "lines": 17,
       "encoding": "gb18030"
     },
     "函数兼容检查_UTF8.txt": {
-      "statements": 15,
+      "statements": 16,
       "variables": 11,
       "outputs": 2,
       "functions": {
@@ -84,6 +81,7 @@
         "REFX1": 1,
         "MA": 1,
         "DRAWLINE": 2,
+        "POLYLINE": 1,
         "DRAWTEXT": 1,
         "DRAWNUMBER1": 1
       },
@@ -97,12 +95,8 @@
           9
         ],
         [
-          "DRAWLINE",
-          12
-        ],
-        [
-          "DRAWLINE",
-          13
+          "POLYLINE",
+          14
         ]
       ],
       "type_check": "passed",
@@ -112,9 +106,9 @@
       "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "26d4b19d8080536e8aeea5ff3f8d489cd5bb51e20e3e3bab74585cbfb021f6ba",
-      "bytes": 555,
-      "lines": 16,
+      "sha256": "810f864edf634b36279cdfec5bd37ab80b57b787fe1493a213a1f9a3d47d55cf",
+      "bytes": 583,
+      "lines": 17,
       "encoding": "utf-8-sig"
     },
     "基础函数兼容检查_GB18030.txt": {
@@ -160,70 +154,78 @@
       "encoding": "utf-8-sig"
     },
     "趋势交易_PC主图_GB18030.txt": {
-      "statements": 565,
-      "variables": 479,
-      "outputs": 4,
+      "statements": 537,
+      "variables": 454,
+      "outputs": 5,
       "functions": {
         "ABS": 32,
-        "MAX": 296,
-        "MIN": 295,
-        "COUNT": 2242,
-        "REF": 208,
-        "HHV": 8,
-        "LLV": 8,
-        "SUM": 20,
-        "BARSLAST": 13,
+        "MAX": 348,
+        "MIN": 328,
+        "COUNT": 2341,
+        "REF": 225,
+        "HHV": 9,
+        "LLV": 9,
+        "SUM": 23,
+        "BARSLAST": 14,
+        "REFX1": 51,
         "FILTER": 4,
         "BACKSET": 4,
-        "DRAWLINE": 20,
+        "POLYLINE": 17,
         "DRAWNUMBER1": 22,
-        "DRAWTEXT": 44,
-        "REFX1": 54
+        "DRAWTEXT": 44
       },
       "future_calls": [
         [
-          "BACKSET",
-          391
-        ],
-        [
-          "BACKSET",
-          392
-        ],
-        [
-          "BACKSET",
-          393
-        ],
-        [
-          "BACKSET",
-          394
-        ],
-        [
-          "DRAWLINE",
-          395
-        ],
-        [
-          "DRAWLINE",
-          396
-        ],
-        [
-          "DRAWLINE",
-          397
-        ],
-        [
-          "DRAWLINE",
-          398
-        ],
-        [
-          "DRAWLINE",
-          403
-        ],
-        [
-          "DRAWLINE",
-          406
+          "REFX1",
+          407
         ],
         [
           "REFX1",
-          450
+          409
+        ],
+        [
+          "BACKSET",
+          410
+        ],
+        [
+          "BACKSET",
+          411
+        ],
+        [
+          "BACKSET",
+          412
+        ],
+        [
+          "BACKSET",
+          413
+        ],
+        [
+          "POLYLINE",
+          414
+        ],
+        [
+          "POLYLINE",
+          415
+        ],
+        [
+          "REFX1",
+          418
+        ],
+        [
+          "REFX1",
+          419
+        ],
+        [
+          "REFX1",
+          420
+        ],
+        [
+          "REFX1",
+          421
+        ],
+        [
+          "POLYLINE",
+          423
         ],
         [
           "REFX1",
@@ -254,7 +256,7 @@
           457
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
           458
         ],
         [
@@ -266,7 +268,7 @@
           459
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
           460
         ],
         [
@@ -298,83 +300,103 @@
           467
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
+          468
+        ],
+        [
+          "POLYLINE",
+          469
+        ],
+        [
+          "REFX1",
           470
         ],
         [
-          "DRAWLINE",
-          472
+          "POLYLINE",
+          471
         ],
         [
           "REFX1",
-          473
+          474
         ],
         [
-          "DRAWLINE",
-          476
-        ],
-        [
-          "REFX1",
-          480
-        ],
-        [
-          "DRAWLINE",
-          481
+          "POLYLINE",
+          475
         ],
         [
           "REFX1",
-          484
+          478
         ],
         [
-          "DRAWLINE",
-          485
-        ],
-        [
-          "REFX1",
-          488
-        ],
-        [
-          "DRAWLINE",
-          489
+          "POLYLINE",
+          479
         ],
         [
           "REFX1",
-          492
+          482
         ],
         [
-          "DRAWLINE",
-          493
-        ],
-        [
-          "REFX1",
-          496
-        ],
-        [
-          "DRAWLINE",
-          497
+          "POLYLINE",
+          483
         ],
         [
           "REFX1",
-          500
+          486
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
+          487
+        ],
+        [
+          "REFX1",
+          490
+        ],
+        [
+          "POLYLINE",
+          491
+        ],
+        [
+          "REFX1",
+          494
+        ],
+        [
+          "POLYLINE",
+          495
+        ],
+        [
+          "REFX1",
+          498
+        ],
+        [
+          "REFX1",
+          499
+        ],
+        [
+          "POLYLINE",
           501
         ],
         [
           "REFX1",
-          504
+          502
         ],
         [
           "REFX1",
+          503
+        ],
+        [
+          "POLYLINE",
           505
         ],
         [
-          "DRAWLINE",
-          508
+          "REFX1",
+          506
         ],
         [
           "REFX1",
+          507
+        ],
+        [
+          "POLYLINE",
           509
         ],
         [
@@ -382,8 +404,8 @@
           510
         ],
         [
-          "DRAWLINE",
-          513
+          "REFX1",
+          511
         ],
         [
           "REFX1",
@@ -394,7 +416,7 @@
           515
         ],
         [
-          "DRAWLINE",
+          "REFX1",
           518
         ],
         [
@@ -403,15 +425,11 @@
         ],
         [
           "REFX1",
-          520
+          522
         ],
         [
           "REFX1",
-          521
-        ],
-        [
-          "REFX1",
-          525
+          523
         ],
         [
           "REFX1",
@@ -423,19 +441,19 @@
         ],
         [
           "REFX1",
+          530
+        ],
+        [
+          "REFX1",
           531
         ],
         [
           "REFX1",
-          532
+          534
         ],
         [
           "REFX1",
-          533
-        ],
-        [
-          "REFX1",
-          537
+          535
         ],
         [
           "REFX1",
@@ -444,54 +462,6 @@
         [
           "REFX1",
           539
-        ],
-        [
-          "REFX1",
-          543
-        ],
-        [
-          "REFX1",
-          544
-        ],
-        [
-          "REFX1",
-          545
-        ],
-        [
-          "REFX1",
-          549
-        ],
-        [
-          "REFX1",
-          550
-        ],
-        [
-          "REFX1",
-          551
-        ],
-        [
-          "REFX1",
-          555
-        ],
-        [
-          "REFX1",
-          556
-        ],
-        [
-          "REFX1",
-          557
-        ],
-        [
-          "REFX1",
-          561
-        ],
-        [
-          "REFX1",
-          562
-        ],
-        [
-          "REFX1",
-          563
         ]
       ],
       "type_check": "passed",
@@ -501,76 +471,84 @@
       "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "5be3127107efc229f4c8374a206870d303e3d281eba60168c50936424513425f",
-      "bytes": 62176,
-      "lines": 589,
+      "sha256": "9cd6ce7b57c16fbab061b33f257da15d538ef02f97b12a91c35bb5b563b9f7b3",
+      "bytes": 64448,
+      "lines": 562,
       "encoding": "gb18030"
     },
     "趋势交易_PC主图_UTF8.txt": {
-      "statements": 565,
-      "variables": 479,
-      "outputs": 4,
+      "statements": 537,
+      "variables": 454,
+      "outputs": 5,
       "functions": {
         "ABS": 32,
-        "MAX": 296,
-        "MIN": 295,
-        "COUNT": 2242,
-        "REF": 208,
-        "HHV": 8,
-        "LLV": 8,
-        "SUM": 20,
-        "BARSLAST": 13,
+        "MAX": 348,
+        "MIN": 328,
+        "COUNT": 2341,
+        "REF": 225,
+        "HHV": 9,
+        "LLV": 9,
+        "SUM": 23,
+        "BARSLAST": 14,
+        "REFX1": 51,
         "FILTER": 4,
         "BACKSET": 4,
-        "DRAWLINE": 20,
+        "POLYLINE": 17,
         "DRAWNUMBER1": 22,
-        "DRAWTEXT": 44,
-        "REFX1": 54
+        "DRAWTEXT": 44
       },
       "future_calls": [
         [
-          "BACKSET",
-          391
-        ],
-        [
-          "BACKSET",
-          392
-        ],
-        [
-          "BACKSET",
-          393
-        ],
-        [
-          "BACKSET",
-          394
-        ],
-        [
-          "DRAWLINE",
-          395
-        ],
-        [
-          "DRAWLINE",
-          396
-        ],
-        [
-          "DRAWLINE",
-          397
-        ],
-        [
-          "DRAWLINE",
-          398
-        ],
-        [
-          "DRAWLINE",
-          403
-        ],
-        [
-          "DRAWLINE",
-          406
+          "REFX1",
+          407
         ],
         [
           "REFX1",
-          450
+          409
+        ],
+        [
+          "BACKSET",
+          410
+        ],
+        [
+          "BACKSET",
+          411
+        ],
+        [
+          "BACKSET",
+          412
+        ],
+        [
+          "BACKSET",
+          413
+        ],
+        [
+          "POLYLINE",
+          414
+        ],
+        [
+          "POLYLINE",
+          415
+        ],
+        [
+          "REFX1",
+          418
+        ],
+        [
+          "REFX1",
+          419
+        ],
+        [
+          "REFX1",
+          420
+        ],
+        [
+          "REFX1",
+          421
+        ],
+        [
+          "POLYLINE",
+          423
         ],
         [
           "REFX1",
@@ -601,7 +579,7 @@
           457
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
           458
         ],
         [
@@ -613,7 +591,7 @@
           459
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
           460
         ],
         [
@@ -645,83 +623,103 @@
           467
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
+          468
+        ],
+        [
+          "POLYLINE",
+          469
+        ],
+        [
+          "REFX1",
           470
         ],
         [
-          "DRAWLINE",
-          472
+          "POLYLINE",
+          471
         ],
         [
           "REFX1",
-          473
+          474
         ],
         [
-          "DRAWLINE",
-          476
-        ],
-        [
-          "REFX1",
-          480
-        ],
-        [
-          "DRAWLINE",
-          481
+          "POLYLINE",
+          475
         ],
         [
           "REFX1",
-          484
+          478
         ],
         [
-          "DRAWLINE",
-          485
-        ],
-        [
-          "REFX1",
-          488
-        ],
-        [
-          "DRAWLINE",
-          489
+          "POLYLINE",
+          479
         ],
         [
           "REFX1",
-          492
+          482
         ],
         [
-          "DRAWLINE",
-          493
-        ],
-        [
-          "REFX1",
-          496
-        ],
-        [
-          "DRAWLINE",
-          497
+          "POLYLINE",
+          483
         ],
         [
           "REFX1",
-          500
+          486
         ],
         [
-          "DRAWLINE",
+          "POLYLINE",
+          487
+        ],
+        [
+          "REFX1",
+          490
+        ],
+        [
+          "POLYLINE",
+          491
+        ],
+        [
+          "REFX1",
+          494
+        ],
+        [
+          "POLYLINE",
+          495
+        ],
+        [
+          "REFX1",
+          498
+        ],
+        [
+          "REFX1",
+          499
+        ],
+        [
+          "POLYLINE",
           501
         ],
         [
           "REFX1",
-          504
+          502
         ],
         [
           "REFX1",
+          503
+        ],
+        [
+          "POLYLINE",
           505
         ],
         [
-          "DRAWLINE",
-          508
+          "REFX1",
+          506
         ],
         [
           "REFX1",
+          507
+        ],
+        [
+          "POLYLINE",
           509
         ],
         [
@@ -729,8 +727,8 @@
           510
         ],
         [
-          "DRAWLINE",
-          513
+          "REFX1",
+          511
         ],
         [
           "REFX1",
@@ -741,7 +739,7 @@
           515
         ],
         [
-          "DRAWLINE",
+          "REFX1",
           518
         ],
         [
@@ -750,15 +748,11 @@
         ],
         [
           "REFX1",
-          520
+          522
         ],
         [
           "REFX1",
-          521
-        ],
-        [
-          "REFX1",
-          525
+          523
         ],
         [
           "REFX1",
@@ -770,19 +764,19 @@
         ],
         [
           "REFX1",
+          530
+        ],
+        [
+          "REFX1",
           531
         ],
         [
           "REFX1",
-          532
+          534
         ],
         [
           "REFX1",
-          533
-        ],
-        [
-          "REFX1",
-          537
+          535
         ],
         [
           "REFX1",
@@ -791,54 +785,6 @@
         [
           "REFX1",
           539
-        ],
-        [
-          "REFX1",
-          543
-        ],
-        [
-          "REFX1",
-          544
-        ],
-        [
-          "REFX1",
-          545
-        ],
-        [
-          "REFX1",
-          549
-        ],
-        [
-          "REFX1",
-          550
-        ],
-        [
-          "REFX1",
-          551
-        ],
-        [
-          "REFX1",
-          555
-        ],
-        [
-          "REFX1",
-          556
-        ],
-        [
-          "REFX1",
-          557
-        ],
-        [
-          "REFX1",
-          561
-        ],
-        [
-          "REFX1",
-          562
-        ],
-        [
-          "REFX1",
-          563
         ]
       ],
       "type_check": "passed",
@@ -848,9 +794,9 @@
       "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "02edf43c711ee845aed5f348484662494df86716c16b84ddca284adb3405280f",
-      "bytes": 62963,
-      "lines": 589,
+      "sha256": "ec50ff04e4c476a6f6bd6b15fce8a09ff0e078d174100c369889f465ce06050a",
+      "bytes": 65241,
+      "lines": 562,
       "encoding": "utf-8-sig"
     }
   },
@@ -892,12 +838,29 @@
       "expected_expression_fragment": "2*QFLAG*MAX",
       "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
     },
-    "release_gate": "COUNT四行原生小样已通过；1.0.5完整主图尚待原生编译，不将本地检查标为客户端通过",
+    "release_gate": "1.0.6完整主图原生编译/显示待验证；按客户端函数说明改绘图，禁止再把本地测试替代客户端结果",
     "next_full_main": {
-      "release": "1.0.5",
+      "release": "1.0.6",
       "status": "not_run",
       "local_evidence": "../docs/本地检查结果.json",
-      "note": "COUNT独立小样通过不扩大为完整主图通过"
+      "note": "已取得目标客户端绘图函数原文；本地几何预览不等于完整主图原生实测"
+    },
+    "full_main_1_0_5": {
+      "status": "compiled_but_rendering_incorrect_reported_by_user",
+      "evidence": "用户提供主图截图：文字/数值显示，波浪和价位线缺失，方向/回调和标注密度被反馈不正确",
+      "root_cause_confirmed": "误用同K线DRAWLINE连接不同K线，原测试只检查参数类型而未检查函数绘图语义"
+    },
+    "native_function_help": {
+      "source": "用户从4.39.1.2客户端函数库复制",
+      "reference_file": "client_function_reference.txt",
+      "DRAWLINE": "same_candle_vertical_segment",
+      "POLYLINE": "connect_values_on_matching_candles",
+      "POLYLINE_arguments": [
+        "condition",
+        "data",
+        "color"
+      ],
+      "not_verified": "完整1.0.6客户端编译、实际显示与速度"
     }
   }
 }
