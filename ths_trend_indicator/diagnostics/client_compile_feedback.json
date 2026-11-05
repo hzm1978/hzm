@@ -39,7 +39,7 @@
   "release_gate": "两份推荐安装层与一份可选孙浪层分别核对本地回归、原生语法/计算与公开源码内容校验；以docs中对应实际哈希和结果为准。目标4.39.1.2界面及源码消失原因尚未核验。",
   "next_full_main": {
     "release": "1.1.3",
-    "status": "validation_in_progress",
+    "status": "official_content_native_syntax_and_synthetic_geometry_passed_target_ui_not_run",
     "primary": [
       "../formulas/install/EWT01.txt",
       "../formulas/install/EWT02.txt"
@@ -125,7 +125,7 @@
     "accepted_ascii_characters": 80000,
     "rejected_ascii_characters": 80001,
     "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
-    "new_install_layers": "see_current_release_official_content_report",
+    "new_install_layers": "passed_all_six_code_and_combined_checks_on_anonymously_downloaded_public_v1_1_3_files",
     "new_install_evidence": "../docs/官方内容校验结果.json"
   },
   "full_main_1_1_2": {
@@ -152,5 +152,23 @@
       ],
       "cause_of_source_disappearance": "unconfirmed"
     }
+  },
+  "full_main_1_1_3": {
+    "status": "official_checks_and_synthetic_native_geometry_passed",
+    "recommended_install": [
+      "install/EWT01.txt",
+      "install/EWT02.txt"
+    ],
+    "optional_install": [
+      "install/EWT03.txt"
+    ],
+    "local_full_suite_tests": 121,
+    "additional_native_placement_tests": 5,
+    "unique_tests_covered": 122,
+    "native_geometry_cases": 18,
+    "native_geometry_passed": true,
+    "official_content_checks": 6,
+    "target_client_ui_run": false,
+    "source_disappearance_cause": "unconfirmed"
   }
 }
