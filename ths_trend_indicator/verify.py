@@ -22,14 +22,15 @@ def main():
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     reports = {}
     profiles=json.loads((ROOT/'导出配置.json').read_text(encoding='utf-8'))['files']
-    for path in sorted((ROOT/"formulas").glob("*.txt")):
+    for relative,profile in sorted(profiles.items()):
+        path=ROOT/'formulas'/relative
         data = path.read_bytes()
-        encoding = profiles[path.name]['encoding']
+        encoding = profile['encoding']
         source = data.decode(encoding).replace("\r\n", "\n")
-        reports[path.name] = check_delivered(source,profiles[path.name]) | {
+        reports[relative] = check_delivered(source,profile) | {
             "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
             "lines": len(source.splitlines()), "encoding": encoding,'bom':False,
-            'ascii_only':source.isascii(),'analysis_end_line':profiles[path.name]['analysis_end_line']}
+            'ascii_only':source.isascii(),'analysis_end_line':profile['analysis_end_line'],'role':profile['role']}
     evidence = {
         "checked_at_utc": datetime.now(timezone.utc).isoformat(),
         "python": platform.python_version(), "numpy": numpy.__version__,
@@ -39,6 +40,19 @@ def main():
         "native_compile": {"status": "not_run", "target_client_version": "4.39.1.2",
                            "reason": "No Windows THS Futures PC client in this environment"},
         "files": reports}
+    # An optional actual DLL report is separate from this local interpreter.
+    # Never silently reuse evidence for different source bytes or a different
+    # harness. The target 4.39 UI remains untested even when this passes.
+    native_path=ROOT/'docs'/'官方解析检查.json'
+    if native_path.exists():
+        native=json.loads(native_path.read_text(encoding='utf-8'))
+        current=(native.get('harness_sha256')==hashlib.sha256((ROOT/'native_preparse.py').read_bytes()).hexdigest()
+                 and all(name in reports and item['source_sha256']==reports[name]['sha256']
+                         for name,item in native.get('files',{}).items()))
+        evidence['official_native_preparse']={'report':'官方解析检查.json','evidence_matches_current_bytes':current,
+                                             'parser_client_version':native.get('parser_client_version'),
+                                             'passed':current and native.get('passed',False),
+                                             'target_client_ui_run':False,'network_content_check':'not_run'}
     function_evidence=catalog_evidence(fn for report in reports.values() for fn in report['functions'])
     (ROOT/'docs'/'使用函数核对.json').write_text(json.dumps(function_evidence,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     evidence['function_catalog']={k:v for k,v in function_evidence.items() if k!='used'}

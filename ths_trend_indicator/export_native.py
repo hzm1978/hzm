@@ -107,6 +107,7 @@ def check_delivered(source,profile):
 
 
 def load_primary():
+    """Load the complete developer model; installation uses the install list."""
     profile=json.loads((ROOT/'导出配置.json').read_text(encoding='utf-8'))
     name=profile['primary'];file_profile=profile['files'][name]
     data=(ROOT/'formulas'/name).read_bytes()

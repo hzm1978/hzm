@@ -34,8 +34,10 @@ class NativeExportTests(unittest.TestCase):
         self.assertNotIn(b'//',raw);self.assertNotIn(b'/*',raw)
         self.assertEqual(hashlib.sha256(raw).hexdigest(),self.profile['sha256'])
 
-    def test_all_seven_delivered_files_use_native_export_checks(self):
-        self.assertEqual(len(self.profiles['files']),7)
+    def test_all_delivered_files_use_native_export_checks(self):
+        self.assertEqual(len(self.profiles['files']),7+len(self.profiles['install']))
+        self.assertEqual(self.profile['role'],'full_model_reference')
+        self.assertNotIn('EWTN_ASCII.txt',self.profiles['install'])
         for name,profile in self.profiles['files'].items():
             with self.subTest(name=name):
                 raw=(ROOT/'formulas'/name).read_bytes()

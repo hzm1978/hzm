@@ -36,19 +36,22 @@
     "expected_expression_fragment": "2*QFLAG*MAX",
     "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
   },
-  "release_gate": "1.1.1客户端保存、编译和显示待核验；现场保存拒绝优先于旧版103项本地通过",
+  "release_gate": "已复现官方内容校验对80000字符通过、80001字符拒绝，重复PN赋值同样；1.1.2改为四个不超过78000字节的安装图层。已定位并修正原生动态文本偏移与嵌套IF错误，目标4.39.1.2界面实测仍未运行。",
   "next_full_main": {
-    "release": "1.1.1",
-    "status": "not_run",
-    "primary": "../formulas/EWTN_ASCII.txt",
+    "release": "1.1.2",
+    "status": "target_client_not_run",
+    "primary": "../formulas/install/EWT01.txt ~ EWT04.txt",
     "changes": [
-      "全部安装文本去除注释和BOM",
-      "主安装文件全ASCII、显示名称旁表",
-      "首行直接从PN赋值开始",
-      "分析绘图分段移入旁表",
-      "计算及图形事件等价对照"
+      "动态数字改为在目标K线上直接DRAWNUMBER",
+      "KTEXT位置固定0，条件切换到实际目标K线",
+      "年龄/门限/价格/数值均按查看末端冻结",
+      "原有波浪、Q、回调、价格计算和配色保留",
+      "四个独立主图叠加层，每条图形分配一次",
+      "完整开发模型保留，不用于整份安装",
+      "嵌套IF/IFELSE先保存中间变量"
     ],
-    "local_evidence": "../docs/本地检查结果.json"
+    "local_evidence": "../docs/本地检查结果.json",
+    "official_native_evidence": "../docs/官方解析检查.json"
   },
   "full_main_1_0_5": {
     "status": "compiled_but_rendering_incorrect_reported_by_user",
@@ -65,7 +68,7 @@
       "data",
       "color"
     ],
-    "not_verified": "完整1.1.1客户端保存、编译、显示、容量与速度",
+    "not_verified": "1.1.2在目标4.39.1.2客户端的编译、关闭保存、完整渲染与速度",
     "complete_export_file": "../reference/all_func.json",
     "complete_export_records": 286,
     "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
@@ -82,5 +85,40 @@
     ],
     "specific_sensitive_term": null,
     "note": "不能从截图认定具体命中词或认定某个函数为唯一原因；先修正交付文本。"
+  },
+  "full_main_1_1_1": {
+    "status": "compile_and_close_failure_reported_by_user",
+    "compile_evidence": {
+      "line": 1,
+      "statement": "PN:=2;",
+      "diagnostic": "解析错误"
+    },
+    "close_evidence": "截图完整提示：您输入的指标代码包含敏感词汇，请调整后再试。用户说明在关闭时出现。",
+    "specific_sensitive_term": null,
+    "note": "移除中文、注释和BOM后仍失败，不能再将其认定为中文过滤或编码问题。"
+  },
+  "save_baseline_ZZ001": {
+    "source": "CHK:MA(C,5);",
+    "type_requested": "新建技术指标",
+    "name": "ZZ001",
+    "compile": "passed_reported_by_user",
+    "close_save": "passed_reported_by_user",
+    "evidence": "用户回复“编译和关闭都正常”",
+    "full_formula_same_indicator": "failed_first_line_reported_by_user"
+  },
+  "save_baseline_PN": {
+    "source": "PN:=2;\nCHK:PN;",
+    "name": "ZZ001",
+    "compile": "passed_reported_by_user",
+    "close_save": "passed_reported_by_user",
+    "evidence": "用户回复“两行编译、关闭都正常”"
+  },
+  "network_content_check": {
+    "status": "length_rejection_reproduced_on_public_release",
+    "evidence": "官方内容校验长度对照.json",
+    "accepted_ascii_characters": 80000,
+    "rejected_ascii_characters": 80001,
+    "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
+    "new_install_layers": "pending_public_source_validation"
   }
 }

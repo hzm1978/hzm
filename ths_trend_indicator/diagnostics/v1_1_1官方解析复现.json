@@ -1,0 +1,25 @@
+{
+  "parser_client_version": "5.4.0.5",
+  "target_client_version": "4.39.1.2",
+  "check_kind": "official_native_syntax_preparse",
+  "target_client_ui_run": false,
+  "release": "1.1.1",
+  "source_file_sha256": "7c41fb858326400a359b7440eeca62a9e5395ef643f52e4872f90ff2e31241d1",
+  "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
+  "native_response": {
+    "MaxPeriodCount": 0,
+    "CrossSecurityList": [],
+    "CrossPeriodList": [],
+    "ExtraKLineFieldList": [],
+    "RealtimeFieldList": [],
+    "ErrCode": 2012,
+    "IsNeedRequestExtraData": "",
+    "IsContainsNoticeFunction": "",
+    "ExtraMsg": "COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0DRAWSHIFTNUMBER.XErrLine.953",
+    "IsNeedRequestTradeDay": "",
+    "IsContainsFutureFunction": "",
+    "IsContainsTradeFunction": "",
+    "ErrLine": 0
+  },
+  "finding": "DRAWSHIFTNUMBER.X rejects a variable. Custom-color ExtraMsg entries alone did not cause errors in isolated controls. Does not prove the cause of the reported network content-check rejection."
+}

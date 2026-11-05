@@ -33,9 +33,17 @@ class Builder:
         # KTEXT LCR instead describes which SIDE the text occupies.
         import re
         price=re.sub(r'\bPAD\b','BPAD',price)
-        self.lines.append(f"KTEXT(ISLASTBAR AND {cond},(0-{age}),{price},{2-align},{color},'{text}');")
+        # KTEXT also stores POSITION as a constant HorizontalOffset. A
+        # dynamic POSITION can silently become NaN in native shape JSON.
+        # Place the label on its historical candle with a literal offset 0.
+        self.lines.append(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{2-align},{color},'{text}');")
     def number(self,cond,age,price,value,color,precision=1):
-        self.lines.append(f'DRAWSHIFTNUMBER(ISLASTBAR AND {cond},{price},{value},{precision},{color},0,{age}),ALIGN0,FONTSIZE9;')
+        # The official parser rejects an X variable in DRAWSHIFTNUMBER.
+        # Wrapping it in INTPART compiles but yields an invalid constant
+        # HorizontalOffset in the native shape description. Draw on the
+        # target candle instead, freezing ALL four inputs at the as-of end.
+        # In particular PAD/price and the gate may vary over history.
+        self.lines.append(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN0,FONTSIZE9;')
     def segment(self,cond,from_age,from_price,to_age,to_price,color,style='LINETHICK1'):
         # DRAWLINE3 pairs a start bar with a LATER end bar. Use penultimate
         # and last bars as those triggers, then shift both to actual endpoints.

@@ -1,0 +1,55 @@
+{
+  "comparison": "1.1.1 model geometry versus 1.1.2 target-candle placement",
+  "previous_source_file_sha256": "7c41fb858326400a359b7440eeca62a9e5395ef643f52e4872f90ff2e31241d1",
+  "current_source_file_sha256": "a6934486dad492fcb93ecf49cde1e1ef08ddc29140c376f33973665ed73c047f",
+  "allowed_changes": [
+    "DRAWSHIFTNUMBER replaced by DRAWNUMBER on target candle",
+    "normalization temporary G variables renumbered"
+  ],
+  "native_data_calculation": false,
+  "scenarios": [
+    {
+      "scenario": "fall_rebound",
+      "unchanged_non_temporary_arrays": 1589,
+      "line_events": 47,
+      "label_events": 46,
+      "all_values_coordinates_and_labels_equal": true
+    },
+    {
+      "scenario": "five_up",
+      "unchanged_non_temporary_arrays": 1589,
+      "line_events": 29,
+      "label_events": 38,
+      "all_values_coordinates_and_labels_equal": true
+    },
+    {
+      "scenario": "nested_five_down",
+      "unchanged_non_temporary_arrays": 1589,
+      "line_events": 28,
+      "label_events": 38,
+      "all_values_coordinates_and_labels_equal": true
+    },
+    {
+      "scenario": "seven_expanding",
+      "unchanged_non_temporary_arrays": 1589,
+      "line_events": 36,
+      "label_events": 43,
+      "all_values_coordinates_and_labels_equal": true
+    },
+    {
+      "scenario": "triangle_e",
+      "unchanged_non_temporary_arrays": 1589,
+      "line_events": 29,
+      "label_events": 17,
+      "all_values_coordinates_and_labels_equal": true
+    },
+    {
+      "scenario": "trend_targets",
+      "unchanged_non_temporary_arrays": 1589,
+      "line_events": 3,
+      "label_events": 6,
+      "all_values_coordinates_and_labels_equal": true
+    }
+  ],
+  "passed": true
+}

@@ -100,7 +100,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC 1.1.1；按用户导出函数库生成，结构解释需结合确认时刻 }",
+    lines = ["{ 趋势交易·期货通PC 1.1.2；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
@@ -362,7 +362,7 @@ DRAWLINE3(BARPOS=DATACOUNT-1,X13,MIN(9,MAX(0,BARPOS-1)),ISLASTBAR,X13,0,0),COLOR
 DRAWTEXT(ISLASTBAR,C,'函数兼容检查'),COLORWHITE;
 KTEXT(ISLASTBAR,0,C,0,COLORWHITE,'左侧文字');
 DRAWNUMBER1(ISLASTBAR,C,C,2),COLORYELLOW;
-DRAWSHIFTNUMBER(ISLASTBAR,H,X10,2,COLORYELLOW,0,MIN(5,MAX(0,BARPOS-1))),ALIGN0,FONTSIZE9;
+DRAWSHIFTNUMBER(ISLASTBAR AND BARPOS>5,H,X10,2,COLORYELLOW,0,5),ALIGN0,FONTSIZE9;
 根数:X9,NODRAW;
 """
 
@@ -401,12 +401,25 @@ def build():
         for suffix,encoding in [('UTF8','utf-8'),('GB18030','gb18030')]:
             filename=f'{name}_{suffix}.txt';data=text.replace('\n','\r\n').encode(encoding)
             (path/filename).write_bytes(data)
-            profiles[filename]=profile|{'encoding':encoding,'sha256':hashlib.sha256(data).hexdigest()}
+            profiles[filename]=profile|{'encoding':encoding,'sha256':hashlib.sha256(data).hexdigest(),'role':'development_comparison'}
     ascii_text,ascii_profile=clean_export(full,ascii_only=True)
     data=ascii_text.replace('\n','\r\n').encode('ascii')
     (path/'EWTN_ASCII.txt').write_bytes(data)
-    profiles['EWTN_ASCII.txt']=ascii_profile|{'encoding':'ascii','sha256':hashlib.sha256(data).hexdigest()}
-    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.1','primary':'EWTN_ASCII.txt','files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    profiles['EWTN_ASCII.txt']=ascii_profile|{'encoding':'ascii','sha256':hashlib.sha256(data).hexdigest(),'role':'full_model_reference'}
+    # The content service rejects >80000 characters as "sensitive words".
+    # Installation overlays retain every drawing exactly once, with copied
+    # dependencies and identical editable settings in each independent file.
+    from native_layers import generate as installation_layers
+    layers,layer_report=installation_layers('\n'.join(core()+drawing()))
+    install=[]
+    for filename,(layer_data,layer_profile)in layers.items():
+        relative='install/'+filename
+        (path/'install').mkdir(exist_ok=True)
+        (path/relative).write_bytes(layer_data)
+        profiles[relative]=layer_profile
+        install.append(relative)
+    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.2','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
+                                               'install':install,'installation_layers':layer_report,'files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     write_legend(ascii_profile)
     (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     from book_layers import layers

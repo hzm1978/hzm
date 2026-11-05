@@ -1,0 +1,489 @@
+{
+  "checked_at_utc": "2026-11-05T11:38:33.598564+00:00",
+  "release": "1.1.2",
+  "check_kind": "official_native_syntax_preparse_and_shape_description",
+  "execution_platform": "Windows-10-10.0.19043",
+  "python": "3.12.10",
+  "parser_client_version": "5.4.0.5",
+  "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
+  "harness_sha256": "24b511a62948d0e8191bf5dc9ec1c489da6a7836f17ac194be21512f9a66b6a5",
+  "target_client_version": "4.39.1.2",
+  "target_client_ui_run": false,
+  "network_content_check": "not_run",
+  "account_login": false,
+  "market_or_trade_calculation": false,
+  "controls": {
+    "valid_assignment": {
+      "parser_input_utf8_sha256": "f739dadc813a72be57703171e0bac21f12c3a3a141f16b5b791f385cb66d380f",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          1
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "passed",
+        "shapes": 1,
+        "by_shape": {
+          "PolylineShape": 1
+        },
+        "constant_offsets_checked": 0,
+        "max_absolute_offset": 0
+      },
+      "passed": true,
+      "expected_code": 0,
+      "expected_shape_status": "passed",
+      "matches_expectation": true
+    },
+    "valid_ma": {
+      "parser_input_utf8_sha256": "5ff9bea741dd70703cc386e4e027940240a9875b34aeef4e21e0b1ad55dbb62e",
+      "native_response": {
+        "MaxPeriodCount": 5,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "passed",
+        "shapes": 1,
+        "by_shape": {
+          "PolylineShape": 1
+        },
+        "constant_offsets_checked": 0,
+        "max_absolute_offset": 0
+      },
+      "passed": true,
+      "expected_code": 0,
+      "expected_shape_status": "passed",
+      "matches_expectation": true
+    },
+    "valid_custom_color": {
+      "parser_input_utf8_sha256": "5e9a76f7d7d51328eca4cf982d5806cfc1f5076f6d4efaa8a788763c98cb5aa8",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "COLORFFCC00",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "passed",
+        "shapes": 1,
+        "by_shape": {
+          "PolylineShape": 1
+        },
+        "constant_offsets_checked": 0,
+        "max_absolute_offset": 0
+      },
+      "passed": true,
+      "expected_code": 0,
+      "expected_shape_status": "passed",
+      "matches_expectation": true
+    },
+    "undefined_function": {
+      "parser_input_utf8_sha256": "6171be884b0658a7748735cb0936af717ddb43ae540115b0a3190b3660b9b815",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [],
+        "RealtimeFieldList": [],
+        "ErrCode": 2,
+        "IsNeedRequestExtraData": "",
+        "IsContainsNoticeFunction": "",
+        "ExtraMsg": "UNKNOWNFUNCTION",
+        "IsNeedRequestTradeDay": "",
+        "IsContainsFutureFunction": "",
+        "IsContainsTradeFunction": "",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "not_run_parse_failed"
+      },
+      "passed": false,
+      "expected_code": 2,
+      "expected_shape_status": "not_run_parse_failed",
+      "matches_expectation": true
+    },
+    "invalid_shift_variable": {
+      "parser_input_utf8_sha256": "0040c7b58bd130e52da2363936c9e69b040d44981e46e66ae49a4c47f42ef8ae",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [],
+        "RealtimeFieldList": [],
+        "ErrCode": 2012,
+        "IsNeedRequestExtraData": "",
+        "IsContainsNoticeFunction": "",
+        "ExtraMsg": "DRAWSHIFTNUMBER.X",
+        "IsNeedRequestTradeDay": "",
+        "IsContainsFutureFunction": "",
+        "IsContainsTradeFunction": "",
+        "ErrLine": 1
+      },
+      "shape_validation": {
+        "status": "not_run_parse_failed"
+      },
+      "passed": false,
+      "expected_code": 2012,
+      "expected_shape_status": "not_run_parse_failed",
+      "matches_expectation": true
+    },
+    "invalid_wrapped_shift": {
+      "parser_input_utf8_sha256": "49ada7222937a8d199d64d9db34264411b5bad7a764ce227db1fec5c66da3ae7",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7,
+          8
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "invalid native HorizontalOffset"
+      },
+      "passed": false,
+      "expected_code": 0,
+      "expected_shape_status": "failed",
+      "matches_expectation": true
+    },
+    "invalid_ktext_variable": {
+      "parser_input_utf8_sha256": "bb743fb9a27dceadb58c35e83a1fd84336a75dedfd72c995891b79b621c38faf",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7,
+          8
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "Expecting value: line 1 column 236 (char 235)"
+      },
+      "passed": false,
+      "expected_code": 0,
+      "expected_shape_status": "failed",
+      "matches_expectation": true
+    },
+    "valid_target_candle": {
+      "parser_input_utf8_sha256": "8f21985fa3983ac10c2412ea688f82324db264f7946ac84359ab960b7eeb4d98",
+      "native_response": {
+        "MaxPeriodCount": 0,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          8,
+          11
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "true",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "passed",
+        "shapes": 2,
+        "by_shape": {
+          "TextShape": 2
+        },
+        "constant_offsets_checked": 4,
+        "max_absolute_offset": 0.0
+      },
+      "passed": true,
+      "expected_code": 0,
+      "expected_shape_status": "passed",
+      "matches_expectation": true
+    }
+  },
+  "files": {
+    "趋势交易_PC主图_UTF8.txt": {
+      "source_bytes": 195108,
+      "source_encoding": "utf-8",
+      "source_sha256": "cac0d258e14cbf50d65fd92b743f87f744ff6e88d9da547b531a481378f4f04a",
+      "parser_input_utf8_sha256": "cac0d258e14cbf50d65fd92b743f87f744ff6e88d9da547b531a481378f4f04a",
+      "native_response": {
+        "MaxPeriodCount": 160,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7,
+          8,
+          9
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "true",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "'utf-8' codec can't decode byte 0xa5 in position 25221: invalid start byte"
+      },
+      "passed": false
+    },
+    "趋势交易_PC主图_GB18030.txt": {
+      "source_bytes": 193890,
+      "source_encoding": "gb18030",
+      "source_sha256": "f1e4e04b3a27b2887d97be42c8f3a096fe0ca0aae18c6390830877ef84e34e93",
+      "parser_input_utf8_sha256": "cac0d258e14cbf50d65fd92b743f87f744ff6e88d9da547b531a481378f4f04a",
+      "native_response": {
+        "MaxPeriodCount": 160,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7,
+          8,
+          9
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "true",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "'utf-8' codec can't decode byte 0xa5 in position 25221: invalid start byte"
+      },
+      "passed": false
+    },
+    "函数兼容检查_UTF8.txt": {
+      "source_bytes": 911,
+      "source_encoding": "utf-8",
+      "source_sha256": "59e727fa90cb28b72819cb7d3bb2064e5d821b49a815c06f11bb251cc04a11f3",
+      "parser_input_utf8_sha256": "59e727fa90cb28b72819cb7d3bb2064e5d821b49a815c06f11bb251cc04a11f3",
+      "native_response": {
+        "MaxPeriodCount": 5,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          8,
+          9,
+          7
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "true",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "'utf-8' codec can't decode byte 0x87 in position 91: invalid start byte"
+      },
+      "passed": false
+    },
+    "函数兼容检查_GB18030.txt": {
+      "source_bytes": 897,
+      "source_encoding": "gb18030",
+      "source_sha256": "73561b30a89531fca05b1390bbd17768d8356b042dfad86b3cce1b64ff9d158d",
+      "parser_input_utf8_sha256": "59e727fa90cb28b72819cb7d3bb2064e5d821b49a815c06f11bb251cc04a11f3",
+      "native_response": {
+        "MaxPeriodCount": 5,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          8,
+          9,
+          7
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "true",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "'utf-8' codec can't decode byte 0x87 in position 91: invalid start byte"
+      },
+      "passed": false
+    },
+    "基础函数兼容检查_UTF8.txt": {
+      "source_bytes": 102,
+      "source_encoding": "utf-8",
+      "source_sha256": "953a9d7aaee1dee6ae12698a9cf016aaf838238cb5e905311aabf369329dcade",
+      "parser_input_utf8_sha256": "953a9d7aaee1dee6ae12698a9cf016aaf838238cb5e905311aabf369329dcade",
+      "native_response": {
+        "MaxPeriodCount": 1,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "'utf-8' codec can't decode byte 0x80 in position 91: invalid start byte"
+      },
+      "passed": false
+    },
+    "基础函数兼容检查_GB18030.txt": {
+      "source_bytes": 100,
+      "source_encoding": "gb18030",
+      "source_sha256": "8bb18820ffe11cb6147c9f988d9e822a67c2a3834e5bf1b11133f86383f7ecdc",
+      "parser_input_utf8_sha256": "953a9d7aaee1dee6ae12698a9cf016aaf838238cb5e905311aabf369329dcade",
+      "native_response": {
+        "MaxPeriodCount": 1,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "false",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "failed",
+        "reason": "'utf-8' codec can't decode byte 0x80 in position 91: invalid start byte"
+      },
+      "passed": false
+    },
+    "EWTN_ASCII.txt": {
+      "source_bytes": 192670,
+      "source_encoding": "ascii",
+      "source_sha256": "a6934486dad492fcb93ecf49cde1e1ef08ddc29140c376f33973665ed73c047f",
+      "parser_input_utf8_sha256": "a6934486dad492fcb93ecf49cde1e1ef08ddc29140c376f33973665ed73c047f",
+      "native_response": {
+        "MaxPeriodCount": 160,
+        "CrossSecurityList": [],
+        "CrossPeriodList": [],
+        "ExtraKLineFieldList": [
+          11,
+          7,
+          8,
+          9
+        ],
+        "RealtimeFieldList": [],
+        "ErrCode": 0,
+        "IsNeedRequestExtraData": "false",
+        "IsContainsNoticeFunction": "false",
+        "ExtraMsg": "COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFF9900ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0COLORFFCC00ErrLine.0",
+        "IsNeedRequestTradeDay": "false",
+        "IsContainsFutureFunction": "true",
+        "IsContainsTradeFunction": "false",
+        "ErrLine": 0
+      },
+      "shape_validation": {
+        "status": "passed",
+        "shapes": 455,
+        "by_shape": {
+          "PolylineShape": 27,
+          "TextShape": 368,
+          "StraightLineShape": 60
+        },
+        "constant_offsets_checked": 736,
+        "max_absolute_offset": 0.0
+      },
+      "passed": true
+    }
+  },
+  "passed": false,
+  "limitations": [
+    "Parser version differs from the target client",
+    "Does not verify UI save/content checks, full native rendering, or speed",
+    "Shape descriptions are checked before market-data calculation"
+  ]
+}

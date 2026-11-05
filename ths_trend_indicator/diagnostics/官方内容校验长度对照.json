@@ -1,0 +1,356 @@
+{
+  "checked_at_date": "2026-11-05",
+  "endpoint": "https://ftapi.10jqka.com.cn/gw/openapi/post/v3/pre_check",
+  "app_id": 350,
+  "source_public_url": "https://raw.githubusercontent.com/hzm1978/hzm/de1af0cf5c60fa98a3aea897ab08e72520382354/ths_trend_indicator/formulas/EWTN_ASCII.txt",
+  "public_source_sha256": "7c41fb858326400a359b7440eeca62a9e5395ef643f52e4872f90ff2e31241d1",
+  "public_source_bytes": 178416,
+  "private_source_or_credentials_sent": false,
+  "length_boundary": {
+    "ascii_characters_80000": "accepted",
+    "ascii_characters_80001": "rejected",
+    "same_boundary_for_repeated_PN_assignment": true
+  },
+  "whole_release_and_baseline": [
+    {
+      "name": "public_baseline",
+      "source_sha256": "f739dadc813a72be57703171e0bac21f12c3a3a141f16b5b791f385cb66d380f",
+      "http_status": 200,
+      "response": "{\"data\":{\"result\":true},\"status_code\":0,\"status_msg\":\"success\"}"
+    },
+    {
+      "name": "public_release_1_1_1",
+      "source_sha256": "7c41fb858326400a359b7440eeca62a9e5395ef643f52e4872f90ff2e31241d1",
+      "http_status": 200,
+      "response": "{\"data\":{\"result\":false},\"status_code\":0,\"status_msg\":\"success\"}"
+    }
+  ],
+  "fragments": [
+    {
+      "name": "public_4_part_0",
+      "bytes": 44604,
+      "sha256": "e5c912030e0df32bbb409050c134f4bdd587f4928accd8a6177b3c70d209e103",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_4_part_1",
+      "bytes": 44604,
+      "sha256": "cfb8d20cddd9840e4cda4fb8772823a47f213fb8609e71585fcb7bf95f25e67a",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_4_part_2",
+      "bytes": 44604,
+      "sha256": "4fcfeff1c6e3325a6f305be687952a2f772f0f43a9c1c3701458745295f2c358",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_4_part_3",
+      "bytes": 44604,
+      "sha256": "d1b3e236ee8f979f388bd61afc1f00c88e4c5a7e83995a58c9c3a1c8e6897ecf",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_2_part_0",
+      "bytes": 89208,
+      "sha256": "d6899864658d61ab502a8a0d646c88f8f7f563799ccd5d2108b22dc32aaeacde",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_2_part_1",
+      "bytes": 89208,
+      "sha256": "65257bf4e500b2876979cf97b76e9c52bcef0eda2f1321a31127fde3c2c50644",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_50000",
+      "bytes": 50000,
+      "sha256": "cf01747a0bde6993743cad447bf85097f6305c868276cea3913c32cf3e7a4928",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_50001",
+      "bytes": 50001,
+      "sha256": "e2590dcb5be8f4096d5518b6229c13665b8eaab9bfed1dd92e150460e89e9888",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_60000",
+      "bytes": 60000,
+      "sha256": "9b97d95a832804860533900bf906f01415b6cc85e5473fa5e22d68d6cd7715d2",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_65535",
+      "bytes": 65535,
+      "sha256": "6d3bdd225bb91bcb7528c38239738855ceb2ae7688cd526c6b74a4634c2bae1f",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_65536",
+      "bytes": 65536,
+      "sha256": "03e859a4c7c3305240f9a12d58f43917f32a287345603bc7bc3e33a88dc9b393",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_70000",
+      "bytes": 70000,
+      "sha256": "1496db4565bdaa04739c682392b088b70c2f84712c9c9e0b070b837603f1d6dc",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_75000",
+      "bytes": 75000,
+      "sha256": "e41f2a08c225e17929b205c0b32ca9324dcead2c309b69fa117b84882f2d7775",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_80000",
+      "bytes": 80000,
+      "sha256": "d7c8c5b47d73d5269f02ab3f68efb045cbbde62b83d08cc5d8ef9ac871bb5c24",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_85000",
+      "bytes": 85000,
+      "sha256": "c180700265f9a6b29bd6228d2dd8cf8930870391ce38de37891f132a72139651",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_suffix_70000",
+      "bytes": 70000,
+      "sha256": "1dff7241dcb238f57cc551abd74617bd55b05c2ca6add730e1c30954237c5c44",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_assignment_repeated_70000",
+      "bytes": 70000,
+      "sha256": "4fcfb0eb8d0fc57496a8f68af6f9d7fb5c3873dd511dbff6a9452aecb0ef3747",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_assignment_repeated_90000",
+      "bytes": 90000,
+      "sha256": "15bc24d743843fcf3c1d228ede6692d5a4556bfc7947be4f24bc1bb38bd15960",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_81919",
+      "bytes": 81919,
+      "sha256": "967f7adfbd761043660fa710864fa77d5001a5a0272fc22c0bbdfe5a7e7f811a",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_81920",
+      "bytes": 81920,
+      "sha256": "d7f5ab4139b33fdaf08272a0ef9be3e56964e8907d9bcb2a69475e72ec8702f0",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_81921",
+      "bytes": 81921,
+      "sha256": "7d496a869f8fb94b2b80eeece39397d1432eff9b4ec32f24c5a8d2ec0b38cbf2",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_83000",
+      "bytes": 83000,
+      "sha256": "b6b3ce933b34f655a82e6997cfca84b33d96cb7632a9b2b5d9314251428c2f09",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_prefix_80001",
+      "bytes": 80001,
+      "sha256": "c6dd7bc4f42166009dc26f4c79d1a964b8bd6f9a8488e8bffc22f421ca857623",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_assignment_repeated_80000",
+      "bytes": 80000,
+      "sha256": "2a9d66e0fefc73d5e1ee1dc6a4be0f297d6c8967ce38252a0c4eb14252367d65",
+      "result": true,
+      "response": {
+        "data": {
+          "result": true
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    },
+    {
+      "name": "public_assignment_repeated_80001",
+      "bytes": 80001,
+      "sha256": "9d90fac9aa8bbec5f7ec0fe0bd80c82e9f09e3f0cc9e1b7fd894d9e86ee63bdc",
+      "result": false,
+      "response": {
+        "data": {
+          "result": false
+        },
+        "status_code": 0,
+        "status_msg": "success"
+      }
+    }
+  ],
+  "interpretation": "Observed content-service length rejection; client reports it using the sensitive-words message. Not a claim that 80000 is a permanent or documented compiler limit."
+}

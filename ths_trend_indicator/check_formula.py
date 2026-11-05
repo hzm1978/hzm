@@ -264,6 +264,19 @@ def check(source, enforce_boundary=True, analysis_end_line=None):
                         raise FormulaError(f'line {st.line}: SORT mode/position must be valid constants')
                 if fn=='REFX1' and constant_number(args[1]) is None:
                     raise FormulaError(f'line {st.line}: REFX1 N cannot be variable (client catalog)')
+                if fn=='DRAWSHIFTNUMBER':
+                    # Native preparse can accept a function around X yet
+                    # emit an invalid constant offset. Our delivery subset
+                    # uses literal precision/direction/X only; dynamic
+                    # placement must use DRAWNUMBER on the target bar.
+                    for parameter,position in [('PRECISION',3),('DIRECTION',5),('X',6)]:
+                        value=constant_number(args[position])
+                        if value is None or value!=int(value) or value<0:
+                            raise FormulaError(f'line {st.line}: DRAWSHIFTNUMBER {parameter} must be a nonnegative constant; use DRAWNUMBER for dynamic placement')
+                    if constant_number(args[5]) not in (0,1):
+                        raise FormulaError(f'line {st.line}: DRAWSHIFTNUMBER DIRECTION must be 0 or 1')
+                if fn=='KTEXT' and (constant_number(args[1]) is None or constant_number(args[1])!=int(constant_number(args[1]))):
+                    raise FormulaError(f'line {st.line}: KTEXT POSITION must be a constant; gate on the target candle for dynamic placement')
                 calls[fn] = calls.get(fn, 0)+1
                 if fn in FUTURE:
                     future_calls.append((fn, st.line))

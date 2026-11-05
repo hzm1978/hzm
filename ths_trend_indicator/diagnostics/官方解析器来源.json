@@ -1,0 +1,11 @@
+{
+  "official_download_page": "https://download.10jqka.com.cn/index/download/id/452/",
+  "official_installer_url": "https://sp.thsi.cn/staticS3/mobileweb-upload-static-server.file/app_6/downloadcenter/452_Newhsetup_gwxz5.4.0.5.exe",
+  "installer_version": "5.4.0.5",
+  "installer_bytes": 165373664,
+  "installer_sha256": "9e665ca156bcf9eed37ad2c90e1c210da1cc398777de28d67618909e6575acc1",
+  "parser_archive_path": "bin/lib_hevo_parser.dll",
+  "parser_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
+  "method": "Archive resources extracted; client/installer never launched. Only syntax-preparse and shape-description exports called in local Wine prefix. No account/network/trade calculations.",
+  "redistribution": "No proprietary binaries included."
+}

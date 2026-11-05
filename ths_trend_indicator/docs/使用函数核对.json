@@ -67,6 +67,15 @@
       "Remark": "1、画线连接的是满足C1条件的K线向左偏移X1个周期的P1位置，和满足C1条件后最近一个满足C2条件的k线向左偏移X2个周期的P2位置。\r\n2、EXP为0，画线不延伸，即画线段；EXP不为0，画线延伸，即画射线\r\n3、X1,X2支持变量\r\n4、该函数支持在函数后设置颜色、线型（LINETHICK1 - LINETHICK9、POINTDOT、DOT），即支持下面的两种写法：\r\nDRAWLINE3(C1,P1,X1,C2,P2,X2,EXP),LINETHICK,COLOR;\r\nDRAWLINE3(C1,P1,X1,C2,P2,X2,EXP),COLOR,LINETHICK;\r\n5、不支持将该函数定义为变量，即不支持下面的写法：\r\nA:DRAWLINE3(C1,P1,X1,C2,P2,X2,EXP);",
       "ParamDesp": "C1 条件1，P1 价格1，X1 偏移周期1， C2 条件2，P2 价格2，X2 偏移周期2，EXP 是否延伸"
     },
+    "DRAWNUMBER": {
+      "Id": "144",
+      "Name": "DRAWNUMBER",
+      "FuncDefine": "DRAWNUMBER(COND, X, NUMBER, PRECISION, COLOR)",
+      "Category": "标注函数",
+      "Instruction": "DRAWNUMBER(COND, X, NUMBER, PRECISION, COLOR); // 当条件满足时在 X 位置写数字 NUMBER。PRECISION为精度（小数点后有几位数字）。COLOR为颜色。",
+      "Remark": "该函数支持在函数后设置文字的大小和文字对齐方式。即支持下面的写法：// DRAWNUMBER(COND, X, NUMBER, PRECISION, COLOR), ALIGN, VALIGN;",
+      "ParamDesp": "COND 条件，X 绘制位置，NUMBER 数值，PRECISION 精度, COLOR 颜色。"
+    },
     "DRAWNUMBER1": {
       "Id": "145",
       "Name": "DRAWNUMBER1",
@@ -120,6 +129,15 @@
       "Instruction": "求 N周期内 X 最高值到当前周期数，HHVBARS(VOL, 0); 求历史成交量最大的周期到当前的周期数（最大值那根k线上HHVBARS(VOL,0);的返回值为0，最大值后的第一根k线返回值为1，依次类推）。",
       "Remark": "1、若N为0则从第一个有效值开始算起(不包含当前K线)；\r\n2、当N为有效值，但当前的k线数不足N根，按照实际的根数计算，第一根k线返回空值；\r\n3、N为空值时，返回空值。\r\n4、N可以是变量。",
       "ParamDesp": "X 为任意引用字段或者数值，N 为周期值。"
+    },
+    "IF": {
+      "Id": "277",
+      "Name": "IF",
+      "FuncDefine": "IF(COND, A, B)",
+      "Category": "选择函数",
+      "Instruction": "IF(COND, A, B) 若COND条件成立，则返回A，否则返回B",
+      "Remark": "1、COND是判断条件;A、B可以是条件，也可以是数值。\r\n2、该函数支持变量循环引用前一周期自身变量，即支持下面这样的写法Y: IF(CON,X,REF(Y,1));",
+      "ParamDesp": "COND 条件，A 数据1，B 数据2"
     },
     "IFELSE": {
       "Id": "278",
