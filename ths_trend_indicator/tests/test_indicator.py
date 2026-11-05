@@ -7,8 +7,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from check_formula import FormulaError, Parser, RESERVED, check, walk, evaluate as raw_evaluate
-from compatibility import SETTINGS, normalize, variable_names
-from generate import build, core, drawing, probe, formula_source, formula_names
+from compatibility import SETTINGS, normalize, variable_names, render
+from generate import build, core, drawing, probe, basic_probe, formula_source, formula_names
 
 SOURCE = formula_source()
 NAMES = formula_names()
@@ -157,11 +157,11 @@ class SyntaxTests(unittest.TestCase):
         for name in ("SK", "FLAG", "RANK", "VAL", "TOTAL"):
             np.testing.assert_allclose(a[name], b[mapping[name]])
 
-    def test_value_expressions_use_ifelse_not_if(self):
-        with self.assertRaisesRegex(FormulaError, "must use IFELSE"):
-            check("TTSTYPE:=IF(C>O,1,-1);")
-        with self.assertRaisesRegex(FormulaError, "must use IFELSE"):
-            check("TTSTYPE:=IF(C>O,1,(0-1));")
+    def test_reference_selection_forms_are_not_universal_language_bans(self):
+        # Public examples contain both forms; the user's passing COUNT probe
+        # motivates our exporter strategy, not a claim that IF is always illegal.
+        check("TTSTYPE:=IF(C>O,1,-1);")
+        check("TTSTYPE:=IF(C>O,1,(0-1));")
         check("TTSTYPE:=IFELSE(C>O,1,-1);")
         check("TTSTYPE:=2*IFELSE(C>O,1,0)-1;")
 
@@ -214,12 +214,13 @@ class SyntaxTests(unittest.TestCase):
             e = evaluate(SOURCE, data, {"SHS":hs, "SLS":ls, "SHT":ht, "SLT":lt})
             self.assertTrue(np.all(e["STYPE"] == expected))
 
-    def test_current_client_compound_if_forms_are_rejected(self):
+    def test_previous_failed_selections_are_removed_by_exporter(self):
         prefix = "TTSHS:=1;TTSLS:=1;TTSHT:=1;TTSLT:=2;"
         for tail in ("(0-1)", "0"):
             old = prefix+"TTSTYPE:=IF(TTSHS<>0 AND (TTSLS=0 OR TTSHT<TTSLT),1,"+tail+");"
-            with self.subTest(tail=tail), self.assertRaises(FormulaError):
-                check(old)
+            with self.subTest(tail=tail):
+                report = check(normalize(old))
+                self.assertEqual(report["conditional_calls"], {})
 
     def test_no_compound_logic_remains_in_exported_expressions(self):
         for source in (SOURCE, probe()):
@@ -247,11 +248,14 @@ class SyntaxTests(unittest.TestCase):
         for key in mapping:
             np.testing.assert_allclose(before[key], after[mapping[key]])
 
-    def test_all_exported_value_calls_use_ifelse(self):
-        for source in (SOURCE, probe()):
+    def test_all_exported_formulas_exclude_both_conditional_functions_and_null(self):
+        for source in (SOURCE, probe(), basic_probe()):
             functions = {n[1] for st in Parser(source).parse() for n in walk(st.expression) if n[0] == "call"}
-            self.assertIn("IFELSE", functions)
+            self.assertIn("COUNT", functions)
             self.assertNotIn("IF", functions)
+            self.assertNotIn("IFELSE", functions)
+            identifiers = {n[1] for st in Parser(source).parse() for n in walk(st.expression) if n[0] == "identifier"}
+            self.assertFalse(identifiers & {"NULL", "DRAWNULL"})
 
     def test_native_drawline_fifth_argument_is_color_not_expand_flag(self):
         with self.assertRaisesRegex(FormulaError, "requires color"):
@@ -271,18 +275,73 @@ N2:=IFELSE(H<REF(H,1)&&REF(H,1)<REF(H,2),REF(H,2),0);
 """
         check(source, enforce_boundary=False)
 
-    def test_export_uses_native_null_symbol_and_preserves_empty_value(self):
-        source = normalize("EMPTY:=IF(C>O,C,DRAWNULL);")
-        check(source)
-        self.assertIn("NULL", source)
-        self.assertNotIn("DRAWNULL", source)
-        data = bars(60)
-        before = raw_evaluate("EMPTY:=IF(C>O,C,DRAWNULL);", data)["EMPTY"]
-        after = raw_evaluate(source, data)[variable_names("EMPTY:=IF(C>O,C,DRAWNULL);")["EMPTY"]]
-        np.testing.assert_allclose(before, after, equal_nan=True)
+    def test_nullable_selection_cannot_be_silently_rewritten_as_zero_times_null(self):
+        for null in ("NULL", "DRAWNULL"):
+            with self.subTest(null=null), self.assertRaisesRegex(FormulaError, "NULL cannot enter numerical masks"):
+                normalize(f"EMPTY:=IF(C>O,C,{null});")
+
+    def test_export_rejects_negative_history_before_clamping(self):
+        for window in ("-1", "0-1", "1.5"):
+            with self.subTest(window=window), self.assertRaises(FormulaError):
+                normalize(f"VALUE1:=REF(C,{window});")
+
+    def test_passing_native_probe_is_delivered_unchanged(self):
+        expected = "QFLAG:=COUNT(C>O,1);\nQOTHER:=COUNT(C<O,1);\nQSIGN:=MAX(QFLAG,QOTHER)+QFLAG-QOTHER-1;\n检查:QSIGN;\n"
+        self.assertEqual(basic_probe(), expected)
+        check(expected)
+        data = {"C":np.array([2,1,1]), "O":np.array([1,2,1]),
+                "H":np.array([3,3,2]), "L":np.array([0,0,0])}
+        e = raw_evaluate(expected, data)
+        np.testing.assert_array_equal(e["QSIGN"], [1,-1,-1])
+
+    def test_conditional_price_segments_do_not_create_nullable_plot_outputs(self):
+        statements = Parser(SOURCE).parse()
+        self.assertEqual({s.name for s in statements if s.output},
+                         {"工作方向", "末段状态", "标准K", "工作回调百分比"})
+        lines = [s for s in statements if s.expression[0:2] == ("call", "DRAWLINE")]
+        self.assertEqual(len(lines), 20)  # waves/Q/current legs + 2 references + 7 fib + 3 targets
+        for s in lines[-10:]:
+            # Each horizontal segment uses one frozen price at both endpoints.
+            self.assertEqual(s.expression[2][1], s.expression[2][3])
 
 
 class NumericalTests(unittest.TestCase):
+    def test_count_selection_handles_nested_branches_zero_and_negative_prices(self):
+        original = "A1:=IF(C>O,C-L,H-C);A2:=IF(C<O,-C,IF(C=O,0,O));A3:=REF(IF(C>O,A1,A2),2);"
+        converted = normalize(original)
+        mapping = variable_names(original)
+        data = {"O":np.array([-3,0,2,-4,5]), "C":np.array([-2,0,-1,-5,8]),
+                "L":np.array([-4,-1,-2,-6,4]), "H":np.array([-1,1,3,-3,9])}
+        before, after = raw_evaluate(original,data), raw_evaluate(converted,data)
+        for name, native in mapping.items():
+            np.testing.assert_allclose(after[native],before[name])
+
+    def test_actual_exported_ref_windows_never_exceed_loaded_history(self):
+        analysis = SOURCE.split("{ END_ANALYSIS",1)[0]
+        windows = sorted({render(n[2][1]) for st in Parser(analysis).parse()
+                          for n in walk(st.expression) if n[0:2] == ("call","REF")})
+        instrumented = analysis+"\n"+"\n".join(f"WIN{i}:={expr};" for i,expr in enumerate(windows))
+        for length in (1,2,14,40,90):
+            with self.subTest(length=length):
+                e = raw_evaluate(instrumented,bars(length))
+                for i in range(len(windows)):
+                    age = e[f"WIN{i}"]
+                    self.assertTrue(np.all(age>=0), windows[i])
+                    self.assertTrue(np.all(age<=np.arange(length)), windows[i])
+                    np.testing.assert_array_equal(age,np.floor(age))
+
+    def test_current_trend_reference_segment_reaches_its_real_anchor(self):
+        e = evaluate(SOURCE,waves())
+        for t in np.flatnonzero(e["LINEOK"]):
+            if e["WD"][t] == 1:
+                slope, age, price = e["LSLOPE"][t], e["LAGE1"][t], e["BL1"][t]
+                shifted_age, shifted_price = e["HAGE0"][t], e["BH0"][t]
+            else:
+                slope, age, price = e["HSLOPE"][t], e["HAGE1"][t], e["BH1"][t]
+                shifted_age, shifted_price = e["LAGE0"][t], e["BL0"][t]
+            self.assertAlmostEqual(e["TRENDV"][t]-slope*age,price)
+            self.assertAlmostEqual(e["PIVOTV"][t]-slope*shifted_age,shifted_price)
+
     def test_previous_release_analysis_values_are_preserved(self):
         reference = (ROOT/"tests"/"fixtures"/"v1_0_2_math_reference.txt").read_text(encoding="utf-8")
         data = bars(180)

@@ -1,0 +1,24 @@
+{
+  "kind": "static_source_dependency_report",
+  "root": "T140",
+  "source_release": "1.0.4",
+  "reachable_defined_variables": 15,
+  "calls_in_reachable_definitions": {
+    "BARSLAST": 4,
+    "IFELSE": 14,
+    "REF": 8,
+    "HHV": 3,
+    "MIN": 2,
+    "MAX": 3,
+    "SUM": 4,
+    "LLV": 3
+  },
+  "direct_dependencies": [
+    "T136",
+    "T138",
+    "T139"
+  ],
+  "contains_standard_k": false,
+  "native_mechanism_verified": false,
+  "note": "仅为源码依赖关系，不代表掌握客户端内部展开或编译机制。"
+}

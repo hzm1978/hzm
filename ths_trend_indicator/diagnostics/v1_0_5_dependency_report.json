@@ -1,0 +1,22 @@
+{
+  "kind": "static_source_dependency_report",
+  "root": "T141",
+  "semantic_root": "STYPE",
+  "source_release": "1.0.5",
+  "source_file": "formulas/趋势交易_PC主图_UTF8.txt",
+  "source_sha256": "02edf43c711ee845aed5f348484662494df86716c16b84ddca284adb3405280f",
+  "reachable_defined_variables": 15,
+  "calls_in_reachable_definitions": {
+    "BARSLAST": 4,
+    "COUNT": 16,
+    "HHV": 3,
+    "LLV": 3,
+    "MAX": 11,
+    "MIN": 10,
+    "REF": 8,
+    "SUM": 6
+  },
+  "conditional_calls": {},
+  "native_compile": "not_run",
+  "note": "仅证明导出源中的该条依赖不再包含IF/IFELSE；不证明原生编译或客户端内部展开机制。"
+}

@@ -36,6 +36,9 @@ def main():
         "native_compile": {"status": "not_run", "target_client_version": "4.39.1.2",
                            "reason": "No Windows THS Futures PC client in this environment"},
         "files": reports}
+    feedback = ROOT/"diagnostics"/"client_compile_feedback.json"
+    if feedback.exists():
+        evidence["client_compile_feedback"] = json.loads(feedback.read_text(encoding="utf-8"))
     (ROOT/"docs"/"本地检查结果.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     if not result.wasSuccessful():
         sys.exit(1)

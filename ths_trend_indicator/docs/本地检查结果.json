@@ -1,9 +1,9 @@
 {
-  "checked_at_utc": "2026-11-04T15:43:49.497671+00:00",
+  "checked_at_utc": "2026-11-05T00:43:50.859912+00:00",
   "python": "3.13.5",
   "numpy": "2.5.4",
   "local_tests": {
-    "run": 58,
+    "run": 64,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
@@ -17,21 +17,22 @@
   "files": {
     "函数兼容检查_GB18030.txt": {
       "statements": 15,
-      "variables": 12,
-      "outputs": 3,
+      "variables": 11,
+      "outputs": 2,
       "functions": {
         "REF": 1,
+        "MIN": 1,
+        "MAX": 1,
         "HHV": 1,
         "LLV": 1,
         "BARSLAST": 1,
         "SUM": 1,
-        "IFELSE": 3,
-        "COUNT": 1,
+        "COUNT": 3,
         "FILTER": 1,
         "BACKSET": 1,
         "REFX1": 1,
         "MA": 1,
-        "DRAWLINE": 1,
+        "DRAWLINE": 2,
         "DRAWTEXT": 1,
         "DRAWNUMBER1": 1
       },
@@ -46,37 +47,43 @@
         ],
         [
           "DRAWLINE",
+          12
+        ],
+        [
+          "DRAWLINE",
           13
         ]
       ],
       "type_check": "passed",
       "unary_signs": "none",
       "compound_logic": "lowered_to_numeric_flags",
-      "value_function": "IFELSE",
+      "conditional_calls": {},
+      "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "6ece0c2559a14c8248e5276cf3ad4eb33fad8c338d2d7d1869a2b4178d873a05",
-      "bytes": 488,
+      "sha256": "921b2a0c0cf1134acffb3703d99f48d3170fe4f46203a93cc05f1d63f6395d9b",
+      "bytes": 509,
       "lines": 16,
       "encoding": "gb18030"
     },
     "函数兼容检查_UTF8.txt": {
       "statements": 15,
-      "variables": 12,
-      "outputs": 3,
+      "variables": 11,
+      "outputs": 2,
       "functions": {
         "REF": 1,
+        "MIN": 1,
+        "MAX": 1,
         "HHV": 1,
         "LLV": 1,
         "BARSLAST": 1,
         "SUM": 1,
-        "IFELSE": 3,
-        "COUNT": 1,
+        "COUNT": 3,
         "FILTER": 1,
         "BACKSET": 1,
         "REFX1": 1,
         "MA": 1,
-        "DRAWLINE": 1,
+        "DRAWLINE": 2,
         "DRAWTEXT": 1,
         "DRAWNUMBER1": 1
       },
@@ -91,95 +98,115 @@
         ],
         [
           "DRAWLINE",
+          12
+        ],
+        [
+          "DRAWLINE",
           13
         ]
       ],
       "type_check": "passed",
       "unary_signs": "none",
       "compound_logic": "lowered_to_numeric_flags",
-      "value_function": "IFELSE",
+      "conditional_calls": {},
+      "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "447d68dc8261f8b963ef177ce06f2110b777ac696f5123edd620fb26b4ac4113",
-      "bytes": 536,
+      "sha256": "26d4b19d8080536e8aeea5ff3f8d489cd5bb51e20e3e3bab74585cbfb021f6ba",
+      "bytes": 555,
       "lines": 16,
       "encoding": "utf-8-sig"
     },
     "基础函数兼容检查_GB18030.txt": {
-      "statements": 2,
-      "variables": 2,
+      "statements": 4,
+      "variables": 4,
       "outputs": 1,
       "functions": {
-        "IFELSE": 1
+        "COUNT": 2,
+        "MAX": 1
       },
       "future_calls": [],
       "type_check": "passed",
       "unary_signs": "none",
       "compound_logic": "lowered_to_numeric_flags",
-      "value_function": "IFELSE",
+      "conditional_calls": {},
+      "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "8d9c6a11c06f99f83a5db99c9a77f81a9a41710371cda66a17fa36a38546c87a",
-      "bytes": 94,
-      "lines": 3,
+      "sha256": "8bb18820ffe11cb6147c9f988d9e822a67c2a3834e5bf1b11133f86383f7ecdc",
+      "bytes": 100,
+      "lines": 4,
       "encoding": "gb18030"
     },
     "基础函数兼容检查_UTF8.txt": {
-      "statements": 2,
-      "variables": 2,
+      "statements": 4,
+      "variables": 4,
       "outputs": 1,
       "functions": {
-        "IFELSE": 1
+        "COUNT": 2,
+        "MAX": 1
       },
       "future_calls": [],
       "type_check": "passed",
       "unary_signs": "none",
       "compound_logic": "lowered_to_numeric_flags",
-      "value_function": "IFELSE",
+      "conditional_calls": {},
+      "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "676684f265aa36b1e24754f2154601e12ba7b7e3e2e408639aa2fa09e0087a25",
-      "bytes": 124,
-      "lines": 3,
+      "sha256": "40d5f14cc3fe8bd78f8fe2b1a48dadee1dfb4df5d80100d27d236a43d8f97497",
+      "bytes": 105,
+      "lines": 4,
       "encoding": "utf-8-sig"
     },
     "趋势交易_PC主图_GB18030.txt": {
-      "statements": 552,
-      "variables": 478,
-      "outputs": 16,
+      "statements": 565,
+      "variables": 479,
+      "outputs": 4,
       "functions": {
-        "ABS": 71,
-        "MAX": 88,
-        "MIN": 85,
-        "REF": 448,
-        "IFELSE": 2151,
+        "ABS": 32,
+        "MAX": 296,
+        "MIN": 295,
+        "COUNT": 2242,
+        "REF": 208,
         "HHV": 8,
         "LLV": 8,
-        "SUM": 15,
+        "SUM": 20,
         "BARSLAST": 13,
-        "COUNT": 4,
         "FILTER": 4,
         "BACKSET": 4,
-        "DRAWLINE": 8,
+        "DRAWLINE": 20,
         "DRAWNUMBER1": 22,
         "DRAWTEXT": 44,
-        "REFX1": 48
+        "REFX1": 54
       },
       "future_calls": [
+        [
+          "BACKSET",
+          391
+        ],
+        [
+          "BACKSET",
+          392
+        ],
+        [
+          "BACKSET",
+          393
+        ],
         [
           "BACKSET",
           394
         ],
         [
-          "BACKSET",
+          "DRAWLINE",
           395
         ],
         [
-          "BACKSET",
+          "DRAWLINE",
           396
         ],
         [
-          "BACKSET",
+          "DRAWLINE",
           397
         ],
         [
@@ -188,23 +215,23 @@
         ],
         [
           "DRAWLINE",
-          399
-        ],
-        [
-          "DRAWLINE",
-          400
-        ],
-        [
-          "DRAWLINE",
-          401
+          403
         ],
         [
           "DRAWLINE",
           406
         ],
         [
-          "DRAWLINE",
-          409
+          "REFX1",
+          450
+        ],
+        [
+          "REFX1",
+          451
+        ],
+        [
+          "REFX1",
+          452
         ],
         [
           "REFX1",
@@ -224,11 +251,11 @@
         ],
         [
           "REFX1",
-          456
+          457
         ],
         [
-          "REFX1",
-          457
+          "DRAWLINE",
+          458
         ],
         [
           "REFX1",
@@ -248,15 +275,19 @@
         ],
         [
           "REFX1",
-          461
-        ],
-        [
-          "DRAWLINE",
           462
         ],
         [
           "REFX1",
-          462
+          463
+        ],
+        [
+          "REFX1",
+          464
+        ],
+        [
+          "REFX1",
+          465
         ],
         [
           "REFX1",
@@ -264,10 +295,22 @@
         ],
         [
           "REFX1",
+          467
+        ],
+        [
+          "DRAWLINE",
+          470
+        ],
+        [
+          "DRAWLINE",
           472
         ],
         [
           "REFX1",
+          473
+        ],
+        [
+          "DRAWLINE",
           476
         ],
         [
@@ -275,71 +318,83 @@
           480
         ],
         [
+          "DRAWLINE",
+          481
+        ],
+        [
           "REFX1",
           484
+        ],
+        [
+          "DRAWLINE",
+          485
         ],
         [
           "REFX1",
           488
         ],
         [
+          "DRAWLINE",
+          489
+        ],
+        [
           "REFX1",
           492
+        ],
+        [
+          "DRAWLINE",
+          493
         ],
         [
           "REFX1",
           496
         ],
         [
-          "REFX1",
+          "DRAWLINE",
           497
-        ],
-        [
-          "REFX1",
-          499
         ],
         [
           "REFX1",
           500
         ],
         [
-          "REFX1",
-          502
+          "DRAWLINE",
+          501
         ],
         [
           "REFX1",
-          503
+          504
         ],
         [
           "REFX1",
           505
         ],
         [
-          "REFX1",
-          506
+          "DRAWLINE",
+          508
         ],
         [
           "REFX1",
-          507
+          509
         ],
         [
           "REFX1",
-          511
+          510
         ],
         [
-          "REFX1",
-          512
-        ],
-        [
-          "REFX1",
+          "DRAWLINE",
           513
         ],
         [
           "REFX1",
-          517
+          514
         ],
         [
           "REFX1",
+          515
+        ],
+        [
+          "DRAWLINE",
           518
         ],
         [
@@ -348,11 +403,11 @@
         ],
         [
           "REFX1",
-          523
+          520
         ],
         [
           "REFX1",
-          524
+          521
         ],
         [
           "REFX1",
@@ -360,11 +415,11 @@
         ],
         [
           "REFX1",
-          529
+          526
         ],
         [
           "REFX1",
-          530
+          527
         ],
         [
           "REFX1",
@@ -372,11 +427,11 @@
         ],
         [
           "REFX1",
-          535
+          532
         ],
         [
           "REFX1",
-          536
+          533
         ],
         [
           "REFX1",
@@ -384,11 +439,11 @@
         ],
         [
           "REFX1",
-          541
+          538
         ],
         [
           "REFX1",
-          542
+          539
         ],
         [
           "REFX1",
@@ -396,65 +451,109 @@
         ],
         [
           "REFX1",
-          547
+          544
         ],
         [
           "REFX1",
-          548
+          545
         ],
         [
           "REFX1",
           549
+        ],
+        [
+          "REFX1",
+          550
+        ],
+        [
+          "REFX1",
+          551
+        ],
+        [
+          "REFX1",
+          555
+        ],
+        [
+          "REFX1",
+          556
+        ],
+        [
+          "REFX1",
+          557
+        ],
+        [
+          "REFX1",
+          561
+        ],
+        [
+          "REFX1",
+          562
+        ],
+        [
+          "REFX1",
+          563
         ]
       ],
       "type_check": "passed",
       "unary_signs": "none",
       "compound_logic": "lowered_to_numeric_flags",
-      "value_function": "IFELSE",
+      "conditional_calls": {},
+      "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "a4c57b198ef37a33c176cfc8548a27e1e87ae4af7543d5b00353d78f7d0bc719",
-      "bytes": 63034,
-      "lines": 575,
+      "sha256": "5be3127107efc229f4c8374a206870d303e3d281eba60168c50936424513425f",
+      "bytes": 62176,
+      "lines": 589,
       "encoding": "gb18030"
     },
     "趋势交易_PC主图_UTF8.txt": {
-      "statements": 552,
-      "variables": 478,
-      "outputs": 16,
+      "statements": 565,
+      "variables": 479,
+      "outputs": 4,
       "functions": {
-        "ABS": 71,
-        "MAX": 88,
-        "MIN": 85,
-        "REF": 448,
-        "IFELSE": 2151,
+        "ABS": 32,
+        "MAX": 296,
+        "MIN": 295,
+        "COUNT": 2242,
+        "REF": 208,
         "HHV": 8,
         "LLV": 8,
-        "SUM": 15,
+        "SUM": 20,
         "BARSLAST": 13,
-        "COUNT": 4,
         "FILTER": 4,
         "BACKSET": 4,
-        "DRAWLINE": 8,
+        "DRAWLINE": 20,
         "DRAWNUMBER1": 22,
         "DRAWTEXT": 44,
-        "REFX1": 48
+        "REFX1": 54
       },
       "future_calls": [
+        [
+          "BACKSET",
+          391
+        ],
+        [
+          "BACKSET",
+          392
+        ],
+        [
+          "BACKSET",
+          393
+        ],
         [
           "BACKSET",
           394
         ],
         [
-          "BACKSET",
+          "DRAWLINE",
           395
         ],
         [
-          "BACKSET",
+          "DRAWLINE",
           396
         ],
         [
-          "BACKSET",
+          "DRAWLINE",
           397
         ],
         [
@@ -463,23 +562,23 @@
         ],
         [
           "DRAWLINE",
-          399
-        ],
-        [
-          "DRAWLINE",
-          400
-        ],
-        [
-          "DRAWLINE",
-          401
+          403
         ],
         [
           "DRAWLINE",
           406
         ],
         [
-          "DRAWLINE",
-          409
+          "REFX1",
+          450
+        ],
+        [
+          "REFX1",
+          451
+        ],
+        [
+          "REFX1",
+          452
         ],
         [
           "REFX1",
@@ -499,11 +598,11 @@
         ],
         [
           "REFX1",
-          456
+          457
         ],
         [
-          "REFX1",
-          457
+          "DRAWLINE",
+          458
         ],
         [
           "REFX1",
@@ -523,15 +622,19 @@
         ],
         [
           "REFX1",
-          461
-        ],
-        [
-          "DRAWLINE",
           462
         ],
         [
           "REFX1",
-          462
+          463
+        ],
+        [
+          "REFX1",
+          464
+        ],
+        [
+          "REFX1",
+          465
         ],
         [
           "REFX1",
@@ -539,10 +642,22 @@
         ],
         [
           "REFX1",
+          467
+        ],
+        [
+          "DRAWLINE",
+          470
+        ],
+        [
+          "DRAWLINE",
           472
         ],
         [
           "REFX1",
+          473
+        ],
+        [
+          "DRAWLINE",
           476
         ],
         [
@@ -550,71 +665,83 @@
           480
         ],
         [
+          "DRAWLINE",
+          481
+        ],
+        [
           "REFX1",
           484
+        ],
+        [
+          "DRAWLINE",
+          485
         ],
         [
           "REFX1",
           488
         ],
         [
+          "DRAWLINE",
+          489
+        ],
+        [
           "REFX1",
           492
+        ],
+        [
+          "DRAWLINE",
+          493
         ],
         [
           "REFX1",
           496
         ],
         [
-          "REFX1",
+          "DRAWLINE",
           497
-        ],
-        [
-          "REFX1",
-          499
         ],
         [
           "REFX1",
           500
         ],
         [
-          "REFX1",
-          502
+          "DRAWLINE",
+          501
         ],
         [
           "REFX1",
-          503
+          504
         ],
         [
           "REFX1",
           505
         ],
         [
-          "REFX1",
-          506
+          "DRAWLINE",
+          508
         ],
         [
           "REFX1",
-          507
+          509
         ],
         [
           "REFX1",
-          511
+          510
         ],
         [
-          "REFX1",
-          512
-        ],
-        [
-          "REFX1",
+          "DRAWLINE",
           513
         ],
         [
           "REFX1",
-          517
+          514
         ],
         [
           "REFX1",
+          515
+        ],
+        [
+          "DRAWLINE",
           518
         ],
         [
@@ -623,11 +750,11 @@
         ],
         [
           "REFX1",
-          523
+          520
         ],
         [
           "REFX1",
-          524
+          521
         ],
         [
           "REFX1",
@@ -635,11 +762,11 @@
         ],
         [
           "REFX1",
-          529
+          526
         ],
         [
           "REFX1",
-          530
+          527
         ],
         [
           "REFX1",
@@ -647,11 +774,11 @@
         ],
         [
           "REFX1",
-          535
+          532
         ],
         [
           "REFX1",
-          536
+          533
         ],
         [
           "REFX1",
@@ -659,11 +786,11 @@
         ],
         [
           "REFX1",
-          541
+          538
         ],
         [
           "REFX1",
-          542
+          539
         ],
         [
           "REFX1",
@@ -671,27 +798,106 @@
         ],
         [
           "REFX1",
-          547
+          544
         ],
         [
           "REFX1",
-          548
+          545
         ],
         [
           "REFX1",
           549
+        ],
+        [
+          "REFX1",
+          550
+        ],
+        [
+          "REFX1",
+          551
+        ],
+        [
+          "REFX1",
+          555
+        ],
+        [
+          "REFX1",
+          556
+        ],
+        [
+          "REFX1",
+          557
+        ],
+        [
+          "REFX1",
+          561
+        ],
+        [
+          "REFX1",
+          562
+        ],
+        [
+          "REFX1",
+          563
         ]
       ],
       "type_check": "passed",
       "unary_signs": "none",
       "compound_logic": "lowered_to_numeric_flags",
-      "value_function": "IFELSE",
+      "conditional_calls": {},
+      "value_selection": "count_masks",
       "drawline_fifth_argument": "color",
       "native_compile": "not_run",
-      "sha256": "4b8b2ba4b2e9677382ab1a3023458c351432c2c71bc87878f9040615f22ed569",
-      "bytes": 63819,
-      "lines": 575,
+      "sha256": "02edf43c711ee845aed5f348484662494df86716c16b84ddca284adb3405280f",
+      "bytes": 62963,
+      "lines": 589,
       "encoding": "utf-8-sig"
+    }
+  },
+  "client_compile_feedback": {
+    "reported_client": "同花顺期货通电脑版",
+    "reported_version": "4.39.1.2",
+    "reported_date_beijing": "2026-11-05",
+    "release": "1.0.4",
+    "status": "failed_reported_by_user",
+    "evidence": "用户提供的客户端截图",
+    "line": 168,
+    "statement": "T140:=2*T136*MAX(T138,T139)-1;",
+    "diagnostic_family": "IFELSE语法诊断",
+    "diagnostic_exact_text": null,
+    "note": "完整错误文字尚未获得，不将看图推测写作原生错误原文。现场失败优先于本地数学和静态检查结果。",
+    "ifelse_two_line_probe": "not_reported",
+    "count_numeric_probe": {
+      "status": "passed_reported_by_user",
+      "evidence": [
+        "用户回复“编译通过”",
+        "用户截图同时显示四行源码与数值曲线"
+      ],
+      "source_file": "count_numeric_probe_UTF8.txt",
+      "verified_scope": [
+        "COUNT(条件,1)产生数值序列",
+        "MAX与加减、变量引用、中文输出名可编译显示"
+      ],
+      "not_verified": [
+        "完整主图",
+        "乘法及其他函数的完整组合",
+        "全部绘图与运行速度"
+      ]
+    },
+    "first_count_probe_feedback": {
+      "status": "inconclusive_input_integrity",
+      "reported_line": 2,
+      "reported_statement": "QOTHER:=COUNT(C<O,1);",
+      "undefined_function": "2QFLAGMAX",
+      "expected_expression_fragment": "2*QFLAG*MAX",
+      "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
+    },
+    "release_gate": "COUNT四行原生小样已通过；1.0.5完整主图尚待原生编译，不将本地检查标为客户端通过",
+    "next_full_main": {
+      "release": "1.0.5",
+      "status": "not_run",
+      "local_evidence": "../docs/本地检查结果.json",
+      "note": "COUNT独立小样通过不扩大为完整主图通过"
     }
   }
 }

@@ -2,7 +2,8 @@
 
 Every stored variable is numerical, every conditional argument is a condition,
 and compact internal names avoid futures order names such as SK. Mathematical
-IF templates emit IFELSE; empty plots emit NULL; DRAWLINE receives its color.
+Finite IF templates emit COUNT-based numerical masks. No IF/IFELSE is emitted;
+nullable selections must use conditional drawing instead. DRAWLINE takes color.
 """
 import re
 
@@ -46,8 +47,7 @@ def render(node, parent=0):
     if kind == "identifier":
         return "NULL" if node[1] == "DRAWNULL" else node[1]
     if kind == "call":
-        fn = "IFELSE" if node[1] == "IF" else node[1]
-        return fn+"("+",".join(render(arg) for arg in node[2])+")"
+        return node[1]+"("+",".join(render(arg) for arg in node[2])+")"
     if kind == "unary":
         # The user's compiler stopped at IF(...,1,-1). Never emit a unary
         # sign: keep binary subtraction explicitly grouped even in arguments.
@@ -84,9 +84,6 @@ def normalize(source):
             lines.append(name+":="+expression+";")
         return ("identifier", helpers[expression])
 
-    def has_if(value):
-        return any(n[0:2] == ("call", "IF") for n in walk(value))
-
     def is_flag(node):
         if node[0] == "identifier":
             return node[1] in flags or PREDEFINED_TYPES.get(node[1]) == CONDITION
@@ -109,7 +106,8 @@ def normalize(source):
         return ("identifier", names.get(name, name))
 
     def one_if_zero(cond):
-        return ("call", "IF", [cond, ("number", 1.0), ("number", 0.0)])
+        # Verified in the user's 4.39.1.2 client: COUNT(cond,1) is numerical.
+        return ("call", "COUNT", [cond, ("number", 1.0)])
 
     def flag(node):
         # Stored logical series are already exactly 0/1. Arithmetic works on
@@ -129,6 +127,8 @@ def normalize(source):
         if kind == "number":
             return node
         if kind == "identifier":
+            if node[1] in ("NULL", "DRAWNULL"):
+                raise FormulaError("NULL cannot enter numerical masks; use conditional drawing")
             out = identifier(node[1])
             return one_if_zero(out) if types[node[1]] == CONDITION else out
         if kind == "unary":
@@ -150,6 +150,14 @@ def normalize(source):
                     return ("binary", "-", ("binary", "*", ("number", 2.0), flag(node[2][0])), ("number", 1.0))
                 if (a, b) == (-1, 1):
                     return ("binary", "-", ("number", 1.0), ("binary", "*", ("number", 2.0), flag(node[2][0])))
+                yes, no = num(node[2][1]), num(node[2][2])
+                mask = flag(node[2][0])
+                if len(render(mask)) > 40:
+                    mask = lift(mask)
+                # Both branches must be finite: 0*NULL is still NULL. REF
+                # windows below are explicitly clipped to available history.
+                return ("binary", "+", ("binary", "*", mask, yes),
+                        ("binary", "*", ("binary", "-", ("number", 1.0), mask), no))
             return call(node)
         raise FormulaError(f"cannot convert {kind} to number")
 
@@ -166,7 +174,6 @@ def normalize(source):
         if kind == "call" and SIGNATURES[node[1]][1] == CONDITION:
             return call(node)
         value = num(node)
-        if has_if(value): value = lift(value)
         return ("binary", "<>", value, ("number", 0.0))
 
     def call(node):
@@ -186,13 +193,13 @@ def normalize(source):
                 output.append(arg)
             else:
                 raise FormulaError(f"unsupported argument in {fn}")
-        if fn in ("IF", "IFELSE"):
-            # Keep negative branch constants out of the client's IF argument
-            # grammar. Signed two-way choices above use 2*flag-1 instead.
-            for i in (1, 2):
-                value = constant_number(output[i])
-                if value is not None and value < 0:
-                    output[i] = lift(output[i])
+        if fn == "REF":
+            window = constant_number(args[1])
+            if window is not None and (window < 0 or window != int(window)):
+                raise FormulaError("invalid or negative REF window")
+            available = ("binary", "-", identifier("BC") if "BC" in types else ("identifier", "BARPOS"), ("number", 1.0))
+            output[1] = ("call", "MIN", [available,
+                         ("call", "MAX", [("number", 0.0), output[1]])])
         return ("call", fn, output)
 
     # Each generated statement occupies one physical line. Keep the comments

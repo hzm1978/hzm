@@ -12,10 +12,13 @@ ROOT = Path(__file__).resolve().parent
 def standard_k():
     lines = ["{ 标准K：只用此前40根，实体排序前5，实体相等时较近者优先 }",
              "BC:=BARPOS;", "BODY:=ABS(C-O);", "RANGE:=H-L;",
-             "UPPER:=H-MAX(O,C);", "LOWER:=MIN(O,C)-L;"]
+             "UPPER:=H-MAX(O,C);", "LOWER:=MIN(O,C)-L;",
+             "KDIST:=IF(C>=O,C-L,H-C);"]
     for i in range(1, 41):
-        lines.append(f"E{i:02}:=ABS(REF(C,{i})-REF(O,{i}));")
-        lines.append(f"D{i:02}:=IF(REF(C,{i})>=REF(O,{i}),REF(C,{i})-REF(L,{i}),REF(H,{i})-REF(C,{i}));")
+        # Compute per-candle values before looking back: identical historical
+        # samples, fewer native REF calls and no duplicated selection masks.
+        lines.append(f"E{i:02}:=REF(BODY,{i});")
+        lines.append(f"D{i:02}:=REF(KDIST,{i});")
     for i in range(1, 41):
         terms = [f"(E{j:02}{'>=' if j < i else '>'}E{i:02})"
                  for j in range(1, 41) if j != i]
@@ -84,7 +87,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.4；请先阅读README和验证边界 }",
+    lines = ["{ 趋势交易·期货通PC结构观察版 1.0.5；COUNT数值版，完整主图待客户端编译 }",
              "{ PN细转折；BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；手动设置需自己确认级别 }",
              "{ MANF=1时用MFROM/MTO作前主浪起止价，MFAGE为起点距今根数 }",
@@ -236,21 +239,29 @@ def drawing():
              "{ REFX1末值冻结只画最后一套短水平线；不混入历史信号 }",
              "VX:=REFX1(BC,100000)-BC;", "VLEN:=REFX1(MIN(SPAN,FAGE),100000);",
              "VF:=REFX1(FON,100000) AND VX<=VLEN;",
-             "VT:=REFX1(TON,100000) AND VX<=REFX1(MIN(SPAN,TAGE),100000);",
+             "VTLEN:=REFX1(MIN(SPAN,TAGE),100000);",
+             "VT:=REFX1(TON,100000) AND VX<=VTLEN;",
              "VSA:=REFX1(SA0+PN,100000);", "VBA:=REFX1(BA0+BN,100000);",
              "DRAWLINE(REFX1(SK0,100000) AND VX=VSA,REFX1(SP0,100000),ISLASTBAR,C,0),COLORCYAN;",
              "DRAWLINE(REFX1(BK0,100000) AND VX=VBA,REFX1(BP0,100000),ISLASTBAR,C,0),COLORYELLOW;",
-             "趋势参考:IF(SHOWC AND LINEOK,TRENDV,DRAWNULL),COLORYELLOW;",
-             "拐点平移参考:IF(SHOWC AND LINEOK,PIVOTV,DRAWNULL),COLORMAGENTA;"]
+             "{ 只画当前锚点的直线参考段；条件关闭时不产生0价或空值算术 }",
+             "VCL:=REFX1(SHOWC AND LINEOK,100000);",
+             "VCS:=REFX1(IF(WD=1,LSLOPE,HSLOPE),100000);",
+             "VCA:=REFX1(MIN(SPAN,IF(WD=1,LAGE1,HAGE1)),100000);",
+             "VPA:=REFX1(MIN(SPAN,IF(WD=1,HAGE1,LAGE1)),100000);",
+             "VCV:=REFX1(TRENDV,100000);", "VPV:=REFX1(PIVOTV,100000);",
+             "DRAWLINE(VCL AND VX=VCA,VCV-VCS*VX,ISLASTBAR AND VCL,VCV,0),COLORYELLOW;",
+             "DRAWLINE(VCL AND VX=VPA,VPV-VCS*VX,ISLASTBAR AND VCL,VPV,0),COLORMAGENTA;"]
     for key, text in [("0", "0%"), ("236", "23.6%"), ("382", "38.2%"), ("500", "50%"), ("618", "61.8%"), ("786", "78.6%"), ("100", "100%")]:
         lines.append(f"VF{key}:=REFX1(F{key},100000);")
-        lines.append(f"回调{key}:IF(VF,VF{key},DRAWNULL),COLORFFCC00;")
+        lines.append(f"DRAWLINE(VF AND VX=VLEN,VF{key},ISLASTBAR AND FON,VF{key},0),COLORFFCC00;")
         lines.append(f"DRAWTEXT(VF AND VX=MIN(12,VLEN),VF{key},'{text}'),COLORFFCC00;")
         lines.append(f"DRAWNUMBER1(ISLASTBAR AND FON,F{key},F{key},2),COLORFFCC00;")
     ratios = [1.208, 1.618, 2, 2.382, 2.618, 3, 3.236, 4.236]
     for rank in range(1, 4):
         lines += [f"VTT{rank}:=REFX1(TT{rank},100000);",
-                  f"目标{rank}:IF(VT AND REFX1(TT{rank}OK,100000),VTT{rank},DRAWNULL),COLORFF9900;"]
+                  f"VTT{rank}ON:=REFX1(TT{rank}OK,100000);",
+                  f"DRAWLINE(VT AND VTT{rank}ON AND VX=VTLEN,VTT{rank},ISLASTBAR AND TON AND VTT{rank}ON,VTT{rank},0),COLORFF9900;"]
     for i, ratio in enumerate(ratios, 1):
         lines += [f"VT{i}:=REFX1(T{i},100000);",
                   f"VT{i}ON:=VT AND REFX1(T{i}OK AND T{i}R<=3,100000);",
@@ -283,7 +294,7 @@ X7:=FILTER(BACKSET(C>O,2),1);
 X8:=REFX1(C,100000);
 X9:=BARPOS;
 均线:MA(C,5),COLORWHITE;
-上沿:IF(BARPOS>5,X2,DRAWNULL),COLORCYAN;
+DRAWLINE(BARPOS=6,X2,ISLASTBAR,X2,0),COLORCYAN;
 DRAWLINE(C>O,L,C<O,H,0),COLORYELLOW;
 DRAWTEXT(ISLASTBAR,C,'函数兼容检查'),COLORWHITE;
 DRAWNUMBER1(ISLASTBAR,C,C,2),COLORYELLOW;
@@ -307,10 +318,8 @@ def probe():
 
 
 def basic_probe():
-    return """{ 在新建的空白指标中只测试以下两行，确认条件取值函数 }
-QTEST:=IFELSE(C>O,1,0);
-检查:QTEST;
-"""
+    # Exact four-line source reported as compiling and rendering by the user.
+    return "QFLAG:=COUNT(C>O,1);\nQOTHER:=COUNT(C<O,1);\nQSIGN:=MAX(QFLAG,QOTHER)+QFLAG-QOTHER-1;\n检查:QSIGN;\n"
 
 
 def build():

@@ -232,8 +232,6 @@ def check(source, enforce_boundary=True):
                 raise FormulaError(f"line {st.line}: undefined or forward variable {node[1]}")
             if node[0] == "call":
                 fn, args = node[1], node[2]
-                if fn == "IF":
-                    raise FormulaError(f"line {st.line}: exported value expressions must use IFELSE, not IF")
                 if fn not in ARITY:
                     raise FormulaError(f"line {st.line}: unreviewed function {fn}")
                 if len(args) != ARITY[fn]:
@@ -271,7 +269,9 @@ def check(source, enforce_boundary=True):
             "future_calls": future_calls, "type_check": "passed",
             "unary_signs": "none" if not unary_count else "present",
             "compound_logic": "lowered_to_numeric_flags" if not logical_count else "supported_logical_conditions",
-            "value_function": "IFELSE", "drawline_fifth_argument": "color",
+            "conditional_calls": {fn: calls[fn] for fn in ("IF", "IFELSE") if fn in calls},
+            "value_selection": "count_masks" if "COUNT" in calls and not any(fn in calls for fn in ("IF", "IFELSE")) else "reference_calls",
+            "drawline_fifth_argument": "color",
             "native_compile": "not_run"}
 
 
