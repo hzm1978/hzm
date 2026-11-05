@@ -1,0 +1,1361 @@
+\documentclass[UTF8,11pt,a4paper,fontset=none]{ctexart}
+\IfFontExistsTF{Noto Serif CJK SC}{
+ \setCJKmainfont{Noto Serif CJK SC}[AutoFakeBold=2,AutoFakeSlant=.2,SlantedFont={Noto Serif CJK SC},SlantedFeatures={FakeSlant=.2}]
+ \setCJKsansfont{Noto Serif CJK SC}[AutoFakeBold=2]
+ \setCJKmonofont{Noto Serif CJK SC}
+}{
+ \setCJKmainfont{FandolSong-Regular}[BoldFont=FandolSong-Bold,ItalicFont=FandolKai-Regular,SlantedFont=FandolKai-Regular]
+ \setCJKsansfont{FandolHei-Regular}[BoldFont=FandolHei-Bold]
+ \setCJKmonofont{FandolFang-Regular}
+}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb,mathtools,graphicx}
+\usepackage{booktabs,longtable,array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{microtype,xurl,enumitem,placeins}
+\usepackage[switch,mathlines]{lineno}
+\setlist{nosep}
+\setlength{\emergencystretch}{2em}
+\newcommand{\Wightman}{W}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Neg}{\mathcal{N}}
+\newcommand{\UDW}{Unruh--DeWitt}
+\providecommand{\bibcommenthead}{}
+\title{局域量子场测量中的量子资源：提取与认证}
+\author{Zhiming Huang\\\small 五邑大学经济管理学院，广东江门529020，中国\\\small \href{mailto:465609785@qq.com}{465609785@qq.com}}
+\date{}
+\begin{document}
+\maketitle
+\linenumbers
+\begin{abstract}
+局域量子探针为量子场关联与有限维系统之间建立了操作性联系。然而，基于此类测量提出资源主张，需要经过若干不同环节：场操作必须满足因果要求并具有物理实现，随后需要确定探针态，并将所声称的资源与明确的读出方式及不确定度模型联系起来。本文综述量子场论局域测量中的探测器方法、代数方法和历史方法，并讨论这些方法的输出如何关联到纠缠提取以及探测器可访问关联的数据处理界。我们比较纠缠、多体纠缠、语境性及相关性质的资源判据，重点分析其对制备和测量场景的依赖，以及微扰诊断方法的局限。随后讨论探测器耦合观测量、紫外正则性、校准和有限样本见证界。通信与参数估计作为任务层面的应用加以讨论，其性能判断还需要超出态认证本身的额外假设。本文综合区分场关联、可访问探针资源、模型预测和实验认证结果，并明确各推断环节所需的前提。
+\end{abstract}
+\noindent 关键词：量子场论；局域测量；相对论因果性；纠缠提取；量子资源；资源认证
+\section{引言}
+\label{sec:introduction}
+
+相对论量子信息（RQI）研究时空结构、相对论运动和量子场如何影响信息处理、纠缠、通信与测量。该领域早期发展与 Unruh 效应、Hawking 效应以及粒子和真空描述对观察者的依赖密切相关。探测器--场模型通过让有限量子系统沿指定轨迹与量子场相互作用，使这些问题获得了操作性描述 \cite{PeresTerno2004,BirrellDavies1982,Wald1994,CrispinoHiguchiMatsas2008,HuLinLouko2012}。与抽象场模不同，局域探测器具有明确的初态、能隙、开关函数、空间尺寸和读出方式；这些因素都可能影响探测器响应及其最终状态。
+
+这一研究方向中的重要进展是纠缠提取。两台初始互不相关的探针可以通过与同一量子场的局域相互作用获得纠缠，其中也包括两台探针的完整相互作用区域严格类空分离的情形 \cite{Reznik2003,ReznikRetzkerSilman2005,PozasKerstjens2015}。后续研究进一步考察了不同场和时空背景、有限尺寸空间轮廓、加速运动、曲率时空、电磁场与费米场耦合、多探针系统以及开关函数优化等问题 \cite{PozasKerstjensEM2016,Tjoa2021,Zambianco2024,Zambianco2026,MaesoGarcia2022,MoroteBalboaPerche2026,TeixidoBonfill2026,PercheGozzini2026}。这些工作揭示了丰富的模型依赖效应，同时也要求严格区分场中原有的关联、特定探针能够访问的资源，以及由因果信号介导的贡献。还需区分资源归属：探针中测得某种资源，并不自动证明场在相互作用前就具有同一种资源；这一推断取决于所选相互作用诱导的自由态集合 \cite{Nystrom2026Induced}。
+
+与此并行发展的另一条研究路线关注量子场论中的局域装置究竟能够实施哪些测量。微观因果性约束局域观测量的对易关系，但它本身并不确定测量仪器、测量反作用或装置产生的物理记录。探测器方法、代数系统--探针框架以及历史或事件方法分别从不同角度处理这一问题 \cite{Sorkin1993,BorstenJubbKells2021,PoloGomez2022,FewsterVerch2020,AnastopoulosSavvidou2012,AnastopoulosSavvidou2019,Papageorgiou2024}。近期研究在指定假设下进一步澄清了因果一致性和特定操作类的可实现性 \cite{BostelmannFewsterRuep2021,FewsterJubbRuep2023,MandryschNavascues2025,MandryschSimmonsNavascues2026,Oeckl2026,Simmons2026}。这些方法给出的对象并不相同：正算符值测度（POVM）、测量仪器、事件时间分布和保留的探针态分别支持不同层次的物理主张。
+
+当讨论量子资源时，这一区别尤为重要。纠缠、导引、Bell 非定域性、相干性、魔性和语境性分别相对于不同的自由态集合、允许操作及测量场景定义 \cite{HorodeckiEtAl2009,WisemanJonesDoherty2007,Uola2020,BaumgratzCramerPlenio2014,StreltsovAdessoPlenio2017,Howard2014,Schmid2022,Spekkens2005}。一个态判据本身并不说明如何测量相应资源，也不能保证观测记录排除了其他解释。在多体混合态问题中，残余负性等常用量也未必能够在没有额外见证的情况下认证任意混合态的真正多体纠缠。
+
+相关文献已经从不同侧重点讨论了这一领域。Hu、Lin 和 Louko 综述了相对论量子信息中的探测器--场相互作用；Bukhari 和 Wang 重点讨论曲率时空中的原子--场动力学；Papageorgiou 和 Fraser 则比较了量子场论局域测量框架及所谓不可能测量问题 \cite{HuLinLouko2012,BukhariWang2024,Papageorgiou2024}。更广泛的综述分别讨论了量子纠缠以及相干性和几何量子失谐等资源概念 \cite{HorodeckiEtAl2009,Hu2018}。本文建立在这些测量理论和资源综述之上，进一步关注局域操作如何支持对明确保留探针资源的认证。这是一篇围绕操作链组织的批判性叙述综述，并非相对论量子信息的穷尽综述。本文比较不同测量框架的实际输出，分析场区域关联与有限探针可访问性之间的联系，并指出从理论资源预测到实验支持的主张还需要哪些动力学、测量和统计假设。
+
+Nystr\"om 等人的诱导资源框架给出了将探针资源归因于环境的形式条件 \cite{Nystrom2026Induced}。本文将这一条件与装置实现、因果局域化，以及实际探针测量的校准和抽样要求联系起来，并不提出新的诱导资源理论。
+
+全文围绕若干问题展开：局域观测量对易在什么条件下对应可实施的物理装置？当探测器在有限时空支撑上相互作用时，数据处理界应采用哪一场区域？通常使用的微扰纠缠提取判据能够说明什么，如何区分纠缠提取与信号传递？认证资源需要哪些测量、校准和统计假设？最后，经过认证的探针态在什么附加条件下能够支持通信或计量优势？
+
+除综述已有研究外，本文还给出若干用于澄清问题的具体结果，包括一组结果概率相同而反作用不同的测量仪器、探测器可访问关联的数据处理界、严格类空分离条件下紧支撑探测器的点极限基准、针对若干多体及信道诊断量的有限维反例，以及经过校准的见证所满足的有限样本界。这些结果旨在明确已有主张的适用范围，并不构成最优纠缠提取协议或普适资源理论。场态到任务层面主张的逻辑链汇总于图~\ref{fig:operational-chain}。
+
+本文结构安排如下。第~\ref{sec:measurement} 节综述局域测量、探测器模型与因果记录。第~\ref{sec:accessibility} 节讨论场关联、探测器可访问资源及数据处理界。第~\ref{sec:harvesting} 节分析纠缠提取、完整相互作用支撑和点极限。第~\ref{sec:resources} 节比较资源判据及其操作性认证。第~\ref{sec:readout} 节讨论探测器观测量、紫外正则性和校准读出。第~\ref{sec:utility} 节讨论通信与参数估计，第~\ref{sec:conclusion} 节总结主要结论和开放问题。附录 A--G 收录相关推导与数值核验。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/Fig1_operational_chain_zh.pdf}
+\caption{从量子场态到任务层面主张的操作链。每一步都需要额外的物理或统计输入，各阶段不能相互替代。}
+\label{fig:operational-chain}
+\end{figure}
+
+\section{局域量子场测量与因果结构}
+\label{sec:framework}
+\label{sec:measurement}
+局域性通常通过对易关系表达，而测量则是一个产生记录并改变被测系统的物理过程。因此，相关研究需要区分局域代数、探测器模型、测量仪器和事件时间描述。下面比较这些对象及其分别能够提供的因果信息。
+
+\subsection{场关联、探针态与测量记录}
+采用 $c=\hbar=k_B=1$ 及度规号差 $(-,+,+,+)$。对状态为 $\rho_\phi$ 的实标量场，定义
+\begin{equation}
+W(x,x')=\Tr[\rho_\phi\hat\phi(x)\hat\phi(x')].
+\label{eq:wightman}
+\end{equation}
+该二点函数描述关联。它是双分布：下文的点取值表达式仅在相应涂抹或拉回有定义时表示这些操作后的量。对于类空分离的 $x,x'$，微观因果性要求的则是
+\begin{equation}
+[\hat\phi(x),\hat\phi(x')]=0.
+\label{eq:microcausality}
+\end{equation}
+在自由标量理论中，对易子是与因果传播子相关、且不依赖状态的 c 数分布。因此，非零类空关联与零因果响应可以相容。指定探针能否访问这些关联，还取决于其相互作用与制备。
+
+相关推断具有如下结构：
+\begin{equation}
+\begin{aligned}
+\text{场态}&\longrightarrow\text{局域相互作用}\\
+&\longrightarrow\text{记录或探针态}\\
+&\longrightarrow\text{资源判据}\longrightarrow\text{任务}.
+\end{aligned}
+\label{eq:chain}
+\end{equation}
+局域场代数、有限探针密度矩阵和经典记录处于这条链的不同位置。资源判据还需规定子系统、自由态集合，以及在声称单调量时允许的操作类。即使两项计算使用相同场关联函数，也仍需作这些区分。不同层次的主张及其所需输入汇总于表~\ref{tab:operational-levels}。
+
+\begin{table}[t]
+\centering\small
+\caption{局域探针实验中的不同主张。各行针对不同推断目标，后一项不能单凭前一项推出；该表是评价方式，不是新的资源理论。}
+\label{tab:operational-levels}
+\begin{tabular}{p{0.23\linewidth}p{0.67\linewidth}}
+\toprule
+主张 & 必须规定的内容\\
+\midrule
+场关联 & 场态、局域代数或正则化子系统。\\
+可访问探针态 & 探针初始资源、耦合、完整支撑与所得信道。\\
+资源认证 & 资源场景、读出观测量、校准及统计控制。\\
+提取归因 & 初始乘积假设，以及探针间因果影响的排除或定量评估。\\
+操作用途 & 编码或估计器、允许访问、代价预算与可达到性能。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{探测器模型、测量仪器与装置实现}
+对任意量子场观测量直接套用理想投影公设，可能产生 Sorkin 型不可能测量情景。关键在于时空局域装置能够实现什么操作，而不只是两个观测量是否对易 \cite{Sorkin1993,BorstenJubbKells2021,Papageorgiou2024}。POVM 确定结果概率，测量仪器还规定条件态变化 \cite{DaviesLewis1970,Ozawa1984}。两个构造即使给出相同概率，也可能产生不同的反作用。
+
+两能级 Unruh--DeWitt（UDW）探测器是一种可处理的装置模型。沿世界线 $x(\tau)$，其相互作用为
+\begin{equation}
+H_I(\tau)=\lambda\chi(\tau)\mu(\tau)\hat\phi[x(\tau)].
+\label{eq:udw}
+\end{equation}
+其中 $\lambda$ 为耦合常数，$\chi$ 为实开关函数，$\mu(\tau)=\sigma^+e^{i\Omega\tau}+\sigma^-e^{-i\Omega\tau}$ 为单极算符。固有能隙为 $\Omega>0$；对激发态 $|e\rangle$ 和基态 $|g\rangle$，有 $\sigma^+=|e\rangle\langle g|$、$\sigma^-=(\sigma^+)^\dagger$。
+有限尺寸探测器用空间涂抹替代点取值。初态、能隙、开关、空间轮廓和读出共同决定诱导场测量与最终探针态。探测器测量理论明确给出相应 POVM 和更新规则 \cite{PoloGomez2022}。完全相对论的局域场探针在特定范围内再现最低阶探测器预测，为该近似提供支持，但不意味着所有探针模型或微扰阶数等价 \cite{GrimmerTorresMartinez2021,PercheLocalizedQFT2024,Perche2024}。
+
+Fewster--Verch（FV）框架在紧致区域内耦合目标场与探针场，通过散射态射诱导观测量和测量仪器 \cite{FewsterVerch2020}。在该系统--探针设定中，局域耦合保持因果一致性 \cite{BostelmannFewsterRuep2021}。线性标量场的构造性结果包括渐近局域探针方案和指定涂抹场测量的实现 \cite{FewsterJubbRuep2023,MandryschNavascues2025}，但尚不能据此分类相互作用量子场论中的所有测量仪器。
+
+近期结果进一步明确了因果映射与具体实现之间的区别。Mandrysch、Simmons 和 Navascu\'es 在自由 Klein--Gordon 理论中构造了因果 Weyl 信道，它们不能由所研究的 FV 方案任意精度逼近；同时也证明了一大类对角 Weyl 测量仪器的可实现性 \cite{MandryschSimmonsNavascues2026}。该预印本区分的是两类候选操作，既未证明一切因果操作都能物理实现，也未证明 FV 方案穷尽所有物理装置。其中的预告式条件构造还必须连同成功概率和非选择性测量仪器一起评价。因此，对资源提取而言，无信号检验只是条件之一；声称某种探针资源实际可达到，仍需给出具体耦合、装置状态与读出。
+
+\subsection{结果概率与状态更新动力学}
+场上的诱导测量仪器与通往保留探针的输出信道，通过指定的系统--装置实现联系起来。抽象场测量仪器不必确定哪些装置自由度会被保留，因此探针资源必须对应明确的输出子系统及制备，而不能仅归属于场 POVM 或状态更新。
+
+一个基本有限维例子说明，结果相同为何仍不足够。设 $S$ 为比特，$r\in\{0,1\}$ 为记录，定义两个测量仪器
+\begin{equation}
+\mathcal I_r(\rho)=\tfrac12\rho,\qquad
+\mathcal J_r(\rho)=\tfrac12\Tr(\rho)|0\rangle\langle0|.
+\label{eq:instrument-same-probability}
+\end{equation}
+它们对任意归一化输入均给出 $p_r=1/2$，效应算符同为 $E_r=I/2$。但非选择性信道分别是恒等信道与替换为 $|0\rangle$ 的信道。若 $S$ 最初与未被操作的参考系共享 Bell 态，前者保持该纠缠，后者消除它。两种操作都只局域作用在 $S$，因此相同结果分布不确定相同的资源输出。附录~\ref{app:measurement-benchmark} 给出 Kraus 表示及显式条件态。此例讨论既有资源上的反作用，并非场资源提取协议。
+
+选择性状态更新也必须与信号传递区分。对作用在 $S$ 上、非选择性信道保迹的局域测量仪器 $\{\mathcal I_r\}$，以及未被操作的系统 $B$，有
+\begin{equation}
+\sum_r p_r\rho_{B|r}=\rho_B.
+\label{eq:selective-nonselective}
+\end{equation}
+条件态 $\rho_{B|r}$ 在 $p_r>0$ 时定义。上式来自对 $S$ 取偏迹及保迹性。某个分支可以不同于初始边缘态，但识别该分支需要知道记录。量子场论中还必须建立测量仪器相应的局域性与因果组合性质，不能以两个场观测量对易代替这一构造。
+
+\subsection{事件概率与因果组合}
+量子时间概率（QTP）把检测时刻保留为结果，其最低阶事件密度具有示意形式
+\begin{equation}
+P(x,r)=\int d^4y\,R^{ab}(y,r)
+G_{ab}(x-y/2,x+y/2),
+\label{eq:qtp}
+\end{equation}
+其中 $x$ 是粗粒化事件位置，$r$ 标记记录结果，$y$ 是相对时空坐标，分量指标 $a,b$ 作缩并。$G_{ab}$ 是场关联核，$R^{ab}$ 描述装置响应与粗粒化。联合事件概率涉及指定的非等时高点关联。UDW 响应和 Glauber 光检测在相应极限下出现，而非任意情况下可互换的测量 \cite{AnastopoulosSavvidou2012,AnastopoulosSavvidou2019,AnastopoulosHuSavvidou2023,Koliopoulou2026}。事件层级方案考察多时刻概率中的量子特征；这些指标属于指定概率层级，不能自动解释为约化探测器态的纠缠 \cite{AnastopoulosSavvidou2025}。
+
+其他方法强调局域操作的组合。正形式主义对指定观测量类别处理正性和组合性；多个观测量的联合期望本身并不是联合结果分布 \cite{Oeckl2026,OecklZampeli2026}。局域 $S$ 矩阵构造检验因果因子化和更强的操作条件，并在特定模型中讨论指针反作用 \cite{Simmons2026}。这些结果与显式探测器测量仪器互补。近期一项全息研究进一步明确了体空间与边界空间局域性的区别。Caminiti、Myers 和 Wurtz 利用 Hamilton--Kabat--Lifschytz--Lowe（HKLL）重构构造了局域反 de Sitter（AdS）体探测器的边界对偶。体空间局域相互作用在边界上表现为涂抹算符；两个体空间支撑类空分离的探测器，其边界涂抹区域却可能重叠。这种重叠本身并不意味着体空间信号传递：只有对完整涂抹核积分后，相关对易子才通过结构性抵消恢复为零，而这种抵消无法从边界支撑的逐点重叠中看出。该构造适用于半经典编码子空间，是体局域探针的边界表示，并不是两个彼此独立的边界局域测量仪器。它说明，必须在探测器实际局域化的时空及表示中表述局域性 \cite{CaminitiMyersWurtz2026}。各自的输出见表~\ref{tab:causal-measurements}。
+
+\begin{table}[htbp]
+\centering\small
+\caption{互补测量构造的操作输出。}
+\label{tab:causal-measurements}
+\begin{tabular}{p{0.23\linewidth}p{0.30\linewidth}p{0.37\linewidth}}
+\toprule
+构造 & 直接输出 & 提出资源主张仍需什么\\
+\midrule
+指定探测器模型 \cite{PoloGomez2022} & 探针概率、诱导场更新与最终探针态 & 受控动力学、读出模型及该状态上的资源见证。\\
+FV 系统--探针方案 \cite{FewsterVerch2020} & 诱导的局域观测量和测量仪器 & 指定探针制备及相关读出的实现。\\
+QTP \cite{AnastopoulosHuSavvidou2023} & 时间分辨与联合事件统计 & 事件统计与所用资源判据之间的显式联系。\\
+正形式主义／局域 $S$ 矩阵 \cite{OecklZampeli2026,Simmons2026} & 概率组合／允许的局域操作 & 匹配装置和结果泛函；因果可实现性本身不确定探测器负性。\\
+HKLL 体–边界探测器 \cite{CaminitiMyersWurtz2026} & 编码子空间内局域体探测器的边界涂抹表示 & 指定重构核和编码子空间；边界支撑重叠本身不能确定体空间因果影响。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+这些方法不应被理解为对同一个对象的不同记号。探测器模型给出明确装置和有限维输出态，但预测依赖所选耦合及近似；FV 框架给出协变的代数构造及诱导测量仪器，其构造性结果仍依赖具体模型；QTP 保留积分探测器态可能丢失的事件时间信息，但事件分布本身并不确定保留探针的量子态；正形式主义和局域 $S$ 矩阵主要处理正性与因果组合，也不会自动给出特定实验指针或读出。因而，比较这些框架时，应固定同一场态、紧致相互作用支撑、探测器制备、空间涂抹、开关和指针读出，并分别比较积分单探针概率、联合事件统计、选择性更新及最终保留的探针态。附录~\ref{app:measurement-benchmark} 给出这一比较基准，并区分符合协方差与负性。它是建议执行的比较协议，不是已经完成的框架等价性证明。
+
+\section{场关联与探测器可访问资源}
+\label{sec:accessibility}
+在明确装置和保留的探针子系统之后，可以进一步讨论场关联有多少能够转移到探针。数据处理给出一般性的上界，但其定量内容取决于场区域的选择以及相互作用诱导的信道。图~\ref{fig:accessibility-hierarchy} 汇总了相应的界限关系。
+
+\subsection{探测器可访问纠缠的数据处理界}
+\label{subsec:field-to-detector-bound}
+
+场区域与探测器之间的资源转换可以在不假定场具有空间张量积分解的条件下定量描述。设 $\mathcal A_A$ 和 $\mathcal A_B$ 是两个类空分离区域对应的对易局域代数，并假设存在正规的乘积参考态（例如由适当的 split 性质或有限分辨率保证）。定义
+\begin{equation}
+I_{\rm F}(A:B)=
+S\!\left(\omega|_{\mathcal A_A\vee\mathcal A_B}
+\,\middle\|\,
+\omega|_{\mathcal A_A}\otimes\omega|_{\mathcal A_B}\right).
+\label{eq:field-algebra-mutual-info}
+\end{equation}
+这里 $\omega$ 为场态，$\mathcal A_A\vee\mathcal A_B$ 为两个局域代数生成的代数，$S$ 为 Araki 相对熵。对于有限维密度矩阵，若 $\operatorname{supp}\rho\subseteq\operatorname{supp}\sigma$，则 $S(\rho\Vert\sigma)=\Tr[\rho(\ln\rho-\ln\sigma)]$，否则取无穷大 \cite{Watrous2018}。对于规范场，必须先指定局域代数、共同中心和超选择扇区。即使乘积参考态存在，Araki 相对熵仍可能发散；Panebianco 和 Wegener 证明，在他们研究的理论类别中，某个 $0<p<1$ 的模 $p$-核性条件足以保证互信息有限 \cite{PanebiancoWegener2021}。因此，下面的界限只有在 $I_{\rm F}<\infty$ 时才具有有限的定量意义；正则化计算还必须说明正则化方案及其极限过程。
+
+假设探测器 $D_A$、$D_B$ 分别只与 $\mathcal A_A$、$\mathcal A_B$ 局域耦合，初始探针与场及彼此均不相关，且没有直接探测器相互作用或共享的非局域辅助资源。最终探针态的互信息为 $I(D_A:D_B)=S(\rho_{AB}\Vert\rho_A\otimes\rho_B)$，其中 $\rho_A,\rho_B$ 是对应边缘态。由局域信道及相对熵的单调性，
+\begin{equation}
+I(D_A:D_B)\leq I_{\rm F}(A:B).
+\label{eq:detector-mutual-info-dpi}
+\end{equation}
+定义探测器态的相对熵纠缠
+\begin{equation}
+E_R(\rho_{AB})=\inf_{\sigma\in{\rm SEP}}S(\rho_{AB}\Vert\sigma),
+\label{eq:relative-entropy-entanglement}
+\end{equation}
+其中 ${\rm SEP}$ 为可分态集合。由于 $\rho_A\otimes\rho_B$ 是可分态，$E_R(\rho_{AB})\leq I(D_A:D_B)$。记探针 Hilbert 空间维数为 $d_A,d_B$，$T_B$ 为在固定基下对 $B$ 的部分转置，$\|\cdot\|_1$ 为迹范数。结合采用自然对数的量子 Pinsker 不等式和部分转置的迹范数界，
+\begin{equation}
+\mathcal N(\rho_{AB})\leq d_B\sqrt{\frac{E_R(\rho_{AB})}{2}},
+\label{eq:negativity-er-bound}
+\end{equation}
+其中 $d_B=\dim\mathcal H_{D_B}$，$\mathcal N=(\|\rho_{AB}^{T_B}\|_1-1)/2$。这里的熵采用自然对数；若采用以二为底的熵，应相应保留 $\ln 2$ 因子。因此
+\begin{equation}
+\mathcal N(\rho_{AB})\leq
+\min\!\left\{\frac{\min(d_A,d_B)-1}{2},
+d_B\sqrt{\frac{I_{\rm F}(A:B)}{2}}\right\},
+\label{eq:field-to-detector-negativity-bound}
+\end{equation}
+对于两个量子比特则为
+\begin{equation}
+\mathcal N(\rho_{AB})\leq
+\min\!\left\{\frac12,\sqrt{2I_{\rm F}(A:B)}\right\}.
+\label{eq:two-qubit-field-negativity-bound}
+\end{equation}
+
+式~\eqref{eq:negativity-er-bound} 的推导是：取一个逼近 $E_R$ 下确界的可分态 $\sigma$，由 Pinsker 不等式得 $\|\rho-\sigma\|_1\leq\sqrt{2S(\rho\Vert\sigma)}$。又因为 $\|\sigma^{T_B}\|_1=1$ 且 $\|X^{T_B}\|_1\leq d_B\|X\|_1$，利用三角不等式得到 $\mathcal N(\rho)\leq(d_B/2)\|\rho-\sigma\|_1$，再对可分态取下确界即可。该上界严格但通常不紧；它来自数据处理和有限维范数不等式，并不是最优纠缠提取公式。
+
+仅凭 $I_{\rm F}$ 不能得到严格为正的普适探测器纠缠下界。探测器可能没有耦合到相关场模，可能实现纠缠破坏信道，也可能没有开启耦合。在指定的微扰 UDW 模型中，$|\mathcal M|-\sqrt{P_AP_B}>0$ 是探测器纠缠的模型特定判据，而不是仅由场态决定的下界。局域噪声只能降低无条件探测器关联；若采用后选择，则必须将成功概率计入平均资源产率。
+
+
+\label{subsec:three-correlation-levels}
+
+这里必须区分三个层次。场互信息 $I_{\rm F}(A:B)$ 衡量两个局域场代数之间的总关联，包括经典和量子关联。探测器互信息 $I(D_A:D_B)$ 衡量最终探测器态中的总关联，依赖所选初态和局域信道。探测器纠缠（本文用 $E_R$ 或负性量化）要求更严格，也不等同于完整场区域的纠缠。数据处理和可分态比较给出的是它们之间的上界，而不是等式；$I_{\rm F}>0$ 并不保证探测器负性非零。
+
+
+\subsection{模态选择性访问与高斯辅助}\label{subsec:gaussian-mode-access}
+
+为明确这些结果的对象，考虑 $m$ 个选定玻色模，其正则正交分量为 $\hat{\boldsymbol R}=(\hat q_1,\hat p_1,\ldots,\hat q_m,\hat p_m)^T$。记 $d_j=\langle\hat R_j\rangle$、$\Delta\hat R_j=\hat R_j-d_j$，定义
+\begin{equation}
+V_{jk}=\tfrac12\langle\{\Delta\hat R_j,\Delta\hat R_k\}\rangle,
+\qquad [\hat R_j,\hat R_k]=i(\mathbb J_m)_{jk},
+\quad \mathbb J_m=\bigoplus_{j=1}^{m}\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\label{eq:gaussian-covariance}
+\end{equation}
+一阶矩和协方差矩阵 $V$ 确定一个高斯态。辛变换 $S$ 保持 $\mathbb J_m$ 不变，并把 $V$ 化为 Williamson 正规形；在本文 $\hbar=1$ 的约定下，辛本征值满足 $\nu_j\geq1/2$，用于描述各正规模的热混合程度。对数负性为 $E_N=\ln\|\rho^{T_B}\|_1=\ln(1+2\mathcal N)$；其正值能够见证纠缠，而零值只有在附加假设下才排除纠缠 \cite{Weedbrook2012}。
+
+另一条研究路线关注有限数量的探针应当访问哪些集体场模。对于纯高斯格点态，Torres 等证明，在区域 $A$ 支持的固定数量模中，最混合的 Williamson 正规模使这些模与区域补集之间的纠缠达到最大；在连续极限下，这些模对应探测器的空间涂抹轮廓，并与面积律标度联系起来 \cite{Torres2023}。相关研究识别了携带负性的核心模层级，也表明当观测者只能访问局域区域时，经典关联可能遮蔽纠缠；若进一步测量外部场自由度并交换经典记录，可访问的条件资源也会发生变化 \cite{KlcoBeckSavage2023,KlcoBeck2023}。
+
+Gao 和 Klco 进一步证明，对于 $AB$ 对称、$\phi\pi$ 不相关，且跨区域场协方差块半正定、动量协方差块负半定的高斯协方差矩阵（其考察的自由标量真空中对称区域属于此结构类），对数负性既是必要也是充分的纠缠判据。局域辛变换可将承载负性的子空间整理为一系列纠缠的单模对，最优集体轮廓则把这些模对映射到相应的单模探针配对 \cite{GaoKlco2025}。单对探针不必然捕获整个多模资源；连续极限下的完整可访问性对应于这一系列模对。
+
+Gao 和 Klco 还研究了另一种辅助访问方案：对于纯高斯三分系统 $A$--$B$--$C$，在区域 $C$ 进行测量并通过经典通信，可以净化 $A$ 与 $B$ 之间的关联；有限高斯辅助协议进一步给出了高斯纠缠辅助量和高斯纠缠形成量的界 \cite{GaoKlco2026Assistance}。第三个区域的测量和经典记录属于额外操作资源，因此不能把这种辅助协议与无辅助的双探针纠缠提取混为一谈。这些结果比一般数据处理上界更强，因为它们给出了构造性的态依赖结论；但其成立依赖高斯协方差结构和经过优化的模访问。除非给出明确的实现映射，否则不能直接推广到任意相互作用场、非高斯态，或有限时间、有限能量的 UDW 装置。
+
+对于 高斯场，近期还提出了一种互补的模态几何诊断量。Agullo 等定义了一个在局域辛变换下不变的对称 partner 模重叠量，并把该重叠量与一个由局域及联合辛不变量决定的态依赖阈值比较，给出两个高斯模纠缠的充要判据。单纯正的重叠量不足以认证纠缠。该构造从几何上说明，所选场模的关联如何编码在其纯化 partner 模中。不过，它描述的是模态关联，本身并不是有限探测器的纠缠提取协议，也不能替代对实际探测器空间涂抹函数的优化 \cite{AgulloPartner2025}。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/Fig3_accessibility_hierarchy_zh.pdf}
+\caption{在正文所述的乘积制备和局域信道假设下，场区域关联与探测器可访问资源之间的数据处理层级。这些不等式只给出上界，并不意味着探测器纠缠提取具有正的下界。}
+\label{fig:accessibility-hierarchy}
+\end{figure}
+
+\subsection{信道依赖性与有限资源约束}
+数据处理不等式具有普遍性，但严格收缩系数依赖信道。对于局域探针信道 $\mathcal E_A,\mathcal E_B$，形式为
+\begin{equation}
+I(D_A:D_B)\leq\eta_A\eta_B I_{\rm F}(A:B),\qquad 0\leq\eta_A,\eta_B\leq1
+\label{eq:product-mi-contraction}
+\end{equation}
+的上界，只有在收缩系数与场互信息采用相同输入类别和正则化时才具有定量意义。完全收缩和量子 Doeblin 方法可为指定噪声信道提供充分条件 \cite{HircheGeorgeNuradhaWilde2026Conditional,GeorgeHircheNuradhaWilde2026Doeblin}，但不能据此给相对论场指定一个与探测器无关的提取效率。
+
+理想 Jaynes--Cummings 信道说明了其中的障碍：即使固定平均能量预算，罕见的高能 Fock 输入仍可近乎完整地保留编码比特。因此，平均能量约束并不自动保证最坏情形互信息收缩系数严格小于一，这与经典信道的平均代价反例有关 \cite{PolyanskiyWu2016Dissipation}。硬截断、明确标定的噪声或依赖实际输入态的单侧数据处理估计可能更有用。详细论证见附录~\ref{app:finite-mode-transfer}；其中的有限模转移例子则说明场互信息、探测器互信息和探测器负性的区别 \cite{CohenBenAryehMann1994}。这些例子解释上界的适用限制，不是连续场纠缠提取协议。
+
+\subsection{相关场区域的几何选择}
+\label{subsec:detector-region-geometry}
+
+探测器点极限还涉及一个几何问题。对于静止探针，记 $2T$ 为开关持续时间、$L$ 为中心间距、$\sigma$ 为空间支撑半径：在应用场到探测器的数据处理上界时，不能把探测器的相互作用区域误认为半径为 $\sigma$ 的等时空间球。探测器实际作用在如下时空管内：
+\begin{equation}
+\mathcal W_A=\{(t,\mathbf x): |t|<T,\ 
+|\mathbf x-\mathbf x_A|<\sigma\},
+\label{eq:detector-worldtube}
+\end{equation}
+探测器 $B$ 的区域类似。包含该名义开时空管的一个同心因果双锥，是半径为
+\begin{equation}
+R=T+\sigma
+\label{eq:enclosing-doublecone-radius}
+\end{equation}
+的等时空间球的因果发展区域。事实上，双锥 $D(B_R)$ 满足 $|t|+|\mathbf x-\mathbf x_A|<R$，因此当 $R\geq T+\sigma$ 时，它包含 $\mathcal W_A$ 的所有点。如果相互作用紧支撑位于该名义开时空管内部，$R$ 已足够。若要包含基准轮廓的闭支撑，则取 $R_\epsilon=T+\sigma+\epsilon$，其中 $0<\epsilon<L/2-T-\sigma$。下文把 $R=T+\sigma$ 称为极限包含半径。严格类空条件 $L-2\sigma>2T$ 恰好等价于 $L>2R$。所以在探测器点极限过程中，两个包含区域始终保持类空分离，而其半径趋于 $R=T$，并不趋于零。
+
+因此，局域探测器信道对应的是包含双锥的局域代数，必要时采用上述小扩大，而不是半径为 $\sigma$ 的等时空间球的局域代数。在前文采用的 split 或有限分辨率假设下，正确的数据处理关系应写为
+\begin{equation}
+I(D_A:D_B)\leq
+I_{\rm F}\!\left(D(B_{R_\epsilon})_A:
+D(B_{R_\epsilon})_B\right).
+\label{eq:correct-doublecone-dpi}
+\end{equation}
+根据时间片性质，因果双锥的局域代数可以由其等时 Cauchy 球上的代数表示。因此可以使用空间球互信息的计算方法，但空间球半径应取 $R_\epsilon$，而不是 $\sigma$。
+
+这一差别十分重要。已有研究给出了四维无质量标量场真空中两个等时空间球在大距离条件下的互信息展开，其领先尺度为
+\begin{equation}
+I_{\rm F}(B_R^A:B_R^B)
+\sim C_{\rm sc}\left(\frac{R}{L}\right)^4,
+\qquad R/L\ll1,
+\label{eq:small-ball-mi-scaling}
+\end{equation}
+其中 $C_{\rm sc}$ 由场论和区域约定决定 \cite{Chen2017CFTMI,AgonCasiniGursoyPlanella2025}。这是场区域互信息的小区域展开，并不是探测器负性的尺寸标度。固定一个允许的 $\epsilon>0$，代入包含半径，得到
+\begin{equation}
+I_{\rm F}\sim C_{\rm sc}
+\left(\frac{T+\sigma+\epsilon}{L}\right)^4
+\longrightarrow
+C_{\rm sc}\left(\frac{T+\epsilon}{L}\right)^4
+\quad (\sigma\to0),
+\label{eq:worldtube-enclosing-mi-limit}
+\end{equation}
+这里假设大距离展开适用。因此，在探测器空间半径趋于零而相互作用持续时间保持不变时，场互信息预算不会仅仅因为 $\sigma\to0$ 就自动趋于零。
+
+对于第~\ref{subsec:udw-pointlike-limit} 节引入的基准，$L/T=2.033333\ldots$，当 $\sigma,\epsilon\to0$ 时，极限包含半径为 $R/T=1$。两个等半径球的交比为 $z=4R^2/L^2\simeq0.9675$，所以式~\eqref{eq:small-ball-mi-scaling} 的大距离展开在这里并不具有定量控制力。不能将该渐近公式直接代入，作为数据处理上界的数值。还需要使用受控的 split 或格点正则化，直接计算这两个近乎相接的因果双锥之间的 高斯场互信息。
+
+这一几何结论不需要数值互信息 ansatz：把固定时长相互作用归属于逐渐缩小的等时空间球，改变了所约束的子系统。定量的场导出负性界仍需要，对包含完整相互作用支撑的区域互信息，给出受控数值或严格上界。
+
+\section{局域探针的纠缠提取}
+\label{sec:harvesting}
+纠缠提取为检验局域探针能否从量子场获得量子关联提供了直接途径。微扰探测器判据已被广泛使用，但其解释依赖完整相互作用支撑之间的因果关系、探测器尺寸和微扰阶数。两台有限尺寸探针的支撑几何如图~\ref{fig:spacelike-support} 所示。
+
+\subsection{微扰探测器态判据}
+纠缠提取使初始互不相关的探针与场局域耦合，并检验最终约化态。真空提取方案和探测器计算表明，在完整相互作用区域之间没有信号交换时，仍可访问原有场关联 \cite{Reznik2003,ReznikRetzkerSilman2005,PozasKerstjens2015}。对于初始处于基态、且所耦合场观测量的单点均值为零的两能级探针，记二阶激发概率为 $P_A,P_B$、基态与双激发态之间的相干为 $\mathcal M$。相应二阶部分转置块的对角元为 $P_A,P_B$，非对角元为 $\mathcal M,\mathcal M^*$；其可能为负的本征值为
+\begin{equation}
+\lambda_-^{(2)}=\frac{P_A+P_B-\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}}{2}.
+\end{equation}
+采用 $\mathcal N=(\|\rho^{T_B}\|_1-1)/2$ 时，最低阶负性为
+\begin{equation}
+\mathcal N^{(2)}=\max\!\left\{0,
+\frac{\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}-(P_A+P_B)}{2}\right\}.
+\label{eq:negativity}
+\end{equation}
+$|\mathcal M|>\sqrt{P_AP_B}$ 是阈值，不是一般负性的数值。相同探针时，该式化为 $\max(0,|\mathcal M|-P)$。局域概率与非局域相干必须在同一阶计算，省略项可能在阈值附近决定符号。探测器能隙的作用需要明确限定。对于自由标量真空中的相同惯性基态探针，Pozas-Kerstjens、Louko 和 Mart'{i}n-Mart'{i}nez 在匹配耦合及仅有时间平移的相同开关假设下，建立了零能隙的最低阶提取障碍；对于相互作用时间窗口重叠的情形，其证明还使用球对称空间轮廓 \cite{PozasKerstjensLoukoMartinez2017}。这不禁止任意探针对、场态或耦合下的纠缠提取。非零能隙能够改变局域激发与非局域相干之间的竞争。
+
+一种高斯模分析借助某个选定探测器模的 partner 模重写纠缠条件，并在包括均匀加速构型在内的指定设置中得到禁止条件 \cite{OsawaNambuYoshimoto2026}。在该分析中，轮廓重叠是一项必要条件，却不等价于完整的高斯可分性判据。这是模态设置下的限制，并非针对一切加速探测器模型的禁止定理。
+
+这些量依赖相互作用。开关、空间轮廓、导数耦合、探测器维数和初态都会改变所采样的核，因此反平行与平行加速可以在指定模型中给出不同趋势 \cite{SaltonMannMenicucci2015}。局域相对论场探针在明确假设下再现最低阶提取预测 \cite{Perche2024}；高斯模提取上界则针对指定协方差框架中的模选择问题 \cite{Torres2023}。二者均不提供与探测器无关的普适提取产额。
+
+\subsection{完整相互作用支撑与非局域振幅}
+完整相互作用支撑严格类空分离时，微观因果性排除探针间信号传递。存在因果接触时，最终纠缠可能包含信号介导的贡献。对于最低阶自由标量模型，对易子--反对易子分解区分态无关的因果响应与态依赖关联 \cite{Tjoa2021}，两部分振幅可以干涉：
+\begin{equation}
+|\mathcal M|^2=|\mathcal M_{\rm corr}|^2+|\mathcal M_{\rm comm}|^2
++2\operatorname{Re}(\mathcal M_{\rm corr}\mathcal M_{\rm comm}^*).
+\label{eq:harvesting-communication-interference}
+\end{equation}
+负性是总振幅与局域噪声的非线性函数，一般不能分成两个独立正产额。相长和相消干涉均依赖模型 \cite{Zambianco2024,Zambianco2026}。一项关于共形耦合标量场的 de Sitter 计算明确表明，宇宙膨胀会改变这两类贡献之间的干涉，并可根据探测器构型增强或抑制总的纠缠提取 \cite{Zambianco2024,Zambianco2026}。这一结果针对具有因果联系的相互作用，不能解读为纯类空纠缠提取的增强。
+
+高斯轮廓具有非紧致尾部。中心距离或较小的通信介导纠缠估计量，都不足以证明相互作用严格类空分离。紧致支撑可建立严格条件；尾部近似则需要显式误差或信号预算。第~\ref{subsec:udw-pointlike-limit} 节的紧致基准给出前一种情况。指定微扰计算的协变性与无信号交换仍是两项不同检查 \cite{MaesoGarcia2022}。四种因果情形及其所需证据汇总于表~\ref{tab:causal-attribution}。
+
+\begin{table}[htbp]
+\centering\small
+\caption{因果分类及相应的证据要求。}
+\label{tab:causal-attribution}
+\begin{tabular}{p{0.24\linewidth}p{0.32\linewidth}p{0.34\linewidth}}
+\toprule
+情形 & 必要检查 & 解释\\
+\midrule
+严格类空提取 & 两个紧致相互作用支撑中的任意两点均类空分离 & 排除探针间信号交换；探针见证仍需近似控制。\\
+含尾部的有效分离 & 对指定轮廓约束尾部贡献或信号误差 & 在该误差预算内评估提取，不声称严格类空支撑。\\
+存在因果接触 & 保留完整局域、非局域振幅及干涉 & 最终见证为正本身不能区分提取与信号介导生成。\\
+后选择提取 & 同时指定条件态和成功概率 & 区分条件改进与平均资源产额。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/Fig2_spacelike_support_zh.pdf}
+\caption{两台静止有限尺寸探测器的时空支撑。最小空间间距为 $L-2\sigma$，最大时间差为 $2T$；条件 $L-2\sigma>2T$ 保证完整相互作用支撑严格类空分离。虚线菱形表示半径为 $T+\sigma$ 的极限包含双锥；闭支撑所需的正扩大见第~\ref{subsec:detector-region-geometry} 节。}
+\label{fig:spacelike-support}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{严格类空分离下的点极限}
+\label{subsec:udw-pointlike-limit}
+
+UDW 探测器的点极限和有限空间轮廓的作用需要区分为几个问题。Schlicht 引入有限刚性探测器以澄清响应正则化；Louko 和 Satz 研究了空间轮廓正则化及探测器响应的零尺寸极限，随后又讨论了曲率时空中的平滑开关 \cite{Schlicht2004,LoukoSatz2006,LoukoSatz2008}。这些工作主要研究单探测器响应，并不是关于固定紧支撑类空分离条件下双探测器纠缠点极限的证明。在相对论量子信息中，Lee 和 Fuentes 构造了具有有限空间尺寸、并通过空间轮廓选择场模的 UDW 探测器 \cite{LeeFuentes2014}。Stritzelberger 等研究的则是物质探测器质心的相干离域；这一自由度在物理上不同于对内部探测器耦合进行普通空间涂抹 \cite{Stritzelberger2021}。双探测器提取框架则由早期工作及后续系统分析建立 \cite{Reznik2003,PozasKerstjens2015}。下面给出一个紧支撑基准计算，在固定开关持续时间和探测器中心间距时考察空间尺寸趋于零的行为。这里的数值系数由本文计算得到，并非引自上述文献。
+
+对于四维 Minkowski 真空中的无质量实标量场，两台静止且相同的 UDW 探测器采用紧支撑开关函数和紧支撑空间轮廓时，我们的计算表明：在保持相互作用持续时间和探测器间距不变的情况下，探测器空间尺寸趋于零时，最低阶提取间隙仍为正。记 $2T$ 为开关持续时间、$L$ 为中心间距、$\sigma$ 为空间支撑半径；最低阶系数由 $P_\sigma=\lambda^2p_\sigma$、$\mathcal M_\sigma=\lambda^2m_\sigma$ 定义。整个参数扫描均满足完整相互作用区域的严格类空条件 $L-2\sigma>2T$。取 $T=1$、$\Omega T=9$ 和 $L/T=2.033333\ldots$，点极限局域响应系数为 $p_0=2.13325790\times10^{-6}$，非局域振幅为 $|m_0|=3.57653182\times10^{-6}$，因此二阶结果为 $\lim_{\sigma\to0}\mathcal N_\sigma^{(2)}/\lambda^2=1.44327392\times10^{-6}$。所以，最低阶纠缠提取间隙为正并非有限空间尺寸造成。该结论仅适用于所指定的场、开关函数和弱耦合范围；它并不决定逐渐缩小的等时场区域之间的互信息。完整的紧支撑轮廓、小尺寸展开、积分核验和图形保留在附录~\ref{app:pointlike-detectors} 节。
+
+\subsection{优化与有限资源效应}
+时间轮廓优化可以提高最低阶提取间隙，但优化结果必须处于近似的适用范围。已发表的 Hermite 基优化固定开关相对于 Gaussian 参考轮廓的 $L^2$ 范数，并区分不同信号约束 \cite{MoroteBalboaPerche2026}。这种归一化排除了任意整体放大相互作用，却没有固定驱动峰值、控制带宽或实验功耗；近似紧致轮廓也仍有尾部。因此，二阶系数的大增益仍需单独检查因果泄漏、控制成本和有限耦合修正。原作者明确指出，把优化结果外推到拟议实验会超出二阶预测的适用范围。超导可变能隙探测器与 Bose 极化子方案引入不同的微观限制 \cite{TeixidoBonfill2026,PercheGozzini2026}。它们的意义是把实验控制映射到有效相互作用，而不是提供一个通用温度或通用见证数值。
+
+探测器集合中两个组之间的双体纠缠，并不自动认证所有探针的真正多体纠缠。在一篇已获接收的论文中，Salomaa、Keski-Vakkuri 和 Nadal-Gisbert 利用维数随探测器数量线性增长的子块计算最低阶双体负性，并在固定单探测器参数的交替链中得到近似线性增长 \cite{SalomaaKeskiVakkuriNadalGisbert2026}。这是有用的计算简化和特定微扰标度，不等于固定总资源下的无限增益。增加探测器同时改变总相互作用预算，并可能破坏微扰的一致控制。至少，对于围绕全基态输入展开的状态，最低阶总激发概率 $\sum_jP_j^{(2)}$ 应保持很小；这一诊断本身仍不约束全部高阶项。访问额外场区和经典记录也会改变可提取资源 \cite{KlcoBeck2023}，因此应把这些操作计入资源预算。
+
+代数纠缠偷取讨论另一种极限：在相应算子代数设定中，局域操作可以从参考态借用纠缠，同时使参考态扰动较小 \cite{vanLuijk2024,vanLuijk2025}。这不指定具有任意产额的有限能量探测器协议。本文仍以指定探针相互作用在受控物理代价下产生的资源为操作对象。
+
+\subsection{相互作用场与非经典背景}
+近期研究还将纠缠提取推广到更广泛的场论和背景。Wurtz 等人将点状 UDW 探针耦合到一般维数共形场论中的标量主算符，发现算符标度维数增大时探测器负性和互信息受到抑制，并利用全息共形场论中的体有效场论区分场纠缠提取与通信贡献。该研究采用非紧支撑的高斯时间开关，因此其类空区域属于有效类空，而不是紧支撑意义下的严格类空 \cite{WurtzLimaMyersMartinez2026}。其他研究考察了商 Minkowski 几何的叠加，以及紧化或叠加背景中的加速探测器 \cite{ChakrabortyHacklZych2025,PoopathysankarHacklChakraborty2026}。另一个 Bañados--Teitelboim--Zanelli（BTZ）黑洞模型将黑洞质量视为量子叠加，发现提取的互信息和纠缠对探测器间距及背景分支质量的依赖并不相同；增强的探针态依赖于对几何寄存器进行指定的末态投影，因此投影记录及成功概率也应计入资源预算 \cite{TangLiuLiuWang2026}。这些是特定模型中的干涉和轨迹效应，不能推广为量子引力的普遍预言。若采用高斯开关，还需单独分析其尾部，不能直接视为严格类空支撑。
+
+\section{资源判据与操作性认证}
+\label{sec:resources}
+探针态本身并不能确定究竟认证了哪一种量子资源。纠缠、多体纠缠和语境性对应不同的操作场景，也需要不同的见证。下面的比较将说明常见诊断量在何种条件下可靠，以及还需要哪些附加假设。
+
+近期一篇预印本进一步澄清了当环境本身没有公认资源理论时，“资源提取”应如何理解。Nyström 等定义了依赖相互作用的最大诱导自由态集合 $\mathcal S_{\max}$：在给定相互作用下，对任何自由探针输入都不能在探针中生成所选资源的环境态属于该集合。若独立定义的环境自由态集合 $\mathcal F_E$ 满足 $\mathcal F_E\subseteq\mathcal S_{\max}$，则探针中出现资源可以认证环境在该资源理论下并非自由态。若不满足这一包含关系，探针资源的生成本身并不能证明环境原先具有相同资源；非自由的探针–环境相互作用也可能产生该资源。弱、强诱导资源理论的区别还涉及探针反作用后环境是否仍留在诱导自由态集合中，以及重复相互作用时的稳定性。附录~\ref{app:contextuality} 给出了正则化描述下的归因命题及证明。这一框架澄清了“从环境提取资源”的操作含义 \cite{Nystrom2026Induced}。
+
+\subsection{资源见证与测量场景}
+纠缠、导引、Bell 非局域性、相干性、魔性和语境性依赖不同操作结构。在固定双体场景中，
+\begin{equation}
+\text{Bell 违背}\Longrightarrow\text{可导引性}\Longrightarrow\text{纠缠},
+\label{eq:resource-implication-chain}
+\end{equation}
+反向一般不成立 \cite{Bell1964,ClauserHorneShimonyHolt1969,WisemanJonesDoherty2007,Uola2020}。相干性依赖参考基底及自由操作；相干性转换为纠缠是特定资源理论内的定理 \cite{BaumgratzCramerPlenio2014,WinterYang2016,Streltsov2015,StreltsovAdessoPlenio2017}，不意味着探测器相干性等同于负性。一项靠近理想反射边界的三探测器计算体现了这种区别：在其特定无质量标量场模型中，探测器与边界距离减小会抑制提取相干性，而同一边界却可能保留甚至增强纠缠；不同能隙还可能扩大纠缠提取范围，而相干性仍可在更大的探测器间距上被提取。这些结果依赖具体构型，并不意味着相干性与纠缠存在普遍排序 \cite{WuReflectingBoundary2026}。
+
+魔性--语境性联系同样依赖维数、表示和允许的子理论。在相应奇素数维稳定子设定中，语境性是计算优势的必要条件，但任意语境性并不保证魔态蒸馏 \cite{Howard2014,VeitchEtAl2014,Schmid2022}。语境分数属于指定的经验测量模型，包括其中可相容的测量语境 \cite{AbramskyBrandenburger2011,AbramskyBarbosaMansfield2017}。广义语境性则要求本体表示尊重指定制备、测量或变换之间的操作等价关系 \cite{Spekkens2005}。一个场景中的结论，不能成为关于所有语境性含义的、与状态无关的结论。表~\ref{tab:resource-types} 汇总了理解主要资源判据所需的操作信息。
+
+\begin{table}[htbp]
+\centering\small
+\caption{解释探测器资源研究所需的参考结构。}
+\label{tab:resource-types}
+\begin{tabular}{p{0.18\linewidth}p{0.32\linewidth}p{0.40\linewidth}}
+\toprule
+资源 & 常用诊断 & 数值之外仍需的信息\\
+\midrule
+纠缠 & 负性、并发度、纠缠见证 & 二分划分、归一化、状态重构和混合态判据。\\
+导引／Bell 非局域性 & assemblage 检验／Bell 不等式 & 可信方、方向、测量设置与统计置信度。\\
+相干性 & 基底相关相干性或鲁棒性 & 参考基底、自由操作和转换或区分任务。\\
+魔性／语境性 & mana、稳定子指标／语境分数 & 维数、稳定子子理论与完整测量场景。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+探测器模型具体体现了这些要求。非相同能隙可以产生有方向性的导引范围 \cite{Wu2025}。魔性提取采用的探测器维数和稳定子诊断未必给出与纠缠一致的排序 \cite{Nystrom2025,Cepollaro2025}。LeMaitre 对三能级探针（qutrit）采用修正的五测量场景，Lima 等则研究两个 qutrit 的相容 Heisenberg--Weyl 测量 \cite{LeMaitre2026,LimaPreciadoSrivastava2026}。它们的语境分数属于不同经验模型，不能直接互换；非紧致轮廓还要求单独限定因果尾部。应比较实际测量模型中认证的性质，而不是给不同资源的数值作统一排名。
+
+Campos Delgado 和 Ipek 的研究进一步说明了这一区分 \cite{CamposDelgadoIpek2026}。其信道论证针对由全部 POVM 检验的非语境制备族：可逆的完全正保迹（CPTP）映射保持相关操作等价关系，因此可把初始非语境模型迁移到输出制备族。这里的可逆性是线性可逆性，逆映射不必为正映射，也不必能够物理实现。该文在有限涂抹方差条件下给出无能隙、高斯场的精确构造，并讨论恒等信道附近的弱耦合情况。这些陈述不否定特定 qutrit 测量场景中的语境分数结果，也没有建立适用于任意有限耦合、制备族、奇异涂抹或条件后选择映射的普适禁止定理。
+
+附录~\ref{app:contextuality} 明确列出这一信道命题及证明。有限维中，只要精确信道在零耦合处连续，就能在恒等映射的某个足够小邻域内保证可逆；但每个有限微扰截断均可逆，并不能证明任意有限耦合极限仍然可逆。比较“语境性提取”时，应先报告制备族、测量语境或操作等价、允许的变换，以及任何筛选规则。
+
+\subsection{混合态多体纠缠与残余负性}
+\label{subsec:multipartite-topology}
+混合态若可以写成在可能不同二分划分上可分的状态的凸混合，就是双可分态；真正多体纠缠（GME）排除所有这类分解。双体负性的残余组合不自动成为混合态上忠实的 GME 指标 \cite{GuhneSeevinck2010,OuFan2007,MaLiShang2025}。
+
+一个显式诊断例子是
+\begin{equation}
+\rho_{\rm b}=\frac13\sum_{XY|ZW\in\{AB|CD,AC|BD,AD|BC\}}
+\Phi^+_{XY}\otimes\Phi^+_{ZW},\qquad
+\Phi^+=|\Phi^+\rangle\langle\Phi^+|.
+\label{eq:main-gme-counterexample}
+\end{equation}
+这里 $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$。每个分量都在一个 $2|2$ 划分上可分，故混合态双可分。然而，采用归一化约定 $N=\|\rho^{T_A}\|_1-1=2\mathcal N$ 时，四个 $1|3$ 负性均等于 $1$，六个两比特负性均为零。因此，原始残余
+\begin{equation}
+\pi_A=N_{A|BCD}^2-\sum_{X=B,C,D}N_{AX}^2
+\end{equation}
+及对应的 $\pi_B,\pi_C,\pi_D$ 均为 $1$，其算术平均 $\pi_4=(\pi_A+\pi_B+\pi_C+\pi_D)/4$ 也为 $1$。该残余达到最大值仍不能认证四体 GME。附录~\ref{app:resource-diagnostics} 给出三体反例及其与探测器研究的关系。为避免将残余量误认为混合态 GME 见证，本文将其称为“残余负性指标”。
+
+\subsection{局域信道不变性与微扰复苏诊断}
+对于
+\begin{equation}
+|\mathrm{CL}_4\rangle=\tfrac12(|0000\rangle+|0011\rangle+|1100\rangle-|1111\rangle),
+\end{equation}
+约化 $ABC$ 态已经满足 $N_{A|BC}=N_{B|AC}=1$。作用在 $D$ 上的任意局域 CPTP 信道保持该约化态不变。利用对 $D$ 取偏迹时负性的单调性，以及首子系统为比特的上限，可以得到信道作用后仍有 $N_{A|BCD}=N_{B|ACD}=1$。因此，相应探测器计算中的冻结 \cite{LiCluster2026} 有一个精确的状态--信道结构解释，并不依赖 Unruh 特有机制。
+
+有限阶复苏图存在另一个问题。对于固有加速度 $a>0$、能隙 $\Omega$ 的探测器，令 $q=e^{-2\pi\Omega/a}$，$\nu$ 为无量纲有效耦合。附录~\ref{app:resource-diagnostics} 考察的一阶 W 与 Dicke 模型中，归一化修正为
+\begin{equation}
+\delta_W=\frac{\nu^2(1+3q)}{4(1-q)},\qquad
+\delta_D=\frac{\nu^2(1+q)}{2(1-q)}.
+\end{equation}
+在所检验耦合下，重构的转折点对应修正已达一量级 \cite{LiWState2025,WuDicke2026}。这说明这些截断在 $q\to1$ 时不一致受控，而不是证明精确动力学没有复苏。较小的归一化修正在这里是一项必要诊断，不是对全部高阶误差的充分界。附录和核验记录区分了依赖原文对应关系的重构与可独立检查的状态恒等式。
+
+\section{探测器观测量与实验读出}
+\label{sec:readout}
+\label{sec:curved}
+\label{sec:experiment}
+即使探针态判据已经明确，理论态也不等同于实验上建立的测量记录。与探测器耦合的观测量、其紫外行为以及校准和抽样模型，共同决定能够从测量数据中推断什么。
+
+\subsection{探测器响应函数与观测量依赖性}
+将式~\eqref{eq:udw} 中的 $\hat\phi$ 换为厄米观测量 $\mathcal O$，取与场不相关的基态探针，并将相互作用展开到二阶，可得最低阶响应
+\begin{equation}
+P_\nu^{(2)}=\lambda_\nu^2\int d\tau\,d\tau'\,
+\chi_\nu(\tau)\chi_\nu(\tau')e^{-i\Omega_\nu(\tau-\tau')}
+W_{\mathcal O}(x_\nu(\tau),x_\nu(\tau')),
+\label{eq:generic-field-operator-response}
+\end{equation}
+其中 $W_{\mathcal O}(x,x')=\langle\mathcal O(x)\mathcal O(x')\rangle$。扩展探针还需空间积分；双探针的局域响应与交叉关联必须来自同一模型。匹配能隙或 Kubo--Martin--Schwinger（KMS）温度并不匹配这些核 \cite{BirrellDavies1982,Wald1994}。表~\ref{tab:field-coupling-comparison} 对比了代表性耦合方式及进行有效比较所需控制的模型条件。
+
+\begin{table}[htbp]
+\centering\small
+\caption{代表性探针耦合及模型比较所需控制。}
+\label{tab:field-coupling-comparison}
+\begin{tabular}{p{0.16\linewidth}p{0.32\linewidth}p{0.42\linewidth}}
+\toprule
+场 & 耦合观测量 & 所需控制\\
+\midrule
+实标量场 & $\phi$ 或固有时导数 & 质量、曲率耦合、场态、红外处理、开关与空间轮廓。\\
+Dirac 场 & 本文玻色探针使用的偶复合算符 $:\bar\psi\psi:$ & 自旋联络、平行传播、复合算符定义与场态。\\
+Maxwell 场 & 电偶极 $d^iE_i$ 或场强 & 规范不变张量核、标架、偏振、方向、原子形状因子与边界条件。\\
+复合标量观测量 & $:\phi^2:$ 或指定的重整化能量密度 & 单点均值扣除、连通关联、分布意义的时间排序、时空维数及完整时空轮廓。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+匹配平稳细致平衡温度，不能确定响应的归一化或两个位置之间的交叉关联；有限时长相互作用还可能没有达到平稳范围。因此，比较背景时，除名义温度外，还需固定耦合观测量、场态、轨迹与完整开关。标量质量和曲率耦合、张量方向以及复合算符重整化，分别影响这些设定的不同部分 \cite{BukhariWang2024,CrispinoHiguchiMatsas2008}。
+
+对探测 Dirac 场的玻色探针，偶标量密度 $:\bar\psi\psi:$ 避免了改变宇称的线性耦合，其二点函数是需要独立处理的四场关联 \cite{LoukoToussaint2016,DubeyKolekar2025}。电磁偶极通过 $d^iE_i$ 耦合，其中 $d^i$ 和 $E_i$ 分别是在所选局域标架中的偶极与电场分量；张量核、方向和原子形状因子共同决定采样关联 \cite{PozasKerstjensEM2016}。场的名称或共同温度都不能确定提取产额。边界条件也会改变探针所采样的电磁模结构。Ströhle 和 Momčilović 研究了圆柱腔中的两个高斯偶极探测器，发现腔体长度和模的宇称会影响提取关联，而某些最大提取区域对腔体半径不敏感。由于该模型采用高斯空间轮廓和时间开关，其名义类空区域不能与紧支撑严格类空条件混为一谈；它是特定腔体中的电磁场计算，而不是对紧支撑基准的替代 \cite{StrohleMomcilovic2026}。
+
+在规范理论中，规范不变探针响应与区域纠缠的归属是不同构造。后者需要指定局域代数，并处理中心、Gauss 约束或边界自由度 \cite{CasiniHuertaRosabal2014,DonnellyFreidel2016}。因此，将场区域量与有限探针见证作比较之前，必须先规定子系统。
+
+\subsection{复合观测量与紫外正则性}
+$\langle\phi\rangle=0$ 并不意味着二次观测量的 $\langle\mathcal O\rangle=0$。例如，热态相对于 Minkowski 真空扣除后的能量密度可以非零。该均值充当局域相干驱动，产生一阶探针相干，因此不能直接套用导出式~\eqref{eq:negativity} 的未修正基态矩阵块。对于给定均值，写作 $\mathcal O=\overline{\mathcal O}\,I+\delta\mathcal O$，其中 $\overline{\mathcal O}(x)=\langle\mathcal O(x)\rangle$，相应最低阶涨落核为
+\begin{equation}
+W_{\mathcal O}^{\rm c}(x,x')=
+W_{\mathcal O}(x,x')-\overline{\mathcal O}(x)\overline{\mathcal O}(x').
+\label{eq:connected-composite-kernel}
+\end{equation}
+使用连通核提取公式之前，必须一致地计入均值诱导的局域演化，或在局域相互作用绘景中移除它。这一处理并不消除局域驱动的实际能量成本。
+
+观测量单点函数的重整化，也不同于证明其时间排序二点函数给出有限的探测器计算。二次耦合中的持续发散已有研究 \cite{SachsMannMartinez2017}。近期预印本分析能量密度耦合，识别出由开关控制的同时刻项；对其中使用的 Gaussian 空间轮廓，涂抹在 $1+1$ 与 $2+1$ 维足以正则化相应项，在 $3+1$ 维却未必足够 \cite{ZambiancoRagulaMartinez2026UV}。时间支撑不相交的光滑紧致开关可消除该文所研究化简中的同时刻项。这是指定模型内的充分条件，并非所有复合观测量或探测器几何的通用判据。特别是，分离探测器的交叉核必须保留空间间距；不能用同位置的点探测器化简代替它。附录~\ref{app:composite-kernel} 给出显式分离核检验。
+
+紫外有限性与因果归因是独立要求。时间不重叠的相互作用仍可能类时关联；Gaussian 空间轮廓即使中心相距很远，尾部也会重叠。反之，两个严格类空紧致支撑上的光滑交叉核在其乘积区域内没有光锥重合奇点。因此，可靠比较需要说明重整化约定、分布拉回、完整支撑与极限过程，不能仅以“已涂抹”或“正规序”代替完整的正则性论证。
+
+\subsection{探针态的实验认证}
+\label{sec:reliability}
+理想约化态上计算的见证认证的是该模型。实验认证还需要读出校准及统计不确定性。对于实际输出探针态 $\rho$，读出效应算符 $E_r$ 给出 $p(r|\rho)=\Tr(E_r\rho)$。从初始场态预测这一分布，还需要指定制备、耦合、开关、读出噪声模型和后选择规则。必须明确符号约定：若厄米纠缠见证 $W_{\rm ent}$ 对所有可分态 $\sigma$ 满足 $\Tr(W_{\rm ent}\sigma)\geq0$，则认证纠缠需要其负期望的置信上界仍小于零。资源单调量还需满足指定自由操作下的不增性质，单纯作为数值指标并不足够。
+
+例如，设 $W_{\rm ent}=w_0I+\sum_{k=1}^K w_kO_k$，测量 $O_k$ 的结果位于 $[a_k,b_k]$。每个固定设置独立重复 $n_k$ 次，总失败概率取 $\delta\in(0,1)$，则 Hoeffding 不等式和并集界给出充分认证条件 \cite{Hoeffding1963}
+\begin{equation}
+\widehat w+\Delta_{\rm stat}+\Delta_{\rm cal}<0,\qquad
+\Delta_{\rm stat}=\sum_{k=1}^K|w_k|(b_k-a_k)
+\sqrt{\frac{\ln(2K/\delta)}{2n_k}}.
+\label{eq:finite-sample-witness}
+\end{equation}
+其中 $\widehat w$ 是测得的见证估计，$\Delta_{\rm cal}$ 是另行论证的期望值系统偏差上界。抽样模型假定相同状态制备与固定测量设置；存在漂移、自适应选择或用同批计数拟合校准时，需要相应的联合分析。附录~\ref{app:finite-sample} 给出证明及 Pauli 读出例子。无界光学正交分量需要有依据的尾概率或矩界，不能仅靠截断观测数据就套用式~\eqref{eq:finite-sample-witness}。增加测量次数能够减小 $\Delta_{\rm stat}$，却不能消除校准偏差或证明近似动力学模型有效。
+
+局域性与探测可靠性施加独立限制。灵敏度和真空暗计数之间的界依赖所研究的装置与激发类别 \cite{Falcone2026}，不能代替资源特定的误差分析。突变开关和有限涂抹会改变紫外行为，以及局域噪声与非局域相干的竞争 \cite{Schlicht2004,LoukoSatz2006,LoukoSatz2008,PozasKerstjens2015}。接近资源阈值的预测尤其容易受省略项影响。因此，完整因果支撑、数值收敛和省略微扰阶的控制需要分别报告。
+
+\subsection{从模型预测到实验归因}
+预测探测器态需要微观模型，但在真实输出上测量经过校准的见证，可以在不假定某个微扰态精确的条件下认证纠缠。反过来，采样计数的置信度并不约束理论展开中省略的项。这两种见证用途需要分开。
+
+对理论估计 $\rho_{\rm mod}$，设已独立建立迹范数误差界
+\begin{equation}
+\|\rho-\rho_{\rm mod}\|_1\leq\epsilon_{\rm dyn}.
+\label{eq:dynamical-error-budget}
+\end{equation}
+则对任意有界厄米见证 $W_{\rm ent}$，H\"older 不等式给出
+\begin{equation}
+|\Tr[W_{\rm ent}(\rho-\rho_{\rm mod})]|
+\leq\|W_{\rm ent}\|_\infty\epsilon_{\rm dyn}.
+\label{eq:witness-model-error}
+\end{equation}
+其中 $\|\cdot\|_\infty$ 为算符范数。如果预测负期望的幅度超过该上界，其符号便能在模型不确定性下保持。式~\eqref{eq:witness-model-error} 的作用取决于是否建立了 $\epsilon_{\rm dyn}$，较小耦合或正的数值间隙本身并不提供这一界。式~\eqref{eq:finite-sample-witness} 则讨论真实制备态的采样和测量校准。
+
+将已观察到的探针资源归因于场，是进一步的推断。初始探针纠缠、共享辅助资源、直接相互作用或因果泄漏，都可能改变资源来源，而不改变所测状态具有纠缠这一事实。因此，提取主张需要把状态认证与协议的制备、局域性前提结合起来。同样的区别也说明，依赖记录的条件态变化不必表示超光速物理影响。
+
+\subsection{测量观测量的物理解释}
+电光取样（EOS）把光学探针与太赫兹场关联联系起来，已有工作在该平台中提出探测器态纠缠见证 \cite{Lindel2024}。Herter 等报告的真空／源关联实验分辨了与真空涨落和源辐射有关的贡献 \cite{Herter2026VacuumSource}。所测关联是重要的场取样结果，但本身不认证约化探针态纠缠或 Bell 违背；后一推断需要相应探针态见证的观测量与校准。
+
+具有微观依据的探测器方案提供互补证据。超导可变能隙模型把电路控制与导数耦合探测器相互作用联系起来 \cite{TeixidoBonfill2026}；Bose 极化子方案把俘获杂质映射为有效声子场的探针，并估计见证强度及测量需求 \cite{PercheGozzini2026}。这些属于实现方案。即使部分探测器动力学可以再现，模拟场与相对论真空仍是不同物理输入。
+
+Bose 极化子例子具体说明了认证瓶颈。在一个建议工作点，作者估计局域激发概率约为 $10^{-3}$，负性约为 $2\times10^{-4}$。布居测量确定局域噪声，非局域相干则需要额外受控旋转才能推断。其分析估计读出不保真度低于 $10^{-5}$，并需超过 $10^5$ 次实验实现才能分辨该效应 \cite{PercheGozzini2026}。这些是基于模型的可行性估计，并非已测得纠缠或普适采样次数。信号来自较大响应项之间的差，因此校准与统计精度同样重要。声子近似、有限场温度、控制误差和轮廓尾部还需要各自的误差预算，不能由较小的读出偏差一并约束。式~\eqref{eq:finite-sample-witness} 只是有界测量的一种保守认证规则，不是对该方案精度估计的复算。另一条类比实现路线最初利用光晶格中的超冷原子，通过有效色散关系的空间依赖淬火模拟加速观察者；后续方案将其推广到相互作用超冷费米子 \cite{RodriguezLaguna2017,KosiorLewensteinCeli2018}。Louko 证明，相关的 $(1+1)$ 维标量场淬火几何可以在晚时区域重现 Rindler 热性 \cite{Louko2018RindlerQuench}。在这一连续时空模型基础上，López-Raven、Mann 和 Louko 计算了双探针纠缠提取，发现 concurrence 和互信息在定性上类似 Rindler 情形，但当淬火产生的能量脉冲穿过探测器时会出现小而可辨的变化 \cite{LopezRavenMannLouko2025}。需要区分的是，光晶格方案基于有效 Dirac 场，而后续连续时空提取计算采用无质量标量场；二者属于相关的类比设定，并非同一微观模型。这些结果为类比方案提供理论支持，但不是纠缠提取的实验观测。有效因果锥由介质中的传播速度决定，探针映射仍需实际实现和校准。表~\ref{tab:platform-evidence} 汇总了各平台已经提供的证据，以及形成纠缠提取认证仍需完成的工作。
+
+\begin{table}[htbp]
+\centering\small
+\caption{已有证据及走向纠缠提取认证仍需完成的步骤。}
+\label{tab:platform-evidence}
+\begin{tabular}{p{0.23\linewidth}p{0.31\linewidth}p{0.36\linewidth}}
+\toprule
+平台／结果 & 提供的证据 & 仍需什么\\
+\midrule
+EOS 真空／源取样 \cite{Herter2026VacuumSource} & 时间分辨光学场关联测量 & 具有读出校准及不确定性的探针态纠缠见证。\\
+EOS 提取设计 \cite{Lindel2024} & 平台特定的见证方案 & 实验实现及置信上界小于零的纠缠见证期望。\\
+超导可变能隙探针 \cite{TeixidoBonfill2026} & 从电路导出的相互作用模型与理论动力学 & 器件校准、近似控制，以及因果支撑或信号误差预算。\\
+Bose 极化子探针 \cite{PercheGozzini2026} & 有效场映射与可行性估计 & 映射有效性、损失和采样分析，以及非局域相干的测量。\\
+光晶格／标量场淬火类比 \cite{RodriguezLaguna2017,KosiorLewensteinCeli2018,Louko2018RindlerQuench,LopezRavenMannLouko2025} & Unruh 类比方案及具有 Rindler 类提取特征的连续模型 & 实现晶格动力学，区分 Dirac 与标量场模型，完成探针映射、类比因果锥校准和双探针见证测量。\\
+圆柱腔电磁探针 \cite{StrohleMomcilovic2026} & 依赖腔体模和边界的理论提取预测 & 控制腔体模结构、探针轮廓、支撑尾部界和校准读出。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{通信与参数估计中的应用}
+\label{sec:utility}
+经过认证的探针资源具有何种操作价值，取决于具体任务。通信和参数估计需要明确的编码与读出方式，其性能还受到干扰参数、成功概率和资源成本的影响。
+
+\subsection{场介导通信}
+\label{sec:communication}
+探针态具有纠缠，并不确定通信速率。信道还需要编码、因果传输相互作用、接收端访问和解码器。协变量子比特--场构造及经过设计的高容量标量场协议，在指定假设下提供具体实现 \cite{Kasprzak2025,Simidzija2020}，却不是正提取见证的直接后果。量子容量还涉及输入优化及多次信道使用的正则化 \cite{Lloyd1997,Devetak2005}。因此，比较容量之前，必须匹配允许能量、时间和接收端操作。
+
+这一区别对应场的两种作用：类空探针相互作用可以转移原有关联，而发送自主选择的消息需要因果输入--输出依赖。条件记录或与另一接收者共享的关联，不建立发送者因果未来之外可独立操控的信号。任务主张必须说明用户实际可访问的完整映射。
+
+\subsection{参数估计与可辨识性}
+\label{sec:metrology}
+同一探针态可以支持不同估计任务。对于实际读出分布 $p(x|\boldsymbol\theta)$，经典 Fisher 矩阵为
+\begin{equation}
+F_{ij}=\sum_x p(x|\boldsymbol\theta)
+\partial_i\ln p(x|\boldsymbol\theta)
+\partial_j\ln p(x|\boldsymbol\theta),
+\label{eq:classical-fi}
+\end{equation}
+其中 $\boldsymbol\theta$ 为参数向量，连续结果时用积分代替求和。对单个参数，量子 Fisher 信息是遍历测量得到的最大值；多参数界却未必能够同时达到，因此允许读出和参数模型仍然关键 \cite{BraunsteinCaves1994,Paris2009}。
+
+还需区分纠缠量的灵敏度与参数估计的灵敏度。Chatterjee 用模共轭表示特定探测器态泛函，并研究其对耦合参数的导数 \cite{Chatterjee2025Modular}。仅有模自对偶性，并不能推出 concurrence 曲率与量子 Fisher 信息相等。考虑两比特纯态族
+\begin{equation}
+|\psi_g\rangle=\frac{|00\rangle+e^{ig}|11\rangle}{\sqrt2},
+\qquad \rho_g=|\psi_g\rangle\langle\psi_g|,
+\label{eq:phase-family-counterexample}
+\end{equation}
+其中 $g$ 是无量纲局域相位。该纯态的 concurrence 为 $C=2\sqrt{\det\rho_A}=1$ \cite{Wootters1998}。取自旋翻转共轭 $J=(\sigma_y\otimes\sigma_y)K$，其中 $\sigma_y$ 是 Pauli 的 $y$ 矩阵、$K$ 是计算基下的复共轭，则对每个 $g$ 均有 $J\rho_gJ^{-1}=\rho_g$。然而，
+\begin{equation}
+\partial_g^2 C=0,\qquad
+F_Q(g)=4\!\left(\langle\partial_g\psi_g|\partial_g\psi_g\rangle
+-|\langle\psi_g|\partial_g\psi_g\rangle|^2\right)=1.
+\label{eq:curvature-qfi-counterexample}
+\end{equation}
+因为 $|\partial_g\psi_g\rangle=i e^{ig}|11\rangle/\sqrt2$，括号内两项分别为 $1/2$ 和 $1/4$。相位改变了状态，却不改变其纠缠量。该反例针对所引讨论采用的有限维自旋翻转表示；它不是纠缠提取装置，也不把自旋翻转普遍等同于量子场论的模共轭。某个纠缠曲率与 $F_Q$ 之间的关系，因此还需要具体态族和泛函条件，不能仅由自对偶性或符号约定推出。
+
+对于关注参数 $\theta$ 和干扰参数向量 $\boldsymbol\nu$，若模型正则、局域可辨识且 $F_{\nu\nu}$ 可逆，则
+\begin{equation}
+F_{\rm eff}=F_{\theta\theta}-F_{\theta\nu}F_{\nu\nu}^{-1}F_{\nu\theta},\qquad
+\operatorname{Var}(\widehat\theta)\geq\frac1{N F_{\rm eff}}.
+\label{eq:effective-fi}
+\end{equation}
+其中 $N$ 为独立重复次数；方差界对满足通常正则条件的无偏估计器成立。如果读出对多个未知参数的依赖只通过单个有效温度发生，则 Fisher 矩阵的秩至多为一：把分布写作 $p(x|T_{\rm eff})$ 后，每个得分函数均正比于 $\partial_iT_{\rm eff}$。对一个参数具有非零灵敏度，因此不等于可以同时辨识所有参数。探测器测温和 de Sitter／anti-de Sitter 研究给出了参数依赖精度的模型例子：前者在开放系统探测器动力学中研究 Unruh 温度估计，后者考察曲率背景中的温度估计，以及加速度和边界条件的影响 \cite{TianWangFanJing2015,DuMann2021}。
+
+制备、相互作用与读出还会消耗时间。序贯协议的重复预算满足 $N\leq t_{\rm tot}/(t_{\rm prep}+t_{\rm int}+t_{\rm read})$，分别表示总可用时间及每周期的制备、相互作用和读出时长；后选择也必须计入失败周期。因此，资源认证与可达到的任务优势相互联系，却仍有各自独立的代价和可辨识性前提。
+
+\section{展望与结论}
+\label{sec:conclusion}
+
+本文综述的研究表明，基于量子场局域测量的资源主张包含一系列不同的推断环节。场态及其局域代数决定可利用的关联；相互作用和测量装置确定诱导操作；保留的探针子系统决定需要评估的量子态；资源场景和读出方式则决定最终能够认证什么性质。前一环节的结论不能自动推出后一环节的结论。特别是，类空对易关系是因果约束，并不是完整的测量模型；场关联非零也不等同于探针已经获得量子资源。
+
+纠缠提取为检验这些区别提供了具体场景。微扰探测器判据比较局域激发概率与非局域相干项，但其解释依赖探针初态、完整时空相互作用支撑以及对高阶微扰项的控制。只要相关场代数和局域信道已经明确，数据处理就能给出局域探针可访问关联的上界；然而，这类上界并不提供探测器必然提取到纠缠的正下界。本文讨论的紧支撑点极限基准表明，在指定模型中，空间轮廓收缩时最低阶纠缠提取间隙仍可保持为正，但这并未解决逐渐缩小的场区域之间互信息的独立问题。这一探测器侧极限与高斯模优化结果相互补充，但并不等价；后者是在特定协方差假设下通过优化集体模访问场区域负性 \cite{Torres2023,GaoKlco2025}。无能隙探针和特定 partner 模构型的禁止性结果进一步说明，能隙和模结构可能起决定作用，但并不意味着所有纠缠提取都被禁止 \cite{PozasKerstjensLoukoMartinez2017,OsawaNambuYoshimoto2026}。 高斯辅助协议还提供了另一条路线：通过第三个区域的测量和经典通信，可以揭示或净化两个目标区域之间的关联，但这些操作必须计入资源预算 \cite{GaoKlco2026Assistance}。
+
+资源判据的选择同样重要。纠缠、导引、Bell 非定域性、相干性、魔性和语境性对应不同的操作结构。对于混合多体态，双体负性的残余量一般不能单独认证真正多体纠缠。同样，局域信道下的不变性可能直接来自初态和信道的结构，本身并不能识别相对论特有机制。微扰复苏指标还需要在其被解释的参数范围内控制近似表达式。上述例子说明，只有在明确自由态、允许操作、制备族和测量场景之后，才适合使用相应的资源名称。
+
+从模型预测到实验认证还需要额外步骤。与探测器耦合的观测量决定实际采样哪些场关联，以及是否需要额外的紫外正则化。实验见证还需要经过校准的读出方式，以及能够处理有限样本、系统误差和可能的制备漂移的统计模型。如果进一步将结果归因于场中原有的关联，实验还必须控制因果通信和探针关联的其他来源。通信和计量又引入新的要求：在把态层面的资源转化为任务优势之前，必须明确编码、干扰参数、成功概率、读出时间和资源成本。
+
+由此可以提出若干值得继续研究的方向。首先，需要在匹配的制备和相互作用支撑下，对探测器测量仪器、代数系统--探针构造和事件测量理论进行更系统的比较。其次，在规范场和曲率时空中，需要仔细处理局域代数、约束条件以及装置实际保留的物理自由度。再次，超越弱耦合范围的非微扰探测器动力学和更现实的有限尺寸轮廓，是判断微扰纠缠提取判据可靠性的关键。复合观测量则需要联合分析分离点核、开关函数正则性和探测器响应。最后，资源认证应进一步与可实验实现的见证及具体任务的性能界联系起来，而不能仅由态度量推断。
+
+因此，本文的核心结论并不是某一个关联量能够完整描述相对论资源提取的全部物理，而是每一项主张都必须明确其物理对象、操作假设和证据层次。将场关联、探针可访问资源、理论预测、实验认证和任务性能加以区分，可以为比较不同的相对论量子信息方案提供共同基础。当场本身没有公认的资源理论时，可以考虑用相互作用诱导的自由态集合构造操作性替代，但必须证明所需的集合包含关系，不能预先假定它成立。
+
+\appendix
+\section*{附录}
+\numberwithin{equation}{section}
+\makeatletter
+\@addtoreset{figure}{section}
+\@addtoreset{table}{section}
+\makeatother
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\theHsection}{appendix.\Alph{section}}
+\renewcommand{\theHequation}{appendix.\Alph{section}.\arabic{equation}}
+\renewcommand{\theHfigure}{appendix.\Alph{section}.\arabic{figure}}
+\renewcommand{\theHtable}{appendix.\Alph{section}.\arabic{table}}
+
+\section{测量框架的统一基准比较}
+\label{app:measurement-benchmark}
+
+
+
+比较第~\ref{sec:measurement} 节讨论的测量方法时，应当采用共同的操作任务，而不是简单并列不同形式体系中的公式。这里给出一个统一基准：先考虑四维 Minkowski 时空中的自由实标量场，再将其推广到弯曲时空或规范场。这个基准并不预设 QTP、探测器测量仪器、正形式主义和局域 $S$ 矩阵构造彼此等价，而是明确哪些预测可以进行匹配，以及每种方法还提供哪些额外结构。
+
+设 $\hat\phi(x)$ 为 Minkowski 真空态 $|0\rangle$ 中的自由标量场，两个初始互不相关的两能级探针 $A$ 和 $B$ 的能隙分别为 $\Omega_A$ 和 $\Omega_B$。初始联合态为 $|0\rangle\langle0|\otimes\rho_A\otimes\rho_B$。它们的完整相互作用区域是紧致时空集合 $\mathcal O_A$ 和 $\mathcal O_B$。对于具有有限空间尺寸的探针，引入实的光滑测试函数 $F_\nu(x)$，其支撑包含在 $\mathcal O_\nu$ 中，其中 $\nu=A,B$。一种方便的相互作用绘景耦合形式为
+\begin{equation}
+H_I(t)=\lambda\sum_{\nu=A,B}\chi_\nu(t)\,
+\hat\mu_\nu(t)\,\hat\Phi_\nu(t),\qquad
+\hat\Phi_\nu(t)=\int d^3\mathbf x\,f_\nu(t,\mathbf x)\hat\phi(t,\mathbf x),
+\label{eq:benchmark-interaction}
+\end{equation}
+其中 $\hat\mu_\nu(t)=\hat\sigma_\nu^+e^{i\Omega_\nu t}
++\hat\sigma_\nu^-e^{-i\Omega_\nu t}$，而 $\chi_\nu f_\nu$ 的时空支撑包含在 $\mathcal O_\nu$ 内。等价地，也可以用一个时空测试函数 $F_\nu$ 表示耦合。改变测量框架时，场初态、探针初态、空间涂抹、开关函数、耦合强度和读出方式均保持不变。
+
+对于初始处于基态的单个探针，最低阶激发概率为
+\begin{equation}
+P_\nu^{(2)}
+=\lambda^2\int d^4x\,d^4x'\,
+F_\nu(x)F_\nu(x')\,e^{-i\Omega_\nu[t(x)-t(x')]}
+W_0(x,x'),
+\label{eq:benchmark-single-response}
+\end{equation}
+这里将开关函数和空间分布吸收到 $F_\nu$ 中；不同文献可能采用不同的归一化约定。$W_0(x,x')=\langle0|\hat\phi(x)\hat\phi(x')|0\rangle$ 是 Wightman 函数。式~\eqref{eq:benchmark-single-response} 是第一阶段比较的共同基准量；具体探测器模型还可以包含有限读出时间窗、内部噪声或非平凡响应函数。
+
+在 QTP 框架中，主要输出是具有时间分辨率的探测事件概率密度。探测器响应核对同一非等时场关联函数进行加权；在与所选探测器耦合相匹配的响应模型下，对记录的探测时间积分，应当在相应适用范围内恢复总跃迁概率 \cite{AnastopoulosHuSavvidou2023,Koliopoulou2026}。这是一种针对指定响应模型的匹配关系，并不意味着所有 QTP 方案都与所有 Unruh--DeWitt 探测器恒等。QTP 的优势在于保留探测事件发生的时间变量，并能够自然推广到涉及高阶非等时关联函数的联合事件概率。
+
+正形式主义构造处理的是基准比较的另一个方面。它为局域测量提供具有一致概率解释和时空组合性的描述，并已针对包括一类二次可观测量在内的指定测量建立构造 \cite{Oeckl2026,OecklZampeli2026}。不过，在 Oeckl--Zampeli 的构造中，针对多个可观测量的模平方探针编码的是联合期望，而不是同时测量结果的联合概率分布；具体概率需另行通过正形式主义的比值规则得到。若要将其结果与式~\eqref{eq:benchmark-single-response} 比较，必须指定一个与相同涂抹可观测量和读出方式相对应的探针及结果泛函。单次测量概率一致是必要检查，但更有区分度的检验是：当两个局域测量区域被组合或分离时，两个测量探针能否保持一致的组合性质。正形式主义本身并不自动指定同一个两能级探针态，也不直接定义该探针态的负性。
+
+局域 $S$ 矩阵方法提供另一种检验。它采用相同的涂抹耦合构造局域操作；若显式引入指针，则进一步得到场诱导的 Kraus 算符。需要检查的是，这些操作是否满足相应的因果因子分解条件，以及在多个区域的构型中，条件态更新是否避免信号传递 \cite{Simmons2026}。这并不是另一条探测器激发概率公式，而是检验产生测量记录的操作是否满足因果可接受性及组合要求。在时间延展的指针模型中，推迟自传播子还会限制可达到的测量分辨率，因此公平比较时必须同时考虑指针宽度和读出噪声。
+
+第二阶段同时考虑两个探针。要求完整支撑 $\mathcal O_A$ 和 $\mathcal O_B$ 严格类空分离，而不只是两个探针中心类空分离。对于自由标量场，微观因果性给出
+\begin{equation}
+[\hat\Phi_A,\hat\Phi_B]
+=i\Delta(F_A,F_B)=0,
+\qquad
+W(F_A,F_B)=\langle0|\hat\Phi_A\hat\Phi_B|0\rangle
+\ \text{不必为零},
+\label{eq:benchmark-spacelike}
+\end{equation}
+其中 $\Delta$ 是 Pauli--Jordan 对易子分布，$W(F_A,F_B)$ 表示相应涂抹后的 Wightman 函数。因此，两个区域之间的因果响应为零，但真空关联仍可能非零。对于初态均为基态的两能级探针，在基底 $\{|eg\rangle,|ge\rangle\}$ 下，部分转置矩阵的相关子块为
+\begin{equation}
+(\rho_{AB}^{T_B})_{\{|eg\rangle,|ge\rangle\}}
+=\begin{pmatrix}P_A&\mathcal M\\\mathcal M^*&P_B\end{pmatrix}+O(\lambda^4).
+\end{equation}
+因此，二阶微扰下可能为负的特征值为
+\begin{equation}
+\lambda_-^{(2)}
+=\frac{P_A+P_B-\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}}{2}.
+\end{equation}
+相应的最低阶负性为
+\begin{equation}
+\mathcal N^{(2)}
+=\max\!\left\{0,\,
+\frac{\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}-(P_A+P_B)}{2}
+\right\},
+\label{eq:benchmark-negativity}
+\end{equation}
+其余高阶修正需另行考虑。纠缠条件为 $|\mathcal M|>\sqrt{P_AP_B}$；对于相同探针，若 $P_A=P_B=P$，则化为 $\mathcal N^{(2)}=\max\{0,|\mathcal M|-P\}$。若改变探针维数、初态、耦合形式或微扰阶数，则必须重新推导相应表达式。
+
+双区域比较包含三个不同输出。第一，QTP 给出联合探测时间概率，其最低阶项涉及四点非等时场关联函数；对于自由高斯真空，可以利用 Wick 定理将其化为二点函数的乘积，但它们仍然是事件统计，而不是探测器密度矩阵。第二，指定的双探针--场实现给出最终探针态，从而可以计算式~\eqref{eq:benchmark-negativity} 中的负性。第三，正形式主义和局域 $S$ 矩阵方法检验相应局域操作及其组合是否具有一致的概率解释并满足因果要求。因此，QTP 的符合计数协方差
+\begin{equation}
+C_{AB}=p_{AB}-p_Ap_B
+\label{eq:benchmark-coincidence}
+\end{equation}
+不能直接等同于 $\mathcal N$：非零协方差可以表明存在关联，但本身不是纠缠度量。
+
+有用的数值和概念比较应分别报告以下量：（1）单探针积分激发概率及其时间分辨分布；（2）联合事件概率和符合计数协方差；（3）在明确给出探针测量仪器时，最终双探针密度矩阵及其资源见证量；（4）固定本地设置、改变远端设置所得的无信号残差；（5）探测器暗计数概率、效率和读出分辨率。所有计算必须采用相同的场态、紧支撑区域、空间涂抹函数、探针初态和耦合。还应加入一个类时或存在因果联系的构型作为对照，而不能将其混入严格类空基准。
+
+上述四种框架分别侧重探针最终状态、时间分辨事件概率、局域操作的组合性以及因果可接受性。它们的操作输出和能够直接支持的资源主张已在表~\ref{tab:causal-measurements} 中比较。
+
+由此可见，未来的比较应遵循明确顺序：首先匹配单探针概率，并对探测时间积分；其次匹配两个严格类空支撑下的联合事件统计；只有在明确指定探针测量仪器后，才比较最终探针密度矩阵及其纠缠或其他资源见证量；最后检验因果组合性和有限装置的可靠性。这样的顺序可以避免将场关联函数、事件概率层级、POVM 效应、量子测量仪器和资源度量误认为同一个物理对象。
+
+
+上述框架描述的是理想化的局域操作及其结果概率。实际资源认证还需考虑探测器灵敏度、噪声、后选择，以及开关和空间支撑的控制。
+
+
+
+
+为进一步说明测量效应与状态更新的区别，考虑式~\eqref{eq:instrument-same-probability}。$\mathcal I_r$ 的一个 Kraus 算符为 $K_r=I/\sqrt2$；对 $\mathcal J_r$ 取 $L_{rj}=|0\rangle\langle j|/\sqrt2$，其中 $j=0,1$，则
+\begin{equation}
+K_r^\dagger K_r=\sum_{j=0}^1L_{rj}^\dagger L_{rj}=\tfrac12I,
+\qquad \sum_r E_r=I.
+\end{equation}
+两种映射均完全正、迹不增，对 $r$ 求和后得到保迹信道。对参考系 $R$ 及输入 $\Phi^+_{RS}=|\Phi^+\rangle\langle\Phi^+|$，归一化条件输出分别为
+\begin{equation}
+\rho^{\mathcal I}_{RS|r}=\Phi^+_{RS},\qquad
+\rho^{\mathcal J}_{RS|r}=\tfrac12 I_R\otimes|0\rangle\langle0|_S.
+\end{equation}
+按 $(\|\rho^{T_S}\|_1-1)/2$ 定义的通常负性分别为 $1/2$ 和 $0$，而两种情况均有 $p_r=1/2$。这用有限维局域信道证明了正文中的区别，并未声称它们作为连续场测量相互等价。
+
+更一般地，若 $\mathcal E_S=\sum_r\mathcal I_r$ 保迹，则 $\mathcal E_S^*(I_S)=I_S$。对未被操作的有限系统的任意观测量 $B$，
+\begin{equation}
+\Tr[(I_S\otimes B)(\mathcal E_S\otimes\mathrm{id})(\rho_{SB})]
+=\Tr[(\mathcal E_S^*(I_S)\otimes B)\rho_{SB}]
+=\Tr[(I_S\otimes B)\rho_{SB}].
+\end{equation}
+非选择性 $B$ 边缘态的所有期望值保持不变，由此证明式~\eqref{eq:selective-nonselective}。量子场论实现还需要满足因果条件的局域耦合，仅凭该有限系统计算并不建立这一要求。
+
+
+
+\section{有限模转移与信道依赖}
+\label{app:finite-mode-transfer}
+\subsection{有限模资源转移基准}
+有限模模型可以在开展连续统场论计算之前，清楚地检验场到探测器的资源转移上界。考虑处于双模压缩真空态的两个玻色场模：
+\begin{equation}
+|\Psi_r\rangle_{\rm F}
+=\sqrt{1-\zeta^2}\sum_{n=0}^{\infty}\zeta^n|n\rangle_A|n\rangle_B,
+\qquad \zeta=\tanh r,
+\label{eq:tmsv-resource-input}
+\end{equation}
+其场互信息为 $I_{\rm F}=2g(\sinh^2r)$，其中
+$g(n)=(n+1)\ln(n+1)-n\ln n$。广义双模 Jaynes--Cummings 原子—场模型中已有关于原子与双模压缩辐射关联的研究；本文则专门考虑两个独立的局域共振信道，并显式计算其探测器态 \cite{CohenBenAryehMann1994}。每个场模分别与一个初态处于基态的两能级探测器局域相互作用。共振 Jaynes--Cummings 模型的演化为
+\begin{equation}
+U_\nu(\theta)=
+\exp[-i\theta(\sigma_\nu^+a_\nu+\sigma_\nu^-a_\nu^\dagger)],
+\qquad
+|g,n\rangle\mapsto
+\cos(\theta\sqrt n)|g,n\rangle
+-i\sin(\theta\sqrt n)|e,n-1\rangle,
+\label{eq:jc-number-state-map}
+\end{equation}
+这里 $\theta$ 是无量纲共振相互作用角，$a_\nu$ 为场模湮灭算符，$\sigma_\nu^\pm$ 为探测器升降算符。$n=0$ 时第二项不存在。对场模取迹后得到两比特探测器态。Fock 展开在 $N_{\max}=30$ 处截断；在 $0.05\leq r\leq0.8$ 的范围内，将截断提高到40后，报告数值在显示精度内不发生变化。整个计算没有采用后选择。
+
+图~\ref{fig:jc-negativity-theta} 显示探测器负性对相互作用角具有非平凡依赖。$\theta=\pi/2$ 时场互信息、探测器互信息和探测器负性的代表性数值列于表~\ref{tab:jc-transfer-data}。这些数值满足 $I(D_A:D_B)\leq I_{\rm F}$ 以及两比特负性上界。表格给出固定相互作用角下的比较，而角度扫描则展示局域相互作用过程中的资源转移变化。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/FigS1_JC_transfer.pdf}
+\caption{不同初始压缩参数下，探测器负性随局域 Jaynes--Cummings 相互作用角的变化。虚线表示由初始场互信息得到的两比特上界。该有限模基准并非严格类空分离的相对论探测器计算。}
+\label{fig:jc-negativity-theta}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{$\theta=\pi/2$ 时有限模 Jaynes--Cummings 资源转移基准。互信息单位为 nat。}
+\label{tab:jc-transfer-data}
+\begin{tabular}{ccccc}
+\toprule
+$r$ & $I_{\rm F}$ & $I(D_A:D_B)$ & $\mathcal N$ & 上界\\
+\midrule
+0.05 & 0.03499 & 0.03480 & 0.04983 & 0.26453\\
+0.10 & 0.11251 & 0.11009 & 0.09866 & 0.47436\\
+0.20 & 0.34258 & 0.31445 & 0.18936 & 0.50000\\
+0.40 & 0.96490 & 0.69518 & 0.32103 & 0.50000\\
+0.60 & 1.68845 & 0.84182 & 0.36842 & 0.50000\\
+0.80 & 2.45470 & 0.78027 & 0.34684 & 0.50000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+还可以在第一个局域相互作用后应用数据处理不等式，得到更紧的态依赖上界。对于归一化截断 Fock 系数 $c_n$，探测器 $D_A$ 与尚未相互作用的场模 $F_B$ 的联合态为
+\begin{equation}
+\rho_{D_AF_B}=\sum_{m=0}^{N_{\max}}|v_m\rangle\langle v_m|,
+\quad
+|v_m\rangle=c_m\cos(\theta\sqrt m)|g,m\rangle
+-i c_{m+1}\sin(\theta\sqrt{m+1})|e,m+1\rangle,
+\label{eq:jc-one-sided-state}
+\end{equation}
+其中 $c_{N_{\max}+1}=0$。由于 $D_A$ 是量子比特，其互信息有限。对 $\theta=\pi/4$，当 $r=0.05$ 和 $0.10$ 时，该单侧上界使场互信息导出的负性上界分别降低约 $29\%$；在较大压缩参数下，两比特维数上界 $1/2$ 开始起作用。这是针对指定输入态的估计，并不与无界 JC 信道的最坏情形收缩系数等于1相矛盾。
+
+对于双模压缩输入，探测器态具有精确的 $X$ 形式。定义
+\begin{equation}
+a_n=\cos^2(\theta\sqrt n),\qquad b_n=\sin^2(\theta\sqrt n).
+\label{eq:jc-ab-definitions}
+\end{equation}
+在基底 $(|gg\rangle,|ge\rangle,|eg\rangle,|ee\rangle)$ 下，
+\begin{equation}
+\rho_{D_AD_B}=
+\begin{pmatrix}
+P_{gg}&0&0&Z\\
+0&P_{ge}&0&0\\
+0&0&P_{ge}&0\\
+Z^*&0&0&P_{ee}
+\end{pmatrix},
+\label{eq:tmsv-jc-x-state}
+\end{equation}
+其中
+\begin{align}
+P_{gg}&=(1-\zeta^2)\sum_{n=0}^{\infty}\zeta^{2n}a_n^2,\nonumber\\
+P_{ge}&=(1-\zeta^2)\sum_{n=0}^{\infty}\zeta^{2n}a_nb_n,\nonumber\\
+P_{ee}&=(1-\zeta^2)\sum_{n=0}^{\infty}\zeta^{2n}b_n^2,\label{eq:tmsv-jc-x-populations}\\
+Z&=-(1-\zeta^2)\zeta\sum_{n=0}^{\infty}\zeta^{2n}a_nb_{n+1}.\nonumber
+\end{align}
+由部分转置矩阵可得精确负性
+\begin{equation}
+\mathcal N=
+\max\left\{0,\,
+(1-\zeta^2)\left[
+\zeta\sum_{n=0}^{\infty}\zeta^{2n}a_nb_{n+1}
+-\sum_{n=0}^{\infty}\zeta^{2n}a_nb_n
+\right]\right\}.
+\label{eq:tmsv-jc-exact-negativity}
+\end{equation}
+在弱压缩极限 $\zeta=\tanh r\ll1$ 下，
+\begin{equation}
+\mathcal N=r\sin^2\theta+O(r^2),
+\qquad
+I_{\rm F}=2r^2[1-\ln(r^2)]+O(r^4|\ln r|).
+\label{eq:jc-weak-squeezing}
+\end{equation}
+因此，探测器负性的主阶随 $r$ 线性变化，而场互信息为 $r^2|\ln r|$ 阶。这从解析上解释了为什么一般互信息上界在弱压缩区域较为宽松。
+
+还可以只利用局域探测器布居构造上界。对任意两比特态，
+\begin{equation}
+\mathcal N(\rho_{D_AD_B})\leq\sqrt{\det\rho_{D_A}},
+\qquad
+\rho_{D_A}=
+\begin{pmatrix}1-p_A&c_A\\c_A^*&p_A\end{pmatrix}.
+\label{eq:negativity-local-determinant-bound}
+\end{equation}
+
+对于 Schmidt 本征值为 $s,1-s$ 的两比特纯态，负性等于 $\sqrt{s(1-s)}=\sqrt{\det\rho_{D_A}}$。负性对混合具有凸性；对于 Bloch 向量为 $\boldsymbol r$ 的比特边缘态，$\sqrt{\det\rho_{D_A}}=\tfrac12\sqrt{1-|\boldsymbol r|^2}$ 在 Bloch 球上为凹函数（内部 Hessian 负半定，边界由连续性得到）。将这两项性质用于混合态的任意纯态分解，即证明式~\eqref{eq:negativity-local-determinant-bound}。
+
+JC 相互作用守恒 $\hat n_A+|e_A\rangle\langle e_A|$，因此 $p_A\leq\bar n_A$，对 $B$ 端也有相同关系。从而
+\begin{equation}
+\mathcal N\leq
+\min\{\nu(\bar n_A),\nu(\bar n_B)\},
+\qquad
+\nu(x)=\sqrt{x_*(1-x_*)},\quad x_*=\min\{x,\tfrac12\}.
+\label{eq:mean-energy-negativity-bound}
+\end{equation}
+这一布居上界可以通过局域测量获得，但它依赖激发数守恒；对于包含反旋转项的完整 Unruh--DeWitt 相互作用，不能直接照搬。
+
+这一有限模基准验证了数据处理上界的内部一致性，并展示了资源转移对探测器耦合的依赖。它并不是严格类空分离的相对论纠缠提取计算。若要推广到连续统场论，必须明确局域模函数的紧致时空支撑，并控制相应局域场代数的互信息。
+
+
+
+
+\subsection{收缩系数与平均能量约束}
+严格的数据处理收缩可以改进场到探测器的上界，但必须针对实际探测器信道和输入集合加以证明。对于一个受调节的信道 $\mathcal E:A\to D$，定义
+\begin{equation}
+\eta_{\rm MI}(\mathcal E)=
+\sup_{\rho_{RA}:0<I(R:A)<\infty}
+\frac{I(R:D)_{(\mathrm{id}_R\otimes\mathcal E)(\rho)}}{I(R:A)_\rho},
+\qquad 0\leq\eta_{\rm MI}\leq1.
+\label{eq:mi-contraction-coefficient}
+\end{equation}
+与普通互信息直接相关的乘积参考态收缩系数，受相应的完全条件互信息收缩系数约束 \cite{HircheGeorgeNuradhaWilde2026Conditional}。对于两个局域探测器信道，依次应用数据处理不等式可得
+\begin{equation}
+I(D_A:D_B)\leq
+\eta_{\rm MI}(\mathcal E_A)\eta_{\rm MI}(\mathcal E_B)I_{\rm F}(A:B),
+\label{eq:supp-product-mi-contraction}
+\end{equation}
+从而对两个量子比特有
+\begin{equation}
+\mathcal N(\rho_{D_AD_B})\leq
+\min\left\{\frac12,\sqrt{2\eta_A\eta_B I_{\rm F}}\right\}.
+\label{eq:channel-sensitive-negativity-bound}
+\end{equation}
+对于连续统局域代数，必须采用与 $I_{\rm F}$ 相同的 split 或有限分辨率方案来定义这些系数；本文不预设其连续统极限取值。
+
+困难在于，理想共振 Jaynes--Cummings（JC）信道未必对互信息具有严格的统一收缩。初态为 $|g\rangle$ 的探测器在输入 Fock 态 $|n\rangle$ 后，激发态布居为
+\begin{equation}
+p_n=\sin^2(\theta\sqrt n).
+\label{eq:jc-channel-fock-outputs}
+\end{equation}
+记二元熵为 $h_2(q)=-q\ln q-(1-q)\ln(1-q)$，单位为 nat。
+对二元编码 $\{|0\rangle,|n\rangle\}$，输入互信息为 $\ln2$，探测器输出互信息为
+\begin{equation}
+I(U:D)=h_2(p_n/2)-\frac12h_2(p_n).
+\label{eq:jc-fock-code-mi}
+\end{equation}
+对任意固定 $\theta>0$，存在子列使 $p_n\to1$。可直接构造而不依赖等分布假设：取 $a_j=(\pi/2+j\pi)/\theta$ 及 $n_j=\lfloor a_j^2+1/2\rfloor$，则
+\begin{equation}
+|\theta\sqrt{n_j}-(\pi/2+j\pi)|
+\leq\frac{\theta}{2(\sqrt{n_j}+a_j)}\longrightarrow0.
+\end{equation}
+因此 $\sin^2(\theta\sqrt{n_j})\to1$，探测器渐近保留等概率输入比特的全部信息。结合数据处理不等式，得到最坏情形收缩系数的精确结果
+\begin{equation}
+\eta_{\rm MI}(\mathcal E_\theta)=1.
+\label{eq:jc-uniform-coefficient-one}
+\end{equation}
+这里的结论针对所有 Fock 输入上的上确界，并不意味着某个指定压缩态的关联也能被完整传递。
+
+仅施加平均光子数约束仍不能恢复严格收缩系数。令比特以概率 $q_n=E/n$ 编码在 $|n\rangle$，其余概率编码在 $|0\rangle$，则平均光子数为 $E$，而探测器解码错误概率为 $q_n(1-p_n)$。沿着 $p_n\to1$ 的子列，探测器输出的条件熵相对于输入比特熵可以忽略。因此
+\begin{equation}
+\eta_{\rm MI}^{(E)}(\mathcal E_\theta)=1,\qquad E>0.
+\label{eq:average-energy-mi-coefficient-one}
+\end{equation}
+为补全证明，该二元经典编码的精确信息比为
+\begin{equation}
+\frac{I(U:D)}{I(U:F)}
+=\frac{h_2(q_np_n)-q_nh_2(p_n)}{h_2(q_n)}\longrightarrow1,
+\label{eq:rare-code-information-ratio}
+\end{equation}
+其中 $h_2(q)=-q\ln q-(1-q)\ln(1-q)$，采用自然对数。沿所构造子列，$q_n\to0$、$p_n\to1$，由 $h_2(q)=q\ln(1/q)+O(q)$ 可得该极限，同时 $q_nh_2(p_n)/h_2(q_n)\to0$。这与 Polyanskiy 和 Wu 关于经典信道平均代价约束下收缩系数的障碍密切相关 \cite{PolyanskiyWu2016Dissipation}。因此，仅有平均光子数约束不足以保证严格统一收缩。硬谱限制或额外信道噪声可能恢复严格系数，但每种限制仍需自己的信道分析。
+
+更合适的描述量是非线性信息耗散曲线
+\begin{equation}
+\mathfrak F_E(s)=
+\sup_{\substack{I(R:F)\leq s\\ \operatorname{Tr}(\hat n\rho_F)\leq E}}
+I(R:D).
+\label{eq:quantum-information-dissipation-curve}
+\end{equation}
+它满足 $\mathfrak F_E(s)\leq s$。在某些特殊相互作用角下，可以精确确定一段有限区间：若存在 $n_*$ 使 $p_{n_*}=1$，则
+\begin{equation}
+q_*=\min\left\{\frac{E}{n_*},\frac12\right\},\qquad
+s_*=h_2(q_*),\qquad
+\mathfrak F_E(s)=s\quad(0\leq s\leq s_*).
+\label{eq:jc-exact-linear-curve-segment}
+\end{equation}
+当 $\theta=\pi/4$ 时可取 $n_*=4$；当 $\theta=\pi/2$ 时可取 $n_*=1$。对于不存在精确完全跃迁的角度，稀有编码能证明 $s=0$ 附近的极限斜率为 1，却不能确定整条曲线。由编码子列推广到这一斜率，需要注意前述构造满足 $n_j\sim j^2$，故输入信息 $s_j=h_2(E/n_j)$ 满足 $s_{j+1}/s_j\to1$。利用 $\mathfrak F_E$ 的单调性填补子列间的区间，再结合 $\mathfrak F_E(s)\leq s$ 和式~\eqref{eq:rare-code-information-ratio}，得到 $\mathfrak F_E(s)/s\to1$。
+
+若读出后还存在噪声，则可以重新得到严格上界。例如，探测器读出后经过强度为 $p$ 的退极化信道，复合信道包含权重为 $p$ 的替换信道分量。量子 Doeblin 界给出
+\begin{equation}
+\eta_{\rm MI}\leq1-p,\qquad
+I(D_A:D_B)\leq(1-p_A)(1-p_B)I_{\rm F}.
+\label{eq:depolarizing-noise-negativity-bound}
+\end{equation}
+该结果来自量子 Doeblin 分解及相应的条件互信息收缩定理 \cite{GeorgeHircheNuradhaWilde2026Doeblin,HircheGeorgeNuradhaWilde2026Conditional}。它适用于所述受调节的退极化读出模型，不能直接推广到振幅阻尼、相位阻尼、暗计数或理想连续统 Unruh--DeWitt 信道。
+
+对于该替换混合，还可直接证明。保留经典标记 $F$，记录输出是否被替换；替换概率 $p$ 与参考系 $R$ 无关。在丢弃标记之前，替换分支与 $R$ 无关联，故 $I(R:DF)=(1-p)I(R:D)_{\rm unreplaced}$。丢弃 $F$ 不会增加互信息。分别在两个读出端应用同一论证，即得式~\eqref{eq:depolarizing-noise-negativity-bound} 的乘积界；无需为没有正则化的连续场信道指定收缩系数。
+
+最后，还可以构造依赖具体输入态的上界，而不必优化最坏情形收缩系数。只在一个局域相互作用之后应用数据处理不等式，得到
+\begin{align}
+I(D_A:D_B)&\leq\min\{I(D_A:B),I(A:D_B)\},\nonumber\\
+\mathcal N&\leq\min\left\{\frac12,
+\sqrt{2\min\{I(D_A:B),I(A:D_B)\}}\right\}.
+\label{eq:one-sided-negativity-bound}
+\end{align}
+与统一信道系数不同，这一界保留了实际场态和探测器耦合的信息。
+
+
+
+
+
+\section{严格类空点极限探测器计算}
+\label{app:pointlike-detectors}
+
+
+现在研究一个问题：当两个探测器的空间尺寸趋于零，而它们的中心距离和开关持续时间保持不变时，提取到的纠缠是否仍然存在？考虑四维 Minkowski 时空中的无质量实标量场。两个相同的 UDW 探测器静止放置，中心距离为 $L$，空间涂抹函数 $F_\sigma(\mathbf x)$ 经过归一化、球对称，并且支撑在半径为 $\sigma$ 的球内。时间开关函数取为
+\begin{equation}
+\chi(t)=
+\begin{cases}
+(1-t^2/T^2)^6,& |t|\leq T,\\
+0,& |t|>T,
+\end{cases}
+\qquad
+\widetilde\chi(\omega)=\int_{-\infty}^{\infty}dt\,\chi(t)e^{i\omega t}.
+\label{eq:pointlike-switch}
+\end{equation}
+该开关函数具有紧致支撑，并且在端点处具有五阶连续导数。空间涂抹采用光滑紧致支撑函数
+\begin{equation}
+F_\sigma(\mathbf x)=C_\sigma
+\exp\!\left[-\frac{1}{1-|\mathbf x|^2/\sigma^2}\right]
+\quad (|\mathbf x|<\sigma),
+\label{eq:pointlike-profile}
+\end{equation}
+在球外取零；归一化常数 $C_\sigma$ 由 $\int d^3x\,F_\sigma(\mathbf x)=1$ 确定。两个探测器的全部相互作用区域严格类空分离的条件为
+\begin{equation}
+L-2\sigma>2T.
+\label{eq:pointlike-spacelike}
+\end{equation}
+
+在探测器—场耦合 $\lambda$ 的最低非平凡阶，局域激发概率和非局域相干分别为
+\begin{align}
+P_\sigma&=\frac{\lambda^2}{4\pi^2}
+\int_0^\infty dk\,k\,|\widetilde F_\sigma(k)|^2
+|\widetilde\chi(\Omega+k)|^2,
+\label{eq:pointlike-P}\\
+\mathcal M_\sigma&=-\frac{\lambda^2}{4\pi^2L}
+\int_0^\infty dk\,\sin(kL)|\widetilde F_\sigma(k)|^2
+\widetilde\chi(\Omega-k)\widetilde\chi(\Omega+k),
+\label{eq:pointlike-M}
+\end{align}
+其中 $\widetilde F_\sigma(k)$ 是空间涂抹函数的径向 Fourier 变换。由于两个支撑区域严格类空分离，Wightman 函数在两个相互作用区域的乘积上是光滑的，因此非局域积分不存在光锥奇异性。局域响应也在点极限有限。对于这里采用的多项式开关函数，$\widetilde\chi(\omega)=T\,92160\,j_6(|\omega|T)/(|\omega|T)^6$，其中 $j_6$ 为球贝塞尔函数；因此在高频下 $\widetilde\chi(\omega)=O(|\omega|^{-7})$，足以保证下文所用谱矩收敛。两个相同探测器的最低阶负性为
+\begin{equation}
+\mathcal N_\sigma^{(2)}=
+\max\{0,|\mathcal M_\sigma|-P_\sigma\}.
+\label{eq:pointlike-negativity}
+\end{equation}
+对每个固定的 $\sigma$，在该零均值高斯模型的正规展开有效时，有 $\mathcal N_\sigma=\mathcal N_\sigma^{(2)}+O(\lambda^4)$。这里没有建立该余项对 $\sigma$ 一致的上界。因此，下述点极限针对二阶系数，不交换精确有限耦合极限与点极限。
+
+小尺寸展开由空间分布的二阶矩决定。对于归一化的各向同性空间涂抹，
+\begin{equation}
+\widetilde F_\sigma(k)
+=1-\frac{k^2\langle r^2\rangle_\sigma}{6}
++O(k^4\sigma^4),\qquad
+\langle r^2\rangle_\sigma=\mu_2\sigma^2.
+\label{eq:profile-moment-expansion}
+\end{equation}
+由于空间轮廓非负且归一化，有 $|\widetilde F_\sigma(k)|\leq1$；开关变换的 $|\omega|^{-7}$ 衰减为两个谱积分提供可积控制函数，故控制收敛定理保证点极限存在。各向同性轮廓的 Taylor 余项可由常数乘 $k^4\sigma^4$ 控制，所需四阶谱矩也收敛，因此可以逐项积分，并保留 $O(\sigma^4)$ 余项。于是
+\begin{align}
+\frac{P_\sigma}{\lambda^2}
+&=p_0-\frac{\mu_2\sigma^2}{12\pi^2}
+\int_0^\infty dk\,k^3|\widetilde\chi(\Omega+k)|^2
++O(\sigma^4),
+\label{eq:pointlike-P-expansion}\\
+\frac{\mathcal M_\sigma}{\lambda^2}
+&=m_0+\frac{\mu_2\sigma^2}{12\pi^2L}
+\int_0^\infty dk\,k^2\sin(kL)
+\widetilde\chi(\Omega-k)\widetilde\chi(\Omega+k)
++O(\sigma^4),
+\label{eq:pointlike-M-expansion}
+\end{align}
+其中 $p_0$ 和 $m_0$ 分别表示 $P_\sigma/\lambda^2$ 与 $\mathcal M_\sigma/\lambda^2$ 的点极限。因此，对于这一类开关函数，两个探测器响应系数在点极限下都是有限的。如果 $|m_0|>p_0$，最低阶负性也具有严格为正的点极限；如果 $|m_0|<p_0$，则在点极限附近负性为零。等号情形需要进一步分析高阶项。
+
+作为具体检验，取 $T=1$、$\Omega T=9$ 和 $L/T=2.033333\ldots$。式~\eqref{eq:pointlike-profile} 中空间分布的无量纲二阶矩为 $\mu_2=0.33508696\ldots$。整个扫描范围内均保持严格类空分离，包括最大半径 $\sigma/T=0.016$。Fourier 积分采用紧致支撑空间分布的径向数值积分，以及开关函数 Fourier 变换的 Gauss--Legendre 积分。独立数值重构在 $T=1$ 时采用同一解析变换，并在零点处使用其正则极限。将频谱截断由 $300$ 增至 $500$、径向求积阶数由 $96$ 增至 $160$ 后，响应系数变化小于 $2.5\times10^{-17}$，与原始扫描的差异小于 $1.6\times10^{-17}$。这些差异是数值收敛诊断，并非严格认证误差界。
+\begin{equation}
+p_0=2.13325790\times10^{-6},\qquad
+|m_0|=3.57653182\times10^{-6},
+\label{eq:pointlike-limits-numbers}
+\end{equation}
+因此
+\begin{equation}
+\lim_{\sigma\to0}\frac{\mathcal N_\sigma^{(2)}}{\lambda^2}
+=1.44327392\times10^{-6}.
+\label{eq:pointlike-negativity-limit}
+\end{equation}
+小尺寸展开的数值结果为
+\begin{equation}
+\frac{|\mathcal M_\sigma|-P_\sigma}{\lambda^2}
+=1.44327392\times10^{-6}
++1.96656\times10^{-6}\left(\frac{\sigma}{T}\right)^2
++O\!\left((\sigma/T)^4\right).
+\label{eq:pointlike-gap-fit}
+\end{equation}
+因此，正的点极限并不是有限空间半径造成的：当紧致空间涂抹收缩为点时，该结果仍然保留。局域响应、非局域相干和最低阶负性均趋于有限的点极限。图~\ref{fig:pointlike-gap} 直接展示了正的纠缠提取间隙；由于局域响应和负性的极限值已在上文明确给出，不再单独展示相应图形。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/FigS2_compact_gap.pdf}
+\caption{最低阶纠缠提取间隙 $|\mathcal M_\sigma|/\lambda^2-P_\sigma/\lambda^2$ 随 $\sigma/T$ 的变化。取 $\Omega T=9$、$L/T=61/30$，紧致支撑轮廓由式~\eqref{eq:pointlike-switch}--\eqref{eq:pointlike-profile} 给出。整个扫描中完整支撑均满足 $L-2\sigma>2T$。(a) 显示正的间隙系数；(b) 扣除点极限值，并将变化与领先的尺寸平方项比较。数值收敛并不控制被略去的动力学高阶项。}
+\label{fig:pointlike-gap}
+\end{figure}
+
+这一结果只回答了指定无质量标量场模型中探测器一侧的点极限问题，并没有确定逐渐缩小的场区域之间互信息的行为。特别是，探测器相互作用采样的是时间持续长度固定的时空管，而两个等时空间球的互信息对应的是另一类局域区域，不能将两者直接等同。还需要独立的算符代数或有限分辨率计算，才能确定场区域互信息的极限，并将其与有限的探测器负性进行比较。此外，这一结果并不意味着可以忽略微扰条件：耦合 $\lambda$ 必须足够小，才能保证高阶修正不会推翻最低阶的正间隙。
+
+
+
+
+
+
+
+\section{资源归因与制备族语境性}
+\label{app:contextuality}
+\subsection{依赖相互作用的资源归因}
+在有限维或明确正则化的系统--探针描述中，令 $P$ 为探针、$E$ 为环境、$V$ 为固定的联合幺正算符。对初始互不相关的输入 $\rho_P\otimes\sigma_E$，定义
+\begin{equation}
+\begin{aligned}
+\Phi_P^{\sigma_E,V}(\rho_P)&=\Tr_E[V(\rho_P\otimes\sigma_E)V^\dagger],\\
+\mathcal S_{\max}&=\{\sigma_E:\Phi_P^{\sigma_E,V}(\rho_P)\in\mathcal F_P
+\quad\forall\rho_P\in\mathcal F_P\}.
+\end{aligned}
+\label{eq:induced-free-set}
+\end{equation}
+其中 $\mathcal F_P$ 是指定的探针自由态集合。这是 Nystr\"om 等人提出的最大诱导自由集 \cite{Nystrom2026Induced}，并非本文提出的新定义。
+
+\paragraph{条件性归因命题。}
+若独立定义的环境自由集满足 $\mathcal F_E\subseteq\mathcal S_{\max}$，则自由探针输入得到有资源输出，意味着 $\sigma_E\notin\mathcal F_E$。
+\paragraph{证明。}
+若 $\sigma_E$ 属于 $\mathcal F_E$，上述包含关系便使它属于 $\mathcal S_{\max}$；由定义，任意自由探针输入的输出都应为自由态，与观测到非自由输出矛盾。对于固定探针输入，这只是单向推断：环境位于 $\mathcal S_{\max}$ 之外，并不保证每一种自由探针制备都能生成资源。重复使用下的归因还需要诱导自由集在探针反作用下稳定。环境自由集、固定相互作用、初始乘积条件及资源证据必须针对同一个协议。
+
+
+
+\subsection{制备族非语境模型的迁移}
+设 $\mathcal S=\{\rho_s\}$ 是给定的有限维制备族。文献~\cite{CamposDelgadoIpek2026} 的信道论证采用如下模型：存在厄米算符 $G_\tau$ 和密度算符 $\sigma_\tau$，使每个 $s$ 及每个 POVM 效应 $M$ 满足
+\begin{equation}
+\Tr(\rho_s M)=\sum_\tau\mu_s(\tau)\Tr(\sigma_\tau M),
+\quad \mu_s(\tau)=\Tr(\rho_sG_\tau)\geq0,
+\quad\sum_\tau\mu_s(\tau)=1.
+\label{eq:supp-noncontextual-family}
+\end{equation}
+不要求 $G_\tau$ 对所有量子态均为正；需要的是其权重在指定制备族上非负。连续本体空间可把求和换为积分。线性赋值保持指定制备等价及混合关系，Born 响应保持测量等价。
+
+\paragraph{命题（线性可逆信道下的模型迁移）。}
+若共同 CPTP 映射 $\Lambda$ 在全部厄米算符构成的实向量空间上可逆，则输出族 $\{\Lambda(\rho_s)\}$ 具有同类表示。
+
+\paragraph{证明。}
+以 $\Lambda^*$ 表示迹对偶映射，取
+\begin{equation}
+G'_\tau=(\Lambda^{-1})^*(G_\tau),\qquad
+\sigma'_\tau=\Lambda(\sigma_\tau).
+\end{equation}
+则 $\Tr[\Lambda(\rho_s)G'_\tau]=\mu_s(\tau)$，所以输出族上的权重仍非负且归一。对任意效应 $M$，
+\begin{align}
+\sum_\tau\mu_s(\tau)\Tr(\sigma'_\tau M)
+&=\sum_\tau\mu_s(\tau)\Tr[\sigma_\tau\Lambda^*(M)]\nonumber\\
+&=\Tr[\rho_s\Lambda^*(M)]
+=\Tr[\Lambda(\rho_s)M].
+\end{align}
+CPTP 映射的对偶把 POVM 映为 POVM，故第二步可以使用式~\eqref{eq:supp-noncontextual-family}。$\sigma'_\tau$ 仍为密度算符。可逆性还保证输出制备之间的线性关系成立，当且仅当对应输入关系成立，因此模型及其操作等价能够迁移。整个论证没有使用物理逆信道。
+
+结论以该制备族、等价关系和共同信道为条件，不能将上述表示等同于任意固定相容测量经验模型的语境分数，也不是说单个密度算符脱离允许制备和测量后具有内禀的非语境性。
+
+\subsection{精确弱耦合可逆性与极限推断的风险}
+对于有限维精确信道 $\Lambda_\lambda$，若 $\Lambda_0=\mathrm{id}$ 且它在任意次乘性超算符范数下连续，则 $\|\Lambda_\lambda-\mathrm{id}\|<1$ 时可逆，逆映射由收敛 Neumann 级数给出：
+\begin{equation}
+\Lambda_\lambda^{-1}=\sum_{r=0}^{\infty}
+(-1)^r(\Lambda_\lambda-\mathrm{id})^r.
+\label{eq:supp-neumann-channel-inverse}
+\end{equation}
+这证明存在足够小的耦合区间，却没有给出无界场相互作用中该区间的具体大小。Dyson 截断不自动满足 CPTP，其形式逆映射本身不能证明前一命题的物理假设。
+
+可逆近似的极限可能不可逆。例如，令 $\mathcal D$ 删除固定基中比特态的非对角元，并定义
+\begin{equation}
+\Lambda_n=\frac1n\,\mathrm{id}+
+\left(1-\frac1n\right)\mathcal D\qquad(n=1,2,\ldots).
+\end{equation}
+每个 $\Lambda_n$ 都是 CPTP 且线性可逆，因为非对角方向的本征值为 $1/n$；但范数极限 $\mathcal D$ 具有非平凡核。因此，若没有相关本征值或奇异值的一致正下界，不能由每个有限近似可逆推出任意有限耦合结果可逆。这限定了文献~\cite{CamposDelgadoIpek2026} 中讨论的外推，并不否定其条件信道命题或精确无能隙构造。
+
+
+
+\section{资源定义、局域信道与微扰诊断}
+\label{app:resource-diagnostics}
+
+以下有限态例子区分资源定义、结构性信道恒等式及原文特定微扰诊断。本节统一采用 $N=2\mathcal N$。反例、簇态信道和所列 W/Dicke 表达式均可通过有限维矩阵计算直接核验；这里不建立精确有限耦合复苏或全阶余项。
+
+\subsection{混合态 GME 与残余负性}
+
+近似适用范围与真正多体纠缠（GME）的定义是两个彼此独立的问题。混合态如果可以写成跨不同二分可分态的凸组合，就属于二可分态；只有不存在这样的分解时才具有 GME。正因为定义包含对所有二可分分解的凸优化，混合态 GME 一般不能仅由若干二体负性的残余式自动得到。针对 GME 已经发展出专门的可分性判据和见证量 \cite{GuhneSeevinck2010}；多体纠缠度量综述也强调，单调性、混合态扩展和操作意义是需要分别核查的性质 \cite{MaLiShang2025}。
+
+残余负性的历史动机来自负性单配关系 \cite{OuFan2007}，但原始最小残余量并不是任意混合态上的忠实 GME 认证量。考虑显式二可分态
+\begin{equation}
+\rho_{\mathrm{bisep}}=\frac12|\Phi^+\rangle_{AB}\langle\Phi^+|\otimes|0\rangle_C\langle0|
++\frac12|\Phi^+\rangle_{AC}\langle\Phi^+|\otimes|0\rangle_B\langle0|,
+\label{eq:biseparable-counterexample}
+\end{equation}
+其三个残余平方负性仍约为 $0.3090$、$0.1545$ 和 $0.1545$。因此，即使最小残余量为正，也不能据此判断一般混合态具有 GME。
+
+Dicke 态所用的四体残余 $\pi_4$ 也存在类似而且更明显的限制。构造
+\begin{equation}
+\begin{aligned}
+\rho_{\mathrm{bisep}}^{(4)}&=\frac13\left(\rho_{AB|CD}+\rho_{AC|BD}+\rho_{AD|BC}\right),\\
+\rho_{XY|ZW}&=\left(|\Phi^+\rangle\langle\Phi^+|\right)_{XY}
+\otimes\left(|\Phi^+\rangle\langle\Phi^+|\right)_{ZW}.
+\end{aligned}
+\label{eq:pi4-counterexample}
+\end{equation}
+每一个纯态分量都跨某个 $2|2$ 二分可分，因此整个混合态按定义是二可分态。可是它的四个 $1|3$ 负性全部等于 1，六个两量子比特负性全部为 0，于是 Dicke 研究采用的残余定义给出
+\begin{equation}
+\pi_A=\pi_B=\pi_C=\pi_D=\pi_4=1.
+\end{equation}
+上述数值可以解析得到。对于 $A|BCD$ 划分，将三个纯态分量写成
+\begin{equation}
+\begin{aligned}
+|\psi_i\rangle=\frac{|0\rangle|u_i\rangle+|1\rangle V|u_i\rangle}{\sqrt2},\\
+|u_i\rangle\in\left\{
+\frac{|000\rangle+|011\rangle}{\sqrt2},
+\frac{|000\rangle+|101\rangle}{\sqrt2},
+\frac{|000\rangle+|110\rangle}{\sqrt2}\right\},
+\end{aligned}
+\end{equation}
+这里 $X=|0\rangle\langle1|+|1\rangle\langle0|$，$V=X\otimes X\otimes X$ 翻转三个比特。$u_i$ 属于偶宇称子空间，$Vu_i$ 属于奇宇称子空间。两组向量的 Gram 矩阵相同，因此在 $BCD$ 上存在局域等距映射，将 $u_i$ 映为 $|0\rangle\otimes\xi_i$、将 $Vu_i$ 映为 $|1\rangle\otimes\xi_i$。该混合态因而局域等价于 Bell 态与 $\tau=\frac13\sum_i|\xi_i\rangle\langle\xi_i|$ 的张量积。Gram 矩阵对角元为一、非对角元为 $1/2$，故 $\tau$ 的非零本征值为 $2/3,1/6,1/6$。完整部分转置的负本征值相应为 $-1/3,-1/12,-1/12$，得到 $N_{A|BCD}=1$；置换对称性给出其余三个划分。每个两比特边缘态均为 $\frac13\Phi^++\frac23 I_4/4$，其部分转置最小本征值为零，故负性为零。这样便解析证明了所列残余数值。
+
+也就是说，即使原始 $\pi_4$ 取到最大值，也不能据此对任意混合态认证四体 GME。因此，讨论场自由度被迹掉后的探测器混合态时，只有另有 GME 见证量、凸顶延拓或已证明的混合态单调量，才能作出更强的 GME 结论。
+
+\subsection{精确局域信道不变性}
+近期研究考察了初始多体态的结构能否使某些纠缠指标对加速效应具有特殊稳健性。一个有代表性的例子是四量子比特簇态
+\begin{equation}
+|\mathrm{CL}_{4}\rangle=\frac{1}{2}\bigl(|0000\rangle+|0011\rangle+|1100\rangle-|1111\rangle\bigr),
+\label{eq:cluster-state}
+\end{equation}
+Li 等人报告，当探测器 $D$ 加速并局域地与标量场相互作用时，$A|BCD$ 和 $B|ACD$ 两个划分下的负性保持最大值 \cite{LiCluster2026}。这一结论依赖具体二分；涉及 $C$ 或加速探测器 $D$ 的划分并不具有相同的不变性。
+
+对 $A|BCD$ 和 $B|ACD$ 两个划分而言，其“冻结”实际上可以得到比一阶微扰计算更强的结构性解释。由式~\eqref{eq:cluster-state}迹掉探测器 $D$ 后已经有
+\begin{equation}
+N_{A|BC}(\rho_{ABC})=N_{B|AC}(\rho_{ABC})=1,
+\qquad \rho_{ABC}=\Tr_D|\mathrm{CL}_{4}\rangle\langle\mathrm{CL}_{4}|,
+\label{eq:cluster-reduced-max}
+\end{equation}
+事实上，$\rho_{ABC}=\frac12\Phi^+_{AB}\otimes|0\rangle_C\langle0|+\frac12\Phi^-_{AB}\otimes|1\rangle_C\langle1|$，其中 $|\Phi^-\rangle=(|00\rangle-|11\rangle)/\sqrt2$、$\Phi^-=|\Phi^-\rangle\langle\Phi^-|$。$C$ 上的正交标记使每个子块保留一个 Bell 态；各部分转置块在乘权重之前的迹范数均为二，由此得到式~\eqref{eq:cluster-reduced-max} 的两个归一化负性。这里采用 $N=\|\rho^{T_A}\|_1-1$。若初始时场与探测器不相关，且只有 $D$ 与场相互作用，则把场迹掉后，探测器的精确演化等价于作用在 $D$ 上的局域完全正保迹映射 $\Lambda_D$。保迹性给出
+\begin{equation}
+\Tr_D[(I_{ABC}\otimes\Lambda_D)(\rho_{ABCD})]=\Tr_D\rho_{ABCD}.
+\label{eq:cluster-local-channel}
+\end{equation}
+对 $BCD$ 一侧做偏迹属于局域操作，因此负性单调性意味着
+\begin{equation}
+N_{A|BCD}[(I_{ABC}\otimes\Lambda_D)(\rho)]
+\ge N_{A|BC}(\Tr_D\rho)=1.
+\end{equation}
+另一方面，因为 $A$ 是量子比特，该负性的最大值就是 1，所以必有
+\begin{equation}
+N_{A|BCD}=1,
+\qquad N_{B|ACD}=1.
+\label{eq:cluster-exact-freezing}
+\end{equation}
+因此，只要噪声局域作用于 $D$，这个结论对任意局域 CPTP 信道都严格成立，而不局限于一阶 Unruh--DeWitt 信道。我们还用振幅阻尼和退相位信道在复现文件记录的参数点进行了数值核对；上述解析论证才建立任意局域 CPTP 信道下的结论。这个结果强化了“冻结”本身，却改变了它的物理解释：对这两个划分而言，不变性首先是初始态结构与局域信道共同决定的性质，而不是某种仅由加速度产生的特殊保护机制。
+
+微扰适用范围对簇态的其他量仍然重要。已发表探测器计算中，令 $q=\exp(-2\pi\Omega/a)$、$\nu$ 为有效耦合强度，一阶态范数的修正为
+\begin{equation}
+\|\Psi\|^2=1+\delta_{\mathrm{CL}},\qquad
+\delta_{\mathrm{CL}}=\frac{\nu^2(1+q)}{2(1-q)}.
+\label{eq:cluster-perturbative-control}
+\end{equation}
+当 $\nu^2$ 固定且 $q\to1$ 时，$\delta_{\mathrm{CL}}$ 并非一致有界。这个问题并不影响式~\eqref{eq:cluster-exact-freezing}的精确局域信道论证，但会限制从截断态讨论完整密度矩阵、$C|ABD$ 和 $D|ABC$ 二分，以及无限加速度极限下任务指标的可靠性。
+
+\subsection{非一致微扰表达式}
+为便于复算，一阶 W／Dicke 诊断使用下列显式状态模型，$D$ 为相互作用比特：
+\begin{equation}
+\widetilde\rho_q=\rho+\frac{\nu^2}{1-q}
+\left(\sigma_D^-\rho\sigma_D^++q\sigma_D^+\rho\sigma_D^-\right),\qquad
+\rho_q^{\rm test}=\frac{\widetilde\rho_q}{\Tr\widetilde\rho_q}.
+\label{eq:first-order-diagnostic-model}
+\end{equation}
+算符包含其他比特上的恒等算符；输入分别取所有 Hamming 权为一（W）或二（Dicke）的四比特计算态的等幅叠加。该模型再现所列一阶归一化修正与转折点，其依赖输入态的归一化不是精确 CPTP 演化，不能据此延拓到 $q\to1$。归一化修正较小，只是使未扰动态仍为主导项的必要一致性诊断，不足以给出动力学误差界。特别是，将一阶状态取模平方会保留跃迁项，却省略约化态中同阶的二阶无跃迁贡献；归一化并不能补回这些项。
+
+
+对四量子比特 W 态进行同样检查后，对论文所报告的“复苏”可以给出更明确的限定。Li 等人的一阶修正为 \cite{LiWState2025}
+\begin{equation}
+\delta_W=\frac{\nu^2(1+3q)}{4(1-q)}.
+\label{eq:w-control}
+\end{equation}
+在 $\nu^2=0.04$ 时，一阶表达式的最低点约为 $q\simeq0.982236$，此时 $\delta_W\simeq2.22$。相比之下，$\delta_W<0.1$ 只允许 $q<0.6923$，即使放宽到 $\delta_W<1$ 也只有 $q<0.9612$。原文附录 B 给出二阶密度矩阵截断。根据其式(B7)--(B8)重建，形式部分转置迹范数的最低点约在 $q\simeq0.94427$，此时 $\nu^2/(1-q)\simeq0.718$，并不很小；截断矩阵本身还具有约 $-2.4\times10^{-4}$ 的负本征值。代数上，将该矩阵压缩到 $|0001\rangle$ 与 $(|0010\rangle+|0100\rangle+|1000\rangle)/\sqrt3$ 张成的子空间，得到
+\begin{equation}
+\begin{pmatrix}k_1&\sqrt3\,k_2\\\sqrt3\,k_2&3k_3\end{pmatrix},\qquad
+\begin{aligned}
+k_1&=\frac{1-q-\nu^2}{4(1-q)},\\
+k_2&=\frac{2(1-q)-(1+q)\nu^2}{8(1-q)},\\
+k_3&=\frac{1-q-q\nu^2}{4(1-q)}.
+\end{aligned}
+\end{equation}
+其行列式为 $3(k_1k_3-k_2^2)=-3\nu^4/64<0$（$\nu\ne0$）。因此，截断在省略阶出现小负本征值是可以预期的，不能仅凭这一点否定微扰理论；但该矩阵不是精确密度算符，其迹范数表达式在没有近似控制时也不能视为物理纠缠单调量。特别是，高 $q$ 上升支属于所展示截断表达式的性质，仅凭这些表达式不能建立精确有限耦合复苏。
+
+Dicke 态的复苏也呈现同样的微扰控制问题，尽管该论文采用的耦合更小。Wu 等人取 $\nu^2=0.01$，并报告 $N_{A(BCD)}$ 与残余量 $\pi_4$ 都呈现非单调变化 \cite{WuDicke2026}。其一阶归一化修正为
+\begin{equation}
+\delta_D=\frac{\nu^2(1+q)}{2(1-q)}.
+\label{eq:dicke-control}
+\end{equation}
+根据已发表约化密度矩阵重新计算，我们得到 $N_{A(BCD)}$ 的最低点约为 $q\simeq0.992912$，论文所用 $\pi_4$ 的最低点也几乎位于同一位置；此时 $\delta_D\simeq1.406$。保守条件 $\delta_D<0.1$ 给出 $q<0.9048$，而 $\delta_D<1$ 给出 $q<0.99005$；论文耦合扫描采用的 $q=0.99$ 已有 $\delta_D\simeq0.995$。因此，上升支出现时一阶修正已经达到 $O(1)$。
+
+
+
+\section{分离复合观测量核}
+\label{app:composite-kernel}
+\subsection{分离能量密度核必须保留间距}
+考虑 $1+1$ 维 Minkowski 真空中的无质量实标量场，以及正规序能量密度
+$\mathcal O(t,x)=:\!T_{00}(t,x)\!:
+=\tfrac12:\![(\partial_t\phi)^2+(\partial_x\phi)^2]\!:$。
+两条惯性世界线位于 $x_A=0$ 和 $x_B=L>0$，记 $u=t-t'$。Wick 收缩或对左右传播的对数二点函数求导给出
+\begin{equation}
+\langle\mathcal O(t,0)\mathcal O(t',L)\rangle
+=\frac{1}{8\pi^2}\left[
+\frac{1}{(u-L-i0)^4}+\frac{1}{(u+L-i0)^4}\right].
+\label{eq:supp-separated-energy-density}
+\end{equation}
+系数可如下核对：取光锥坐标 $v_\pm=t\pm x$，每个手征场的二点函数为
+$\langle\phi_\pm(v)\phi_\pm(v')\rangle=-(4\pi)^{-1}\ln(v-v'-i0)$，略去无关常数。对两个变量求导得到 $-(4\pi)^{-1}(v-v'-i0)^{-2}$。由
+$T_{00}=(\partial_{v_+}\phi)^2+(\partial_{v_-}\phi)^2$，每个独立手征分量的两次 Wick 收缩给出式~\eqref{eq:supp-separated-energy-density} 中的一项。红外常数在求导后消失。
+
+只有 $L=0$ 时，上式才变成在 $u=0$ 奇异的 $[4\pi^2(u-i0)^4]^{-1}$。对于 $L>0$，交叉核的奇异支撑位于 $u=\pm L$。特别地，若两个光滑紧致开关的支撑均在 $[-T,T]$，且 $L>2T$，则整个相互作用域上的交叉核光滑。在该严格类空域中，微观因果性使两个时间排序分支相同，交叉积分有限；局域响应仍需自己的分布处理。
+
+使用文献~\cite{ZambiancoRagulaMartinez2026UV} 时必须注意这一点。其局域点探测器核式(35)被用于展示的非局域化简式(44)，其中没有显式间距依赖。该化简具有同位置形式，不能原样用于任意空间分离世界线。该文的空间涂抹分析保留依赖间距的卷积，属于不同计算。因此，本文仅在注明假设后讨论其 Gaussian 涂抹与开关结果，不从仅依赖时间的表达式推断普适的分离点探测器发散判据。上例只是正则性检验，并未证明存在正的提取负性。
+
+若一般复合观测量的均值 $m(x)=\langle\mathcal O(x)\rangle$ 非零，分解 $\mathcal O=mI+\delta\mathcal O$ 还将局域确定性驱动与涨落分开。在该驱动的局域相互作用绘景中，最低阶涨落计算使用 $\langle\delta\mathcal O(x)\delta\mathcal O(x')\rangle$。套用零均值部分转置块之前，必须计入均值诱导相干。底层标量场均值为零，并不意味着能量密度均值也为零。这些记账及紫外检验独立于完整支撑之间的信号检验。
+
+
+
+
+\section{具有校准误差的有限样本见证认证}
+\label{app:finite-sample}
+
+本节定量说明理想状态见证与实验认证之间的区别，使用的是标准浓缩不等式，不是新的资源度量，也不是对实验原始数据的分析。
+
+设固定厄米见证 $W_{\rm ent}=w_0I+\sum_{k=1}^K w_kO_k$ 的系数均为实数，且对任意可分态 $\sigma$ 有 $\Tr(W_{\rm ent}\sigma)\geq0$。设置 $k$ 中，$O_k$ 的理想测量结果位于 $[a_k,b_k]$。实际观测的 $n_k$ 个结果 $X_{ki}$ 相互独立、位于该区间内，且同一设置中具有相同均值。各设置针对同一制备态 $\rho$。定义
+\begin{equation}
+\overline X_k=\frac{1}{n_k}\sum_{i=1}^{n_k}X_{ki},\qquad
+\widehat w=w_0+\sum_{k=1}^K w_k\overline X_k.
+\label{eq:supp-witness-estimate}
+\end{equation}
+另以校准界表示系统误差：
+\begin{equation}
+\left|\Tr(W_{\rm ent}\rho)-
+\left(w_0+\sum_{k=1}^Kw_k\mathbb E X_{ki}\right)\right|
+\leq\Delta_{\rm cal}.
+\label{eq:supp-calibration-bound}
+\end{equation}
+例如，若实际结果观测量为 $\widetilde O_k$，且独立校准给出算符范数界 $\|\widetilde O_k-O_k\|_\infty\leq\epsilon_k$，则可取 $\Delta_{\rm cal}=\sum_k|w_k|\epsilon_k$。该模型并不自动包含状态制备漂移或相关噪声。
+
+\paragraph{命题（充分的有限样本认证条件）。}
+对 $\delta\in(0,1)$，令
+\begin{equation}
+\Delta_{\rm stat}=\sum_{k=1}^K |w_k|(b_k-a_k)
+\sqrt{\frac{\ln(2K/\delta)}{2n_k}}.
+\label{eq:supp-witness-stat-error}
+\end{equation}
+则以至少 $1-\delta$ 的概率，真实见证期望不超过 $\widehat w+\Delta_{\rm stat}+\Delta_{\rm cal}$。在所述抽样和校准假设下，该上界为负即可排除可分性。
+
+\paragraph{证明。}
+对于独立有界观测，Hoeffding 不等式给出 \cite{Hoeffding1963}
+\begin{equation}
+\Pr\!\left(|\overline X_k-\mathbb E X_{ki}|\geq t_k\right)
+\leq2\exp\!\left[-\frac{2n_kt_k^2}{(b_k-a_k)^2}\right].
+\end{equation}
+取 $t_k=(b_k-a_k)\sqrt{\ln(2K/\delta)/(2n_k)}$，每个设置的失败概率至多为 $\delta/K$。并集界保证所有 $K$ 个偏差界同时成立的概率至少为 $1-\delta$。三角不等式将加权和的偏差限制为 $\sum_k|w_k|t_k=\Delta_{\rm stat}$，再加上式~\eqref{eq:supp-calibration-bound} 即得结论。若校准界本身也是统计结果，失败概率为 $\delta_{\rm cal}$，则总置信度至少为 $1-\delta-\delta_{\rm cal}$，不要求两项误差界独立。不能把不确定的校准拟合默认为确定性偏差界。
+
+\paragraph{两比特例子。}
+对 $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$，可取
+\begin{equation}
+W_{\Phi}=\frac12I-|\Phi^+\rangle\langle\Phi^+|
+=\frac14(I-X\otimes X+Y\otimes Y-Z\otimes Z),
+\label{eq:supp-pauli-witness}
+\end{equation}
+其中 $X,Y,Z$ 是 Pauli 矩阵。Cauchy--Schwarz 不等式保证任意纯乘积态与 $|\Phi^+\rangle$ 的重叠模平方至多为 $1/2$；凸性将此结论推广到所有可分态，从而证明见证性质。每个乘积测量的结果为 $\pm1$。三个关联量分别重复 $n$ 次时，
+\begin{equation}
+\Delta_{\rm stat}=\frac32\sqrt{\frac{\ln(6/\delta)}{2n}}.
+\end{equation}
+对于观测负间隙 $m=-\widehat w>\Delta_{\rm cal}$，充分条件变成
+\begin{equation}
+n>\frac{9\ln(6/\delta)}{8(m-\Delta_{\rm cal})^2}.
+\label{eq:supp-pauli-shot-budget}
+\end{equation}
+例如，若 $m=0.125$、$\Delta_{\rm cal}=0.020$、$\delta=0.05$，该保守界要求每个关联量重复至少 $489$ 次。这些是假设输入，不是实验结果或预测提取产额。这里保证的是固定置信规则的频率学覆盖率，不是给某个具体状态“纠缠概率”的后验解释。若 $m\leq\Delta_{\rm cal}$，单纯增加 $n$ 不能认证这一间隙。
+
+见证和设置应独立于用于此界的数据预先固定，否则必须计入选择效应。未知高阶修正的探测器预测态属于另一种误差问题，增加采样次数不能约束该修正。电光正交分量同样不能直接套用上述有界结果：其取值无界，截断数据会改变所测观测量，因此需要独立的尾误差界或适合相应分布的浓缩不等式。符合协方差本身并不提供 $W_{\Phi}$ 及其校准。
+
+\section*{声明}
+\subsection*{资助}
+本文未获得资金、项目或其他资助。
+\subsection*{利益冲突}
+作者声明不存在财务或非财务利益冲突。
+\subsection*{数据与代码可用性}
+模型定义、输入扫描数据以及可移植的 Python 核验和绘图程序随稿件作为复现文件提供。本文未采集实验数据。程序检查指定例子和数值收敛，不提供连续场的全阶余项界。
+\subsection*{作者贡献}
+Zhiming Huang 为唯一作者，并对投稿稿件负责。
+稿件准备中，OpenAI ChatGPT辅助了文献整理、说明性文字与中英文编辑、引文检查以及 Python/Matplotlib 绘图代码的完善。采用该工具用于技术写作和代码辅助；作者对文献、计算、图表及全部科学结论负责，未使用生成式图像模型。
+\bibliographystyle{sn-mathphys-num}
+\bibliography{rqi_refs}
+\end{document}

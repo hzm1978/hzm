@@ -1,0 +1,1353 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+\usepackage{fontspec}
+\usepackage{amsmath,amssymb,mathtools,graphicx}
+\usepackage{booktabs,longtable,array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{microtype,xurl,enumitem,placeins}
+\usepackage[switch,mathlines]{lineno}
+\setlist{nosep}
+\setlength{\emergencystretch}{2em}
+\newcommand{\Wightman}{W}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Neg}{\mathcal{N}}
+\newcommand{\UDW}{Unruh--DeWitt}
+\providecommand{\bibcommenthead}{}
+\hypersetup{pdftitle={Quantum resources from localized quantum-field measurements: extraction and certification},pdfauthor={Zhiming Huang}}
+\begin{document}
+\title[Localized quantum-field measurements]{Quantum resources from localized quantum-field measurements: extraction and certification}
+\author*[1]{\fnm{Zhiming} \sur{Huang}}\email{465609785@qq.com}
+\affil*[1]{\orgdiv{School of Economics and Management}, \orgname{Wuyi University}, \orgaddress{\city{Jiangmen}, \postcode{529020}, \country{China}}}
+\abstract{Localized quantum probes provide an operational link between quantum-field correlations and finite-dimensional systems. A resource claim based on such a measurement, however, involves several distinct steps: the field operation must be causally admissible and physically realizable; the resulting probe state must be identified; and the claimed resource must be tied to a specified readout and uncertainty model. This review surveys detector-based, algebraic, and histories-based approaches to local measurements in quantum field theory, and examines how their outputs relate to entanglement harvesting and data-processing bounds on detector-accessible correlations. We compare resource criteria for entanglement, multipartite entanglement, contextuality, and related properties, emphasizing their dependence on preparation and measurement scenarios and the limitations of perturbative diagnostics. We then discuss detector-coupled observables, ultraviolet regularity, calibration, and finite-sample witness bounds. Communication and parameter estimation are considered as task-level applications whose performance requires assumptions beyond state certification. The synthesis distinguishes field correlations, accessible probe resources, model predictions, and experimentally certified outcomes, while identifying the premises required at each step.}
+\keywords{Quantum field theory, Local measurements, Relativistic causality, Entanglement harvesting, Quantum resources, Resource certification}
+\maketitle
+\linenumbers
+\section{Introduction}
+\label{sec:introduction}
+
+Relativistic quantum information (RQI) examines how spacetime structure, relativistic motion, and quantum fields affect information processing, entanglement, communication, and measurement. Its early development was closely connected to the Unruh and Hawking effects and to the observer dependence of particle and vacuum descriptions. Detector--field models made these questions operational by coupling finite quantum systems to fields along specified trajectories \cite{PeresTerno2004,BirrellDavies1982,Wald1994,CrispinoHiguchiMatsas2008,HuLinLouko2012}. Unlike an abstract field mode, a localized detector has a preparation, an energy gap, a switching profile, a spatial extent, and a readout. Each of these ingredients can affect the response and the final detector state.
+
+One important development in this setting is entanglement harvesting. Two initially uncorrelated probes can become entangled through local interactions with a common field, including configurations in which their complete interaction regions are spacelike separated \cite{Reznik2003,ReznikRetzkerSilman2005,PozasKerstjens2015}. Subsequent work has examined different fields and geometries, finite-size profiles, acceleration, curved spacetime, electromagnetic and fermionic couplings, multiple probes, and optimized switching functions \cite{PozasKerstjensEM2016,Tjoa2021,Zambianco2024,Zambianco2026,MaesoGarcia2022,MoroteBalboaPerche2026,TeixidoBonfill2026,PercheGozzini2026}. These studies reveal a broad range of model-dependent effects. They also make it essential to distinguish correlations present in the field from resources accessible to a particular probe, and to separate genuine harvesting from contributions mediated by causal signals. Resource attribution requires a further distinction: observing a resource in the probe does not automatically establish that the field possessed the same resource before the interaction; the inference depends on the free-state set induced by the chosen interaction \cite{Nystrom2026Induced}.
+
+A parallel line of research asks which measurements can be implemented by a localized apparatus in quantum field theory. Microcausality constrains commutators of local observables, but it does not by itself determine a measurement instrument, its back-action, or the physical record produced by an apparatus. Detector-based constructions, algebraic system--probe frameworks, and histories- or event-based formulations address different aspects of this problem \cite{Sorkin1993,BorstenJubbKells2021,PoloGomez2022,FewsterVerch2020,AnastopoulosSavvidou2012,AnastopoulosSavvidou2019,Papageorgiou2024}. Recent work has clarified causal consistency and the realizability of particular classes of operations under specified assumptions \cite{BostelmannFewsterRuep2021,FewsterJubbRuep2023,MandryschNavascues2025,MandryschSimmonsNavascues2026,Oeckl2026,Simmons2026}. The outputs of these approaches are not interchangeable: a positive-operator-valued measure (POVM), an instrument, an event-time distribution, and a retained probe state support different physical claims.
+
+This distinction becomes decisive when quantum resources are discussed. Entanglement, steering, Bell nonlocality, coherence, magic, and contextuality are defined relative to different free-state sets, allowed operations, and measurement scenarios \cite{HorodeckiEtAl2009,WisemanJonesDoherty2007,Uola2020,BaumgratzCramerPlenio2014,StreltsovAdessoPlenio2017,Howard2014,Schmid2022,Spekkens2005}. A state criterion does not, by itself, specify how the resource is measured or whether the observed record excludes alternative explanations. In multipartite settings, familiar quantities such as residual negativities may also fail to certify genuine multipartite entanglement for arbitrary mixed states without an additional witness.
+
+The relevant literature is substantial but divided by emphasis. Hu, Lin, and Louko review detector--field interactions in relativistic quantum information; Bukhari and Wang focus on atom--field dynamics in curved spacetime; and Papageorgiou and Fraser compare local measurement frameworks and the status of apparently impossible QFT measurements \cite{HuLinLouko2012,BukhariWang2024,Papageorgiou2024}. Broader reviews address entanglement and coherence/discord as resource concepts \cite{HorodeckiEtAl2009,Hu2018}. Building on these measurement-theory and resource reviews, we follow the further inference from a localized operation to a certified resource in an identified retained probe. This operational chain organizes a critical narrative synthesis rather than an exhaustive survey of relativistic quantum information. It compares the outputs of different measurement frameworks, relates field-region correlations to finite-probe accessibility, and identifies the additional dynamical, measurement, and statistical assumptions needed to turn a predicted resource into an experimentally supported claim.
+
+The interaction-induced resource framework of Nystr\"om and co-workers supplies a formal condition for attributing probe resources to the environment \cite{Nystrom2026Induced}. Here that condition is placed alongside apparatus realization, causal localization, and the calibration and sampling requirements of an actual probe measurement; we do not propose a new induced resource theory.
+
+Several questions organize the discussion. When does commutativity of local observables correspond to an implementable apparatus? Which field region is appropriate for a data-processing bound when a detector interacts over a finite spacetime support? What does the usual perturbative harvesting criterion establish, and how should harvesting be distinguished from signalling? Which measurement, calibration, and statistical assumptions are needed to certify a resource? Finally, under what additional conditions can a certified probe state support a communication or metrological advantage?
+
+Alongside the review of existing work, we present a set of diagnostic results. These include an instrument pair with identical outcome probabilities but different back-action, a data-processing bound on detector-accessible correlations, a compact-support benchmark for the strictly spacelike pointlike limit, finite-dimensional counterexamples for selected multipartite and channel-based diagnostics, and a finite-sample bound for a calibrated witness. These examples combine standard channel and statistical facts with explicitly derived diagnostics; they clarify the scope of existing claims and make no priority claim for the underlying inequalities; they are not presented as an optimal harvesting protocol or a universal resource theory. The logical sequence from a field state to a task-level claim is summarized in Fig.~\ref{fig:operational-chain}.
+
+The article is organized as follows. Section~\ref{sec:measurement} reviews local measurements, detector models, and causal records. Section~\ref{sec:accessibility} examines field correlations, detector-accessible resources, and data-processing bounds. Section~\ref{sec:harvesting} discusses entanglement harvesting, complete interaction supports, and the pointlike limit. Section~\ref{sec:resources} compares resource criteria and their operational certification. Section~\ref{sec:readout} treats detector observables, ultraviolet regularity, and calibrated readout. Section~\ref{sec:utility} considers communication and parameter estimation, while Section~\ref{sec:conclusion} summarizes the main conclusions and open problems. Appendices A--G collect the detailed derivations and numerical checks needed to support the discussion.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/Fig1_operational_chain_en.pdf}
+\caption{Operational chain from a quantum-field state to a task-level claim. Each transition requires additional physical or statistical input; the stages are not interchangeable.}
+\label{fig:operational-chain}
+\end{figure}
+
+\section{Local measurements and causal structure in quantum field theory}
+\label{sec:framework}
+\label{sec:measurement}
+Locality is often expressed through commutation relations, whereas a measurement is a physical process that produces a record and changes the measured system. The relevant literature therefore distinguishes local algebras, detector models, measurement instruments, and event-time descriptions. The following discussion compares these objects and the causal content each one supplies.
+
+\subsection{Field correlations, probe states, and measurement records}
+We use $c=\hbar=k_B=1$ and metric signature $(-,+,+,+)$. For a real scalar field in state $\rho_\phi$, define
+\begin{equation}
+W(x,x')=\Tr[\rho_\phi\hat\phi(x)\hat\phi(x')].
+\label{eq:wightman}
+\end{equation}
+This two-point function describes correlations. It is a bidistribution: point-evaluated expressions below denote appropriately smeared or pulled-back quantities whenever those operations are well defined. For spacelike separated $x,x'$, microcausality instead requires
+\begin{equation}
+[\hat\phi(x),\hat\phi(x')]=0.
+\label{eq:microcausality}
+\end{equation}
+In a free scalar theory, the commutator is a state-independent c-number distribution related to the causal propagator. Nonzero spacelike correlations and vanishing causal response are consequently compatible. Whether a particular probe accesses those correlations depends on its interaction and preparation.
+
+The relevant inference has the form
+\begin{equation}
+\begin{aligned}
+\text{field state}&\longrightarrow\text{localized interaction}\\
+&\longrightarrow\text{record or probe state}\\
+&\longrightarrow\text{resource criterion}\longrightarrow\text{task}.
+\end{aligned}
+\label{eq:chain}
+\end{equation}
+A local field algebra, a finite probe density matrix, and a classical record occupy different positions in this chain. A resource criterion additionally specifies a subsystem, a set of free states, and, where a monotone is claimed, an allowed operation class. The distinctions are needed even when two calculations use the same field correlator. The distinct evidentiary levels and their required inputs are summarized in Table~\ref{tab:operational-levels}.
+
+\begin{table}[t]
+\centering\small
+\caption{Different claims made in a local-probe experiment. The rows concern different inference targets; no row follows solely from the preceding one. The table is an assessment scheme, not a new resource theory.}
+\label{tab:operational-levels}
+\begin{tabular}{L{0.23\linewidth}L{0.67\linewidth}}
+\toprule
+Claim & What must be specified\\
+\midrule
+Field correlations & State and local algebra or regulated subsystem.\\
+Accessible probe state & Initial probe resources, coupling, complete supports, and resulting channel.\\
+Resource certification & Resource scenario, readout observables, calibration and statistical control.\\
+Harvesting attribution & Initial product assumptions and exclusion or quantification of inter-probe causal influence.\\
+Operational utility & Encoding or estimator, allowed access, cost budget and attainable performance.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Detector models, instruments, and apparatus realization}
+Applying an ideal projection postulate to an arbitrary QFT observable can produce Sorkin-type impossible-measurement scenarios. The issue is which operations a spacetime-localized apparatus can implement, not simply whether two observables commute \cite{Sorkin1993,BorstenJubbKells2021,Papageorgiou2024}. A POVM specifies outcome probabilities; an instrument additionally specifies conditional state changes \cite{DaviesLewis1970,Ozawa1984}. Two constructions can agree on a probability without inducing the same back-action.
+
+A two-level Unruh--DeWitt (UDW) detector provides a tractable apparatus model. For a worldline $x(\tau)$,
+\begin{equation}
+H_I(\tau)=\lambda\chi(\tau)\mu(\tau)\hat\phi[x(\tau)].
+\label{eq:udw}
+\end{equation}
+Here $\lambda$ is the coupling constant, $\chi$ is a real switching function, and $\mu(\tau)=\sigma^+e^{i\Omega\tau}+\sigma^-e^{-i\Omega\tau}$ is the monopole operator. The proper energy gap is $\Omega>0$, with $\sigma^+=|e\rangle\langle g|$ and $\sigma^-=(\sigma^+)^\dagger$ for excited and ground states $|e\rangle,|g\rangle$.
+Finite-size detectors replace the point evaluation by a spatial smearing. The preparation, gap, switching, profile, and readout determine the induced field measurement and the final probe state. Detector-based measurement theory makes that induced POVM and update explicit \cite{PoloGomez2022}. Fully relativistic localized-field probes reproduce leading detector predictions in specified regimes, supporting the approximation without identifying all probe models or perturbative orders \cite{GrimmerTorresMartinez2021,PercheLocalizedQFT2024,Perche2024}.
+
+The Fewster--Verch framework instead couples target and probe QFTs in a compact region and induces observables and instruments through a scattering morphism \cite{FewsterVerch2020}. Local couplings preserve causal consistency in the system--probe setting \cite{BostelmannFewsterRuep2021}. Constructive results for linear scalar fields include asymptotic local-probe schemes and specified smeared-field measurements \cite{FewsterJubbRuep2023,MandryschNavascues2025}. Their assumptions do not amount to a classification of every instrument in interacting QFT.
+
+The distinction between a causal map and a specified realization is now sharper. In a free Klein--Gordon theory, Mandrysch, Simmons, and Navascu\'es construct causal Weyl channels that cannot be approximated arbitrarily well by the FV schemes considered, while proving realizability for a broad class of diagonal Weyl instruments \cite{MandryschSimmonsNavascues2026}. This preprint separates two proposed classes of operations; it does not establish that every causal operation is physical, or that FV schemes exhaust all physical apparatus. Its heralded constructions must also be assessed together with the success probability and the nonselective instrument. For harvesting, a vanishing signalling test is therefore one requirement: a claim about an attainable probe resource still needs an explicit coupling, apparatus state, and readout.
+
+\subsection{Outcome probabilities and state-update dynamics}
+An induced instrument on the field and an output channel to retained probes are related through a specified system--apparatus realization. An abstract field instrument need not fix which apparatus degrees of freedom are retained. A probe resource must therefore be attached to an identified output subsystem and preparation, rather than to a field POVM or update alone.
+
+An elementary finite-dimensional example shows why outcome agreement is insufficient. Let $S$ be a qubit, $r\in\{0,1\}$ a record, and define two instruments
+\begin{equation}
+\mathcal I_r(\rho)=\tfrac12\rho,\qquad
+\mathcal J_r(\rho)=\tfrac12\Tr(\rho)|0\rangle\langle0|.
+\label{eq:instrument-same-probability}
+\end{equation}
+Both give $p_r=1/2$ for every normalized input and have the same effects $E_r=I/2$. Their nonselective channels are respectively the identity and replacement by $|0\rangle$. If $S$ initially shares a Bell state with an untouched reference, the first channel preserves that entanglement and the second removes it. Both operations are local on $S$. Thus a common outcome distribution does not determine a common resource-bearing output. Appendix~\ref{app:measurement-benchmark} supplies the Kraus representation and the explicit conditional states. This example concerns back-action on a pre-existing resource, rather than a field-harvesting protocol.
+
+Selective state updating must also be distinguished from signalling. For a local instrument $\{\mathcal I_r\}$ on $S$, with a trace-preserving nonselective channel and an untouched system $B$,
+\begin{equation}
+\sum_r p_r\rho_{B|r}=\rho_B.
+\label{eq:selective-nonselective}
+\end{equation}
+The conditional state $\rho_{B|r}$ is defined for $p_r>0$. The identity follows by tracing over $S$ and using trace preservation. A branch may differ from the initial marginal, but identifying the branch requires the record. In QFT one must establish the corresponding localization and causal-composition properties of the instrument; commutation of a pair of field observables is not a substitute for that construction.
+
+\subsection{Event probabilities and causal composition}
+Quantum temporal probabilities (QTP) retain detection time as an outcome. Their leading event density has the schematic form
+\begin{equation}
+P(x,r)=\int d^4y\,R^{ab}(y,r)
+G_{ab}(x-y/2,x+y/2),
+\label{eq:qtp}
+\end{equation}
+where $x$ is the coarse-grained event location, $r$ labels the recorded outcome, $y$ is the relative spacetime coordinate, and the component indices $a,b$ are contracted. The field correlator is $G_{ab}$; $R^{ab}$ describes apparatus response and coarse-graining. Joint-event probabilities involve selected unequal-time higher-point correlators. UDW response and Glauber photodetection arise in limiting regimes, rather than defining interchangeable measurements \cite{AnastopoulosSavvidou2012,AnastopoulosSavvidou2019,AnastopoulosHuSavvidou2023,Koliopoulou2026}. Event-hierarchy proposals examine quantum features of multi-time probabilities; these indicators concern a specified hierarchy, not automatically the entanglement of a reduced detector state \cite{AnastopoulosSavvidou2025}.
+
+Other approaches emphasize the composition of localized operations. Positive-formalism constructions address positivity and composition for specified observable classes; a multi-observable expectation is not itself a joint outcome distribution \cite{Oeckl2026,OecklZampeli2026}. Local $S$-matrix constructions test causal factorization and stronger conditions on operations, including pointer back-action in a specified model \cite{Simmons2026}. These results complement explicit detector instruments. A recent holographic extension makes the distinction between bulk and boundary locality explicit. Caminiti, Myers, and Wurtz construct the boundary dual of a local anti-de Sitter (AdS) bulk detector using Hamilton--Kabat--Lifschytz--Lowe (HKLL) reconstruction. The bulk-local interaction is represented by a boundary-smeared operator, and two detectors with spacelike-separated bulk supports can have overlapping boundary smearing regions. This overlap does not by itself imply bulk signalling: the vanishing commutator is recovered after integration over the full smearing kernels, through cancellations that are not visible from the pointwise overlap of their boundary supports. The construction is defined within a semiclassical code subspace and is a boundary representation of bulk-local probes, not a pair of independent local boundary instruments. It shows that locality must be stated in the spacetime and representation in which the detector is physically localized \cite{CaminitiMyersWurtz2026}. Their different output objects are summarized in Table~\ref{tab:causal-measurements}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Operational outputs of complementary measurement constructions.}
+\label{tab:causal-measurements}
+\begin{tabular}{L{0.23\linewidth}L{0.30\linewidth}L{0.37\linewidth}}
+\toprule
+Construction & Direct output & Additional requirement for a resource claim\\
+\midrule
+Specified detector model \cite{PoloGomez2022} & Probe probabilities, induced field update, final probe state & Controlled dynamics, readout model, and a witness on that state.\\
+FV system--probe scheme \cite{FewsterVerch2020} & Induced local observables and instruments & A specified probe preparation and implementation of the relevant readout.\\
+QTP \cite{AnastopoulosHuSavvidou2023} & Time-resolved and joint event statistics & An explicit link between those statistics and the proposed resource criterion.\\
+Positive formalism / local $S$ matrix \cite{OecklZampeli2026,Simmons2026} & Probabilistic composition / admissible local operations & A matching apparatus and outcome functional; causal admissibility alone does not specify detector negativity.\\
+HKLL bulk-to-boundary detector \cite{CaminitiMyersWurtz2026} & Boundary-smeared representation of a local bulk detector within a code subspace & Specify the reconstruction kernel and code subspace; overlapping boundary supports alone do not determine bulk causal influence.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These approaches should not be read as interchangeable descriptions of a single object. A detector model gives an explicit apparatus and a finite-dimensional output state, but its predictions depend on the chosen coupling and approximation. The FV framework gives a covariant algebraic construction of induced observables and instruments, while its constructive results remain model dependent. QTP retains event-time information that an integrated detector state can discard; conversely, an event distribution does not by itself specify the state of a retained probe. Positive-formalism and local-$S$-matrix approaches address positivity and causal composition, but do not automatically provide a particular laboratory pointer or readout. A useful comparison must therefore fix one field state, compact interaction supports, detector preparation, smearing, switching, and pointer readout. It should compare integrated single-probe probabilities, joint event statistics, selective updates, and the final retained probe state separately. Appendix~\ref{app:measurement-benchmark} gives such a benchmark, including the distinction between coincidence covariance and negativity. It is a proposed comparison protocol, not an equivalence proof between the frameworks.
+
+\section{Field correlations and detector-accessible resources}
+\label{sec:accessibility}
+Once the apparatus and the retained probe subsystem have been specified, one can ask how much of the field correlations can be transferred to the probes. Data processing gives a general upper bound, but its quantitative content depends on the field regions and the channels induced by the interactions. The resulting hierarchy is summarized in Fig.~\ref{fig:accessibility-hierarchy}.
+
+\subsection{Data-processing bounds on detector-accessible entanglement}
+\label{subsec:field-to-detector-bound}
+
+The field-to-detector distinction can be quantified without assuming a spatial tensor-product decomposition of the field. Let $\mathcal A_A$ and $\mathcal A_B$ be commuting local algebras for spacelike separated regions, and assume that a normal product reference state exists (for example, under a suitable split or finite-resolution prescription). Define
+\begin{equation}
+I_{\rm F}(A:B)=
+S\!\left(\omega|_{\mathcal A_A\vee\mathcal A_B}
+\,\middle\|\,
+\omega|_{\mathcal A_A}\otimes\omega|_{\mathcal A_B}\right).
+\label{eq:field-algebra-mutual-info}
+\end{equation}
+Here $\omega$ denotes the field state and $\mathcal A_A\vee\mathcal A_B$ the algebra generated by the two local algebras; $S$ is Araki relative entropy. For finite-dimensional density matrices, $S(\rho\Vert\sigma)=\Tr[\rho(\ln\rho-\ln\sigma)]$ when $\operatorname{supp}\rho\subseteq\operatorname{supp}\sigma$, and is infinite otherwise \cite{Watrous2018}. In gauge theories, the local algebras, shared centre, and superselection sectors must be specified first. The Araki relative entropy may still be infinite; modular $p$-nuclearity for some $0<p<1$ is a sufficient finiteness condition in the class studied by Panebianco and Wegener \cite{PanebiancoWegener2021}. Thus the following bound is quantitatively informative only when $I_{\rm F}<\infty$, and regulated results must state their regulator and limiting procedure.
+
+Suppose $D_A$ and $D_B$ interact locally with $\mathcal A_A$ and $\mathcal A_B$, respectively. Initially the probes are uncorrelated with the field and with one another, and share no nonlocal ancilla or direct interaction. For the final probe state, $I(D_A:D_B)=S(\rho_{AB}\Vert\rho_A\otimes\rho_B)$, where $\rho_A,\rho_B$ are its marginals. The induced local channels and monotonicity of relative entropy give
+\begin{equation}
+I(D_A:D_B)\leq I_{\rm F}(A:B).
+\label{eq:detector-mutual-info-dpi}
+\end{equation}
+For the detector state, define the relative entropy of entanglement
+\begin{equation}
+E_R(\rho_{AB})=\inf_{\sigma\in{\rm SEP}}S(\rho_{AB}\Vert\sigma).
+\label{eq:relative-entropy-entanglement}
+\end{equation}
+Here ${\rm SEP}$ is the set of separable probe states. Since $\rho_A\otimes\rho_B$ is separable, $E_R(\rho_{AB})\leq I(D_A:D_B)$. Let $d_A,d_B$ be the probe Hilbert-space dimensions, $T_B$ partial transposition on $B$ in a fixed basis, and $\|\cdot\|_1$ the trace norm. Quantum Pinsker's inequality (with natural logarithms) and $\|X^{T_B}\|_1\leq d_B\|X\|_1$ then imply
+\begin{equation}
+\mathcal N(\rho_{AB})\leq d_B\sqrt{\frac{E_R(\rho_{AB})}{2}},
+\label{eq:negativity-er-bound}
+\end{equation}
+where $\mathcal N=(\|\rho_{AB}^{T_B}\|_1-1)/2$. All entropies in these bounds use natural logarithms; base-two entropies require the corresponding factor of $\ln 2$. Combining the bounds yields
+\begin{equation}
+\mathcal N(\rho_{AB})\leq
+\min\!\left\{\frac{\min(d_A,d_B)-1}{2},
+d_B\sqrt{\frac{I_{\rm F}(A:B)}{2}}\right\},
+\label{eq:field-to-detector-negativity-bound}
+\end{equation}
+or, for two qubits,
+\begin{equation}
+\mathcal N(\rho_{AB})\leq
+\min\!\left\{\frac12,\sqrt{2I_{\rm F}(A:B)}\right\}.
+\label{eq:two-qubit-field-negativity-bound}
+\end{equation}
+The inequality is rigorous but generally not tight; it follows from data processing and finite-dimensional norm bounds, not from an optimal harvesting construction.
+
+To obtain the intermediate estimate, choose a separable $\sigma$ approaching the infimum in $E_R$. Pinsker's inequality gives $\|\rho-\sigma\|_1\leq\sqrt{2S(\rho\Vert\sigma)}$. Since $\|\sigma^{T_B}\|_1=1$ and partial transposition obeys $\|X^{T_B}\|_1\leq d_B\|X\|_1$, the triangle inequality yields $\mathcal N(\rho)\leq(d_B/2)\|\rho-\sigma\|_1$. Taking the infimum gives Eq.~\eqref{eq:negativity-er-bound}. The dimension-dependent cap in Eq.~\eqref{eq:field-to-detector-negativity-bound} is the maximum possible negativity for the detector dimensions.
+
+No positive lower bound on detector entanglement follows from $I_{\rm F}$ alone: a probe may miss the correlated modes, have zero coupling, or induce an entanglement-breaking channel. In a specified perturbative \UDW\ model, the condition $|\mathcal M|-\sqrt{P_AP_B}>0$ is detector-specific, not a field-only lower bound. Local noise can only reduce the unconditioned detector correlations; a postselected branch must be weighted by its success probability when assessing average yield.
+
+
+\label{subsec:three-correlation-levels}
+
+Three levels must be distinguished. Field mutual information $I_{\rm F}(A:B)$ measures total correlations between local field algebras, including classical and quantum parts. Detector mutual information $I(D_A:D_B)$ measures total correlations in the final probe state and depends on the chosen preparation and local channels. Detector entanglement, quantified here by $E_R$ or negativity, is more restrictive and is not the entanglement of the full field regions. The data-processing and separable-state bounds relate these quantities but do not make them equal: $I_{\rm F}>0$ does not guarantee nonzero detector negativity.
+
+
+\subsection{Mode-selective access and Gaussian assistance}\label{subsec:gaussian-mode-access}
+
+For clarity, consider $m$ selected bosonic modes with canonical quadratures $\hat{\boldsymbol R}=(\hat q_1,\hat p_1,\ldots,\hat q_m,\hat p_m)^T$. Write $d_j=\langle\hat R_j\rangle$, $\Delta\hat R_j=\hat R_j-d_j$, and
+\begin{equation}
+V_{jk}=\tfrac12\langle\{\Delta\hat R_j,\Delta\hat R_k\}\rangle,
+\qquad [\hat R_j,\hat R_k]=i(\mathbb J_m)_{jk},
+\quad \mathbb J_m=\bigoplus_{j=1}^{m}\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\label{eq:gaussian-covariance}
+\end{equation}
+The first moments and covariance matrix $V$ determine a Gaussian state. A symplectic transformation $S$ preserves $\mathbb J_m$ and brings $V$ to Williamson normal form; its symplectic eigenvalues satisfy $\nu_j\geq1/2$ in our $\hbar=1$ convention. They specify the thermal mixedness of the normal modes. Logarithmic negativity is $E_N=\ln\|\rho^{T_B}\|_1=\ln(1+2\mathcal N)$; a positive value witnesses entanglement, whereas its vanishing excludes entanglement only under additional assumptions \cite{Weedbrook2012}.
+
+A second line of work asks which collective field modes a finite set of probes should access. For pure Gaussian lattice states, Torres and co-workers show that, among a fixed number of modes supported in a region, the most mixed Williamson normal modes maximize the entanglement that those modes can share with the complementary region; in the continuum, these modes determine detector smearing profiles and connect to area-law scaling \cite{Torres2023}. Related analyses identify a hierarchy of negativity-carrying core modes and show how classical correlations can obscure entanglement when only local regions are observed; conditional access can change when measurements of the external field and classical records are added \cite{KlcoBeckSavage2023,KlcoBeck2023}.
+
+Gao and Klco subsequently established that, for $AB$-symmetric, $\phi\pi$-uncorrelated Gaussian covariance matrices whose field cross-region block is positive semidefinite and momentum cross-region block is negative semidefinite---a structural class that includes the symmetric free-scalar-vacuum regions considered there---logarithmic negativity is a necessary and sufficient entanglement criterion. Local symplectic operations reorganize the negativity-bearing subspace into a hierarchy of entangled single-mode pairs, and optimal collective profiles map these pairs to corresponding pairs of single-mode detectors \cite{GaoKlco2025}. A single detector pair need not capture the entire multimode resource; the complete accessibility statement concerns the hierarchy of mode pairs in the continuum.
+
+Gao and Klco also studied a distinct assisted setting: in a pure Gaussian tripartition $A$--$B$--$C$, measurements on $C$ with classical communication can purify correlations between $A$ and $B$, and finite Gaussian assistance protocols give bounds on Gaussian entanglement of assistance and formation \cite{GaoKlco2026Assistance}. The third-region measurement and classical record are additional operational resources, so this assisted protocol should not be conflated with unassisted two-probe harvesting. These are stronger, constructive results than a general data-processing upper bound, but they rely on Gaussian covariance structure and tailored mode access. They do not by themselves establish the same accessibility for arbitrary interacting or non-Gaussian fields, or for finite-time, finite-energy UDW apparatus without an explicit implementation map.
+
+A complementary mode-geometric diagnostic has been proposed for Gaussian fields. Agullo and co-workers define a symmetric partner-mode overlap that is invariant under local symplectic transformations and formulate a necessary-and-sufficient criterion comparing this overlap with a state-dependent threshold built from local and joint symplectic invariants. A positive overlap alone is not a sufficient entanglement certificate. The construction provides a geometric way to identify where correlations of selected field modes are encoded in their purification partners. It is a mode-correlation descriptor, however, not by itself a finite-detector harvesting protocol or a substitute for optimizing the actual detector smearing \cite{AgulloPartner2025}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/Fig3_accessibility_hierarchy_en.pdf}
+\caption{Data-processing hierarchy relating field-region correlations to detector-accessible resources, under the product-preparation and local-channel assumptions stated in the text. The inequalities provide upper bounds only and do not imply a positive lower bound on harvested detector entanglement.}
+\label{fig:accessibility-hierarchy}
+\end{figure}
+
+\subsection{Channel dependence and finite-resource constraints}
+Data processing is universal, whereas a strict contraction factor is channel dependent. For local probe channels $\mathcal E_A,\mathcal E_B$, a bound of the form
+\begin{equation}
+I(D_A:D_B)\leq\eta_A\eta_B I_{\rm F}(A:B),\qquad 0\leq\eta_A,\eta_B\leq1,
+\label{eq:product-mi-contraction}
+\end{equation}
+is useful only if the coefficients are established for the same input class and regulator as the field mutual information. Complete contraction and quantum Doeblin methods give sufficient conditions in specified noisy-channel settings \cite{HircheGeorgeNuradhaWilde2026Conditional,GeorgeHircheNuradhaWilde2026Doeblin}. They do not assign a detector-independent extraction efficiency to a relativistic field.
+
+The ideal Jaynes--Cummings channel illustrates the obstruction: rare, high-energy Fock inputs can preserve an encoded bit almost perfectly even under a fixed mean-energy budget. An average-energy constraint need not imply a strictly smaller worst-case mutual-information contraction, a mechanism related to classical average-cost counterexamples \cite{PolyanskiyWu2016Dissipation}. A hard cutoff, explicitly calibrated noise, or a state-dependent one-sided data-processing estimate can be more informative. Appendix~\ref{app:finite-mode-transfer} gives the detailed argument; the finite-mode transfer example in Appendix~\ref{app:finite-mode-transfer} illustrates the difference between field mutual information, detector mutual information, and detector negativity \cite{CohenBenAryehMann1994}. These examples explain the limits of an upper bound; they are not continuum harvesting protocols.
+
+\subsection{Geometric choice of the relevant field region}
+\label{subsec:detector-region-geometry}
+
+The pointlike detector limit raises a geometric issue in applying the field-to-detector data-processing bound. For static probes, let $2T$ be the switching duration, $L$ the centre separation, and $\sigma$ the spatial support radius. The detector interaction is not supported on an equal-time ball of radius $\sigma$. It is supported on the spacetime world tube
+\begin{equation}
+\mathcal W_A=\{(t,\mathbf x): |t|<T,\ 
+|\mathbf x-\mathbf x_A|<\sigma\},
+\label{eq:detector-worldtube}
+\end{equation}
+and similarly for detector $B$. A centred causal double cone containing this nominal open world tube is the domain of dependence of the equal-time ball of radius
+\begin{equation}
+R=T+\sigma.
+\label{eq:enclosing-doublecone-radius}
+\end{equation}
+Indeed, the double cone $D(B_R)$ is characterized by $|t|+|\mathbf x-\mathbf x_A|<R$, which contains every point of $\mathcal W_A$ when $R\geq T+\sigma$. For a compact interaction support inside this nominal open tube, $R$ suffices. To include the closed support of the profiles used in the benchmark, take $R_\epsilon=T+\sigma+\epsilon$, with $0<\epsilon<L/2-T-\sigma$. We use $R=T+\sigma$ as the limiting enclosing radius. The strict-spacelike condition $L-2\sigma>2T$ is exactly $L>2R$. Thus the two enclosing double cones remain spacelike separated throughout the pointlike limit, with $R\to T$ rather than $R\to0$.
+
+The local detector channels are therefore localized in the algebras of enclosing double cones, with the small enlargement when needed, rather than those of equal-time balls of radius $\sigma$. Under the split/finite-resolution assumptions used above, the appropriate data-processing statement is
+\begin{equation}
+I(D_A:D_B)\leq
+I_{\rm F}\!\left(D(B_{R_\epsilon})_A:
+D(B_{R_\epsilon})_B\right).
+\label{eq:correct-doublecone-dpi}
+\end{equation}
+By the time-slice property, the algebra of a causal double cone can be represented on its equal-time Cauchy ball. This permits the use of spatial-ball mutual-information methods, with radius $R_\epsilon$, rather than $\sigma$.
+
+This distinction matters because the known large-separation expansion for two equal-time balls in the four-dimensional massless scalar vacuum has the leading scaling
+\begin{equation}
+I_{\rm F}(B_R^A:B_R^B)
+\sim C_{\rm sc}\left(\frac{R}{L}\right)^4,
+\qquad R/L\ll1,
+\label{eq:small-ball-mi-scaling}
+\end{equation}
+where $C_{\rm sc}$ depends on the field theory and the region convention \cite{Chen2017CFTMI,AgonCasiniGursoyPlanella2025}. This is the small-region expansion of the field mutual information; it is not the scaling of the detector negativity. For a fixed admissible $\epsilon>0$, substituting the enclosing radius gives
+\begin{equation}
+I_{\rm F}\sim C_{\rm sc}
+\left(\frac{T+\sigma+\epsilon}{L}\right)^4
+\longrightarrow
+C_{\rm sc}\left(\frac{T+\epsilon}{L}\right)^4
+\quad (\sigma\to0),
+\label{eq:worldtube-enclosing-mi-limit}
+\end{equation}
+provided the large-separation regime applies. The field mutual-information budget therefore does not vanish merely because the detector's spatial radius tends to zero while its interaction duration remains fixed.
+
+For the benchmark introduced in Sec.~\ref{subsec:udw-pointlike-limit}, $L/T=2.033333\ldots$ and the limiting enclosing radius is $R/T=1$ as $\sigma,\epsilon\to0$. The equal-sphere cross ratio is $z=4R^2/L^2\simeq0.9675$, so the large-separation expansion in Eq.~\eqref{eq:small-ball-mi-scaling} is not quantitatively controlled there. It would be incorrect to insert that asymptotic formula as a numerical value for the bound. A direct Gaussian-field or regulated algebraic calculation of the mutual information of the two nearly touching double cones is required.
+
+The geometric conclusion does not require a numerical mutual-information ansatz: assigning a fixed-duration interaction to shrinking equal-time balls changes the subsystem being bounded. A quantitative field-derived negativity bound still needs a controlled value or rigorous upper bound for the mutual information of regions containing the full interaction supports.
+
+\section{Entanglement harvesting with localized probes}
+\label{sec:harvesting}
+Entanglement harvesting provides a direct test of whether localized probes can acquire quantum correlations from a field. The perturbative detector criterion is widely used, but its interpretation depends on the causal relation between complete interaction supports, the detector size, and the order of approximation. The support geometry for two finite-size probes is illustrated in Fig.~\ref{fig:spacelike-support}.
+
+\subsection{Perturbative detector-state criterion}
+Harvesting couples initially uncorrelated probes locally to a field and tests their final reduced state. Vacuum-extraction proposals and detector calculations established that pre-existing field correlations can be accessed without signal exchange between the complete interaction regions \cite{Reznik2003,ReznikRetzkerSilman2005,PozasKerstjens2015}. For initially ground-state two-level probes with vanishing one-point function of the coupled field observable, let $P_A,P_B$ denote the second-order excitation probabilities and $\mathcal M$ the ground--double-excitation coherence. The relevant second-order partial-transpose block has diagonal entries $P_A,P_B$ and off-diagonal entries $\mathcal M,\mathcal M^*$. Its potentially negative eigenvalue is
+\begin{equation}
+\lambda_-^{(2)}=\frac{P_A+P_B-\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}}{2}.
+\end{equation}
+With $\mathcal N=(\|\rho^{T_B}\|_1-1)/2$, the leading negativity is therefore
+\begin{equation}
+\mathcal N^{(2)}=\max\!\left\{0,
+\frac{\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}-(P_A+P_B)}{2}\right\}.
+\label{eq:negativity}
+\end{equation}
+The condition $|\mathcal M|>\sqrt{P_AP_B}$ is a threshold, not the general value of negativity. For identical probes it reduces to $\max(0,|\mathcal M|-P)$. The local probabilities and nonlocal coherence must be evaluated at the same order; omitted terms can decide the sign near threshold. The role of the gap requires a qualified statement. For identical inertial ground-state probes in the free scalar vacuum, Pozas-Kerstjens, Louko, and Mart'{i}n-Mart'{i}nez establish a leading-order obstruction at zero gap under their matched-coupling and time-shifted-switching assumptions; their overlapping-window proof additionally uses spherically symmetric profiles \cite{PozasKerstjensLoukoMartinez2017}. This does not prohibit harvesting for arbitrary probe pairs, field states, or couplings. A nonzero gap can change the competition between local excitation and nonlocal coherence.
+
+A Gaussian-mode analysis reformulates the entanglement condition using the partner mode of one selected detector mode and derives no-go conditions in specified settings, including uniformly accelerated configurations \cite{OsawaNambuYoshimoto2026}. Profile overlap is necessary in that analysis, but is not equivalent to the full Gaussian separability criterion. This is a mode-based restriction, rather than a prohibition for every accelerated detector model.
+
+The quantities are interaction dependent. Switching, smearing, derivative coupling, detector dimension, and initial preparation change the sampled kernels. Antiparallel and parallel acceleration can consequently produce different trends in specified setups \cite{SaltonMannMenicucci2015}. Localized relativistic QFT probes reproduce leading harvesting predictions under stated assumptions \cite{Perche2024}; Gaussian-mode extraction bounds instead concern mode selection in a specified covariance-matrix setting \cite{Torres2023}. Neither establishes a universal detector-independent harvesting yield.
+
+\subsection{Complete interaction supports and the nonlocal amplitude}
+For strictly spacelike interaction supports, microcausality excludes inter-probe signalling. If the supports are causally connected, the final entanglement can contain a signal-mediated contribution. For free scalar models at leading order, a commutator--anticommutator decomposition separates state-independent causal response from state-dependent correlations \cite{Tjoa2021}. The amplitudes can interfere:
+\begin{equation}
+|\mathcal M|^2=|\mathcal M_{\rm corr}|^2+|\mathcal M_{\rm comm}|^2
++2\operatorname{Re}(\mathcal M_{\rm corr}\mathcal M_{\rm comm}^*).
+\label{eq:harvesting-communication-interference}
+\end{equation}
+Negativity is nonlinear in the total amplitude and local noise. It cannot in general be partitioned into two positive independent yields. Constructive and destructive interference are model-dependent possibilities \cite{Zambianco2024,Zambianco2026}. A de Sitter calculation with a conformally coupled scalar field explicitly finds that cosmological expansion changes this interference and can either enhance or suppress the total harvested entanglement, depending on the detector configuration \cite{Zambianco2024,Zambianco2026}. This is a result for causally connected interactions and should not be read as an enhancement of purely spacelike harvesting.
+
+Gaussian profiles have noncompact tails. Centre separation or a small communication-mediated-entanglement estimator does not prove exact spacelike separation of the interactions. Compact support establishes the strict condition; a tail approximation instead requires an explicit error or signalling budget. The compact benchmark in Sec.~\ref{subsec:udw-pointlike-limit} supplies an example of the former. Covariance of a specified perturbative calculation and absence of signal exchange are separate checks \cite{MaesoGarcia2022}. The four causal regimes and the evidence needed to distinguish them are summarized in Table~\ref{tab:causal-attribution}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Causal classifications and the evidence they require.}
+\label{tab:causal-attribution}
+\begin{tabular}{L{0.24\linewidth}L{0.32\linewidth}L{0.34\linewidth}}
+\toprule
+Regime & Required check & Interpretation\\
+\midrule
+Strict spacelike extraction & Every pair of points in the two compact interaction supports is spacelike & Inter-probe signal exchange is excluded; the probe-state witness still needs approximation control.\\
+Effective separation with tails & Tail contribution or signalling error is bounded for the stated profiles & Extraction is assessed within that error budget, without asserting exact spacelike support.\\
+Causal contact & Full local and nonlocal amplitudes, including interference, are retained & A positive final witness alone does not distinguish harvesting from signal-mediated generation.\\
+Postselected extraction & Conditional state and success probability are both specified & Conditional improvement must be distinguished from average resource yield.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/Fig2_spacelike_support_en.pdf}
+\caption{Spacetime supports of two finite-size detectors at rest. The minimum spatial separation is $L-2\sigma$ and the maximum temporal separation is $2T$; the condition $L-2\sigma>2T$ guarantees strict spacelike separation of the complete supports. Dashed diamonds show the limiting enclosing double cones of radius $T+\sigma$; positive enlargements for closed supports are described in Sec.~\ref{subsec:detector-region-geometry}.}
+\label{fig:spacelike-support}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{The pointlike limit under strict spacelike separation}
+\label{subsec:udw-pointlike-limit}
+
+The pointlike limit of the Unruh--DeWitt (UDW) detector and the role of finite spatial profiles must be separated into several questions. Schlicht introduced a finite rigid detector to clarify the response regularization; Louko and Satz studied spatial-profile regularization and the zero-size limit of detector response, while their later analysis treated smooth switching in curved spacetime \cite{Schlicht2004,LoukoSatz2006,LoukoSatz2008}. These are principally single-detector response results, not proofs about the pointlike limit of two-detector entanglement for fixed compact spacelike supports. For relativistic quantum information, Lee and Fuentes introduced spatially extended UDW detectors with profiles designed to select field modes \cite{LeeFuentes2014}. Stritzelberger and co-workers instead studied coherent centre-of-mass delocalization of matter detectors; that degree of freedom is physically distinct from ordinary spatial smearing of an internal detector coupling \cite{Stritzelberger2021}. The two-probe harvesting framework was developed in early work and subsequent systematic analyses \cite{Reznik2003,PozasKerstjens2015}. The calculation below is an explicit compact-support benchmark at fixed switching duration and centre separation. Its numerical coefficients are obtained in the present work and are not taken from those references.
+
+For two identical static UDW detectors in the four-dimensional massless scalar vacuum, our compact-support calculation gives a strictly positive leading-order entangling gap in the pointlike limit when the switching duration and detector separation are fixed. Let $2T$ be the switching duration, $L$ the centre separation, and $\sigma$ the spatial support radius. The complete interaction supports obey $L-2\sigma>2T$ throughout the scan. Define $P_\sigma=\lambda^2p_\sigma$ and $\mathcal M_\sigma=\lambda^2m_\sigma$ at leading order. At $T=1$, $\Omega T=9$, and $L/T=2.033333\ldots$, the pointlike response coefficients are $p_0=2.13325790\times10^{-6}$ and $|m_0|=3.57653182\times10^{-6}$, giving the second-order result $\lim_{\sigma\to0}\mathcal N_\sigma^{(2)}/\lambda^2=1.44327392\times10^{-6}$. Thus the positive leading-order entangling gap is not caused by a finite spatial detector radius. This conclusion concerns the detector state for the specified field, switching, and weak-coupling regime; it does not determine the mutual information of shrinking equal-time field regions. The full compact profiles, small-size expansion, quadrature checks, and figure are retained in Appendix~\ref{app:pointlike-detectors}.
+
+\subsection{Optimization and finite-resource effects}
+Optimizing temporal profiles can improve the leading-order harvesting gap, but the optimized profile must remain inside the approximation regime. The published Hermite-basis optimization fixes the $L^2$ norm of the switching relative to a Gaussian reference and distinguishes different signalling constraints \cite{MoroteBalboaPerche2026}. This normalization removes an arbitrary overall rescaling of the interaction; it does not fix peak drive, control bandwidth, or laboratory work. Approximately compact profiles also retain tails. Large gains in a second-order coefficient therefore require separate checks of causal leakage, control costs, and finite-coupling corrections. The authors explicitly identify the breakdown of second-order predictions when extrapolated to proposed implementations. Circuit-derived variable-gap detectors and Bose-polaron proposals introduce different microscopic constraints \cite{TeixidoBonfill2026,PercheGozzini2026}. Their relevance is the explicit map from controls to an effective interaction, not a common temperature or numerical witness value.
+
+With detector ensembles, bipartite entanglement between two groups is not automatically genuine multipartite entanglement among all probes. In a paper accepted for publication, Salomaa, Keski-Vakkuri, and Nadal-Gisbert obtain the leading bipartite negativity from a block whose dimension grows linearly with detector number, and find approximately linear growth in an alternating chain at fixed per-detector parameters \cite{SalomaaKeskiVakkuriNadalGisbert2026}. This is a useful computational reduction and a specified perturbative scaling, rather than an unlimited gain at fixed total resources. Increasing detector number also changes the total interaction budget and may spoil uniform perturbative control. At minimum, the summed leading excitation probability $\sum_j P_j^{(2)}$ must remain small for a state expansion about the all-ground input; that diagnostic alone does not bound all higher-order terms. Access to additional field regions and classical records can also change the extractable resource \cite{KlcoBeck2023}. Such protocols require those operations to be included in the resource budget.
+
+Algebraic embezzlement addresses another limit: suitable local operations can borrow entanglement from a reference state with small state disturbance in the operator-algebraic setting \cite{vanLuijk2024,vanLuijk2025}. These results do not specify a finite-energy detector protocol with arbitrary yield. Here the operational quantity remains the resource produced by a stated probe interaction with controlled physical costs.
+
+\subsection{Interacting fields and nonclassical backgrounds}
+Recent extensions also move beyond free scalar fields and fixed classical backgrounds. Wurtz and coauthors couple pointlike UDW probes to scalar primary operators in conformal field theories of general dimension; they report suppression of detector negativity and mutual information as the operator scaling dimension increases, and use bulk effective field theory in holographic CFTs to separate field-harvested from communication-mediated contributions. Their Gaussian temporal switching is noncompact, so the spacelike regime is effective rather than an exact compact-support statement \cite{WurtzLimaMyersMartinez2026}. Other studies examine detectors in superpositions of quotient Minkowski geometries and in compactified or superposed backgrounds with accelerated trajectories \cite{ChakrabortyHacklZych2025,PoopathysankarHacklChakraborty2026}. A related Bañados--Teitelboim--Zanelli (BTZ) black-hole model treats the black-hole mass as a quantum superposition and finds distinct dependence of harvested mutual information and entanglement on detector separation and branch masses; the enhanced detector state is conditional on a chosen final projection of the geometry register, so the projection record and success probability belong in the resource budget \cite{TangLiuLiuWang2026}. These are model-specific interference and trajectory effects, not universal predictions of quantum gravity. Where Gaussian switchings are used, exact strict spacelike separation also requires a separate tail analysis.
+
+\section{Resource criteria and operational certification}
+\label{sec:resources}
+A detector state does not, by itself, specify which quantum resource has been certified. Entanglement, multipartite entanglement, and contextuality refer to different operational scenarios and require different witnesses. The following comparisons identify where common diagnostics are reliable and where additional assumptions are needed.
+
+Nyström and co-workers clarify the meaning of harvesting when the environment has no canonical resource theory by defining the interaction-dependent maximal induced free set $\mathcal S_{\max}$: it contains the environment states that cannot generate the chosen probe resource from any free probe input under the specified interaction. If an independently defined environmental free set $\mathcal F_E$ satisfies $\mathcal F_E\subseteq\mathcal S_{\max}$, then observing probe-resource generation certifies that the environment was not free in that resource theory. Without this inclusion, probe-resource generation alone need not establish that the environment initially possessed the same resource; a non-free probe--environment interaction may itself generate it. The distinction between weak and strong induced resource theories further concerns whether the environment remains in the induced free set after probe back-action and repeated interactions. Appendix~\ref{app:contextuality} states the regulated attribution implication and its proof. This framework clarifies when harvesting has a resource-theoretic interpretation \cite{Nystrom2026Induced}.
+
+\subsection{Resource witnesses and measurement scenarios}
+Entanglement, steering, Bell nonlocality, coherence, magic, and contextuality are defined using different operational structures. In a fixed bipartite scenario,
+\begin{equation}
+\text{Bell violation}\Longrightarrow\text{steerability}\Longrightarrow\text{entanglement},
+\label{eq:resource-implication-chain}
+\end{equation}
+while the converses fail in general \cite{Bell1964,ClauserHorneShimonyHolt1969,WisemanJonesDoherty2007,Uola2020}. Coherence depends on a reference basis and free operations; its conversion to entanglement is a theorem within specified resource theories \cite{BaumgratzCramerPlenio2014,WinterYang2016,Streltsov2015,StreltsovAdessoPlenio2017}. It does not identify detector coherence with negativity. A recent three-detector calculation near a perfectly reflecting boundary illustrates this distinction in a structured vacuum: for the specified massless-scalar model, reducing the detector--boundary distance suppresses harvested coherence while the same boundary can preserve or enhance entanglement; non-identical gaps can also extend the entanglement range, whereas coherence remains accessible at larger detector separations. These are configuration-dependent results, not a universal ordering of coherence and entanglement \cite{WuReflectingBoundary2026}.
+
+Magic--contextuality relations likewise depend on dimension, representation, and the allowed subtheory. Contextuality is necessary for computational advantage in the relevant odd-prime stabilizer setting, but arbitrary contextuality is not a sufficient distillation guarantee \cite{Howard2014,VeitchEtAl2014,Schmid2022}. A contextual fraction refers to a specified empirical measurement model, including its compatible measurement contexts \cite{AbramskyBrandenburger2011,AbramskyBarbosaMansfield2017}. Generalized contextuality instead tests ontological representations against operational equivalences among specified preparations, measurements, or transformations \cite{Spekkens2005}. A conclusion about one such scenario is not a state-independent conclusion about all meanings of contextuality. Table~\ref{tab:resource-types} collects the operational information needed to interpret the principal resource diagnostics.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Reference structures needed to interpret detector-resource studies.}
+\label{tab:resource-types}
+\begin{tabular}{L{0.18\linewidth}L{0.32\linewidth}L{0.40\linewidth}}
+\toprule
+Resource & Typical diagnostic & Information needed beyond its numerical value\\
+\midrule
+Entanglement & Negativity, concurrence, entanglement witness & Bipartition, normalization, state reconstruction, and mixed-state criterion.\\
+Steering / Bell nonlocality & Assemblage tests / Bell inequalities & Trusted parties, direction, measurement settings, and statistical confidence.\\
+Coherence & Basis-dependent coherence or robustness & Reference basis, free operations, and conversion or discrimination task.\\
+Magic / contextuality & Mana, stabilizer indicators / contextual fraction & Dimension, stabilizer subtheory, and the full measurement scenario.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Detector models make these requirements concrete. Nonidentical gaps can produce directional steering ranges \cite{Wu2025}. Magic-harvesting studies use detector dimensions and stabilizer diagnostics that need not agree with entanglement ordering \cite{Nystrom2025,Cepollaro2025}. LeMaitre uses a modified five-measurement scenario for a three-level probe (qutrit), whereas Lima et al. study compatible Heisenberg--Weyl measurements of two qutrits \cite{LeMaitre2026,LimaPreciadoSrivastava2026}. Their contextual fractions refer to different empirical models and are not directly interchangeable. Noncompact profiles also require causal-tail qualifications. The relevant comparison is the certified property under the actual measurement model, not a ranking across unrelated resource scales.
+
+The analysis by Campos Delgado and Ipek makes this qualification concrete \cite{CamposDelgadoIpek2026}. Its channel argument concerns a noncontextual family of preparations tested against all POVMs: an invertible completely positive trace-preserving (CPTP) map preserves the relevant operational equivalences, allowing an initial noncontextual model to be transported to the output family. Invertibility here is linear invertibility; the inverse need not be positive or physically implementable. The paper gives an exact gapless, Gaussian-field construction when the smeared variances are finite, and a weak-coupling argument near the identity channel. These statements do not refute contextual-fraction results in their specified qutrit measurement scenarios. They also do not establish a universal no-go theorem for arbitrary finite coupling, preparation families, singular smearings, or conditional postselected maps.
+
+Appendix~\ref{app:contextuality} states the channel implication and its proof explicitly. In finite dimension, an exact channel continuous at zero coupling is invertible in a sufficiently small neighbourhood of the identity. By contrast, invertibility of each finite perturbative truncation does not prove invertibility of an arbitrary finite-coupling limit. A comparison must report the preparation family, measurement contexts or operational equivalences, allowed transformations, and any selection rule before calling an observed change ``contextuality harvesting.''
+
+\subsection{Mixed-state multipartite entanglement and residual negativity}
+\label{subsec:multipartite-topology}
+A mixed state is biseparable if it is a convex mixture of states separable across possibly different bipartitions. Genuine multipartite entanglement (GME) excludes every such decomposition. Residual combinations of bipartite negativities are not automatically faithful GME indicators on mixed states \cite{GuhneSeevinck2010,OuFan2007,MaLiShang2025}.
+
+An explicit diagnostic is
+\begin{equation}
+\rho_{\rm b}=\frac13\sum_{XY|ZW\in\{AB|CD,AC|BD,AD|BC\}}
+\Phi^+_{XY}\otimes\Phi^+_{ZW},\qquad
+\Phi^+=|\Phi^+\rangle\langle\Phi^+|.
+\label{eq:main-gme-counterexample}
+\end{equation}
+Here $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$. Each component is separable across a $2|2$ cut, so the mixture is biseparable. Nevertheless, with the normalized convention $N=\|\rho^{T_A}\|_1-1=2\mathcal N$, all four $1|3$ negativities equal one and all six pair negativities vanish. Therefore the raw residuals
+\begin{equation}
+\pi_A=N_{A|BCD}^2-\sum_{X=B,C,D}N_{AX}^2
+\end{equation}
+and the corresponding $\pi_B,\pi_C,\pi_D$ all equal one. Their arithmetic mean $\pi_4=(\pi_A+\pi_B+\pi_C+\pi_D)/4$ also equals one. A maximal value of this residual does not certify four-party GME. Appendix~\ref{app:resource-diagnostics} gives the three-party counterpart and the relation to the detector studies. The partial transposes can be diagonalized directly to check these values. We use ``residual-negativity indicator'' unless a mixed-state GME witness or an appropriate extension is separately established.
+
+\subsection{Local-channel invariance and perturbative revival diagnostics}
+For
+\begin{equation}
+|\mathrm{CL}_4\rangle=\tfrac12(|0000\rangle+|0011\rangle+|1100\rangle-|1111\rangle),
+\end{equation}
+the reduced $ABC$ state already has $N_{A|BC}=N_{B|AC}=1$. Any local CPTP channel on $D$ leaves that reduced state unchanged. Negativity monotonicity under tracing out $D$, together with the qubit upper cap, then implies $N_{A|BCD}=N_{B|ACD}=1$ after the channel. Thus the corresponding freezing in the detector calculation \cite{LiCluster2026} has an exact state-and-channel explanation, independent of a specifically Unruh-induced mechanism.
+
+A different issue arises in finite-order revival plots. For a detector with proper acceleration $a>0$ and gap $\Omega$, set $q=e^{-2\pi\Omega/a}$ and let $\nu$ be the dimensionless effective coupling. In the first-order W and Dicke models considered in Appendix~\ref{app:resource-diagnostics}, the normalization corrections are
+\begin{equation}
+\delta_W=\frac{\nu^2(1+3q)}{4(1-q)},\qquad
+\delta_D=\frac{\nu^2(1+q)}{2(1-q)}.
+\end{equation}
+The reconstructed turning points at the tested couplings occur with corrections of order unity \cite{LiWState2025,WuDicke2026}. This demonstrates nonuniformity of those truncations as $q\to1$, not absence of revival in the exact dynamics. A small normalization correction is a useful necessary diagnostic here, not a sufficient bound on all higher-order errors. Source-dependent reconstructions and independently testable state identities are distinguished in the appendices and verification record.
+
+\section{Detector observables and experimental readout}
+\label{sec:readout}
+\label{sec:curved}
+\label{sec:experiment}
+Even when a probe-state criterion is well defined, a theoretical state is not identical to an experimentally established record. The observable coupled to the detector, its ultraviolet behavior, and the calibration and sampling model determine what can be inferred from measurement data.
+
+\subsection{Detector response functions and observable dependence}
+Expanding the interaction in Eq.~\eqref{eq:udw} to second order, with $\hat\phi$ replaced by a Hermitian observable $\mathcal O$ and an initially ground-state probe uncorrelated with the field, gives the leading response
+\begin{equation}
+P_\nu^{(2)}=\lambda_\nu^2\int d\tau\,d\tau'\,
+\chi_\nu(\tau)\chi_\nu(\tau')e^{-i\Omega_\nu(\tau-\tau')}
+W_{\mathcal O}(x_\nu(\tau),x_\nu(\tau')),
+\label{eq:generic-field-operator-response}
+\end{equation}
+where $W_{\mathcal O}(x,x')=\langle\mathcal O(x)\mathcal O(x')\rangle$. Extended probes add spatial integrals. For two probes the same model must supply both local responses and the cross-correlator. Matching gaps or Kubo--Martin--Schwinger (KMS) temperatures does not match these kernels \cite{BirrellDavies1982,Wald1994}. Table~\ref{tab:field-coupling-comparison} contrasts representative couplings and the model controls needed for a meaningful comparison.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Representative probe couplings and the controls needed for comparison.}
+\label{tab:field-coupling-comparison}
+\begin{tabular}{L{0.16\linewidth}L{0.32\linewidth}L{0.42\linewidth}}
+\toprule
+Field & Coupled observable & Required controls\\
+\midrule
+Real scalar & $\phi$ or a proper-time derivative & Mass, curvature coupling, state, infrared prescription, switching, and spatial profile.\\
+Dirac & Even composite $:\bar\psi\psi:$ for the bosonic probe considered here & Spin connection, parallel transport, composite-operator prescription, and field state.\\
+Maxwell & Electric dipole $d^iE_i$ or field strength & Gauge-invariant tensor kernel, tetrads, polarization, orientation, atomic form factors, and boundary conditions.\\
+Composite scalar & $:\phi^2:$ or a specified renormalized energy density & One-point subtraction, connected correlations, distributional time ordering, spacetime dimension, and the full spatial and temporal profiles.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Matching a stationary detailed-balance temperature does not determine the response normalization or the two-position cross-correlator. A finite-time interaction may also fail to reach the stationary regime. Background comparisons therefore require the coupled observable, state, trajectory, and complete switching to be fixed, in addition to a nominal temperature. Scalar mass and curvature coupling, tensor orientation, and composite-operator renormalization affect different parts of that specification \cite{BukhariWang2024,CrispinoHiguchiMatsas2008}.
+
+For a bosonic probe of a Dirac field, the even scalar density $:\bar\psi\psi:$ avoids a parity-changing linear coupling; its two-point function is a four-field correlator and needs its own prescription \cite{LoukoToussaint2016,DubeyKolekar2025}. An electromagnetic dipole couples through $d^iE_i$, where $d^i$ and $E_i$ are dipole and electric-field components in the chosen local frame. The tensor kernel, orientation, and atomic form factors then determine the sampled correlations \cite{PozasKerstjensEM2016}. Neither a field label nor a shared temperature fixes a harvesting yield. Boundary conditions can also alter the electromagnetic modes sampled by a probe. Ströhle and Momčilović study two Gaussian dipole detectors in a cylindrical cavity and show that cavity length and mode parity affect the harvested correlations, while some maximal-harvesting regimes are insensitive to the cavity radius. Because the model uses Gaussian spatial profiles and temporal switching, its nominal spacelike regimes should not be conflated with exact separation of compact supports; it is a cavity-specific electromagnetic calculation, not a replacement for the compact-support benchmark \cite{StrohleMomcilovic2026}.
+
+For gauge theories, a gauge-invariant probe response and a regional entanglement assignment are separate constructions. The latter needs a local algebra and a treatment of centres, Gauss constraints, or boundary degrees of freedom \cite{CasiniHuertaRosabal2014,DonnellyFreidel2016}. This is another reason to specify the subsystem before comparing a field-region quantity with a finite probe witness.
+
+\subsection{Composite observables and ultraviolet regularity}
+The condition $\langle\phi\rangle=0$ does not imply $\langle\mathcal O\rangle=0$ for a quadratic observable. For example, a thermal state can have nonzero energy density after Minkowski-vacuum subtraction. Its mean acts as a local coherent drive and generates first-order probe coherences, so the unmodified ground-state block leading to Eq.~\eqref{eq:negativity} cannot simply be reused. For a prescribed mean, write $\mathcal O=\overline{\mathcal O}\,I+\delta\mathcal O$, where $\overline{\mathcal O}(x)=\langle\mathcal O(x)\rangle$. The appropriate leading fluctuation kernel is
+\begin{equation}
+W_{\mathcal O}^{\rm c}(x,x')=
+W_{\mathcal O}(x,x')-\overline{\mathcal O}(x)\overline{\mathcal O}(x').
+\label{eq:connected-composite-kernel}
+\end{equation}
+The mean-induced local evolution must be included consistently, or removed in a local interaction picture, before using a connected-kernel harvesting formula. This operation does not remove the physical energy cost of the local drive.
+
+Renormalizing the observable's one-point function is also different from establishing that its time-ordered two-point function defines a finite detector calculation. Persistent divergences for quadratic couplings are known \cite{SachsMannMartinez2017}. Zambianco and coauthors analyze energy-density coupling and identify switching-dependent coincident-time terms; for its Gaussian spatial profiles, smearing suffices in $1+1$ and $2+1$ dimensions but need not suffice in $3+1$ dimensions \cite{ZambiancoRagulaMartinez2026UV}. Smooth compact switchings with disjoint time supports remove the coincidence terms in the reductions studied there. This is a sufficient condition within the stated model, not a criterion for all composite observables or all detector geometries. In particular, the separated-detector cross-kernel must retain the spatial separation; a coincident-position pointlike reduction cannot stand in for it. Appendix~\ref{app:composite-kernel} gives an explicit separated-kernel check.
+
+Ultraviolet finiteness and causal attribution are separate requirements. Temporally disjoint interactions may still be timelike related. Gaussian spatial profiles have overlapping tails, even if the probe centres are far apart. Conversely, a smooth kernel on two strictly spacelike compact supports has no light-cone coincidence singularity on their cross product. A reliable comparison must therefore specify the renormalization prescription, distributional pullback, full supports, and limiting procedure, rather than treating ``smeared'' or ``normal ordered'' as a complete regularity argument.
+
+\subsection{Experimental certification of probe states}
+\label{sec:reliability}
+A witness computed from an ideal reduced state certifies that model. Experimental certification also requires readout calibration and statistical uncertainty. For the actual output probe state $\rho$, readout effects $E_r$ give $p(r|\rho)=\Tr(E_r\rho)$. Predicting this distribution from a field input additionally requires the preparation, coupling, switching, readout-noise model, and any postselection rule. The sign convention matters. For a Hermitian entanglement witness $W_{\rm ent}$ satisfying $\Tr(W_{\rm ent}\sigma)\geq0$ for all separable $\sigma$, entanglement requires a negative expectation with an upper confidence bound below zero. A resource monotone additionally obeys non-increase under a specified free-operation class; being a useful numerical indicator is not sufficient.
+
+For example, write $W_{\rm ent}=w_0 I+\sum_{k=1}^K w_k O_k$, where the measured outcome of $O_k$ lies in $[a_k,b_k]$. With $n_k$ independent repetitions per fixed setting and total failure probability $\delta\in(0,1)$, Hoeffding's inequality and a union bound give the sufficient certificate \cite{Hoeffding1963}
+\begin{equation}
+\widehat w+\Delta_{\rm stat}+\Delta_{\rm cal}<0,\qquad
+\Delta_{\rm stat}=\sum_{k=1}^K|w_k|(b_k-a_k)
+\sqrt{\frac{\ln(2K/\delta)}{2n_k}}.
+\label{eq:finite-sample-witness}
+\end{equation}
+Here $\widehat w$ is the measured witness estimate and $\Delta_{\rm cal}$ is a separately justified bound on the systematic change in its expectation. The sampling model assumes a common prepared state and fixed measurement settings; drift, adaptive selection, or calibration fitted from the same counts requires an appropriate joint analysis. Appendix~\ref{app:finite-sample} proves the bound and gives a Pauli-readout example. Unbounded optical quadratures require a justified tail or moment bound; Eq.~\eqref{eq:finite-sample-witness} cannot be applied to them merely by clipping the data. Increasing the number of shots reduces $\Delta_{\rm stat}$ but does not remove calibration bias or validate an approximate dynamical model.
+
+Locality and detector reliability impose independent restrictions. Bounds relating sensitivity to vacuum dark counts depend on the apparatus and class of excitations considered \cite{Falcone2026}; they do not replace a resource-specific error analysis. Abrupt switching and finite smearing change ultraviolet behavior and the balance of local noise against nonlocal coherence \cite{Schlicht2004,LoukoSatz2006,LoukoSatz2008,PozasKerstjens2015}. A prediction close to the resource threshold is especially vulnerable to omitted terms. Complete causal-support tests, numerical convergence, and control of omitted perturbative orders are therefore reported separately below.
+
+\subsection{From model prediction to experimental attribution}
+A microscopic model is needed to predict a detector state, but a calibrated witness measured on the actual output can certify entanglement without assuming that a particular perturbative state is exact. Conversely, confidence in sampled counts does not control an omitted term in a theoretical expansion. These two uses of a witness should be kept separate.
+
+For a theoretical estimate $\rho_{\rm mod}$, suppose an independently justified trace-norm bound is available,
+\begin{equation}
+\|\rho-\rho_{\rm mod}\|_1\leq\epsilon_{\rm dyn}.
+\label{eq:dynamical-error-budget}
+\end{equation}
+For any bounded Hermitian witness $W_{\rm ent}$, H\"older's inequality gives
+\begin{equation}
+|\Tr[W_{\rm ent}(\rho-\rho_{\rm mod})]|
+\leq\|W_{\rm ent}\|_\infty\epsilon_{\rm dyn}.
+\label{eq:witness-model-error}
+\end{equation}
+Here $\|\cdot\|_\infty$ is the operator norm. A predicted negative expectation survives the model uncertainty if its magnitude exceeds this bound. The usefulness of Eq.~\eqref{eq:witness-model-error} depends on establishing $\epsilon_{\rm dyn}$; a small coupling or a positive numerical gap alone does not provide it. By contrast, Eq.~\eqref{eq:finite-sample-witness} concerns sampling and measurement calibration for the actually prepared state.
+
+Attributing an observed probe resource to the field is a further inference. Initial probe entanglement, a shared ancillary resource, a direct interaction, or causal leakage can change its origin without changing the fact that the measured state is entangled. A harvesting claim therefore combines state certification with the preparation and locality premises of the protocol. The same distinction explains why a conditional state change, which depends on a record, need not be a superluminal physical influence.
+
+\subsection{Interpretation of the measured observable}
+Electro-optic sampling (EOS) connects optical probes to terahertz field correlations. A detector-state entanglement witness has been proposed within this platform \cite{Lindel2024}. The vacuum/source-correlation experiment reported by Herter et al. resolves contributions associated with vacuum fluctuations and source radiation \cite{Herter2026VacuumSource}. The measured correlations are an important field-sampling result; they do not by themselves certify entanglement of the reduced probe state or a Bell violation. The next inference requires the observables and calibrations of an appropriate probe-state witness.
+
+Microscopically motivated detector proposals supply complementary evidence. Superconducting variable-gap models relate circuit controls to a derivative-coupled detector interaction \cite{TeixidoBonfill2026}. The Bose-polaron proposal maps trapped impurities to probes of an effective phonon field and estimates achievable witness strength and measurement demands \cite{PercheGozzini2026}. These are implementation proposals. An analogue field and a relativistic vacuum are different physical inputs, even when part of the detector dynamics is reproduced.
+
+The Bose-polaron example makes the certification bottleneck concrete. For one proposed operating point, the authors estimate local excitation probabilities of order $10^{-3}$ and a negativity of approximately $2\times10^{-4}$. Population measurements determine the local noise, while additional controlled rotations are required to infer the nonlocal coherence. Their analysis estimates readout infidelities below $10^{-5}$ and more than $10^5$ experimental realizations to resolve the effect \cite{PercheGozzini2026}. These are model-based feasibility estimates, not measured entanglement or a universal shot count. The signal is a difference between larger response terms, so both calibration and statistical precision matter. The phononic approximation, finite field temperature, control errors, and profile tails need their own error budgets; a small readout bias does not bound them. Equation~\eqref{eq:finite-sample-witness} illustrates one conservative certification rule for bounded measurements, rather than reproducing the proposal's precision estimate. An analogue route based on ultracold atoms in optical lattices was originally proposed to simulate an accelerated observer through a position-dependent quench of the effective dispersion relation; a related proposal treats interacting ultracold fermions \cite{RodriguezLaguna2017,KosiorLewensteinCeli2018}. Louko showed that a related $(1+1)$-dimensional scalar-field quench can reproduce late-time Rindler thermality \cite{Louko2018RindlerQuench}. Building on this continuum geometry, López-Raven, Mann, and Louko calculated two-probe harvesting and found concurrence and mutual information qualitatively similar to the Rindler case, with a small but distinct change when the quench-generated energy pulse crosses the detectors \cite{LopezRavenMannLouko2025}. The optical-lattice proposal is based on an effective Dirac field, whereas the later continuum harvesting calculation uses a massless scalar field; they are related analogue settings, not the same microscopic model. This is theoretical support for an analogue proposal, not an observation of entanglement harvesting. The effective causal cone is set by the medium, and the detector mapping must still be implemented and calibrated. Table~\ref{tab:platform-evidence} summarizes what each platform has demonstrated and what remains necessary for a harvesting certificate.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Evidence and the remaining step toward harvesting certification.}
+\label{tab:platform-evidence}
+\begin{tabular}{L{0.23\linewidth}L{0.31\linewidth}L{0.36\linewidth}}
+\toprule
+Platform / result & Evidence supplied & Additional requirement\\
+\midrule
+EOS vacuum/source sampling \cite{Herter2026VacuumSource} & Time-resolved optical field-correlation measurements & Probe-state entanglement witness with calibrated readout and uncertainty.\\
+EOS harvesting design \cite{Lindel2024} & A platform-specific proposed witness & Experimental implementation and an entanglement-witness expectation whose upper confidence bound is below zero.\\
+Variable-gap superconducting probes \cite{TeixidoBonfill2026} & Circuit-derived interaction model and theoretical dynamics & Device calibration, controlled approximations, and a causal-support or signalling-error budget.\\
+Bose-polaron probes \cite{PercheGozzini2026} & Effective-field mapping and feasibility estimates & Validity of the mapping, loss and sampling analysis, and measured nonlocal coherence.\\
+Optical-lattice / scalar-quench analogue \cite{RodriguezLaguna2017,KosiorLewensteinCeli2018,Louko2018RindlerQuench,LopezRavenMannLouko2025} & Unruh-analogue proposals and a continuum model with Rindler-like harvesting signatures & Realization of the lattice dynamics, distinction between Dirac and scalar models, detector mapping, analogue causal-cone calibration, and a measured two-probe witness.\\
+Cylindrical-cavity electromagnetic probes \cite{StrohleMomcilovic2026} & Mode- and boundary-dependent theoretical harvesting predictions & Controlled cavity mode structure, detector profiles, support-tail bounds, and calibrated probe-state readout.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Applications to communication and parameter estimation}
+\label{sec:utility}
+The operational value of a certified probe resource is task dependent. Communication and parameter estimation require explicit encodings and readouts, and their performance depends on nuisance parameters, success probabilities, and resource costs.
+
+\subsection{Field-mediated communication}
+\label{sec:communication}
+An entangled probe state does not specify a communication rate. A channel also requires an encoding, a causal transfer interaction, receiver access, and a decoder. Covariant qubit--field constructions and engineered high-capacity scalar-field protocols provide concrete realizations under specified assumptions \cite{Kasprzak2025,Simidzija2020}. They are not consequences of a positive harvesting witness alone. Quantum capacity further involves optimization over inputs and regularization over repeated channel uses \cite{Lloyd1997,Devetak2005}. The admissible energy, timing and receiver operations must therefore be matched before capacities can be compared.
+
+This separates two roles of the field. Spacelike probe interactions may transfer pre-existing correlations, while sending a chosen message requires a causal input--output dependence. Conditional records or correlations shared with another receiver do not establish an individually controllable signal outside the sender's causal future. A task claim must describe the full map accessible to its users.
+
+\subsection{Parameter estimation and identifiability}
+\label{sec:metrology}
+The same probe state can support different estimation tasks. For an actual readout distribution $p(x|\boldsymbol\theta)$, the classical Fisher matrix is
+\begin{equation}
+F_{ij}=\sum_x p(x|\boldsymbol\theta)
+\partial_i\ln p(x|\boldsymbol\theta)
+\partial_j\ln p(x|\boldsymbol\theta),
+\label{eq:classical-fi}
+\end{equation}
+where $\boldsymbol\theta$ is the parameter vector and a sum is replaced by an integral for continuous outcomes. For a single parameter, the quantum Fisher information is the maximum over measurements. Multiparameter bounds need not be simultaneously attainable; the allowed readout and parameter model remain essential \cite{BraunsteinCaves1994,Paris2009}.
+
+Entanglement sensitivity and parameter-estimation sensitivity must also be distinguished. Chatterjee uses modular conjugation to represent selected detector-state functionals and studies their coupling derivatives \cite{Chatterjee2025Modular}. Modular self-duality alone does not imply equality between concurrence curvature and quantum Fisher information. Consider the pure two-qubit family
+\begin{equation}
+|\psi_g\rangle=\frac{|00\rangle+e^{ig}|11\rangle}{\sqrt2},
+\qquad \rho_g=|\psi_g\rangle\langle\psi_g|,
+\label{eq:phase-family-counterexample}
+\end{equation}
+where $g$ is a dimensionless local phase. Its pure-state concurrence is $C=2\sqrt{\det\rho_A}=1$ \cite{Wootters1998}. For the spin-flip conjugation $J=(\sigma_y\otimes\sigma_y)K$, where $\sigma_y$ is the Pauli $y$ matrix and $K$ is computational-basis complex conjugation, $J\rho_gJ^{-1}=\rho_g$ at every $g$. Nevertheless,
+\begin{equation}
+\partial_g^2 C=0,\qquad
+F_Q(g)=4\!\left(\langle\partial_g\psi_g|\partial_g\psi_g\rangle
+-|\langle\psi_g|\partial_g\psi_g\rangle|^2\right)=1.
+\label{eq:curvature-qfi-counterexample}
+\end{equation}
+The derivative is $|\partial_g\psi_g\rangle=i e^{ig}|11\rangle/\sqrt2$, so the two terms inside the parentheses are $1/2$ and $1/4$. The phase changes the state while leaving its entanglement constant. This counterexample concerns the finite-dimensional spin-flip representation used in the cited discussion; it is not a proposed harvesting apparatus or a general identification of spin flip with every QFT modular conjugation. Relations between a chosen entanglement curvature and $F_Q$ therefore require the particular state family and functional, beyond self-duality or a sign convention.
+
+For a parameter of interest $\theta$ and nuisance vector $\boldsymbol\nu$, a regular, locally identifiable model with invertible $F_{\nu\nu}$ gives
+\begin{equation}
+F_{\rm eff}=F_{\theta\theta}-F_{\theta\nu}F_{\nu\nu}^{-1}F_{\nu\theta},\qquad
+\operatorname{Var}(\widehat\theta)\geq\frac1{N F_{\rm eff}}.
+\label{eq:effective-fi}
+\end{equation}
+Here $N$ is the number of independent repetitions and the variance bound applies to unbiased estimators under the usual regularity conditions. When the readout depends on several unknown parameters only through a single effective temperature, its Fisher matrix has rank at most one: writing the distribution as $p(x|T_{\rm eff})$ makes each score proportional to $\partial_iT_{\rm eff}$. A nonzero sensitivity to one parameter therefore does not establish joint identifiability. Detector thermometry and a de Sitter/anti-de Sitter study provide model-specific examples: the former analyses estimation of the Unruh temperature in open-system detector dynamics, while the latter examines temperature estimation and the effects of acceleration and boundary conditions in curved backgrounds \cite{TianWangFanJing2015,DuMann2021}.
+
+Preparation, interaction and readout also consume time. In a sequential protocol the repetition budget obeys $N\leq t_{\rm tot}/(t_{\rm prep}+t_{\rm int}+t_{\rm read})$, with the symbols denoting the total available time and the respective per-cycle durations. Postselection must include unsuccessful cycles. Resource certification and an attainable task advantage are thus related claims whose cost and identifiability premises remain independent.
+
+\section{Outlook and conclusions}
+\label{sec:conclusion}
+
+The studies reviewed here show that a resource claim based on a localized quantum-field measurement is a chain of distinct inferences. The field state and its local algebras determine which correlations are available; the interaction and apparatus specify the induced operation; the retained probe subsystem determines the state to be assessed; and the resource scenario and readout determine what can be certified. A conclusion at one stage does not automatically establish the next. In particular, spacelike commutativity is a causal constraint, not a complete measurement model, and a nonzero field correlation is not itself a detector resource.
+
+Entanglement harvesting provides a concrete setting in which these distinctions can be tested. The perturbative detector criterion compares local excitation probabilities with a nonlocal coherence, but its interpretation depends on the initial probe preparation, the complete spacetime supports, and control of omitted perturbative orders. Data processing gives upper bounds on the correlations accessible to localized probes once the relevant field algebras and local channels have been specified. Such bounds do not supply a positive lower bound on the entanglement that a detector must harvest. The compact-support pointlike benchmark discussed here shows that a positive leading-order entangling gap can persist in a specified model as the spatial profile shrinks, while leaving open the separate question of the mutual information of shrinking field regions. This detector-side limit complements, but is not equivalent to, Gaussian mode-optimization results in which tailored collective modes can access the field-region negativity under specific covariance assumptions \cite{Torres2023,GaoKlco2025}. No-go results for degenerate probes and for selected partner-mode configurations further show that the gap and mode structure can be decisive, without implying a universal prohibition on harvesting \cite{PozasKerstjensLoukoMartinez2017,OsawaNambuYoshimoto2026}. Assisted Gaussian protocols add a distinct possibility: measurements in a third region and classical communication can reveal or purify correlations between the two target regions, but those operations must be included in the resource accounting \cite{GaoKlco2026Assistance}.
+
+The choice of resource criterion is equally important. Entanglement, steering, Bell nonlocality, coherence, magic, and contextuality refer to different operational structures. For mixed multipartite states, a residual of bipartite negativities is not, in general, a certificate of genuine multipartite entanglement. Likewise, invariance under a local channel can follow from the structure of the initial state and does not by itself identify a relativistic mechanism. Perturbative revival indicators require uniform control of the approximation in the parameter regime where they are interpreted. These examples illustrate why a resource label should be used only after the free states, allowed operations, preparation family, and measurement scenario have been stated.
+
+A further step separates a model prediction from an experimental certificate. The observable coupled to a detector determines which field correlations are sampled and whether additional ultraviolet regularization is required. A measured witness also needs a calibrated readout and a statistical model that accounts for finite sampling, systematic uncertainty, and possible preparation drift. If the result is to be attributed specifically to pre-existing field correlations, the experiment must additionally control causal communication and alternative sources of probe correlation. Communication and metrology introduce another layer: encoding, nuisance parameters, success probabilities, readout time, and resource costs must be included before a state-level resource can be translated into a task advantage.
+
+Several directions follow naturally. More systematic comparisons are needed between detector instruments, algebraic system--probe constructions, and event-based measurement theories under matched preparations and interaction supports. Gauge fields and curved spacetimes require careful treatment of local algebras, constraints, and the physical degrees of freedom retained by the apparatus. Beyond weak coupling, nonperturbative detector dynamics and realistic finite-size profiles are needed to determine when perturbative harvesting criteria remain reliable. Composite observables call for a joint analysis of their separated-point kernels, switching regularity, and detector response. Finally, resource certification should be connected to experimentally implementable witnesses and task-specific performance bounds, rather than inferred from state measures alone.
+
+The central lesson is therefore not that one particular correlation measure captures the full physics of relativistic resource extraction. It is that each claim must identify its physical object, operational assumptions, and level of evidence. Keeping field correlations, accessible probe resources, theoretical predictions, experimental certification, and task performance distinct provides a common basis for comparing otherwise different approaches to relativistic quantum information. When the field has no canonical resource theory, an interaction-induced free set offers a possible operational substitute, but the required inclusion relation must be established rather than assumed.
+
+\appendix
+\section*{Appendices}
+\numberwithin{equation}{section}
+\makeatletter
+\@addtoreset{figure}{section}
+\@addtoreset{table}{section}
+\makeatother
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\theHsection}{appendix.\Alph{section}}
+\renewcommand{\theHequation}{appendix.\Alph{section}.\arabic{equation}}
+\renewcommand{\theHfigure}{appendix.\Alph{section}.\arabic{figure}}
+\renewcommand{\theHtable}{appendix.\Alph{section}.\arabic{table}}
+
+\section{Matched benchmark for comparing measurement frameworks}
+\label{app:measurement-benchmark}
+
+
+
+The measurement approaches reviewed in Sec.~\ref{sec:measurement} should be compared on a common operational task, rather than by placing their formal expressions side by side. We specify a benchmark that can be implemented first for a free real scalar field in four-dimensional Minkowski spacetime and then extended to curved backgrounds or gauge fields. The benchmark is deliberately modest: it does not assert that QTP, detector instruments, the positive formalism, and local $S$-matrix constructions are equivalent. It identifies which predictions can be matched and which additional structures each framework supplies.
+
+Let $\hat\phi(x)$ be a free scalar field in the Minkowski vacuum $|0\rangle$, and let two initially uncorrelated two-level probes $A$ and $B$ have gaps $\Omega_A$ and $\Omega_B$. The initial joint state is $|0\rangle\langle0|\otimes\rho_A\otimes\rho_B$. Their interaction regions are compact spacetime sets $\mathcal O_A$ and $\mathcal O_B$. For a finite-size probe, introduce real smooth test functions $F_\nu(x)$ supported in $\mathcal O_\nu$, with $\nu=A,B$. A convenient interaction-picture coupling is
+\begin{equation}
+H_I(t)=\lambda\sum_{\nu=A,B}\chi_\nu(t)\,
+\hat\mu_\nu(t)\,\hat\Phi_\nu(t),\qquad
+\hat\Phi_\nu(t)=\int d^3\mathbf x\,f_\nu(t,\mathbf x)\hat\phi(t,\mathbf x),
+\label{eq:benchmark-interaction}
+\end{equation}
+where $\hat\mu_\nu(t)=\hat\sigma_\nu^+e^{i\Omega_\nu t}
++\hat\sigma_\nu^-e^{-i\Omega_\nu t}$, and the spacetime support of
+$\chi_\nu f_\nu$ is contained in $\mathcal O_\nu$. Equivalently, the coupling can be written using a single spacetime test function $F_\nu$. The field input, probe preparation, smearing, switching, coupling strength, and readout are held fixed when changing the measurement framework.
+
+For one probe initially in its ground state, the leading excitation probability is
+\begin{equation}
+P_\nu^{(2)}
+=\lambda^2\int d^4x\,d^4x'\,
+F_\nu(x)F_\nu(x')\,e^{-i\Omega_\nu[t(x)-t(x')]}
+W_0(x,x'),
+\label{eq:benchmark-single-response}
+\end{equation}
+up to the convention used to absorb the switching and spatial profile into $F_\nu$. Here
+$W_0(x,x')=\langle0|\hat\phi(x)\hat\phi(x')|0\rangle$
+is the Wightman function. Equation~\eqref{eq:benchmark-single-response} is the common reference quantity for the first comparison; a detector model may add a finite readout window, internal noise, or a nontrivial response function.
+
+In QTP, the corresponding primary output is a time-resolved event probability density. The detector response kernel weights the same unequal-time field correlator, and an appropriate integration over the recorded detection time and detector response should recover the total transition probability in the regime where the QTP model reduces to the chosen detector coupling \cite{AnastopoulosHuSavvidou2023,Koliopoulou2026}. This is a matching statement about a specified response model, not an identity between all QTP prescriptions and all Unruh--DeWitt detectors. The advantage of QTP is that it retains the detection-time variable and generalizes naturally to joint event probabilities involving higher-point unequal-time correlators.
+
+The positive-formalism construction addresses a different part of the benchmark. It supplies a probabilistically consistent and compositional description of localized measurements, including a specified class of quadratic observables, and makes locality and composition explicit \cite{Oeckl2026,OecklZampeli2026}. In the Oeckl--Zampeli construction, however, a modulus-square probe for several observables encodes a joint expectation rather than a joint distribution of simultaneous outcomes; probabilities are obtained separately from the positive formalism's ratio rule. To compare its output with Eq.~\eqref{eq:benchmark-single-response}, one must specify a probe and outcome functional corresponding to the same smeared observable and readout. Agreement of a single-measurement probability is a necessary check, but the distinctive test is whether two localized measurement probes compose consistently when their spacetime regions are combined or separated. The positive formalism does not, by itself, select the same two-level detector state or define its negativity.
+
+The local $S$-matrix approach supplies yet another test. The same smeared coupling is used to construct local operations and, where an explicit pointer is included, field-induced Kraus operators. The question is whether the operations satisfy the relevant causal factorization conditions and whether the resulting conditional updates avoid signalling in configurations involving multiple regions \cite{Simmons2026}. This is not a second formula for the detector excitation probability: it is a test of the causal admissibility and compositional behavior of the operation that produces the record. In a time-extended pointer model, the retarded self-propagator also constrains the attainable measurement resolution, so the pointer width and readout noise must be included in a fair comparison.
+
+The second stage uses both probes. We require the full supports $\mathcal O_A$ and $\mathcal O_B$ to be strictly spacelike separated, not merely their centers. For spacetime-smeared fields $\hat\Phi_\nu=\int d^4x\,F_\nu(x)\hat\phi(x)$, microcausality gives
+\begin{equation}
+[\hat\Phi_A,\hat\Phi_B]
+=i\Delta(F_A,F_B)=0,
+\qquad
+W(F_A,F_B)=\langle0|\hat\Phi_A\hat\Phi_B|0\rangle
+\ \text{need not vanish},
+\label{eq:benchmark-spacelike}
+\end{equation}
+where $\Delta$ is the Pauli--Jordan commutator distribution and
+$W(F_A,F_B)$ denotes the correspondingly smeared Wightman function. Thus the causal response between the regions vanishes while their vacuum correlations can remain nonzero. For initially ground-state two-level probes, the relevant block of the partial transpose, in the basis $\{|eg\rangle,|ge\rangle\}$, is
+\begin{equation}
+(\rho_{AB}^{T_B})_{\{|eg\rangle,|ge\rangle\}}
+=\begin{pmatrix}P_A&\mathcal M\\\mathcal M^*&P_B\end{pmatrix}+O(\lambda^4).
+\end{equation}
+Its potentially negative eigenvalue at second order is
+\begin{equation}
+\lambda_-^{(2)}
+=\frac{P_A+P_B-\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}}{2}.
+\end{equation}
+The corresponding leading negativity is
+\begin{equation}
+\mathcal N^{(2)}
+=\max\!\left\{0,\,
+\frac{\sqrt{(P_A-P_B)^2+4|\mathcal M|^2}-(P_A+P_B)}{2}
+\right\},
+\label{eq:benchmark-negativity}
+\end{equation}
+up to higher-order corrections. Its positivity condition is $|\mathcal M|>\sqrt{P_AP_B}$; for identical probes, $P_A=P_B=P$, it reduces to $\mathcal N^{(2)}=\max\{0,|\mathcal M|-P\}$. The exact expression must be re-derived if the probe dimension, initial state, coupling, or perturbative order is changed.
+
+This two-region comparison has three distinct outputs. First, QTP supplies joint detection-time probabilities, whose leading terms involve four-point unequal-time field correlators; for the free Gaussian vacuum these can be reduced by Wick's theorem, but they are still event statistics rather than a detector density matrix. Second, the specified two-probe detector--field realization supplies the final probe state and hence the negativity in Eq.~\eqref{eq:benchmark-negativity}. Third, the positive-formalism and local-$S$-matrix approaches test whether the corresponding localized operations and their composition are probabilistically consistent and causally admissible. A QTP coincidence covariance,
+\begin{equation}
+C_{AB}=p_{AB}-p_Ap_B,
+\label{eq:benchmark-coincidence}
+\end{equation}
+must therefore not be identified with $\mathcal N$: a nonzero covariance is a correlation witness, not by itself an entanglement measure.
+
+A useful numerical and conceptual comparison should report the following quantities separately: (i) the integrated single-probe excitation probability and its time-resolved distribution; (ii) the joint event probability and coincidence covariance; (iii) the final two-probe density matrix and its resource witness, when the retained subsystem and its probe output channel have been specified; (iv) a no-signalling residual obtained by varying the remote setting while holding the local setting fixed; and (v) the detector's dark-count probability, efficiency, and readout resolution. The same field state, compact supports, smearing functions, probe preparation, and coupling must be used in all calculations. A timelike or causally connected configuration should be included as a control, not mixed with the strictly spacelike benchmark.
+
+The four frameworks thus target distinct objects: UDW models predict probe transition probabilities and final states, QTP resolves event probabilities, positive formalism addresses compositional consistency, and local $S$-matrix constructions test causal admissibility. The comparison of their outputs is given in Table~\ref{tab:causal-measurements}.
+
+This benchmark suggests a disciplined order for future comparisons. First match the single-probe probability after integrating over the detection time. Next match joint event statistics for two strictly spacelike supports. Only after the system--apparatus realization and retained subsystem have been fixed should one compare the final detector density matrix and its entanglement or other resource witnesses. Finally, test causal composition and finite-apparatus reliability. This order prevents a field correlator, an event-probability hierarchy, a POVM effect, a quantum instrument, and a resource measure from being treated as if they were the same physical object.
+
+
+The measurement frameworks above define idealized operations and outcome probabilities. Practical resource certification also depends on finite detector sensitivity, noise, postselection, and the control of switching and spatial support.
+
+
+
+
+To verify the distinction between measurement effects and state updates, consider Eq.~\eqref{eq:instrument-same-probability}. A Kraus operator of $\mathcal I_r$ is $K_r=I/\sqrt2$. For $\mathcal J_r$ use $L_{rj}=|0\rangle\langle j|/\sqrt2$, with $j=0,1$. Then
+\begin{equation}
+K_r^\dagger K_r=\sum_{j=0}^1L_{rj}^\dagger L_{rj}=\tfrac12I,
+\qquad \sum_r E_r=I.
+\end{equation}
+Both maps are completely positive and trace non-increasing; summing over $r$ yields trace-preserving channels. For a reference $R$ and input $\Phi^+_{RS}=|\Phi^+\rangle\langle\Phi^+|$, the normalized conditional outputs are
+\begin{equation}
+\rho^{\mathcal I}_{RS|r}=\Phi^+_{RS},\qquad
+\rho^{\mathcal J}_{RS|r}=\tfrac12 I_R\otimes|0\rangle\langle0|_S.
+\end{equation}
+The conventional negativity $(\|\rho^{T_S}\|_1-1)/2$ equals $1/2$ and $0$, respectively. In both cases $p_r=1/2$. This proves the distinction in the main text with local finite-dimensional channels, without asserting their equivalence as measurements of a continuum field.
+
+More generally, if $\mathcal E_S=\sum_r\mathcal I_r$ is trace preserving, then $\mathcal E_S^*(I_S)=I_S$. For any observable $B$ of an untouched finite system,
+\begin{equation}
+\Tr[(I_S\otimes B)(\mathcal E_S\otimes\mathrm{id})(\rho_{SB})]
+=\Tr[(\mathcal E_S^*(I_S)\otimes B)\rho_{SB}]
+=\Tr[(I_S\otimes B)\rho_{SB}].
+\end{equation}
+All expectation values of the nonselective $B$ marginal are unchanged, proving Eq.~\eqref{eq:selective-nonselective}. QFT implementations additionally require a causally admissible localized coupling; the finite-system calculation alone does not establish that requirement.
+
+
+
+\section{Finite-mode transfer and channel dependence}
+\label{app:finite-mode-transfer}
+\subsection{A finite-mode resource-transfer benchmark}
+A finite-mode model provides a transparent test of the field-to-detector bounds before one attempts a continuum-field calculation. Consider two bosonic modes in a two-mode squeezed vacuum,
+\begin{equation}
+|\Psi_r\rangle_{\rm F}
+=\sqrt{1-\zeta^2}\sum_{n=0}^{\infty}\zeta^n|n\rangle_A|n\rangle_B,
+\qquad \zeta=\tanh r,
+\label{eq:tmsv-resource-input}
+\end{equation}
+whose field mutual information is $I_{\rm F}=2g(\sinh^2r)$, with
+$g(n)=(n+1)\ln(n+1)-n\ln n$. Correlations between atoms and two-mode squeezed radiation have earlier been studied in generalized two-mode Jaynes--Cummings models; the present calculation specializes to two independent local resonant channels and evaluates the resulting detector state explicitly \cite{CohenBenAryehMann1994}. Each mode interacts locally with a two-level detector initially in its ground state. In the resonant Jaynes--Cummings model,
+\begin{equation}
+U_\nu(\theta)=
+\exp[-i\theta(\sigma_\nu^+a_\nu+\sigma_\nu^-a_\nu^\dagger)],
+\qquad
+|g,n\rangle\mapsto
+\cos(\theta\sqrt n)|g,n\rangle
+-i\sin(\theta\sqrt n)|e,n-1\rangle,
+\label{eq:jc-number-state-map}
+\end{equation}
+Here $\theta$ is the dimensionless resonant interaction angle, $a_\nu$ the mode annihilation operator, and $\sigma_\nu^\pm$ the detector ladder operators. The second term is absent for $n=0$. Tracing out the field modes gives a two-qubit detector state. The Fock expansion is truncated at $N_{\max}=30$; increasing the cutoff to 40 changes the reported quantities by less than the displayed precision over $0.05\leq r\leq0.8$. No postselection is used.
+
+Figure~\ref{fig:jc-negativity-theta} shows that the detector negativity depends nontrivially on the interaction angle. At $\theta=\pi/2$, representative values of the field and detector mutual informations and the detector negativity are listed in Table~\ref{tab:jc-transfer-data}. They satisfy $I(D_A:D_B)\leq I_{\rm F}$ and the two-qubit negativity bound. The table and angle scan are complementary: the former gives a fixed-angle comparison, while the latter shows how the transfer changes during the local interaction.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/FigS1_JC_transfer.pdf}
+\caption{Detector negativity versus the local Jaynes--Cummings interaction angle for several initial squeezing parameters. Dashed lines show the two-qubit upper bound derived from the initial field mutual information. This finite-mode benchmark is not a spacelike-separated relativistic detector calculation.}
+\label{fig:jc-negativity-theta}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Finite-mode Jaynes--Cummings resource-transfer benchmark at $\theta=\pi/2$. Mutual informations are in nats.}
+\label{tab:jc-transfer-data}
+\begin{tabular}{ccccc}
+\toprule
+$r$ & $I_{\rm F}$ & $I(D_A:D_B)$ & $\mathcal N$ & Upper bound\\
+\midrule
+0.05 & 0.03499 & 0.03480 & 0.04983 & 0.26453\\
+0.10 & 0.11251 & 0.11009 & 0.09866 & 0.47436\\
+0.20 & 0.34258 & 0.31445 & 0.18936 & 0.50000\\
+0.40 & 0.96490 & 0.69518 & 0.32103 & 0.50000\\
+0.60 & 1.68845 & 0.84182 & 0.36842 & 0.50000\\
+0.80 & 2.45470 & 0.78027 & 0.34684 & 0.50000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A sharper state-dependent estimate is obtained by applying data processing after only the first local interaction. For the normalized truncated Fock coefficients $c_n$, the state of detector $D_A$ and the untouched mode $F_B$ is
+\begin{equation}
+\rho_{D_AF_B}=\sum_{m=0}^{N_{\max}}|v_m\rangle\langle v_m|,
+\quad
+|v_m\rangle=c_m\cos(\theta\sqrt m)|g,m\rangle
+-i c_{m+1}\sin(\theta\sqrt{m+1})|e,m+1\rangle,
+\label{eq:jc-one-sided-state}
+\end{equation}
+with $c_{N_{\max}+1}=0$. Its mutual information is finite because $D_A$ is a qubit. The one-sided bound in Eq.~\eqref{eq:one-sided-negativity-bound} reduces the field-derived negativity bound by about $29\%$ at $r=0.05$ and $0.10$ for $\theta=\pi/4$; at larger squeezing the two-qubit cap $1/2$ becomes active. This is a state-specific estimate and does not contradict the unit worst-case contraction coefficient of the unbounded JC channel.
+
+For the two-mode squeezed input, the detector state has an exact $X$ form. Define
+\begin{equation}
+a_n=\cos^2(\theta\sqrt n),\qquad b_n=\sin^2(\theta\sqrt n).
+\label{eq:jc-ab-definitions}
+\end{equation}
+In the basis $(|gg\rangle,|ge\rangle,|eg\rangle,|ee\rangle)$,
+\begin{equation}
+\rho_{D_AD_B}=
+\begin{pmatrix}
+P_{gg}&0&0&Z\\
+0&P_{ge}&0&0\\
+0&0&P_{ge}&0\\
+Z^*&0&0&P_{ee}
+\end{pmatrix},
+\label{eq:tmsv-jc-x-state}
+\end{equation}
+where
+\begin{align}
+P_{gg}&=(1-\zeta^2)\sum_{n=0}^{\infty}\zeta^{2n}a_n^2,\nonumber\\
+P_{ge}&=(1-\zeta^2)\sum_{n=0}^{\infty}\zeta^{2n}a_nb_n,\nonumber\\
+P_{ee}&=(1-\zeta^2)\sum_{n=0}^{\infty}\zeta^{2n}b_n^2,\label{eq:tmsv-jc-x-populations}\\
+Z&=-(1-\zeta^2)\zeta\sum_{n=0}^{\infty}\zeta^{2n}a_nb_{n+1}.\nonumber
+\end{align}
+The partial transpose gives the exact negativity
+\begin{equation}
+\mathcal N=
+\max\left\{0,\,
+(1-\zeta^2)\left[
+\zeta\sum_{n=0}^{\infty}\zeta^{2n}a_nb_{n+1}
+-\sum_{n=0}^{\infty}\zeta^{2n}a_nb_n
+\right]\right\}.
+\label{eq:tmsv-jc-exact-negativity}
+\end{equation}
+For weak squeezing, $\zeta=\tanh r\ll1$,
+\begin{equation}
+\mathcal N=r\sin^2\theta+O(r^2),
+\qquad
+I_{\rm F}=2r^2[1-\ln(r^2)]+O(r^4|\ln r|).
+\label{eq:jc-weak-squeezing}
+\end{equation}
+The detector negativity is therefore linear in $r$ at leading order, whereas the field mutual information is of order $r^2|\ln r|$. This explains why the general mutual-information bound is loose for weakly squeezed inputs.
+
+There is also a bound based only on local detector populations. For any two-qubit state,
+\begin{equation}
+\mathcal N(\rho_{D_AD_B})\leq\sqrt{\det\rho_{D_A}},
+\qquad
+\rho_{D_A}=
+\begin{pmatrix}1-p_A&c_A\\c_A^*&p_A\end{pmatrix}.
+\label{eq:negativity-local-determinant-bound}
+\end{equation}
+
+For a pure two-qubit state with Schmidt eigenvalues $s,1-s$, the negativity equals $\sqrt{s(1-s)}=\sqrt{\det\rho_{D_A}}$. Negativity is convex under mixtures. For a qubit marginal with Bloch vector $\boldsymbol r$, the function $\sqrt{\det\rho_{D_A}}=\tfrac12\sqrt{1-|\boldsymbol r|^2}$ is concave on the Bloch ball (its interior Hessian is negative semidefinite, and the boundary follows by continuity). Applying these two properties to any pure-state decomposition of a mixed state proves Eq.~\eqref{eq:negativity-local-determinant-bound}.
+
+The JC interaction conserves $\hat n_A+|e_A\rangle\langle e_A|$, so $p_A\leq\bar n_A$ and similarly for $B$. Hence
+\begin{equation}
+\mathcal N\leq
+\min\{\nu(\bar n_A),\nu(\bar n_B)\},
+\qquad
+\nu(x)=\sqrt{x_*(1-x_*)},\quad x_*=\min\{x,\tfrac12\}.
+\label{eq:mean-energy-negativity-bound}
+\end{equation}
+This population bound is accessible from local measurements, but its excitation-conservation premise does not apply unchanged to the full Unruh--DeWitt interaction with counter-rotating terms.
+
+The finite-mode benchmark confirms the internal consistency of the data-processing bounds and illustrates the dependence of resource transfer on the detector coupling. It is not a spacelike-separated relativistic harvesting calculation. A continuum-field extension must specify compact spacetime supports for the local modes and control the corresponding local-algebra mutual information.
+
+
+
+
+\subsection{Contraction coefficients and mean-energy constraints}
+A strict data-processing contraction can sharpen the field-to-detector bound, but it must be established for the actual detector channel and input class. For a regulated channel $\mathcal E:A\to D$, define
+\begin{equation}
+\eta_{\rm MI}(\mathcal E)=
+\sup_{\rho_{RA}:0<I(R:A)<\infty}
+\frac{I(R:D)_{(\mathrm{id}_R\otimes\mathcal E)(\rho)}}{I(R:A)_\rho},
+\qquad 0\leq\eta_{\rm MI}\leq1.
+\label{eq:mi-contraction-coefficient}
+\end{equation}
+The product-reference coefficient relevant to ordinary mutual information is bounded by the corresponding complete conditional-mutual-information contraction coefficient \cite{HircheGeorgeNuradhaWilde2026Conditional}. For two local detector channels, sequential data processing gives
+\begin{equation}
+I(D_A:D_B)\leq
+\eta_{\rm MI}(\mathcal E_A)\eta_{\rm MI}(\mathcal E_B)I_{\rm F}(A:B),
+\label{eq:supp-product-mi-contraction}
+\end{equation}
+and hence, for two qubits,
+\begin{equation}
+\mathcal N(\rho_{D_AD_B})\leq
+\min\left\{\frac12,\sqrt{2\eta_A\eta_B I_{\rm F}}\right\}.
+\label{eq:channel-sensitive-negativity-bound}
+\end{equation}
+For continuum local algebras, these coefficients must be defined with the same split or finite-resolution prescription used for $I_{\rm F}$; no continuum value is assumed here.
+
+The difficulty is that the ideal resonant Jaynes--Cummings (JC) channel need not contract mutual information uniformly. A detector initially in $|g\rangle$ maps a Fock input $|n\rangle$ to an excited-state probability
+\begin{equation}
+p_n=\sin^2(\theta\sqrt n).
+\label{eq:jc-channel-fock-outputs}
+\end{equation}
+Write $h_2(q)=-q\ln q-(1-q)\ln(1-q)$ for binary entropy in nats. For the binary code $\{|0\rangle,|n\rangle\}$, the input mutual information is $\ln2$ and the detector output mutual information is
+\begin{equation}
+I(U:D)=h_2(p_n/2)-\frac12h_2(p_n).
+\label{eq:jc-fock-code-mi}
+\end{equation}
+For every fixed $\theta>0$, a subsequence has $p_n\to1$. A direct construction avoids any equidistribution assumption: take $a_j=(\pi/2+j\pi)/\theta$ and $n_j=\lfloor a_j^2+1/2\rfloor$. Then
+\begin{equation}
+|\theta\sqrt{n_j}-(\pi/2+j\pi)|
+\leq\frac{\theta}{2(\sqrt{n_j}+a_j)}\longrightarrow0.
+\end{equation}
+Thus $\sin^2(\theta\sqrt{n_j})\to1$. The output retains asymptotically all of the equiprobable input bit, and data processing fixes the exact worst-case coefficient at
+\begin{equation}
+\eta_{\rm MI}(\mathcal E_\theta)=1.
+\label{eq:jc-uniform-coefficient-one}
+\end{equation}
+This is a statement about the supremum over all Fock inputs, not about the transfer efficiency for a specified squeezed state.
+
+An average photon-number constraint alone does not restore a strict coefficient. Encode a rare bit in $|n\rangle$ with probability $q_n=E/n$ for $n>E$ and otherwise use $|0\rangle$. The mean photon number is $E$, while the decoding error probability is $q_n(1-p_n)$. Along the subsequence with $p_n\to1$, the conditional entropy of the bit given the detector is negligible compared with its input entropy. Therefore
+\begin{equation}
+\eta_{\rm MI}^{(E)}(\mathcal E_\theta)=1,\qquad E>0.
+\label{eq:average-energy-mi-coefficient-one}
+\end{equation}
+For completeness, the exact information ratio of this binary classical code is
+\begin{equation}
+\frac{I(U:D)}{I(U:F)}
+=\frac{h_2(q_np_n)-q_nh_2(p_n)}{h_2(q_n)}\longrightarrow1,
+\label{eq:rare-code-information-ratio}
+\end{equation}
+where $h_2$ is the binary entropy defined above. Along the constructed sequence, $q_n\to0$ and $p_n\to1$; the expansion $h_2(q)=q\ln(1/q)+O(q)$ gives the limit, while $q_nh_2(p_n)/h_2(q_n)\to0$. This is closely related to the average-cost obstruction for classical channel contraction established by Polyanskiy and Wu \cite{PolyanskiyWu2016Dissipation}. An average photon-number bound alone is therefore insufficient. Hard spectral restrictions or additional channel noise may restore a strict coefficient, but each proposed restriction still needs its own channel analysis.
+
+A more informative object is the nonlinear information-dissipation curve
+\begin{equation}
+\mathfrak F_E(s)=
+\sup_{\substack{I(R:F)\leq s\\ \operatorname{Tr}(\hat n\rho_F)\leq E}}
+I(R:D).
+\label{eq:quantum-information-dissipation-curve}
+\end{equation}
+It obeys $\mathfrak F_E(s)\leq s$. At special angles the curve is exactly known on a finite interval: if $p_{n_*}=1$, then
+\begin{equation}
+q_*=\min\left\{\frac{E}{n_*},\frac12\right\},\qquad
+s_*=h_2(q_*),\qquad
+\mathfrak F_E(s)=s\quad(0\leq s\leq s_*).
+\label{eq:jc-exact-linear-curve-segment}
+\end{equation}
+For $\theta=\pi/4$ one may take $n_*=4$, and for $\theta=\pi/2$ one may take $n_*=1$. Away from such exact transitions, the rare-code argument establishes unit limiting slope near $s=0$, but does not determine the full curve. To pass from the code sequence to this slope, note that $n_j\sim j^2$ in the construction above. Hence the input information values $s_j=h_2(E/n_j)$ satisfy $s_{j+1}/s_j\to1$. Monotonicity of $\mathfrak F_E$ fills the intervals between them; combined with $\mathfrak F_E(s)\leq s$ and Eq.~\eqref{eq:rare-code-information-ratio}, it gives $\mathfrak F_E(s)/s\to1$.
+
+A strict bound can be recovered for a noisy readout. If the detector is followed by depolarizing noise of strength $p$, the composite channel contains a replacement component of weight $p$. The quantum Doeblin bound then gives
+\begin{equation}
+\eta_{\rm MI}\leq1-p,\qquad
+I(D_A:D_B)\leq(1-p_A)(1-p_B)I_{\rm F}.
+\label{eq:depolarizing-noise-negativity-bound}
+\end{equation}
+This result follows from the quantum Doeblin decomposition and the associated conditional-mutual-information contraction theorem \cite{GeorgeHircheNuradhaWilde2026Doeblin,HircheGeorgeNuradhaWilde2026Conditional}. It applies to the stated regulated depolarizing-readout model, not automatically to amplitude damping, dephasing, dark counts, or an ideal continuum Unruh--DeWitt channel.
+
+In this replacement-mixture case the bound also has a direct proof. Retain a classical flag $F$ recording whether the output was replaced, with replacement probability $p$ independent of the reference $R$. Before the flag is discarded, $I(R:DF)=(1-p)I(R:D)_{\rm unreplaced}$ because the replacement output is uncorrelated with $R$. Tracing out $F$ cannot increase mutual information. Applying the same argument at the two readouts gives the product bound in Eq.~\eqref{eq:depolarizing-noise-negativity-bound}. This proof does not require assigning a contraction coefficient to an unregulated continuum channel.
+
+Finally, a state-dependent estimate avoids the worst-case optimization. Applying data processing after only one local interaction yields
+\begin{align}
+I(D_A:D_B)&\leq\min\{I(D_A:B),I(A:D_B)\},\nonumber\\
+\mathcal N&\leq\min\left\{\frac12,
+\sqrt{2\min\{I(D_A:B),I(A:D_B)\}}\right\}.
+\label{eq:one-sided-negativity-bound}
+\end{align}
+Unlike a uniform channel coefficient, this bound retains information about the actual field state and detector coupling. 
+
+
+
+
+
+\section{Strictly spacelike pointlike detector limit}
+\label{app:pointlike-detectors}
+
+
+We now examine whether the entanglement extracted by two detectors survives when their spatial size tends to zero while their separation and switching duration remain fixed. Consider a massless real scalar field in four-dimensional Minkowski spacetime. The two identical UDW detectors are at rest, their centres are separated by $L$, and their spatial profiles are normalized, spherically symmetric functions $F_\sigma(\mathbf x)$ supported in balls of radius $\sigma$. The switching is
+\begin{equation}
+\chi(t)=
+\begin{cases}
+(1-t^2/T^2)^6,& |t|\leq T,\\
+0,& |t|>T,
+\end{cases}
+\qquad
+\widetilde\chi(\omega)=\int_{-\infty}^{\infty}dt\,\chi(t)e^{i\omega t}.
+\label{eq:pointlike-switch}
+\end{equation}
+This switching is compactly supported and has five continuous derivatives at the endpoints. We use the smooth compact spatial profile
+\begin{equation}
+F_\sigma(\mathbf x)=C_\sigma
+\exp\!\left[-\frac{1}{1-|\mathbf x|^2/\sigma^2}\right]
+\quad (|\mathbf x|<\sigma),
+\label{eq:pointlike-profile}
+\end{equation}
+and set it to zero outside the ball; $C_\sigma$ is fixed by $\int d^3x\,F_\sigma(\mathbf x)=1$. The full interaction regions are strictly spacelike separated provided
+\begin{equation}
+L-2\sigma>2T.
+\label{eq:pointlike-spacelike}
+\end{equation}
+
+At leading order in the detector--field coupling $\lambda$, the local excitation probability and the nonlocal coherence are
+\begin{align}
+P_\sigma&=\frac{\lambda^2}{4\pi^2}
+\int_0^\infty dk\,k\,|\widetilde F_\sigma(k)|^2
+|\widetilde\chi(\Omega+k)|^2,
+\label{eq:pointlike-P}\\
+\mathcal M_\sigma&=-\frac{\lambda^2}{4\pi^2L}
+\int_0^\infty dk\,\sin(kL)|\widetilde F_\sigma(k)|^2
+\widetilde\chi(\Omega-k)\widetilde\chi(\Omega+k),
+\label{eq:pointlike-M}
+\end{align}
+where $\widetilde F_\sigma(k)$ is the radial Fourier transform of the spatial profile. Because the two supports are strictly spacelike separated, the Wightman function is smooth on the product of the two interaction regions, and the nonlocal integral has no light-cone singularity. The local response is also finite in the pointlike limit. For this polynomial switching, $\widetilde\chi(\omega)=T\,92160\,j_6(|\omega|T)/(|\omega|T)^6$, where $j_6$ is a spherical Bessel function; hence $\widetilde\chi(\omega)=O(|\omega|^{-7})$ at large frequency, which is sufficient for the spectral moments used below to converge. The leading-order negativity for identical detectors is
+\begin{equation}
+\mathcal N_\sigma^{(2)}=
+\max\{0,|\mathcal M_\sigma|-P_\sigma\}.
+\label{eq:pointlike-negativity}
+\end{equation}
+For each fixed $\sigma$, a valid regular expansion gives $\mathcal N_\sigma=\mathcal N_\sigma^{(2)}+O(\lambda^4)$ in this zero-mean Gaussian model. No bound uniform in $\sigma$ on that remainder is established here. All pointlike limits below therefore concern the second-order coefficient, rather than an exchange of the exact finite-coupling and pointlike limits.
+
+The small-$\sigma$ expansion follows from the second spatial moment. For a normalized isotropic profile,
+\begin{equation}
+\widetilde F_\sigma(k)
+=1-\frac{k^2\langle r^2\rangle_\sigma}{6}
++O(k^4\sigma^4),\qquad
+\langle r^2\rangle_\sigma=\mu_2\sigma^2.
+\label{eq:profile-moment-expansion}
+\end{equation}
+Since the spatial profile is nonnegative and normalized, $|\widetilde F_\sigma(k)|\leq1$. The $|\omega|^{-7}$ switching decay therefore supplies integrable dominants for both spectral integrals, so dominated convergence proves their pointlike limits. Taylor's remainder for the isotropic profile is bounded by a constant times $k^4\sigma^4$; the fourth spectral moments also converge. This justifies integrating the expansion and its $O(\sigma^4)$ remainder. Consequently,
+\begin{align}
+\frac{P_\sigma}{\lambda^2}
+&=p_0-\frac{\mu_2\sigma^2}{12\pi^2}
+\int_0^\infty dk\,k^3|\widetilde\chi(\Omega+k)|^2
++O(\sigma^4),
+\label{eq:pointlike-P-expansion}\\
+\frac{\mathcal M_\sigma}{\lambda^2}
+&=m_0+\frac{\mu_2\sigma^2}{12\pi^2L}
+\int_0^\infty dk\,k^2\sin(kL)
+\widetilde\chi(\Omega-k)\widetilde\chi(\Omega+k)
++O(\sigma^4),
+\label{eq:pointlike-M-expansion}
+\end{align}
+where $p_0$ and $m_0$ denote the pointlike limits of $P_\sigma/\lambda^2$ and $\mathcal M_\sigma/\lambda^2$, respectively. Thus both detector response coefficients have finite pointlike limits for this switching class. If $|m_0|>p_0$, the leading-order negativity also has a strictly positive pointlike limit; if $|m_0|<p_0$, it vanishes in a neighbourhood of the pointlike limit. The equality case requires higher-order analysis.
+
+For a concrete test, we set $T=1$, $\Omega T=9$, and $L/T=2.033333\ldots$. The profile in Eq.~\eqref{eq:pointlike-profile} has dimensionless second moment $\mu_2=0.33508696\ldots$. The spacelike margin is positive throughout the scan, including the largest radius $\sigma/T=0.016$. The Fourier integrals were evaluated with a radial quadrature for the compact profile and a Gauss--Legendre quadrature for the switching transform. An independent numerical reconstruction used the same analytic transform at $T=1$, including its regular limit at zero. Comparing spectral cutoffs $k_{\max}=300,500$ and radial quadrature orders $96,160$ changes the response coefficients by less than $2.5\times10^{-17}$ and agrees with the archived scan to $1.6\times10^{-17}$. These differences are numerical convergence diagnostics, not certified error bounds. The pointlike values are
+\begin{equation}
+p_0=2.13325790\times10^{-6},\qquad
+|m_0|=3.57653182\times10^{-6},
+\label{eq:pointlike-limits-numbers}
+\end{equation}
+so that
+\begin{equation}
+\lim_{\sigma\to0}\frac{\mathcal N_\sigma^{(2)}}{\lambda^2}
+=1.44327392\times10^{-6}.
+\label{eq:pointlike-negativity-limit}
+\end{equation}
+The fitted small-size expansion is
+\begin{equation}
+\frac{|\mathcal M_\sigma|-P_\sigma}{\lambda^2}
+=1.44327392\times10^{-6}
++1.96656\times10^{-6}\left(\frac{\sigma}{T}\right)^2
++O\!\left((\sigma/T)^4\right).
+\label{eq:pointlike-gap-fit}
+\end{equation}
+The positive limit is therefore not caused by a finite spatial radius: it remains after the compact spatial profile is taken to a point. The local response, nonlocal coherence, and leading negativity approach finite pointlike limits. The positive entangling gap is shown directly in Fig.~\ref{fig:pointlike-gap}; the separate response and negativity plots are omitted because their limiting values are already stated explicitly above.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/FigS2_compact_gap.pdf}
+\caption{Leading entangling gap $|\mathcal M_\sigma|/\lambda^2-P_\sigma/\lambda^2$ versus $\sigma/T$, for $\Omega T=9$, $L/T=61/30$, and the compact profiles of Eqs.~\eqref{eq:pointlike-switch}--\eqref{eq:pointlike-profile}. The full supports obey $L-2\sigma>2T$ throughout. Panel (a) displays the positive gap coefficient; panel (b) subtracts its pointlike value and compares the variation with the leading quadratic size term. Numerical convergence does not bound the omitted dynamical terms.}
+\label{fig:pointlike-gap}
+\end{figure}
+
+This result answers only the detector-side pointlike-limit question for the specified massless scalar model and switching. It does not establish the behaviour of the mutual information between shrinking field regions. In particular, the detector interaction samples a spacetime world tube of fixed temporal duration, whereas the mutual information of two equal-time spatial balls refers to different local regions. These quantities must not be identified. A separate algebraic or finite-resolution calculation is needed to determine the field-region mutual information and to compare its limit with the finite detector negativity. The present result also does not remove the need to keep the coupling perturbative: $\lambda$ must be small enough that higher-order terms do not overturn the positive leading-order gap.
+
+
+
+
+
+
+
+\section{Resource attribution and preparation-family contextuality}
+\label{app:contextuality}
+\subsection{Interaction-dependent resource attribution}
+In a finite-dimensional or explicitly regulated system--probe description, let $P$ be a probe, $E$ an environment, and $V$ a fixed joint unitary. For an initially uncorrelated input $\rho_P\otimes\sigma_E$, define
+\begin{equation}
+\begin{aligned}
+\Phi_P^{\sigma_E,V}(\rho_P)&=\Tr_E[V(\rho_P\otimes\sigma_E)V^\dagger],\\
+\mathcal S_{\max}&=\{\sigma_E:\Phi_P^{\sigma_E,V}(\rho_P)\in\mathcal F_P
+\quad\forall\rho_P\in\mathcal F_P\}.
+\end{aligned}
+\label{eq:induced-free-set}
+\end{equation}
+where $\mathcal F_P$ is the specified probe free-state set. This is the maximal induced free set of Nystr\"om and co-workers \cite{Nystrom2026Induced}, not a new definition proposed here.
+
+\paragraph{Conditional attribution statement.}
+If an independently defined environmental free set obeys $\mathcal F_E\subseteq\mathcal S_{\max}$, a resource-bearing output from a free probe input implies $\sigma_E\notin\mathcal F_E$.
+\paragraph{Proof.}
+If $\sigma_E$ belonged to $\mathcal F_E$, the inclusion would place it in $\mathcal S_{\max}$; the definition would then make the output free for every free probe input. This contradicts the observed nonfree output. The implication is one-way for a fixed probe input: an environment outside $\mathcal S_{\max}$ need not generate resource for every free probe preparation. Repeated-use attribution additionally needs stability under probe back-action. The environmental free set, fixed interaction, initial product condition, and resource certificate must all refer to the same protocol.
+
+
+
+\subsection{Transport of a preparation-family noncontextual model}
+Let $\mathcal S=\{\rho_s\}$ be a specified family of finite-dimensional preparations. In the model used for the channel argument of Ref.~\cite{CamposDelgadoIpek2026}, there are Hermitian operators $G_\tau$ and density operators $\sigma_\tau$ such that
+\begin{equation}
+\Tr(\rho_s M)=\sum_\tau\mu_s(\tau)\Tr(\sigma_\tau M),
+\quad \mu_s(\tau)=\Tr(\rho_sG_\tau)\geq0,
+\quad\sum_\tau\mu_s(\tau)=1
+\label{eq:supp-noncontextual-family}
+\end{equation}
+for every $s$ and every POVM effect $M$. Positivity of $G_\tau$ on every quantum state is not assumed; its weights must be nonnegative on the specified preparation family. An integral may replace the sum for a continuous ontic space. The linear assignment enforces the specified preparation equivalences and mixtures; the Born response enforces measurement equivalences.
+
+\paragraph{Proposition (linear-invertible channel transport).}
+If $\Lambda$ is a common CPTP map, invertible on the full real vector space of Hermitian operators, then the output family $\{\Lambda(\rho_s)\}$ admits a representation of the same form.
+
+\paragraph{Proof.}
+Let $\Lambda^*$ be the trace-dual map and set
+\begin{equation}
+G'_\tau=(\Lambda^{-1})^*(G_\tau),\qquad
+\sigma'_\tau=\Lambda(\sigma_\tau).
+\end{equation}
+Then $\Tr[\Lambda(\rho_s)G'_\tau]=\mu_s(\tau)$, so the weights stay nonnegative and normalized on the output family. For any effect $M$,
+\begin{align}
+\sum_\tau\mu_s(\tau)\Tr(\sigma'_\tau M)
+&=\sum_\tau\mu_s(\tau)\Tr[\sigma_\tau\Lambda^*(M)]\nonumber\\
+&=\Tr[\rho_s\Lambda^*(M)]
+=\Tr[\Lambda(\rho_s)M].
+\end{align}
+The adjoint of a CPTP map sends POVMs to POVMs, so Eq.~\eqref{eq:supp-noncontextual-family} applies in the second step. The $\sigma'_\tau$ remain density operators. Finally, invertibility implies that a linear relation among output preparations holds exactly when the corresponding relation holds among the inputs. This proves transport of the specified representation and its operational equivalences. No physical inverse channel was used.
+
+The conclusion is conditional on this family, its equivalences, and the common channel. It does not identify the representation with the contextual fraction of an arbitrary fixed compatible-measurement empirical model. It is not a statement that one density operator is intrinsically noncontextual independent of the preparations and measurements allowed.
+
+\subsection{Exact weak-coupling invertibility and a limiting pitfall}
+For a finite-dimensional exact channel $\Lambda_\lambda$ with $\Lambda_0=\mathrm{id}$, continuity in any submultiplicative superoperator norm implies invertibility whenever $\|\Lambda_\lambda-\mathrm{id}\|<1$. Indeed, the convergent Neumann series is
+\begin{equation}
+\Lambda_\lambda^{-1}=\sum_{r=0}^{\infty}
+(-1)^r(\Lambda_\lambda-\mathrm{id})^r.
+\label{eq:supp-neumann-channel-inverse}
+\end{equation}
+This establishes a sufficiently small coupling interval, without specifying its size for an unbounded field interaction. A truncated Dyson expression is not automatically CPTP; its formal inverse alone does not establish the proposition's physical assumptions.
+
+Invertible approximants may have a noninvertible limit. For example, let $\mathcal D$ remove the off-diagonal entries of a qubit state in a fixed basis, and define
+\begin{equation}
+\Lambda_n=\frac1n\,\mathrm{id}+
+\left(1-\frac1n\right)\mathcal D\qquad(n=1,2,\ldots).
+\end{equation}
+Every $\Lambda_n$ is CPTP and invertible as a linear map: its off-diagonal eigenvalue is $1/n$. Its norm limit $\mathcal D$ has a nontrivial kernel. Thus invertibility at every finite approximation cannot justify a claim at arbitrary finite coupling without a uniform lower bound on the relevant eigenvalues or singular values. This qualifies the extrapolation discussed in Ref.~\cite{CamposDelgadoIpek2026}; it does not invalidate its conditional channel proposition or exact gapless construction.
+
+
+
+\section{Resource definitions, local channels, and perturbative diagnostics}
+\label{app:resource-diagnostics}
+
+The finite-state examples below distinguish a resource definition, a structural channel identity, and a source-specific perturbative diagnostic. We use $N=2\mathcal N$ throughout this section. The counterexamples, cluster channels, and displayed W/Dicke expressions can also be verified by direct finite-dimensional calculation. No exact finite-coupling revival or all-orders remainder is established.
+
+\subsection{Mixed-state GME and residual negativity}
+
+The approximation issue is logically separate from the definition of genuine multipartite entanglement (GME). A mixed state is biseparable if it can be written as a convex mixture of states that are separable across possibly different bipartitions; GME means that no such decomposition exists. This convex definition is why mixed-state certification cannot in general be inferred from a residual of pairwise negativities alone. General separability criteria and witnesses have been developed specifically for GME \cite{GuhneSeevinck2010}, and reviews of multipartite measures emphasize monotonicity, mixed-state extensions, and operational meaning as independent requirements \cite{MaLiShang2025}. 
+
+Residual-negativity constructions are historically motivated by negativity monogamy \cite{OuFan2007}, but the raw minimum residual is not a faithful GME certificate on arbitrary mixed states. The explicitly biseparable state
+\begin{equation}
+\rho_{\mathrm{bisep}}=\frac12|\Phi^+\rangle_{AB}\langle\Phi^+|\otimes|0\rangle_C\langle0|
++\frac12|\Phi^+\rangle_{AC}\langle\Phi^+|\otimes|0\rangle_B\langle0|,
+\label{eq:biseparable-counterexample}
+\end{equation}
+has residual squared negativities approximately $0.3090$, $0.1545$, and $0.1545$, despite being biseparable by construction. Thus a positive minimum residual does not establish GME for an arbitrary mixed state.
+
+The four-qubit Dicke residual $\pi_4$ has an analogous and even sharper limitation. Consider
+\begin{equation}
+\begin{aligned}
+\rho_{\mathrm{bisep}}^{(4)}&=\frac13\left(\rho_{AB|CD}+\rho_{AC|BD}+\rho_{AD|BC}\right),\\
+\rho_{XY|ZW}&=\left(|\Phi^+\rangle\langle\Phi^+|\right)_{XY}
+\otimes\left(|\Phi^+\rangle\langle\Phi^+|\right)_{ZW}.
+\end{aligned}
+\label{eq:pi4-counterexample}
+\end{equation}
+Each component is separable across a $2|2$ bipartition, so the mixture is biseparable. Nevertheless all four one-versus-three negativities equal one, all six two-qubit negativities vanish, and the residual definition used in the Dicke analysis gives
+\begin{equation}
+\pi_A=\pi_B=\pi_C=\pi_D=\pi_4=1.
+\end{equation}
+The values can be obtained analytically. For the $A|BCD$ cut, write the three pure components as
+\begin{equation}
+\begin{aligned}
+|\psi_i\rangle=\frac{|0\rangle|u_i\rangle+|1\rangle V|u_i\rangle}{\sqrt2},\\
+|u_i\rangle\in\left\{
+\frac{|000\rangle+|011\rangle}{\sqrt2},
+\frac{|000\rangle+|101\rangle}{\sqrt2},
+\frac{|000\rangle+|110\rangle}{\sqrt2}\right\},
+\end{aligned}
+\end{equation}
+Here $X=|0\rangle\langle1|+|1\rangle\langle0|$ and $V=X\otimes X\otimes X$ flips the three bits. The $u_i$ have even parity and $Vu_i$ odd parity. Their equal Gram matrices permit a local isometry on $BCD$ taking $u_i$ to $|0\rangle\otimes\xi_i$ and $Vu_i$ to $|1\rangle\otimes\xi_i$. The mixture is thus locally equivalent to a Bell state tensored with $\tau=\frac13\sum_i|\xi_i\rangle\langle\xi_i|$. The Gram matrix has diagonal entries one and off-diagonal entries $1/2$, so $\tau$ has nonzero eigenvalues $2/3,1/6,1/6$. The negative eigenvalues of the full partial transpose are consequently $-1/3,-1/12,-1/12$, giving $N_{A|BCD}=1$. Permutation symmetry gives the other three cuts. Every pair marginal equals $\frac13\Phi^++\frac23 I_4/4$, whose partial transpose has smallest eigenvalue zero, hence zero negativity. This proves the stated residual values without a numerical entanglement inference.
+
+Thus a maximal raw $\pi_4$ does not, by itself, certify four-partite GME for an arbitrary mixed state. In particular, this raw $\pi_4$ cannot be used as a mixed-state GME witness without an independently justified criterion.
+
+\subsection{Exact local-channel invariance}
+Recent work has examined whether the structure of an initial multipartite state can protect selected entanglement measures against acceleration. A useful example is the four-qubit cluster state
+\begin{equation}
+|\mathrm{CL}_{4}\rangle=\frac{1}{2}\bigl(|0000\rangle+|0011\rangle+|1100\rangle-|1111\rangle\bigr),
+\label{eq:cluster-state}
+\end{equation}
+for which Li et al. report that the negativities across the $A|BCD$ and $B|ACD$ partitions remain maximal when detector $D$ accelerates and interacts locally with a scalar field \cite{LiCluster2026}. The result is partition specific: the partitions involving $C$ or the accelerated detector $D$ do not obey the same invariance.
+
+For the $A|BCD$ and $B|ACD$ partitions, the freezing admits a stronger structural explanation than the first-order calculation alone suggests. Tracing detector $D$ from Eq.~\eqref{eq:cluster-state} already gives
+\begin{equation}
+N_{A|BC}(\rho_{ABC})=N_{B|AC}(\rho_{ABC})=1,
+\qquad \rho_{ABC}=\Tr_D|\mathrm{CL}_{4}\rangle\langle\mathrm{CL}_{4}|,
+\label{eq:cluster-reduced-max}
+\end{equation}
+Indeed, $\rho_{ABC}=\frac12\Phi^+_{AB}\otimes|0\rangle_C\langle0|+\frac12\Phi^-_{AB}\otimes|1\rangle_C\langle1|$, where $|\Phi^-\rangle=(|00\rangle-|11\rangle)/\sqrt2$ and $\Phi^-=|\Phi^-\rangle\langle\Phi^-|$. The orthogonal flag on $C$ leaves a Bell state in each block; each partially transposed block has trace norm two before its weight is applied. This gives the two normalized negativities in Eq.~\eqref{eq:cluster-reduced-max}, using $N=\|\rho^{T_A}\|_1-1$. Suppose the field is initially uncorrelated with the detectors and only detector $D$ couples to it. The exact reduced detector dynamics then defines a local completely positive trace-preserving map $\Lambda_D$ on $D$. Trace preservation implies
+\begin{equation}
+\Tr_D[(I_{ABC}\otimes\Lambda_D)(\rho_{ABCD})]=\Tr_D\rho_{ABCD}.
+\label{eq:cluster-local-channel}
+\end{equation}
+Partial trace is a local operation on the $BCD$ side, so negativity monotonicity gives
+\begin{equation}
+N_{A|BCD}[(I_{ABC}\otimes\Lambda_D)(\rho)]
+\ge N_{A|BC}(\Tr_D\rho)=1.
+\end{equation}
+Because the first subsystem is a qubit, the same negativity is bounded above by one. Hence
+\begin{equation}
+N_{A|BCD}=1,
+\qquad N_{B|ACD}=1,
+\label{eq:cluster-exact-freezing}
+\end{equation}
+for any local CPTP channel on $D$, not only the perturbative Unruh--DeWitt channel. We verified this numerically for amplitude-damping and dephasing channels at the parameter values documented in the reproducibility files; the argument above establishes the result for arbitrary local CPTP channels. This observation strengthens the freezing statement but changes its interpretation: for these two partitions, the invariance is a state-and-channel structural property rather than evidence for a uniquely acceleration-induced protection mechanism.
+
+The perturbative range remains relevant for other cluster-state quantities. In the published detector calculation, with $q=\exp(-2\pi\Omega/a)$ and effective coupling $\nu$, the norm of the first-order state has the correction
+\begin{equation}
+\|\Psi\|^2=1+\delta_{\mathrm{CL}},\qquad
+\delta_{\mathrm{CL}}=\frac{\nu^2(1+q)}{2(1-q)}.
+\label{eq:cluster-perturbative-control}
+\end{equation}
+At fixed nonzero $\nu^2$, $\delta_{\mathrm{CL}}$ is nonuniform as $q\to1$. This does not undermine the exact argument in Eq.~\eqref{eq:cluster-exact-freezing}, but it does limit conclusions about the detailed detector state, the $C|ABD$ and $D|ABC$ partitions, or task metrics derived from the truncated state in the infinite-acceleration limit.
+
+\subsection{Nonuniform perturbative expressions}
+For reproducibility, the first-order W/Dicke diagnostic uses the following explicit state model, with $D$ the interacting qubit:
+\begin{equation}
+\widetilde\rho_q=\rho+\frac{\nu^2}{1-q}
+\left(\sigma_D^-\rho\sigma_D^++q\sigma_D^+\rho\sigma_D^-\right),\qquad
+\rho_q^{\rm test}=\frac{\widetilde\rho_q}{\Tr\widetilde\rho_q}.
+\label{eq:first-order-diagnostic-model}
+\end{equation}
+The operators include the identity on the other qubits. The input is the equal superposition of all four-qubit computational states of Hamming weight one (W) or two (Dicke). This model reproduces the stated first-order normalization corrections and turning points. Its state-dependent normalization is not an exact CPTP evolution and cannot justify continuation to $q\to1$. Small normalization correction is a necessary consistency diagnostic for retaining the unperturbed state as the leading term, not a sufficient bound on the dynamical error. In particular, squaring a first-order state retains the jump term while omitting second-order no-jump contributions of the same order in the reduced state. Normalization does not reconstruct those missing terms.
+
+
+The same control test materially changes the interpretation of the reported W-state revival. For the four-qubit W state of Li et al. \cite{LiWState2025}, the first-order correction is
+\begin{equation}
+\delta_W=\frac{\nu^2(1+3q)}{4(1-q)}.
+\label{eq:w-control}
+\end{equation}
+At $\nu^2=0.04$, the first-order expression has its minimum at $q\simeq0.982236$, where $\delta_W\simeq2.22$. By comparison, $\delta_W<0.1$ requires $q<0.6923$, and even $\delta_W<1$ requires $q<0.9612$. Appendix~B of the source also gives a second-order density-matrix truncation. Reconstructing Eqs.~(B7)--(B8), we find a minimum of its formal partial-transpose trace norm near $q\simeq0.94427$, where $\nu^2/(1-q)\simeq0.718$ is not small. The truncated matrix itself has a negative eigenvalue of approximately $-2.4\times10^{-4}$ there. The problem can be seen algebraically: its compression to $|0001\rangle$ and $(|0010\rangle+|0100\rangle+|1000\rangle)/\sqrt3$ is
+\begin{equation}
+\begin{pmatrix}k_1&\sqrt3\,k_2\\\sqrt3\,k_2&3k_3\end{pmatrix},\qquad
+\begin{aligned}
+k_1&=\frac{1-q-\nu^2}{4(1-q)},\\
+k_2&=\frac{2(1-q)-(1+q)\nu^2}{8(1-q)},\\
+k_3&=\frac{1-q-q\nu^2}{4(1-q)}.
+\end{aligned}
+\end{equation}
+Its determinant is $3(k_1k_3-k_2^2)=-3\nu^4/64<0$ for nonzero $\nu$. Thus even a small negative eigenvalue of this truncation is expected at the omitted order; it is not by itself a disproof of perturbation theory. However, the matrix is not an exact density operator, and its trace-norm expression must not be interpreted as a physical entanglement monotone outside a controlled approximation. In particular, the high-$q$ branch is a property of the displayed truncated expressions; those expressions alone do not establish an exact finite-coupling revival.
+
+The Dicke-state revival shows the same issue even though the coupling used in that work is smaller. Wu et al. consider a four-qubit Dicke state with $\nu^2=0.01$ and report non-monotonic behavior of both $N_{A(BCD)}$ and the residual quantity $\pi_4$ \cite{WuDicke2026}. Their first-order normalization correction is
+\begin{equation}
+\delta_D=\frac{\nu^2(1+q)}{2(1-q)}.
+\label{eq:dicke-control}
+\end{equation}
+Reconstructing the published reduced density matrix, we obtain the minimum of $N_{A(BCD)}$ at $q\simeq0.992912$ and the minimum of the reported $\pi_4$ at essentially the same point. There $\delta_D\simeq1.406$. The conservative requirement $\delta_D<0.1$ gives $q<0.9048$, while $\delta_D<1$ gives $q<0.99005$; at the value $q=0.99$ used in the paper's coupling scan, $\delta_D\simeq0.995$. Thus the upward branch begins only once the first-order correction is already order unity.
+
+
+
+\section{A separated composite-observable kernel}
+\label{app:composite-kernel}
+\subsection{A separated energy-density kernel must retain the distance}
+Consider a massless real scalar field in the $1+1$-dimensional Minkowski vacuum and the normal-ordered energy density
+$\mathcal O(t,x)=:\!T_{00}(t,x)\!:
+=\tfrac12:\![(\partial_t\phi)^2+(\partial_x\phi)^2]\!:$.
+For two inertial worldlines at $x_A=0$ and $x_B=L>0$, put $u=t-t'$. Wick contraction, or differentiation of the left- and right-moving logarithmic two-point functions, gives
+\begin{equation}
+\langle\mathcal O(t,0)\mathcal O(t',L)\rangle
+=\frac{1}{8\pi^2}\left[
+\frac{1}{(u-L-i0)^4}+\frac{1}{(u+L-i0)^4}\right].
+\label{eq:supp-separated-energy-density}
+\end{equation}
+To see the coefficient, use null coordinates $v_\pm=t\pm x$, with
+$\langle\phi_\pm(v)\phi_\pm(v')\rangle=-(4\pi)^{-1}\ln(v-v'-i0)$ up to an irrelevant constant. Each derivative correlator is $-(4\pi)^{-1}(v-v'-i0)^{-2}$. Since
+$T_{00}=(\partial_{v_+}\phi)^2+(\partial_{v_-}\phi)^2$, the two Wick contractions in each independent chiral sector yield the two terms in Eq.~\eqref{eq:supp-separated-energy-density}. The infrared constant drops out under differentiation.
+
+Only at $L=0$ does this become $[4\pi^2(u-i0)^4]^{-1}$, singular at $u=0$. For $L>0$, the cross-kernel's singular support lies at $u=\pm L$. In particular, for smooth compact switchings on $[-T,T]$ with $L>2T$, it is smooth on the whole interaction domain. On this strictly spacelike domain, the time-ordering branches agree by microcausality and the cross integral is finite. The local response still requires its own distributional treatment.
+
+This check matters when using Ref.~\cite{ZambiancoRagulaMartinez2026UV}. Its local pointlike kernel, Eq.~(35), is used in the displayed nonlocal reduction, Eq.~(44), without an explicit separation dependence. That reduction has the coincident-position form and cannot be applied unchanged to arbitrary separated worldlines. The spatially smeared analysis there retains a separation-dependent convolution and is a different calculation. We therefore report its Gaussian-smearing and switching results with their hypotheses, and do not infer a universal separated-pointlike divergence criterion from the time-only expression. The example above is a regularity check, not a demonstration of positive harvested negativity.
+
+For a general composite observable with nonzero mean $m(x)=\langle\mathcal O(x)\rangle$, the decomposition
+$\mathcal O=mI+\delta\mathcal O$ also separates a local deterministic drive from fluctuations. In a local interaction picture for that drive, the leading fluctuation calculation uses $\langle\delta\mathcal O(x)\delta\mathcal O(x')\rangle$. Mean-induced coherences must be accounted for before applying a zero-mean partial-transpose block. A zero mean of the underlying scalar field does not imply $m=0$ for its energy density. These bookkeeping and ultraviolet checks are independent of the test for signalling between complete supports.
+
+
+
+
+\section{Finite-sample certification with a calibrated witness}
+\label{app:finite-sample}
+
+This section makes the distinction between an ideal-state witness and an experimental certificate quantitative. It uses a standard concentration inequality, not a new resource measure or an analysis of experimental raw data.
+
+Let $W_{\rm ent}=w_0I+\sum_{k=1}^K w_kO_k$ be a fixed Hermitian witness, with real coefficients $w_k$, such that $\Tr(W_{\rm ent}\sigma)\geq0$ for every separable state $\sigma$. In setting $k$, an ideal measurement of $O_k$ has outcomes in $[a_k,b_k]$. The $n_k$ observed outcomes $X_{ki}$ are independent, bounded in that interval, and have the same mean within each setting. All settings address the same preparation $\rho$. Define
+\begin{equation}
+\overline X_k=\frac{1}{n_k}\sum_{i=1}^{n_k}X_{ki},\qquad
+\widehat w=w_0+\sum_{k=1}^K w_k\overline X_k.
+\label{eq:supp-witness-estimate}
+\end{equation}
+Calibration is represented separately by a bound
+\begin{equation}
+\left|\Tr(W_{\rm ent}\rho)-
+\left(w_0+\sum_{k=1}^Kw_k\mathbb E X_{ki}\right)\right|
+\leq\Delta_{\rm cal}.
+\label{eq:supp-calibration-bound}
+\end{equation}
+For example, if the actual outcome observable is $\widetilde O_k$ and independently established operator-norm bounds satisfy $\|\widetilde O_k-O_k\|_\infty\leq\epsilon_k$, one may take $\Delta_{\rm cal}=\sum_k|w_k|\epsilon_k$. State-preparation drift or correlated noise is not automatically included in this model.
+
+\paragraph{Proposition (a sufficient finite-sample certificate).}
+For $\delta\in(0,1)$, let
+\begin{equation}
+\Delta_{\rm stat}=\sum_{k=1}^K |w_k|(b_k-a_k)
+\sqrt{\frac{\ln(2K/\delta)}{2n_k}}.
+\label{eq:supp-witness-stat-error}
+\end{equation}
+With probability at least $1-\delta$, the true witness expectation is no larger than $\widehat w+\Delta_{\rm stat}+\Delta_{\rm cal}$. A negative value of this upper bound therefore excludes separability under the stated sampling and calibration assumptions.
+
+\paragraph{Proof.}
+Hoeffding's inequality for bounded independent observations gives \cite{Hoeffding1963}
+\begin{equation}
+\Pr\!\left(|\overline X_k-\mathbb E X_{ki}|\geq t_k\right)
+\leq2\exp\!\left[-\frac{2n_kt_k^2}{(b_k-a_k)^2}\right].
+\end{equation}
+Taking $t_k=(b_k-a_k)\sqrt{\ln(2K/\delta)/(2n_k)}$ makes each failure probability at most $\delta/K$. The union bound then makes all $K$ deviations hold simultaneously with probability at least $1-\delta$. The triangle inequality bounds the deviation of their weighted sum by $\sum_k|w_k|t_k=\Delta_{\rm stat}$. Adding Eq.~\eqref{eq:supp-calibration-bound} proves the claim. If the calibration bound is itself statistical with failure probability $\delta_{\rm cal}$, the total confidence is at least $1-\delta-\delta_{\rm cal}$, without requiring independence of the two bounds. A deterministic calibration bound must not be silently substituted for an uncertain calibration fit.
+
+\paragraph{A two-qubit example.}
+For $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$, a witness is
+\begin{equation}
+W_{\Phi}=\frac12I-|\Phi^+\rangle\langle\Phi^+|
+=\frac14(I-X\otimes X+Y\otimes Y-Z\otimes Z),
+\label{eq:supp-pauli-witness}
+\end{equation}
+where $X,Y,Z$ are Pauli matrices. The squared overlap of a pure product state with $|\Phi^+\rangle$ is at most $1/2$, by the Cauchy--Schwarz inequality; convexity gives the same bound for all separable states, proving the witness property. Each measured product has outcomes $\pm1$. With $n$ repetitions for each of the three correlators,
+\begin{equation}
+\Delta_{\rm stat}=\frac32\sqrt{\frac{\ln(6/\delta)}{2n}}.
+\end{equation}
+For an observed negative margin $m=-\widehat w>\Delta_{\rm cal}$, the sufficient condition becomes
+\begin{equation}
+n>\frac{9\ln(6/\delta)}{8(m-\Delta_{\rm cal})^2}.
+\label{eq:supp-pauli-shot-budget}
+\end{equation}
+For illustration, $m=0.125$, $\Delta_{\rm cal}=0.020$, and $\delta=0.05$ require $n\geq489$ repetitions per correlator with this conservative bound. These are hypothetical inputs, not an experimental claim or a predicted harvesting yield. The guarantee is frequentist coverage of the fixed confidence rule; it is not a posterior probability that a particular state is entangled. If $m\leq\Delta_{\rm cal}$, increasing $n$ alone cannot certify that margin.
+
+The witness and settings must be fixed independently of the data used in this bound, or selection must be accounted for. A predicted detector state with unknown higher-order corrections is a different uncertainty problem: more shots do not bound those corrections. Likewise, electro-optic quadratures are unbounded. Clipping them changes the measured observable, so any application needs an independently justified tail-error bound or a concentration inequality valid for their distribution. Coincidence covariance alone does not supply $W_{\Phi}$ or its calibration.
+
+\section*{Statements and Declarations}
+\subsection*{Funding}
+No funds, grants, or other support were received for this work.
+\subsection*{Competing interests}
+The author declares no financial or non-financial competing interests.
+\subsection*{Data and code availability}
+The defining models, input scan data, and portable Python verification and figure-generation scripts accompany the manuscript as reproducibility files. No experimental data were collected. The scripts verify the stated examples and numerical convergence; they do not supply an all-orders continuum remainder bound.
+\subsection*{Author contributions}
+Zhiming Huang is the sole author and is responsible for the submitted manuscript.
+In preparing the manuscript, OpenAI ChatGPT assisted with literature organization, explanatory drafting, bilingual editing, citation checks, and Python/Matplotlib code refinement. It was chosen for technical-writing and coding support. All references, calculations, figures, and scientific conclusions remain the author's responsibility. No generative image model was used.
+\bibliography{rqi_refs}
+\end{document}
