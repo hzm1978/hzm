@@ -24359,6 +24359,144 @@
       "expected_expression_fragment": "2*QFLAG*MAX",
       "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
     },
+    "release_gate": "四份最终安装文件通过官方代码350/名称加代码550校验、现行5.4.0.5解析器及绘图描述检查，118项本地检查通过；目标4.39.1.2客户端界面、真实行情渲染和速度未实测。",
+    "next_full_main": {
+      "release": "1.1.2",
+      "status": "official_content_and_current_native_parser_passed_target_ui_not_run",
+      "primary": "../formulas/install/EWT01.txt ~ EWT04.txt",
+      "changes": [
+        "动态数字改为在目标K线上直接DRAWNUMBER",
+        "KTEXT位置固定0，条件切换到实际目标K线",
+        "年龄/门限/价格/数值均按查看末端冻结",
+        "原有波浪、Q、回调、价格计算和配色保留",
+        "四个独立主图叠加层，每条图形分配一次",
+        "完整开发模型保留，不用于整份安装",
+        "嵌套IF/IFELSE先保存中间变量"
+      ],
+      "local_evidence": "../docs/本地检查结果.json",
+      "official_native_evidence": "../docs/官方解析检查.json"
+    },
+    "full_main_1_0_5": {
+      "status": "compiled_but_rendering_incorrect_reported_by_user",
+      "evidence": "用户提供主图截图：文字/数值显示，波浪和价位线缺失，方向/回调和标注密度被反馈不正确",
+      "root_cause_confirmed": "误用同K线DRAWLINE连接不同K线，原测试只检查参数类型而未检查函数绘图语义"
+    },
+    "native_function_help": {
+      "source": "用户从4.39.1.2客户端函数库复制",
+      "reference_file": "client_function_reference.txt",
+      "DRAWLINE": "same_candle_vertical_segment",
+      "POLYLINE": "connect_values_on_matching_candles",
+      "POLYLINE_arguments": [
+        "condition",
+        "data",
+        "color"
+      ],
+      "not_verified": "1.1.2在目标4.39.1.2客户端的编译、关闭保存、完整渲染与速度",
+      "complete_export_file": "../reference/all_func.json",
+      "complete_export_records": 286,
+      "complete_export_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "comment_syntax": [
+        "//",
+        "/*...*/"
+      ]
+    },
+    "full_main_1_1_0": {
+      "status": "save_rejected_reported_by_user",
+      "evidence": [
+        "截图：错误行数1，错误语句为空，解析错误",
+        "用户明确回复：代码包含敏感词汇，不给保存"
+      ],
+      "specific_sensitive_term": null,
+      "note": "不能从截图认定具体命中词或认定某个函数为唯一原因；先修正交付文本。"
+    },
+    "full_main_1_1_1": {
+      "status": "compile_and_close_failure_reported_by_user",
+      "compile_evidence": {
+        "line": 1,
+        "statement": "PN:=2;",
+        "diagnostic": "解析错误"
+      },
+      "close_evidence": "截图完整提示：您输入的指标代码包含敏感词汇，请调整后再试。用户说明在关闭时出现。",
+      "specific_sensitive_term": null,
+      "note": "移除中文、注释和BOM后仍失败，不能再将其认定为中文过滤或编码问题。"
+    },
+    "save_baseline_ZZ001": {
+      "source": "CHK:MA(C,5);",
+      "type_requested": "新建技术指标",
+      "name": "ZZ001",
+      "compile": "passed_reported_by_user",
+      "close_save": "passed_reported_by_user",
+      "evidence": "用户回复“编译和关闭都正常”",
+      "full_formula_same_indicator": "failed_first_line_reported_by_user"
+    },
+    "save_baseline_PN": {
+      "source": "PN:=2;\nCHK:PN;",
+      "name": "ZZ001",
+      "compile": "passed_reported_by_user",
+      "close_save": "passed_reported_by_user",
+      "evidence": "用户回复“两行编译、关闭都正常”"
+    },
+    "network_content_check": {
+      "status": "length_rejection_reproduced_on_public_release",
+      "evidence": "官方内容校验长度对照.json",
+      "accepted_ascii_characters": 80000,
+      "rejected_ascii_characters": 80001,
+      "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
+      "new_install_layers": "passed_all_eight_code_and_combined_checks_on_anonymously_downloaded_public_files",
+      "new_install_evidence": "../docs/官方内容校验结果.json"
+    },
+    "full_main_1_1_2": {
+      "status": "installation_layers_official_checks_passed",
+      "installation_files": [
+        "../formulas/install/EWT01.txt",
+        "../formulas/install/EWT02.txt",
+        "../formulas/install/EWT03.txt",
+        "../formulas/install/EWT04.txt"
+      ],
+      "official_content_check": "passed_350_and_550_for_each",
+      "official_parser_client_version": "5.4.0.5",
+      "target_client_ui_run": false,
+      "root_cause": "Observed 80000/80001 character content-service boundary plus native shifted-label/nested-selector problems; not an invalid PN assignment."
+    }
+  },
+  "client_compile_feedback_at_local_test_time": {
+    "reported_client": "同花顺期货通电脑版",
+    "reported_version": "4.39.1.2",
+    "reported_date_beijing": "2026-11-05",
+    "release": "1.0.4",
+    "status": "failed_reported_by_user",
+    "evidence": "用户提供的客户端截图",
+    "line": 168,
+    "statement": "T140:=2*T136*MAX(T138,T139)-1;",
+    "diagnostic_family": "IFELSE语法诊断",
+    "diagnostic_exact_text": null,
+    "note": "完整错误文字尚未获得，不将看图推测写作原生错误原文。现场失败优先于本地数学和静态检查结果。",
+    "ifelse_two_line_probe": "not_reported",
+    "count_numeric_probe": {
+      "status": "passed_reported_by_user",
+      "evidence": [
+        "用户回复“编译通过”",
+        "用户截图同时显示四行源码与数值曲线"
+      ],
+      "source_file": "count_numeric_probe_UTF8.txt",
+      "verified_scope": [
+        "COUNT(条件,1)产生数值序列",
+        "MAX与加减、变量引用、中文输出名可编译显示"
+      ],
+      "not_verified": [
+        "完整主图",
+        "乘法及其他函数的完整组合",
+        "全部绘图与运行速度"
+      ]
+    },
+    "first_count_probe_feedback": {
+      "status": "inconclusive_input_integrity",
+      "reported_line": 2,
+      "reported_statement": "QOTHER:=COUNT(C<O,1);",
+      "undefined_function": "2QFLAGMAX",
+      "expected_expression_fragment": "2*QFLAG*MAX",
+      "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
+    },
     "release_gate": "已复现官方内容校验对80000字符通过、80001字符拒绝，重复PN赋值同样；1.1.2改为四个不超过78000字节的安装图层。已定位并修正原生动态文本偏移与嵌套IF错误，目标4.39.1.2界面实测仍未运行。",
     "next_full_main": {
       "release": "1.1.2",
@@ -24444,5 +24582,14 @@
       "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
       "new_install_layers": "pending_public_source_validation"
     }
-  }
+  },
+  "subsequent_official_content_check": {
+    "report": "官方内容校验结果.json",
+    "checked_at_utc": "2026-11-05T12:18:27.270564+00:00",
+    "passed": true,
+    "evidence_matches_current_bytes": true,
+    "checks": 8,
+    "target_client_ui_run": false
+  },
+  "post_test_evidence_updated_at_utc": "2026-11-05T12:20:03.774029+00:00"
 }

@@ -36,10 +36,10 @@
     "expected_expression_fragment": "2*QFLAG*MAX",
     "note": "诊断中乘号未被保留；原提问卡片使用普通Markdown文字，可能把*QFLAG*渲染为斜体。不能据此判定COUNT数值运算失败。"
   },
-  "release_gate": "已复现官方内容校验对80000字符通过、80001字符拒绝，重复PN赋值同样；1.1.2改为四个不超过78000字节的安装图层。已定位并修正原生动态文本偏移与嵌套IF错误，目标4.39.1.2界面实测仍未运行。",
+  "release_gate": "四份最终安装文件通过官方代码350/名称加代码550校验、现行5.4.0.5解析器及绘图描述检查，118项本地检查通过；目标4.39.1.2客户端界面、真实行情渲染和速度未实测。",
   "next_full_main": {
     "release": "1.1.2",
-    "status": "target_client_not_run",
+    "status": "official_content_and_current_native_parser_passed_target_ui_not_run",
     "primary": "../formulas/install/EWT01.txt ~ EWT04.txt",
     "changes": [
       "动态数字改为在目标K线上直接DRAWNUMBER",
@@ -119,6 +119,20 @@
     "accepted_ascii_characters": 80000,
     "rejected_ascii_characters": 80001,
     "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
-    "new_install_layers": "pending_public_source_validation"
+    "new_install_layers": "passed_all_eight_code_and_combined_checks_on_anonymously_downloaded_public_files",
+    "new_install_evidence": "../docs/官方内容校验结果.json"
+  },
+  "full_main_1_1_2": {
+    "status": "installation_layers_official_checks_passed",
+    "installation_files": [
+      "../formulas/install/EWT01.txt",
+      "../formulas/install/EWT02.txt",
+      "../formulas/install/EWT03.txt",
+      "../formulas/install/EWT04.txt"
+    ],
+    "official_content_check": "passed_350_and_550_for_each",
+    "official_parser_client_version": "5.4.0.5",
+    "target_client_ui_run": false,
+    "root_cause": "Observed 80000/80001 character content-service boundary plus native shifted-label/nested-selector problems; not an invalid PN assignment."
   }
 }
