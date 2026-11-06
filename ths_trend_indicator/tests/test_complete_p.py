@@ -1,154 +1,121 @@
-"""User regressions: whole P, correct ruler, outer correction end, no blank H1."""
+"""Current product regressions for owned M/P/S intervals and price rulers."""
 from functools import lru_cache
 from pathlib import Path
-import sys
-import unittest
-
+import sys,unittest
 import numpy as np
-
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from generate import formula_source,formula_names
+from interval_layers import layers
 from plot_audit import audit
 from scenarios import sample,path
-from p_complete import MAX_Q
-
-SOURCE=formula_source()
-MAPPING=formula_names()
-
-def value(result,name):return float(result['env'][MAPPING.get(name,name)][-1])
-
-@lru_cache(maxsize=8)
+from inspect_structure import snapshot
+SOURCE=formula_source();MAPPING=formula_names();SCHEMA=layers()[1]
+def value(r,k):return float(r['env'][MAPPING.get(k,k)][-1])
+@lru_cache(maxsize=24)
 def scene(name):
-    data,settings=sample(name)
-    return data,audit(SOURCE,data,settings)
-
-def outline(result):
-    return [l for l in result['lines'] if l['color']=='COLORLIBLUE' and l['function']=='POLYLINE']
-
+    d,s=sample(name);r=audit(SOURCE,d,s)
+    return d,r,snapshot(d,r,mapping=MAPPING,source=SOURCE)
+def outline(r,color='COLORLIBLUE'):
+    return [l for l in r['lines']if l['color']==color and l['function']=='POLYLINE']
+def points(r,color='COLORLIBLUE'):
+    lines=outline(r,color)
+    return [lines[0]['start'][1]]+[l['end'][1]for l in lines]if lines else []
 class CompletePTests(unittest.TestCase):
-    def test_p_covers_whole_ruler_even_beyond_eight_fine_pivots(self):
-        data,r=scene('p_whole');lines=outline(r)
-        self.assertGreater(len(lines),7)
-        self.assertEqual(lines[0]['start'],(50,1015.38))
-        self.assertEqual(lines[-1]['end'][1],831)
-        for a,b in zip(lines,lines[1:]):self.assertEqual(a['end'],b['start'])
-        self.assertEqual(value(r,'PCFIRST'),value(r,'PRFSTART'))
-        self.assertEqual(value(r,'PCLAST'),value(r,'PRFEND'))
-        self.assertFalse(any(l['text'].startswith(('子','孙'))for l in r['labels']))
-        self.assertEqual(value(r,'PCQ4INDEX'),5)
-        for i in range(MAX_Q):
-            n=int(value(r,f'PCQ{i}N'));root=value(r,f'PCQ{i}ROOT')
-            a=len(data['C'])-1-int(value(r,f'PCQ{i}ROOTAGE'))
-            column=data['C']if i==0 else data['L']
-            k=a+1+int(np.flatnonzero(column[a+1:]<root)[0])
-            self.assertEqual(n,k-a)
-
-    def test_white_structure_keeps_later_c_not_first_local_rebound(self):
-        _,r=scene('p_white')
-        points=[outline(r)[0]['start'][1]]+[l['end'][1]for l in outline(r)]
-        self.assertEqual(points,[201,99,151,69,101,39])
-        self.assertEqual(value(r,'PCQ0SHAPE'),4)
-        self.assertAlmostEqual(value(r,'PCQ0RET'),52/102*100)
-        self.assertTrue(any(l['color']=='COLORMAGENTA' and l['start'][1]==97.5 and l['end'][1]==151 for l in r['lines']))
-
-    def test_triangle_end_is_e_instead_of_more_extreme_a(self):
-        _,r=scene('p_triangle')
-        self.assertEqual(value(r,'PCQ0SHAPE'),5)
-        self.assertEqual(value(r,'PCQ0COUNTER'),121)
-        self.assertNotEqual(value(r,'PCQ0COUNTER'),131)
-
-    def test_no_h1_still_displays_observed_whole_swing(self):
-        _,r=scene('p_no_h1')
-        self.assertEqual(value(r,'PRPROOF'),0)
-        self.assertEqual(value(r,'PCON'),1)
-        self.assertEqual(outline(r)[0]['start'][1],15316)
-        self.assertEqual(outline(r)[-1]['end'][1],12999)
-        self.assertIn('P END',{l['text']for l in r['labels']})
-
-    def test_qualified_p_origin_replaces_older_merged_parent_origin(self):
-        data,settings=sample('p_no_h1')
-        overrides={'MWON':1,'MWDIR':-1,'PWLEN':5,'PWON':1,'PWPROOF':1,'PWDIR':-1,
-                   'OWN_PREVP1':1163,'OWN_PREVP2':824,'OWN_PREVSTART':80,'OWN_PREVEND':10,
-                   'BOOKTIPTURN':0,'PARENTPHASE':2}
-        from book_layers import layers
-        g=layers()[1][2]
-        overrides.update({g['p'][5]:1012,g['a'][5]:50,g['p'][0]:824})
-        settings=dict(settings)|{'MANF':0}
-        # Drawing snapshots intentionally ignore runtime core overrides;
-        # replace these controlled scope definitions in the test formula.
-        import re
-        controlled=SOURCE
-        for k,v in overrides.items():
-            k=MAPPING.get(k,k);literal=str(v)if v>=0 else'0-'+str(abs(v))
-            controlled,count=re.subn(r'^'+re.escape(k)+r':=[^;\n]+;',k+':='+literal+';',controlled,flags=re.M)
-            self.assertEqual(count,1)
-        r=audit(controlled,data,settings)
-        self.assertEqual(value(r,'PRFUSEP'),1)
-        self.assertEqual(value(r,'PRFSTART'),1012)
-        self.assertEqual(value(r,'PRFEND'),824)
-        self.assertEqual(value(r,'PCFIRST'),1012)
-        self.assertEqual(value(r,'PCLAST'),824)
-
-    def test_confirmed_small_rebound_does_not_wait_for_bn_tip_confirmation(self):
-        # A complete working down leg followed by 3 rebound bars, with BN=7.
-        data=path([2000,1800,1950,1823,2021,1439,1510],[18,18,18,18,32,3],tail=0)
-        r=audit(SOURCE,data,{'DIR':-1})
-        self.assertGreaterEqual(value(r,'WORKTIPAGE'),2)
-        self.assertEqual(value(r,'BOOKTIPTURN'),1)
-        self.assertEqual(value(r,'PRPHASE'),2)
-        self.assertEqual(value(r,'PRFON'),1)
-        self.assertEqual(value(r,'PRFSTART'),2022)
-        self.assertEqual(value(r,'PRFEND'),1438)
+    def test_raw_eleven_turns_reduce_to_book_seven_by_intervals(self):
+        d,r,t=scene('p_whole');g=t['groups'][1]
+        self.assertEqual(points(r),[1015.38,959,991,922,978,869,901,831])
+        self.assertEqual(g['intervals'],3);self.assertEqual(g['classification'],73)
+        self.assertFalse(any(l['text']in ('P8','P9','P10','P11')for l in r['labels']))
+        self.assertEqual(t['price_plan']['fib_anchors']['start_price'],1015.38)
+        self.assertNotEqual(t['price_plan']['fib_anchors']['start_price'],977.26)
+    def test_first_close_later_wick_lengths_use_actual_candles_excluding_root(self):
+        for name in ('p_whole','p_white','p_triangle'):
+            d,r,t=scene(name);end=t['groups'][1]['owner']['end_index']
+            for q in t['groups'][1]['Q']:
+                a=q['start_index'];root=q['root_price'];column=d['C']if q['first_uses_close']else d['L']
+                crossed=np.flatnonzero(column[a+1:end+1]<root-1e-7)
+                boundary=a+1+int(crossed[0])if len(crossed)else end
+                self.assertEqual(q['end_index'],boundary)
+                self.assertEqual(q['candles_excluding_start'],boundary-a)
+    def test_white_structure_keeps_late_c_and_complete_adjustment(self):
+        _,r,t=scene('p_white')
+        self.assertEqual(points(r),[201,99,151,69,101,39])
+        self.assertEqual(t['groups'][1]['Q'][0]['adjustment_shape_label'],'ABC STR')
+        self.assertAlmostEqual(t['groups'][1]['Q'][0]['retracement_percent'],52/102*100)
+        self.assertTrue(any(l['color']=='COLORMAGENTA'and l['end'][1]==151 for l in r['lines']))
+    def test_triangle_end_is_e_not_the_more_extreme_a(self):
+        _,r,t=scene('p_triangle');q=t['groups'][1]['Q'][0]
+        self.assertEqual(q['adjustment_shape_label'],'TRI CON')
+        self.assertEqual(q['counter_price'],121);self.assertNotEqual(q['counter_price'],131)
+    def test_endpoint_reports_actual_h1_multiple_not_price_or_target_ratio(self):
+        _,r,t=scene('p_whole');g=t['groups'][1]
+        self.assertAlmostEqual(g['actual_end_H1_multiple'],70/56.38)
+        self.assertNotEqual(round(g['actual_end_H1_multiple'],3),1.208)
+        h1_labels=[l for l in r['labels']if l['text']==' H1']
+        self.assertTrue(h1_labels)
+        expected=f"{g['actual_end_H1_multiple']:.3f}"
+        self.assertTrue(any(l['text']==expected and l['function']=='DRAWNUMBER'for l in r['labels']))
+    def test_m_and_p_share_one_parent_impulse_boundary(self):
+        for name in ('short_inner_q','earlier_complete','five_up','p_newtip'):
+            _,r,t=scene(name);m=SCHEMA['M'];p=SCHEMA['P']['scope']
+            self.assertEqual(value(r,p['first']),value(r,m['base']))
+            self.assertEqual(value(r,p['start']),value(r,m['base_age']))
+            self.assertEqual(t['groups'][0]['owner']['end_index'],t['groups'][1]['owner']['end_index'])
+    def test_inner_high_cannot_shorten_manual_parent_anchor(self):
+        _,_,t=scene('p_whole');a=t['price_plan']['fib_anchors']
+        self.assertEqual((a['start_price'],a['end_price']),(1015.38,831))
+        levels=t['price_plan']['fib_levels']
+        self.assertEqual((levels[0]['price'],levels[-1]['price']),(831,1015.38))
+        self.assertLess(a['start_index'],a['end_index'])
+    def test_parent_line_includes_whole_prior_excursion_not_small_910_turn(self):
+        d,s=sample('main_owned');r=audit(SOURCE,d,s);t=snapshot(d,r,mapping=MAPPING,source=SOURCE)
+        m=points(r,'COLORYELLOW');p=points(r)
+        self.assertIn(864.7,m);self.assertIn(1015.38,m);self.assertEqual(m[-1],831)
+        self.assertEqual((p[0],p[-1]),(1015.38,831))
+        self.assertNotIn(911,m)
+    def test_fib_marks_actual_parent_high_and_low_and_never_draws_targets(self):
+        _,r,t=scene('p_whole');a=t['price_plan']['fib_anchors']
+        fib=[l for l in r['lines']if l['color']=='COLORFFCC00']
+        levels=sorted({l['start'][1]for l in fib if l['start'][1]==l['end'][1]and abs(l['end'][0]-l['start'][0])>2})
+        np.testing.assert_allclose(levels,[831+(1015.38-831)*q for q in (0,.236,.382,.5,.618,.786,1)])
+        self.assertTrue(any(l['start'][0]==l['end'][0]==a['start_index']for l in fib))
         self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
-        self.assertGreater(value(r,'BSAFEHI'),max(abs(data['H']).max(),abs(data['L']).max()))
-        self.assertEqual(value(r,'MWRUN'),1)
-
-    def test_reversal_observations_are_kept_inside_completed_p_during_correction(self):
-        _,r=scene('p_white')
-        first=outline(r)[0]['start'][0];last=outline(r)[-1]['end'][0]
-        observations=[l for l in r['labels']if l['text'].startswith('转折观察·') and first<=l['x']<=last+3]
-        self.assertEqual(value(r,'PRPHASE'),2)
-        self.assertGreater(len(observations),0)
-
-    def test_p_is_symmetric_and_every_turning_price_is_finite(self):
-        data,settings=sample('p_white')
-        mirror={'O':-data['O'],'C':-data['C'],'H':-data['L'],'L':-data['H']}
-        _,original=scene('p_white')
-        settings=dict(settings)|{'DIR':1,'MFROM':-settings['MFROM'],'MTO':-settings['MTO']}
-        reflected=audit(SOURCE,mirror,settings)
-        self.assertEqual([(l['start'][0],l['end'][0])for l in outline(original)],
-                         [(l['start'][0],l['end'][0])for l in outline(reflected)])
-        np.testing.assert_allclose([l['end'][1]for l in outline(original)],
-                                   [-l['end'][1]for l in outline(reflected)])
-
-    def test_opposite_complete_p_reorients_a_stale_nearly_reversed_ruler(self):
-        from book_layers import layers
-        import re
-        data,settings=sample('p_no_h1');g=layers()[1][2]
-        overrides={'MWON':1,'MWDIR':1,'PWLEN':3,'PWON':1,'PWPROOF':1,'PWDIR':-1,
-                   'OWN_PREVP1':1657,'OWN_PREVP2':1845,'OWN_PREVSTART':80,'OWN_PREVEND':10,
-                   'BOOKTIPTURN':0,'PARENTPHASE':2,
-                   g['p'][3]:1845,g['a'][3]:70,g['p'][0]:1649,g['a'][0]:10}
-        source=SOURCE
-        for k,v in overrides.items():
-            k=MAPPING.get(k,k);literal=str(v)if v>=0 else'0-'+str(abs(v))
-            source,count=re.subn(r'^'+re.escape(k)+r':=[^;\n]+;',k+':='+literal+';',source,flags=re.M)
-            self.assertEqual(count,1)
-        r=audit(source,data,dict(settings)|{'MANF':0})
-        self.assertEqual(value(r,'PRFREVERSE'),1)
-        self.assertEqual(value(r,'PRF0'),1649)
-        self.assertEqual(value(r,'PRF6'),1845)
-        self.assertEqual(value(r,'PRDISPLAYDIR'),-1)
-
-    def test_optional_s_is_owned_only_by_current_correction(self):
-        data,r=scene('p_s_correction')
-        self.assertEqual(value(r,'SCON'),1)
-        self.assertEqual(value(r,'SCOS'),value(r,'PCSTOP'))
-        self.assertEqual(value(r,'SCDIR'),-value(r,'PCDIR'))
-        self.assertTrue(any(l['text'].startswith('回调')for l in r['labels']))
-        data,settings=sample('p_s_correction')
-        hidden=audit(SOURCE,data,dict(settings)|{'SHOWGRAND':0})
-        self.assertFalse(any(l['text'].startswith('回调')for l in hidden['labels']))
-        self.assertEqual(outline(hidden),outline(r))
-
+    def test_running_impulse_targets_are_exclusive_and_s_is_empty(self):
+        _,r,t=scene('trend_targets')
+        self.assertEqual(sum(l['color']=='COLORFF9900'for l in r['lines']),3)
+        self.assertFalse(any(l['color']=='COLORFFCC00'for l in r['lines']))
+        self.assertFalse(t['current_correction_visible'])
+        self.assertFalse(outline(r,'COLORCYAN'))
+        self.assertFalse(any(l['text'].startswith(('S1','S2','SOUTER'))for l in r['labels']))
+    def test_last_correction_is_owned_by_parent_tip_and_has_no_old_history(self):
+        _,r,t=scene('p_s_correction');p=t['groups'][1]['owner'];s=t['groups'][2]['owner']
+        self.assertTrue(s['visible']);self.assertEqual(s['start_index'],p['end_index'])
+        self.assertEqual(s['start_price'],p['end_price']);self.assertEqual(s['direction'],-p['direction'])
+        self.assertTrue(all(l['start'][0]>=s['start_index']and l['end'][0]>=s['start_index']for l in outline(r,'COLORCYAN')))
+        d,settings=sample('p_s_correction');hidden=audit(SOURCE,d,dict(settings)|{'SHOWGRAND':0})
+        self.assertFalse(outline(hidden,'COLORCYAN'));self.assertEqual(outline(hidden),outline(r))
+    def test_no_h1_still_shows_whole_owned_swing_without_fabricated_multiple(self):
+        _,r,t=scene('p_no_h1');g=t['groups'][1]
+        self.assertEqual(points(r),[15316,12999]);self.assertIsNone(g['H1'])
+        self.assertIn('H1 ?',{l['text']for l in r['labels']})
+    def test_reversal_k_observations_remain_on_completed_p(self):
+        _,r,t=scene('p_white');p=t['groups'][1]['owner']
+        obs=[l for l in r['labels']if ' RV'in l['text']and p['start_index']<=l['x']<=p['end_index']+3]
+        self.assertTrue(obs)
+        self.assertTrue(all(l['function']=='KTEXT'for l in obs))
+    def test_reflected_prices_preserve_wave_times_and_percentages(self):
+        _,down,t1=scene('p_white');_,up,t2=scene('p_white_up')
+        self.assertEqual([(l['start'][0],l['end'][0])for l in outline(down)],[(l['start'][0],l['end'][0])for l in outline(up)])
+        np.testing.assert_allclose(points(down),[600-p for p in points(up)])
+        np.testing.assert_allclose([q['retracement_percent']for q in t1['groups'][1]['Q']],[q['retracement_percent']for q in t2['groups'][1]['Q']])
+    def test_flat_short_and_negative_inputs_do_not_fabricate_visible_points(self):
+        for n,price in ((1,0),(10,-100),(41,0),(80,-50)):
+            d={k:np.full(n,price)for k in ('O','H','L','C')};r=audit(SOURCE,d)
+            self.assertTrue(all(np.isfinite(l['y'])for l in r['labels']))
+            self.assertFalse(outline(r));self.assertFalse(outline(r,'COLORCYAN'))
+            self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
+    def test_existing_english_interval_classification_is_not_duplicated(self):
+        _,r,_=scene('p_whole');codes=[l for l in r['labels']if l['text']=='7 DIA']
+        self.assertEqual(len(codes),1)
+        self.assertFalse(any(any('\u4e00'<=c<='\u9fff'for c in l['text'])for l in r['labels']))
 if __name__=='__main__':unittest.main()

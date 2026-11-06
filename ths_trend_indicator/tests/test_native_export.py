@@ -91,7 +91,7 @@ class NativeExportTests(unittest.TestCase):
                   '调整A·收盘确认':'A OK','关键位·鬼门关':'KEY RV01',
                   '转折观察·魂断蓝桥':'OBS RV05','1.618H1候选':'1.618H1?'}
         for original,label in examples.items():self.assertEqual(ascii_label(original),label)
-        required={'5','(5)','S5','E1.Q1','E2.4 RET%','LEG END?','KEY','OBS RV05','1.618H1?'}
+        required={'M1','P1','S1',' H1','5 EQ','7 X','P RV05','1.618H1?','ABC STR'}
         self.assertTrue(required.issubset(set(self.profile['labels'].values())))
         self.assertTrue(all(text.isascii()for text in self.profile['labels'].values()))
         with self.assertRaises(FormulaError):ascii_label('未审核的新标注')

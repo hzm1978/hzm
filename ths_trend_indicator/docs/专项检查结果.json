@@ -1,6 +1,11 @@
 {
-  "release": "1.1.4",
-  "status": "superseded_by_complete_suite",
-  "evidence": "本地检查结果.json",
-  "previous_release_report": "../diagnostics/history/v1_1_3_专项检查结果.json"
+  "release": "1.2.0",
+  "status": "covered_by_full_suite",
+  "tests": [
+    "tests/test_complete_p.py",
+    "tests/test_install_layers.py",
+    "tests/test_native_export.py"
+  ],
+  "authoritative_report": "本地检查结果.json",
+  "historical_v1_1_4": "../diagnostics/history/v1_1_4_专项检查结果.json"
 }

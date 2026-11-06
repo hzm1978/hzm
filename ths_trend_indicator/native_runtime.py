@@ -32,7 +32,7 @@ class ArithmeticParser(NativeParser):
         started=time.perf_counter();handle=self.lib.create_instance()
         size=C.c_uint32(0)
         try:
-            encoded=source.encode('ascii')
+            encoded=source.encode('utf-8')
             buffers=[C.create_string_buffer(v)for v in (encoded,b'',b'')]
             pointer=self.lib.get_pre_parse_res(handle,*buffers,len(encoded),0,0,C.byref(size))
             parsed=json.loads(self.take(pointer,size.value))

@@ -123,26 +123,29 @@ def load_primary():
 
 
 def write_legend(profile):
-    rows=['# ASCII图例中文对照\n',
-          '黄线1、2…是主级Q结构解释；浅蓝P是整段连续走势；青色回调S只在可选EWT04中显示。E1./E2.为较早第1/2段完整主浪的子结构。Q为区间根数，RET%为相对前一推进腿的回调比例。',
-          'RV为形态编号；B/S区分对应的看涨/看跌几何。OBS是转折观察，KEY还要求标准大小与关键位置。',
-          '文字改为ASCII用于兼容客户端保存过滤，数浪、价格和确认条件保持不变。\n',
-          '| 图上文字 | 中文含义 |','|---|---|']
-    for original,translated in sorted(profile['labels'].items(),key=lambda item:(item[1],item[0])):
-        if original!=translated:rows.append('| '+translated+' | '+original+' |')
-    rows += ['| P START / P END | P实际起点 / 已观察末端及价格 |',
-             '| P TIP? | 尚在变化的P末端，不是已确认终点 |',
-             '| P LEN | P起止之间的K线跨度，起始根不计 |',
-             '| P Q + 数字 | Q实际跨度；首个用收盘越过、以后允许影线 |',
-             '| RET% + 数字 | 调整幅度除以前一推进腿幅度，可超过100% |',
-             '| P AD + 数字 | 调整形态候选，编号见下表 |',
-             '| P上的浅蓝1、2… | 按突破/调整结束选出的顺序腿号，不单凭数量认定书中5/7浪成立 |',
-             '| P DETAIL LIMIT | 超过5组详细Q或BOOKBARS；轮廓继续、细节受限 |']
-    rows+=['\n| 标题字段 | 中文含义 |','|---|---|']
-    rows.extend('| '+translated+' | '+original+' |'for original,translated in profile['outputs'].items())
-    rows+=['\nKEY单独表示标准大小与关键位置；同根OBS RV名称给出具体K线形态。LEG END?为完整子结构的段末观察，数字是已观察端价。',
-           '\n历史调整的AD编号是候选形态，开始价、结束价、时间归属须匹配该Q；ADJ?表示证据不足。',
-           '\n| AD编号 | 中文含义 |','|---|---|']
+    from candle_patterns import PATTERNS
     from book_corrections import ADJUSTMENT_TYPES
-    rows.extend('| '+str(code)+' | '+name+' |'for code,name in ADJUSTMENT_TYPES.items())
+    rows=['# 图例与英文代码',
+          '', 'M为最新主级结构，P为其中最后一个主浪的次级结构，S仅为当前最后回调。',
+          '白线为实际Q区间跨度；Q数字不计起始根。RET%相对于同级前一推进腿。',
+          '主浪端点旁的数值单位H1，是已观察推进高度除以本组第一推进高度，保留三位小数。价格尺端点另标真实价格。',
+          '', '| 英文标注 | 含义 |','|---|---|',
+          '| M1、P1、S1… | 经Q归属与合并后的同级浪号，?表示尚未确认完成 |',
+          '| 5 EQ | 两个同级Q耦合的5浪 |',
+          '| 7 EXP / CON / DIA / X | 扩张 / 收缩 / 钻石 / X形7浪 |',
+          '| 5 EXP:Q3? / 5 CON:Q3? | 两Q扩张/收缩，等待第三Q；尚不判7浪 |',
+          '| Q EXTENSION? | 搜索或候选数量受限，或存在待归属Q，不能视为完整已确认结构 |',
+          '| H1 ? / H1 BASIS? | 同级第一Q或H1依据不足，不编造端点倍数/目标 |',
+          '| 1.208H1?、1.618H1?等 | 尚未触及的未来候选止盈位，与实际端点倍数区分 |',
+          '| A SIMPLE / COMPLEX? / ADJ? | 简单调整 / 多转折证据但组合未定 / 证据不足 |',
+          '| ABC / ABC CON / ABC STR | 标准 / 收缩 / 强势abc |',
+          '| TRI CON / TRI EXP | 收缩 / 扩张三角形，实际末点e |',
+          '| ABCDE TREND / FLAT / IRREG | 趋势 / 横向 / 不规则abcde |',
+          '| M/P/S RV01…13 | 归属于该层转折附近、完成根上的K线形态观察 |',
+          '', '同一个区间已有英文分类时不追加重复的中文分类。紫红色字母a…e用于该区间内部调整。',
+          '', '| RV代码 | K线形态 |','|---|---|']
+    rows.extend('| RV'+str(k).zfill(2)+' | '+v+' |'for k,v in PATTERNS.items())
+    rows+=['', 'RV是形态观察，不等于未来转折必然成立；有多种形态时按规则优先显示一个，未识别到不硬标。',
+           '', '| 标题字段 | 中文含义 |','|---|---|']
+    rows.extend('| '+v+' | '+k+' |'for k,v in profile['outputs'].items())
     (ROOT/'docs'/'ASCII图例对照.md').write_text('\n'.join(rows)+'\n',encoding='utf-8')

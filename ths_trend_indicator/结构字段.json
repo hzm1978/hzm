@@ -1,517 +1,384 @@
-[
-  {
-    "key": "MW",
-    "on": "MWON",
-    "length": "MWLEN",
-    "direction": "MWDIR",
-    "p": [
-      "MWP0",
-      "MWMP1",
-      "MWMP2",
-      "MWMP3",
-      "MWP4",
-      "MWP5",
-      "MWP6",
-      "MWP7"
-    ],
-    "a": [
-      "MWA0",
-      "MWMA1",
-      "MWMA2",
-      "MWMA3",
-      "MWA4",
-      "MWA5",
-      "MWA6",
-      "MWA7"
-    ],
-    "qs": [
+{
+  "M": {
+    "key": "MQ",
+    "scope": {
+      "first": "HXMFIRST",
+      "start": "HXMSTART",
+      "last": "HXPLAST",
+      "end": "HXPEND",
+      "direction": "HXPDIR",
+      "on": "HXMON"
+    },
+    "raw": [
       {
-        "clock": "MWMERGEDQCLOCK",
-        "wa": "MWMERGEDQWA",
-        "ca": "MWMERGEDQCA",
-        "wn": "MWMERGEDQWN",
-        "cn": "MWMERGEDQCN",
-        "ok": "MWMERGEDQOK",
-        "cok": "MWMERGEDQCOK",
-        "hidden": "MWMERGEDQHIDDEN",
-        "root": "MWMERGEDQROOT",
-        "counter": "MWMERGEDQCOUNTER",
-        "counter_age": "MWMERGEDQCOUNTER_AGE"
+        "a": "MQR0SAFEA",
+        "t": "MQR0SAFET",
+        "w": "MQR0WA",
+        "c": "MQR0CA"
       },
       {
-        "clock": "MWQ1CLOCK",
-        "wa": "MWQ1WA",
-        "ca": "MWQ1CA",
-        "wn": "MWQ1WN",
-        "cn": "MWQ1CN",
-        "ok": "MWQ1OK",
-        "cok": "MWQ1COK",
-        "hidden": "MWQ1HIDDEN",
-        "root": "MWP4",
-        "counter": "MWP3",
-        "counter_age": "MWA3"
+        "a": "MQR1SAFEA",
+        "t": "MQR1SAFET",
+        "w": "MQR1WA",
+        "c": "MQR1CA"
       },
       {
-        "clock": "MWQ2CLOCK",
-        "wa": "MWQ2WA",
-        "ca": "MWQ2CA",
-        "wn": "MWQ2WN",
-        "cn": "MWQ2CN",
-        "ok": "MWQ2OK",
-        "cok": "MWQ2COK",
-        "hidden": "MWQ2HIDDEN",
-        "root": "MWP6",
-        "counter": "MWP5",
-        "counter_age": "MWA5"
+        "a": "MQR2SAFEA",
+        "t": "MQR2SAFET",
+        "w": "MQR2WA",
+        "c": "MQR2CA"
       }
     ],
-    "h1": "MWPROJH",
-    "run": "MWRUN",
-    "pending": "MWPENDING",
-    "proof": "MWPROOF"
+    "q": [
+      {
+        "r": "MQF1S0R",
+        "a": "MQF1S0A",
+        "p": "MQF1S0P",
+        "t": "MQF1S0T",
+        "w": "MQF1S0W",
+        "c": "MQF1S0C",
+        "wh": "MQF1S0WH",
+        "ch": "MQF1S0CH",
+        "v": "MQF1S0V",
+        "shape": {
+          "p": "MQF1S0P",
+          "t": "MQF1S0T",
+          "code": "MQF1S0ACODE",
+          "snap": "MQF1S0ASNAP",
+          "source": "MQF1S0ASOURCE",
+          "length": "MQF1S0ALEN"
+        },
+        "n": "MQQ0N",
+        "boundary": "MQQ0BOUND",
+        "show": "MQQ0SHOW"
+      },
+      {
+        "r": "MQF1S1R",
+        "a": "MQF1S1A",
+        "p": "MQF1S1P",
+        "t": "MQF1S1T",
+        "w": "MQF1S1W",
+        "c": "MQF1S1C",
+        "wh": "MQF1S1WH",
+        "ch": "MQF1S1CH",
+        "v": "MQF1S1V",
+        "shape": {
+          "p": "MQF1S1P",
+          "t": "MQF1S1T",
+          "code": "MQF1S1ACODE",
+          "snap": "MQF1S1ASNAP",
+          "source": "MQF1S1ASOURCE",
+          "length": "MQF1S1ALEN"
+        },
+        "n": "MQQ1N",
+        "boundary": "MQQ1BOUND",
+        "show": "MQQ1SHOW"
+      },
+      {
+        "r": "MQF1S2R",
+        "a": "MQF1S2A",
+        "p": "MQF1S2P",
+        "t": "MQF1S2T",
+        "w": "MQF1S2W",
+        "c": "MQF1S2C",
+        "wh": "MQF1S2WH",
+        "ch": "MQF1S2CH",
+        "v": "MQF1S2V",
+        "shape": {
+          "p": "MQF1S2P",
+          "t": "MQF1S2T",
+          "code": "MQF1S2ACODE",
+          "snap": "MQF1S2ASNAP",
+          "source": "MQF1S2ASOURCE",
+          "length": "MQF1S2ALEN"
+        },
+        "n": "MQQ2N",
+        "boundary": "MQQ2BOUND",
+        "show": "MQQ2SHOW"
+      }
+    ],
+    "count": "MQF1COUNT",
+    "h1": "MQH1",
+    "proof": "MQPROOF",
+    "kind": "MQTYPE",
+    "ambiguous": "MQT2AMB",
+    "limited": "MQLIMIT",
+    "base": "MQBASE",
+    "base_age": "MQBASEAGE",
+    "rel1": "MQREL1",
+    "rel2": "MQREL2"
   },
-  {
-    "key": "SW",
-    "on": "SWON",
-    "length": "SWLEN",
-    "direction": "SWDIR",
-    "p": [
-      "SWP0",
-      "SWMP1",
-      "SWMP2",
-      "SWMP3",
-      "SWP4",
-      "SWP5",
-      "SWP6",
-      "SWP7"
-    ],
-    "a": [
-      "SWFIRSTA0",
-      "SWMA1",
-      "SWMA2",
-      "SWMA3",
-      "SWFIRSTA4",
-      "SWFIRSTA5",
-      "SWFIRSTA6",
-      "SWA7"
-    ],
-    "qs": [
+  "P": {
+    "key": "PQ",
+    "scope": {
+      "first": "PQOWNERFIRST",
+      "start": "PQOWNERSTART",
+      "last": "HXPLAST",
+      "end": "HXPEND",
+      "direction": "HXPDIR",
+      "on": "PQENABLED"
+    },
+    "raw": [
       {
-        "clock": "SWMERGEDQCLOCK",
-        "wa": "SWMERGEDQWA",
-        "ca": "SWMERGEDQCA",
-        "wn": "SWMERGEDQWN",
-        "cn": "SWMERGEDQCN",
-        "ok": "SWMERGEDQOK",
-        "cok": "SWMERGEDQCOK",
-        "hidden": "SWMERGEDQHIDDEN",
-        "root": "SWMERGEDQROOT",
-        "counter": "SWMERGEDQCOUNTER",
-        "counter_age": "SWMERGEDQCOUNTER_AGE"
+        "a": "PQR0SAFEA",
+        "t": "PQR0SAFET",
+        "w": "PQR0WA",
+        "c": "PQR0CA"
       },
       {
-        "clock": "SWQ1CLOCK",
-        "wa": "SWQ1WA",
-        "ca": "SWQ1CA",
-        "wn": "SWQ1WN",
-        "cn": "SWQ1CN",
-        "ok": "SWQ1OK",
-        "cok": "SWQ1COK",
-        "hidden": "SWQ1HIDDEN",
-        "root": "SWP4",
-        "counter": "SWP3",
-        "counter_age": "SWFIRSTA3"
+        "a": "PQR1SAFEA",
+        "t": "PQR1SAFET",
+        "w": "PQR1WA",
+        "c": "PQR1CA"
       },
       {
-        "clock": "SWQ2CLOCK",
-        "wa": "SWQ2WA",
-        "ca": "SWQ2CA",
-        "wn": "SWQ2WN",
-        "cn": "SWQ2CN",
-        "ok": "SWQ2OK",
-        "cok": "SWQ2COK",
-        "hidden": "SWQ2HIDDEN",
-        "root": "SWP6",
-        "counter": "SWP5",
-        "counter_age": "SWFIRSTA5"
+        "a": "PQR2SAFEA",
+        "t": "PQR2SAFET",
+        "w": "PQR2WA",
+        "c": "PQR2CA"
+      },
+      {
+        "a": "PQR3SAFEA",
+        "t": "PQR3SAFET",
+        "w": "PQR3WA",
+        "c": "PQR3CA"
+      },
+      {
+        "a": "PQR4SAFEA",
+        "t": "PQR4SAFET",
+        "w": "PQR4WA",
+        "c": "PQR4CA"
       }
     ],
-    "h1": "SWPROJH",
-    "run": "SWRUN",
-    "pending": "SWPENDING",
-    "proof": "SWPROOF"
+    "q": [
+      {
+        "r": "PQF1S0R",
+        "a": "PQF1S0A",
+        "p": "PQF1S0P",
+        "t": "PQF1S0T",
+        "w": "PQF1S0W",
+        "c": "PQF1S0C",
+        "wh": "PQF1S0WH",
+        "ch": "PQF1S0CH",
+        "v": "PQF1S0V",
+        "shape": {
+          "p": "PQF1S0P",
+          "t": "PQF1S0T",
+          "code": "PQF1S0ACODE",
+          "snap": "PQF1S0ASNAP",
+          "source": "PQF1S0ASOURCE",
+          "length": "PQF1S0ALEN"
+        },
+        "n": "PQQ0N",
+        "boundary": "PQQ0BOUND",
+        "show": "PQQ0SHOW"
+      },
+      {
+        "r": "PQF1S1R",
+        "a": "PQF1S1A",
+        "p": "PQF1S1P",
+        "t": "PQF1S1T",
+        "w": "PQF1S1W",
+        "c": "PQF1S1C",
+        "wh": "PQF1S1WH",
+        "ch": "PQF1S1CH",
+        "v": "PQF1S1V",
+        "shape": {
+          "p": "PQF1S1P",
+          "t": "PQF1S1T",
+          "code": "PQF1S1ACODE",
+          "snap": "PQF1S1ASNAP",
+          "source": "PQF1S1ASOURCE",
+          "length": "PQF1S1ALEN"
+        },
+        "n": "PQQ1N",
+        "boundary": "PQQ1BOUND",
+        "show": "PQQ1SHOW"
+      },
+      {
+        "r": "PQF1S2R",
+        "a": "PQF1S2A",
+        "p": "PQF1S2P",
+        "t": "PQF1S2T",
+        "w": "PQF1S2W",
+        "c": "PQF1S2C",
+        "wh": "PQF1S2WH",
+        "ch": "PQF1S2CH",
+        "v": "PQF1S2V",
+        "shape": {
+          "p": "PQF1S2P",
+          "t": "PQF1S2T",
+          "code": "PQF1S2ACODE",
+          "snap": "PQF1S2ASNAP",
+          "source": "PQF1S2ASOURCE",
+          "length": "PQF1S2ALEN"
+        },
+        "n": "PQQ2N",
+        "boundary": "PQQ2BOUND",
+        "show": "PQQ2SHOW"
+      }
+    ],
+    "count": "PQF1COUNT",
+    "h1": "PQH1",
+    "proof": "PQPROOF",
+    "kind": "PQTYPE",
+    "ambiguous": "PQT4AMB",
+    "limited": "PQLIMIT",
+    "base": "PQBASE",
+    "base_age": "PQBASEAGE",
+    "rel1": "PQREL1",
+    "rel2": "PQREL2"
   },
-  {
-    "key": "PW",
-    "on": "PWON",
-    "length": "PWLEN",
-    "direction": "PWDIR",
-    "p": [
-      "PWP0",
-      "PWMP1",
-      "PWMP2",
-      "PWMP3",
-      "PWP4",
-      "PWP5",
-      "PWP6",
-      "PWP7"
-    ],
-    "a": [
-      "PWFIRSTA0",
-      "PWMA1",
-      "PWMA2",
-      "PWMA3",
-      "PWFIRSTA4",
-      "PWFIRSTA5",
-      "PWFIRSTA6",
-      "PWA7"
-    ],
-    "qs": [
+  "S": {
+    "key": "SQ",
+    "scope": {
+      "first": "SQOWNERFIRST",
+      "start": "SQOWNERSTART",
+      "last": "SQOWNERLAST",
+      "end": "SQOWNEREND",
+      "direction": "SQOWNERDIR",
+      "on": "SQOWNERON"
+    },
+    "raw": [
       {
-        "clock": "PWMERGEDQCLOCK",
-        "wa": "PWMERGEDQWA",
-        "ca": "PWMERGEDQCA",
-        "wn": "PWMERGEDQWN",
-        "cn": "PWMERGEDQCN",
-        "ok": "PWMERGEDQOK",
-        "cok": "PWMERGEDQCOK",
-        "hidden": "PWMERGEDQHIDDEN",
-        "root": "PWMERGEDQROOT",
-        "counter": "PWMERGEDQCOUNTER",
-        "counter_age": "PWMERGEDQCOUNTER_AGE"
+        "a": "SQR0SAFEA",
+        "t": "SQR0SAFET",
+        "w": "SQR0WA",
+        "c": "SQR0CA"
       },
       {
-        "clock": "PWQ1CLOCK",
-        "wa": "PWQ1WA",
-        "ca": "PWQ1CA",
-        "wn": "PWQ1WN",
-        "cn": "PWQ1CN",
-        "ok": "PWQ1OK",
-        "cok": "PWQ1COK",
-        "hidden": "PWQ1HIDDEN",
-        "root": "PWP4",
-        "counter": "PWP3",
-        "counter_age": "PWFIRSTA3"
+        "a": "SQR1SAFEA",
+        "t": "SQR1SAFET",
+        "w": "SQR1WA",
+        "c": "SQR1CA"
       },
       {
-        "clock": "PWQ2CLOCK",
-        "wa": "PWQ2WA",
-        "ca": "PWQ2CA",
-        "wn": "PWQ2WN",
-        "cn": "PWQ2CN",
-        "ok": "PWQ2OK",
-        "cok": "PWQ2COK",
-        "hidden": "PWQ2HIDDEN",
-        "root": "PWP6",
-        "counter": "PWP5",
-        "counter_age": "PWFIRSTA5"
+        "a": "SQR2SAFEA",
+        "t": "SQR2SAFET",
+        "w": "SQR2WA",
+        "c": "SQR2CA"
       }
     ],
-    "h1": "PWPROJH",
-    "run": "PWRUN",
-    "pending": "PWPENDING",
-    "proof": "PWPROOF"
+    "q": [
+      {
+        "r": "SQF1S0R",
+        "a": "SQF1S0A",
+        "p": "SQF1S0P",
+        "t": "SQF1S0T",
+        "w": "SQF1S0W",
+        "c": "SQF1S0C",
+        "wh": "SQF1S0WH",
+        "ch": "SQF1S0CH",
+        "v": "SQF1S0V",
+        "shape": {
+          "p": "SQF1S0P",
+          "t": "SQF1S0T",
+          "code": "SQF1S0ACODE",
+          "snap": "SQF1S0ASNAP",
+          "source": "SQF1S0ASOURCE",
+          "length": "SQF1S0ALEN"
+        },
+        "n": "SQQ0N",
+        "boundary": "SQQ0BOUND",
+        "show": "SQQ0SHOW"
+      },
+      {
+        "r": "SQF1S1R",
+        "a": "SQF1S1A",
+        "p": "SQF1S1P",
+        "t": "SQF1S1T",
+        "w": "SQF1S1W",
+        "c": "SQF1S1C",
+        "wh": "SQF1S1WH",
+        "ch": "SQF1S1CH",
+        "v": "SQF1S1V",
+        "shape": {
+          "p": "SQF1S1P",
+          "t": "SQF1S1T",
+          "code": "SQF1S1ACODE",
+          "snap": "SQF1S1ASNAP",
+          "source": "SQF1S1ASOURCE",
+          "length": "SQF1S1ALEN"
+        },
+        "n": "SQQ1N",
+        "boundary": "SQQ1BOUND",
+        "show": "SQQ1SHOW"
+      },
+      {
+        "r": "SQF1S2R",
+        "a": "SQF1S2A",
+        "p": "SQF1S2P",
+        "t": "SQF1S2T",
+        "w": "SQF1S2W",
+        "c": "SQF1S2C",
+        "wh": "SQF1S2WH",
+        "ch": "SQF1S2CH",
+        "v": "SQF1S2V",
+        "shape": {
+          "p": "SQF1S2P",
+          "t": "SQF1S2T",
+          "code": "SQF1S2ACODE",
+          "snap": "SQF1S2ASNAP",
+          "source": "SQF1S2ASOURCE",
+          "length": "SQF1S2ALEN"
+        },
+        "n": "SQQ2N",
+        "boundary": "SQQ2BOUND",
+        "show": "SQQ2SHOW"
+      }
+    ],
+    "count": "SQF1COUNT",
+    "h1": "SQH1",
+    "proof": "SQPROOF",
+    "kind": "SQTYPE",
+    "ambiguous": "SQT2AMB",
+    "limited": "SQLIMIT",
+    "base": "SQBASE",
+    "base_age": "SQBASEAGE",
+    "rel1": "SQREL1",
+    "rel2": "SQREL2"
   },
-  {
-    "key": "GW",
-    "on": "GWON",
-    "length": "GWLEN",
-    "direction": "GWDIR",
-    "p": [
-      "GWP0",
-      "GWMP1",
-      "GWMP2",
-      "GWMP3",
-      "GWP4",
-      "GWP5",
-      "GWP6",
-      "GWP7"
-    ],
-    "a": [
-      "GWFIRSTA0",
-      "GWMA1",
-      "GWMA2",
-      "GWMA3",
-      "GWFIRSTA4",
-      "GWFIRSTA5",
-      "GWFIRSTA6",
-      "GWA7"
-    ],
-    "qs": [
-      {
-        "clock": "GWMERGEDQCLOCK",
-        "wa": "GWMERGEDQWA",
-        "ca": "GWMERGEDQCA",
-        "wn": "GWMERGEDQWN",
-        "cn": "GWMERGEDQCN",
-        "ok": "GWMERGEDQOK",
-        "cok": "GWMERGEDQCOK",
-        "hidden": "GWMERGEDQHIDDEN",
-        "root": "GWMERGEDQROOT",
-        "counter": "GWMERGEDQCOUNTER",
-        "counter_age": "GWMERGEDQCOUNTER_AGE"
-      },
-      {
-        "clock": "GWQ1CLOCK",
-        "wa": "GWQ1WA",
-        "ca": "GWQ1CA",
-        "wn": "GWQ1WN",
-        "cn": "GWQ1CN",
-        "ok": "GWQ1OK",
-        "cok": "GWQ1COK",
-        "hidden": "GWQ1HIDDEN",
-        "root": "GWP4",
-        "counter": "GWP3",
-        "counter_age": "GWFIRSTA3"
-      },
-      {
-        "clock": "GWQ2CLOCK",
-        "wa": "GWQ2WA",
-        "ca": "GWQ2CA",
-        "wn": "GWQ2WN",
-        "cn": "GWQ2CN",
-        "ok": "GWQ2OK",
-        "cok": "GWQ2COK",
-        "hidden": "GWQ2HIDDEN",
-        "root": "GWP6",
-        "counter": "GWP5",
-        "counter_age": "GWFIRSTA5"
-      }
-    ],
-    "h1": "GWPROJH",
-    "run": "GWRUN",
-    "pending": "GWPENDING",
-    "proof": "GWPROOF"
+  "hierarchy": {
+    "P": {
+      "first": "PQOWNERFIRST",
+      "start": "PQOWNERSTART",
+      "last": "HXPLAST",
+      "end": "HXPEND",
+      "direction": "HXPDIR",
+      "on": "PQENABLED"
+    },
+    "M": {
+      "first": "HXMFIRST",
+      "start": "HXMSTART",
+      "last": "HXPLAST",
+      "end": "HXPEND",
+      "direction": "HXPDIR",
+      "on": "HXMON"
+    },
+    "prior": {
+      "price": "HXPRIORFULL1",
+      "age": "HXPRIORFULLAGE1",
+      "on": "HXPRIORHAS"
+    },
+    "phase": "HXPHASE",
+    "regime": "HXREGIME"
   },
-  {
-    "key": "E1",
-    "on": "E1ON",
-    "length": "E1LEN",
-    "direction": "E1DIR",
-    "p": [
-      "E1P0",
-      "E1MP1",
-      "E1MP2",
-      "E1MP3",
-      "E1P4",
-      "E1P5",
-      "E1P6",
-      "E1P7"
-    ],
-    "a": [
-      "E1FIRSTA0",
-      "E1MA1",
-      "E1MA2",
-      "E1MA3",
-      "E1FIRSTA4",
-      "E1FIRSTA5",
-      "E1FIRSTA6",
-      "E1A7"
-    ],
-    "qs": [
-      {
-        "clock": "E1MERGEDQCLOCK",
-        "wa": "E1MERGEDQWA",
-        "ca": "E1MERGEDQCA",
-        "wn": "E1MERGEDQWN",
-        "cn": "E1MERGEDQCN",
-        "ok": "E1MERGEDQOK",
-        "cok": "E1MERGEDQCOK",
-        "hidden": "E1MERGEDQHIDDEN",
-        "root": "E1MERGEDQROOT",
-        "counter": "E1MERGEDQCOUNTER",
-        "counter_age": "E1MERGEDQCOUNTER_AGE",
-        "snapshot_age": "E1MERGEDQSNAPSHOT_AGE",
-        "shape_code": "E1QSHAPE0"
-      },
-      {
-        "clock": "E1Q1CLOCK",
-        "wa": "E1Q1WA",
-        "ca": "E1Q1CA",
-        "wn": "E1Q1WN",
-        "cn": "E1Q1CN",
-        "ok": "E1Q1OK",
-        "cok": "E1Q1COK",
-        "hidden": "E1Q1HIDDEN",
-        "root": "E1P4",
-        "counter": "E1P3",
-        "counter_age": "E1FIRSTA3",
-        "snapshot_age": "E1QSNAP1",
-        "shape_code": "E1QSHAPE1"
-      },
-      {
-        "clock": "E1Q2CLOCK",
-        "wa": "E1Q2WA",
-        "ca": "E1Q2CA",
-        "wn": "E1Q2WN",
-        "cn": "E1Q2CN",
-        "ok": "E1Q2OK",
-        "cok": "E1Q2COK",
-        "hidden": "E1Q2HIDDEN",
-        "root": "E1P6",
-        "counter": "E1P5",
-        "counter_age": "E1FIRSTA5",
-        "snapshot_age": "E1QSNAP2",
-        "shape_code": "E1QSHAPE2"
-      }
-    ],
-    "h1": "E1PROJH",
-    "run": "E1RUN",
-    "pending": "E1PENDING",
-    "proof": "E1PROOF"
+  "plan": {
+    "ton": "IPTON",
+    "fon": "IPFON",
+    "h1": "IPH1",
+    "proof": "IPPROOF",
+    "direction": "HXPDIR",
+    "phase": "HXPHASE",
+    "ret": "IPRET"
   },
-  {
-    "key": "E2",
-    "on": "E2ON",
-    "length": "E2LEN",
-    "direction": "E2DIR",
-    "p": [
-      "E2P0",
-      "E2MP1",
-      "E2MP2",
-      "E2MP3",
-      "E2P4",
-      "E2P5",
-      "E2P6",
-      "E2P7"
-    ],
-    "a": [
-      "E2FIRSTA0",
-      "E2MA1",
-      "E2MA2",
-      "E2MA3",
-      "E2FIRSTA4",
-      "E2FIRSTA5",
-      "E2FIRSTA6",
-      "E2A7"
-    ],
-    "qs": [
-      {
-        "clock": "E2MERGEDQCLOCK",
-        "wa": "E2MERGEDQWA",
-        "ca": "E2MERGEDQCA",
-        "wn": "E2MERGEDQWN",
-        "cn": "E2MERGEDQCN",
-        "ok": "E2MERGEDQOK",
-        "cok": "E2MERGEDQCOK",
-        "hidden": "E2MERGEDQHIDDEN",
-        "root": "E2MERGEDQROOT",
-        "counter": "E2MERGEDQCOUNTER",
-        "counter_age": "E2MERGEDQCOUNTER_AGE",
-        "snapshot_age": "E2MERGEDQSNAPSHOT_AGE",
-        "shape_code": "E2QSHAPE0"
-      },
-      {
-        "clock": "E2Q1CLOCK",
-        "wa": "E2Q1WA",
-        "ca": "E2Q1CA",
-        "wn": "E2Q1WN",
-        "cn": "E2Q1CN",
-        "ok": "E2Q1OK",
-        "cok": "E2Q1COK",
-        "hidden": "E2Q1HIDDEN",
-        "root": "E2P4",
-        "counter": "E2P3",
-        "counter_age": "E2FIRSTA3",
-        "snapshot_age": "E2QSNAP1",
-        "shape_code": "E2QSHAPE1"
-      },
-      {
-        "clock": "E2Q2CLOCK",
-        "wa": "E2Q2WA",
-        "ca": "E2Q2CA",
-        "wn": "E2Q2WN",
-        "cn": "E2Q2CN",
-        "ok": "E2Q2OK",
-        "cok": "E2Q2COK",
-        "hidden": "E2Q2HIDDEN",
-        "root": "E2P6",
-        "counter": "E2P5",
-        "counter_age": "E2FIRSTA5",
-        "snapshot_age": "E2QSNAP2",
-        "shape_code": "E2QSHAPE2"
-      }
-    ],
-    "h1": "E2PROJH",
-    "run": "E2RUN",
-    "pending": "E2PENDING",
-    "proof": "E2PROOF"
-  },
-  {
-    "key": "E3",
-    "on": "E3ON",
-    "length": "E3LEN",
-    "direction": "E3DIR",
-    "p": [
-      "E3P0",
-      "E3MP1",
-      "E3MP2",
-      "E3MP3",
-      "E3P4",
-      "E3P5",
-      "E3P6",
-      "E3P7"
-    ],
-    "a": [
-      "E3FIRSTA0",
-      "E3MA1",
-      "E3MA2",
-      "E3MA3",
-      "E3FIRSTA4",
-      "E3FIRSTA5",
-      "E3FIRSTA6",
-      "E3A7"
-    ],
-    "qs": [
-      {
-        "clock": "E3MERGEDQCLOCK",
-        "wa": "E3MERGEDQWA",
-        "ca": "E3MERGEDQCA",
-        "wn": "E3MERGEDQWN",
-        "cn": "E3MERGEDQCN",
-        "ok": "E3MERGEDQOK",
-        "cok": "E3MERGEDQCOK",
-        "hidden": "E3MERGEDQHIDDEN",
-        "root": "E3MERGEDQROOT",
-        "counter": "E3MERGEDQCOUNTER",
-        "counter_age": "E3MERGEDQCOUNTER_AGE",
-        "snapshot_age": "E3MERGEDQSNAPSHOT_AGE",
-        "shape_code": "E3QSHAPE0"
-      },
-      {
-        "clock": "E3Q1CLOCK",
-        "wa": "E3Q1WA",
-        "ca": "E3Q1CA",
-        "wn": "E3Q1WN",
-        "cn": "E3Q1CN",
-        "ok": "E3Q1OK",
-        "cok": "E3Q1COK",
-        "hidden": "E3Q1HIDDEN",
-        "root": "E3P4",
-        "counter": "E3P3",
-        "counter_age": "E3FIRSTA3",
-        "snapshot_age": "E3QSNAP1",
-        "shape_code": "E3QSHAPE1"
-      },
-      {
-        "clock": "E3Q2CLOCK",
-        "wa": "E3Q2WA",
-        "ca": "E3Q2CA",
-        "wn": "E3Q2WN",
-        "cn": "E3Q2CN",
-        "ok": "E3Q2OK",
-        "cok": "E3Q2COK",
-        "hidden": "E3Q2HIDDEN",
-        "root": "E3P6",
-        "counter": "E3P5",
-        "counter_age": "E3FIRSTA5",
-        "snapshot_age": "E3QSNAP2",
-        "shape_code": "E3QSHAPE2"
-      }
-    ],
-    "h1": "E3PROJH",
-    "run": "E3RUN",
-    "pending": "E3PENDING",
-    "proof": "E3PROOF"
+  "last_adjustment": {
+    "p": "SOADENDP",
+    "t": "SOADENDA",
+    "has": "SOADEXTAHAS",
+    "code": "SOADCODE",
+    "snap": "SOADSNAP",
+    "source": "SOADSOURCE",
+    "length": "SOADLEN"
   }
-]
+}

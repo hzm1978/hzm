@@ -16,6 +16,7 @@ from compatibility import variable_names,render,SETTINGS
 from export_native import OUTPUTS,ascii_label
 
 MAX_INSTALL_BYTES=79500
+MAX_INSTALL_CHARACTERS=MAX_INSTALL_BYTES
 FIXED_DISPLAY={'SHOWBOOK':1.,'DETAIL':0.}
 
 
@@ -81,11 +82,27 @@ def short_names(statements):
     alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ';tail=alphabet+'0123456789'
     def candidates():
         yield from alphabet
-        for a in alphabet:
-            for b in tail:yield a+b
-        for a in alphabet:
-            for b in tail:
-                for c in tail:yield a+b+c
+        # The client's saving rule counts Unicode characters. One-letter
+        # private identifiers avoid splitting a coherent level across files.
+        # Settings, functions, output names and visible labels stay ASCII.
+        seen=set()
+        def native_key(char):
+            # The legacy DLL folds source bytes using the Windows ANSI
+            # upper-case table. UTF-8 continuation 9A/9C/9E can therefore
+            # collide with 8A/8C/8E. Keep only one spelling per native key.
+            parts=[]
+            for byte in char.encode('utf8'):
+                try:parts.append(bytes([byte]).decode('cp1252').upper().encode('cp1252'))
+                except UnicodeError:parts.append(bytes([byte]))
+            return b''.join(parts)
+        for codepoint in range(0x4E00,0x9FA6):
+            char=chr(codepoint)
+            try:encoded=char.encode('gb2312')
+            except UnicodeEncodeError:continue
+            if len(encoded)==2 and min(encoded)>=0xA1 and char not in '买卖开平':
+                key=native_key(char)
+                if key not in seen:
+                    seen.add(key);yield char
     available=(name for name in candidates()if name not in reserved)
     frequency=Counter(n[1]for s in statements for n in walk(s.expression)if n[0]=='identifier')
     private=[s.name for s in statements if s.name and s.name not in protected]
@@ -154,10 +171,20 @@ def typed_model(raw):
         if fn=='REF':
             bound=('binary','-',ident('BC'),('number',1.))
             window=out[1]
-            # Some templates already explicitly clamp to BC-1.
-            if window[0:2]==('call','MIN')and bound in window[2]:
-                remaining=[v for v in window[2]if v!=bound]
-                window=remaining[0]if remaining else bound
+            total_bound=('binary','-',ident('DATACOUNT'),('number',1.))
+            # BARPOS <= DATACOUNT on every bar. The outer history clamp
+            # already enforces both upper bounds, even inside MAX(0,...).
+            # Removing the redundant total-history clamp preserves invalid
+            # and negative windows, while avoiding hundreds of duplicates.
+            def strip_clamp(value):
+                if value[0:2]==('call','MIN'):
+                    remaining=[v for v in value[2]if v not in (bound,total_bound)]
+                    if len(remaining)==1:return strip_clamp(remaining[0])
+                if value[0:2]==('call','MAX')and ('number',0.)in value[2]:
+                    remaining=[v for v in value[2]if v!=('number',0.)]
+                    if len(remaining)==1:return strip_clamp(remaining[0])
+                return value
+            window=strip_clamp(window)
             out[1]=('call','MIN',[bound,('call','MAX',[('number',0.),window])])
         return ('call',fn,out)
     statements=[]
@@ -240,7 +267,18 @@ def typed_model(raw):
 
 
 def emit(statement):
-    expression=render(statement.expression)
+    def compact(node,parent=0,right=False):
+        if node[0]=='binary':
+            precedence={'OR':1,'AND':2,'=':3,'<>':3,'<':3,'>':3,'<=':3,'>=':3,
+                        '+':4,'-':4,'*':5,'/':5}[node[1]]
+            op={'AND':'&&','OR':'||'}.get(node[1],node[1])
+            value=compact(node[2],precedence)+op+compact(node[3],precedence,True)
+            return '('+value+')'if precedence<parent or (right and precedence==parent)else value
+        if node[0]=='call':return node[1]+'('+','.join(compact(a)for a in node[2])+')'
+        if node[0]=='unary':
+            return render(node)
+        return render(node)
+    expression=compact(statement.expression)
     # Native 5.4 pre-parses AA:=(0-1) but calculates AA as NULL, whereas
     # AA:=0-1 produces -1. Keep grouping in arguments/comparisons, and
     # remove this redundant wrapper only for a complete assignment RHS.
@@ -249,9 +287,100 @@ def emit(statement):
     return ((statement.name+(':'if statement.output else':='))if statement.name else'')+expression+(','+','.join(statement.styles)if statement.styles else'')+';'
 
 
+def deduplicate(statements,boundary):
+    """Share identical immutable calculation columns, preserving every root.
+
+    Never inline a history function or move it through a last-bar guard.
+    Only replace references to an earlier, byte-identical expression in the
+    same analysis/drawing phase. Editable settings and outputs stay named.
+    """
+    aliases={};seen={};result=[]
+    def rewrite(node):
+        if node[0]=='identifier':return aliases.get(node[1],node)
+        if node[0]=='call':return ('call',node[1],[rewrite(a)for a in node[2]])
+        if node[0]=='binary':return ('binary',node[1],rewrite(node[2]),rewrite(node[3]))
+        if node[0]=='unary':return ('unary',node[1],rewrite(node[2]))
+        return node
+    for s in statements:
+        expression=rewrite(s.expression)
+        if s.name and not s.output and s.name not in SETTINGS:
+            key=(s.line<=boundary,render(expression))
+            target=(expression if expression[0]=='identifier'and expression[1]not in PREDEFINED_TYPES else seen.get(key))
+            if target is not None:
+                aliases[s.name]=target
+                continue
+            seen[key]=('identifier',s.name)
+        result.append(Statement(s.name,expression,s.output,s.styles,s.line))
+    return result
+
+
+def compact_builtins(statements,boundary):
+    """Name repeated long built-ins once; no evaluation or phase changes."""
+    names={'DATACOUNT':'NATIVE_TOTAL','ISLASTBAR':'NATIVE_LAST'}
+    used={n[1]for s in statements for n in walk(s.expression)if n[0]=='identifier'}
+    names={k:v for k,v in names.items()if k in used}
+    def rewrite(node):
+        if node[0]=='identifier':return ('identifier',names.get(node[1],node[1]))
+        if node[0]=='call':return ('call',node[1],[rewrite(a)for a in node[2]])
+        if node[0]=='binary':return ('binary',node[1],rewrite(node[2]),rewrite(node[3]))
+        if node[0]=='unary':return ('unary',node[1],rewrite(node[2]))
+        return node
+    leading=[Statement(name,('identifier',builtin),False,(),boundary+1)for builtin,name in names.items()]
+    result=[];inserted=False
+    for s in statements:
+        if s.line>boundary and not inserted:
+            result.extend(leading);inserted=True
+        result.append(Statement(s.name,rewrite(s.expression)if s.line>boundary else s.expression,s.output,s.styles,s.line))
+    return result,names
+
+
+def share_elementwise(statements,boundary):
+    """Factor repeated pure elementwise expressions at their first use.
+
+    Stateful/windowed functions and selectors remain at their original
+    guard and phase. COUNT(cond,1) is a numeric cast of this bar only.
+    """
+    pure={'ABS','MAX','MIN','SIGN','INTPART','ISNULL'}
+    def safe(node):
+        if node[0]in ('number','identifier'):return True
+        if node[0]=='binary':return safe(node[2])and safe(node[3])
+        if node[0]=='unary':return safe(node[2])
+        if node[0]=='call':
+            allowed=node[1]in pure or (node[1]=='COUNT'and node[2][1]==('number',1.))
+            return allowed and all(safe(a)for a in node[2])
+        return False
+    counts=Counter((s.line<=boundary,render(n))for s in statements for n in walk(s.expression)
+                   if n[0]in ('binary','unary','call')and safe(n))
+    shared={};out=[];serial=0
+    def visit(node,phase,line,root=False):
+        nonlocal serial
+        if node[0]in ('number','identifier','string'):return node
+        key=(phase,render(node))
+        if key in shared:return ('identifier',shared[key])
+        if node[0]=='binary':value=('binary',node[1],visit(node[2],phase,line),visit(node[3],phase,line))
+        elif node[0]=='unary':value=('unary',node[1],visit(node[2],phase,line))
+        elif node[0]=='call':value=('call',node[1],[visit(a,phase,line)for a in node[2]])
+        else:return node
+        size=len(render(value));n=counts[key]
+        if not root and safe(node)and n>=2 and (n-1)*size-n-5>2:
+            serial+=1;name=f'PURE{serial}'
+            out.append(Statement(name,value,False,(),line));shared[key]=name
+            return ('identifier',name)
+        return value
+    for s in statements:
+        expression=visit(s.expression,s.line<=boundary,s.line,root=True)
+        out.append(Statement(s.name,expression,s.output,s.styles,s.line))
+        if s.name and s.name not in SETTINGS and not s.output and s.expression[0]not in ('number','identifier')and safe(s.expression):
+            shared.setdefault((s.line<=boundary,render(s.expression)),s.name)
+    return out
+
+
 def generate(raw,max_bytes=MAX_INSTALL_BYTES):
     statements,boundary=typed_model(raw)
     statements,omitted=specialize(statements)
+    statements=deduplicate(statements,boundary)
+    statements=share_elementwise(statements,boundary)
+    statements,builtin_aliases=compact_builtins(statements,boundary)
     definitions={s.name:i for i,s in enumerate(statements)if s.name}
     refs=[{definitions[n[1]]for n in walk(s.expression)if n[0]=='identifier'and n[1]in definitions}for s in statements]
     memo={}
@@ -264,31 +393,33 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
     parameters={i for i,s in enumerate(statements)if s.name in SETTINGS}
     roots=[i for i,s in enumerate(statements)if not s.name or s.output]
     owners={i+1:(re.search(r'\{ OWNER:([^}]+) \}',line).group(1)if '{ OWNER:'in line else'overview')for i,line in enumerate(raw.splitlines())}
-    bins=[{'title':'主浪、趋势拐点与反转形态','families':set(),'needed':set(parameters),'roots':[]},
-          {'title':'完整P浪、区间回调与价格尺','families':{'P_complete','prices'},'needed':set(parameters),'roots':[]},
-          {'title':'较早完整主浪、趋势线与拐点工具','families':{'E1','E2','tools'},'needed':set(parameters),'roots':[]},
-          {'title':'当前回调S结构（可选）','families':{'SC'},'needed':set(parameters),'roots':[]}]
+    bins=[{'title':'主级区间数浪、H1倍数及调整反转','families':{'new_M'},'needed':set(parameters),'roots':[]},
+          {'title':'完整P区间数浪、H1倍数与唯一价格尺','families':{'new_P','prices'},'needed':set(parameters),'roots':[]},
+          {'title':'仅最后一段S及其调整结构','families':{'new_S'},'needed':set(parameters),'roots':[]}]
     for i in roots:
         owner=owners[statements[i].line]
-        group=bins[1]if owner in ('P_complete','prices')else bins[3]if owner=='SC'else bins[2]if owner in ('E1','E2','tools','history','key_reversals')else bins[0]
+        if owner not in ('new_M','new_P','new_S','prices'):raise ValueError('obsolete/unowned drawing '+owner)
+        group=bins[1]if owner in ('new_P','prices')else bins[2]if owner=='new_S'else bins[0]
         group['roots'].append(i);group['needed'].update(closure(i));group['families'].add(owner)
     files={}
     for number,group in enumerate(bins,1):
         indices=sorted(group['needed'])
         selected,aliases=short_names([statements[i]for i in indices])
+        aliases={next((builtin for builtin,field in builtin_aliases.items()if field==key),key):value for key,value in aliases.items()}
         text='\n'.join(emit(s)for s in selected)+'\n'
         phase=sum(statements[i].line<=boundary for i in indices)
-        profile={'analysis_end_line':phase,'ascii_only':True,'bom':False,'comments':False,'encoding':'ascii','role':'install_layer',
-                 'root_ids':sorted(group['roots']),'parameter_names':sorted(SETTINGS-set(FIXED_DISPLAY)),'max_install_bytes':max_bytes,
-                 'title':group['title'],'families':sorted(group['families']),'optional':number==4,
+        profile={'analysis_end_line':phase,'ascii_only':False,'visible_labels_ascii_only':True,'bom':False,'comments':False,'encoding':'utf-8','role':'install_layer',
+                 'root_ids':sorted(group['roots']),'parameter_names':sorted(SETTINGS-set(FIXED_DISPLAY)),'max_install_characters':max_bytes,
+                 'title':group['title'],'families':sorted(group['families']),'optional':False,
                  'fixed_display_settings':FIXED_DISPLAY,'native_variable_aliases':aliases}
         check(text,analysis_end_line=phase)
-        data=text.replace('\n','\r\n').encode('ascii')
-        if len(data)>max_bytes:raise ValueError(f'{group["title"]} installation byte budget exceeded: {len(data)}')
-        files[f'EWT{number:02}.txt']=(data,profile|{'sha256':hashlib.sha256(data).hexdigest()})
+        data=text.encode('utf-8')
+        profile['line_ending']='LF'
+        if len(text)>max_bytes:raise ValueError(f'{group["title"]} installation character budget exceeded: {len(text)}')
+        files[f'EWT{number:02}.txt']=(data,profile|{'sha256':hashlib.sha256(data).hexdigest(),'characters':len(text),'bytes':len(data)})
     observed=Counter(i for group in bins for i in group['roots'])
     if observed!=Counter(roots):raise ValueError('a drawing was lost or duplicated')
     return files,{'drawing_roots':len(roots),'layers':len(files),'recommended_layers':3,'all_roots_exactly_once':True,
                   'compile_time_disabled_legacy_roots':omitted,'fixed_display_settings':FIXED_DISPLAY,
-                  'max_install_bytes':max_bytes,'observed_service_boundary':{'accepted_characters':80000,'rejected_characters':80001,'observed_date':'2026-11-05','documented_compiler_limit':False},
+                  'max_install_characters':max_bytes,'observed_service_boundary':{'accepted_characters':80000,'rejected_characters':80001,'observed_date':'2026-11-05','documented_compiler_limit':False},
                   'model':'typed IF; same settings and algorithms; dependency pruning only'}

@@ -26,7 +26,7 @@ def cases():
     for scenario in NAMES:
         data,settings=sample(scenario)
         for name in profile['install']:
-            source=(ROOT/'formulas'/name).read_text(encoding='ascii')
+            source=(ROOT/'formulas'/name).read_text(encoding=profile['files'][name]['encoding'])
             for key,value in (settings or {}).items():
                 # A complete negative parameter assignment must not wrap
                 # its entire RHS in parentheses (native NULL regression).
@@ -63,7 +63,7 @@ def compare(reports):
     comparisons=[]
     for name,case in expected.items():
         result=actual[name]
-        if result['source_sha256']!=hashlib.sha256(case['source'].encode('ascii')).hexdigest():
+        if result['source_sha256']!=hashlib.sha256(case['source'].encode('utf-8')).hexdigest():
             raise ValueError('native source mismatch '+name)
         payload=json.dumps(rows_from_ohlc(case['data']),allow_nan=False).encode('ascii')
         if result['input_rows_sha256']!=hashlib.sha256(payload).hexdigest():

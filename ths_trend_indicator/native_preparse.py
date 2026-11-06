@@ -93,6 +93,8 @@ class NativeParser:
 
 CONTROLS={
     'valid_assignment':('PN:=2;\nCHK:PN;',0,'passed'),
+    'valid_unicode_private':('甲:=MA(C,2);乙:=甲+1;CHK:乙;',0,'passed'),
+    'valid_compact_boolean':('AA:=COUNT(C>O&&H>=C||C=O,1);CHK:AA;',0,'passed'),
     'valid_ma':('CHK:MA(C,5);',0,'passed'),
     'valid_custom_color':('POLYLINE(C>O,C,COLORFFCC00);',0,'passed'),
     'invalid_nested_selection':('CHK:MAX(1,IF(C>O,H,L));',15,'not_run_parse_failed'),

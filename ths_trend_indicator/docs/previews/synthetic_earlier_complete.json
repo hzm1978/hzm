@@ -1,26 +1,29 @@
 {
-  "release": "1.1.4",
+  "release": "1.2.0",
   "bars": 137,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "141c860fceeaec0bf9ce1abc869cc37b0c6a6b7cbdcc8ca43133ddf0c818d8fe",
+  "formula_normalized_utf8_sha256": "3d5c63bbc220fd234d3a31b30408f4f2b506b504ac8ff2b6a67a75e580912591",
   "ohlc_float64_sha256": "a3f5a512aa222f9844ec7ab602151e16d1bea576156f97d9d9342b91fe77b042",
-  "work_direction": 1.0,
-  "phase": 2.0,
-  "correction_context_phase": 2.0,
   "groups": [
     {
-      "key": "MW",
-      "owner": "工作范围",
-      "owner_start_index": 59,
-      "owner_end_index": 136,
-      "direction": 1.0,
-      "count": 3,
-      "pending": false,
-      "first_Q_closed": true,
-      "merge_mode": 0.0,
+      "key": "M",
+      "owner": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 59,
+        "end_index": 127,
+        "start_price": 14015.0,
+        "end_price": 18150.0
+      },
+      "intervals": 1,
       "H1": 2960.0,
+      "first_Q_closed": true,
+      "classification": 0,
+      "pending": true,
+      "details_limited": false,
+      "actual_end_H1_multiple": 0.7266891891891892,
       "points": [
         {
           "wave": 0,
@@ -34,7 +37,7 @@
         },
         {
           "wave": 2,
-          "bar_index": 103,
+          "bar_index": 102,
           "price": 15999.0
         },
         {
@@ -47,243 +50,102 @@
         {
           "ordinal": 1,
           "first_uses_close": true,
-          "start_index": 84,
+          "start_index": 85,
           "end_index": 113,
-          "candles_excluding_start": 29.0,
-          "first_close_index": 113,
-          "first_wick_index": 113,
-          "level": 16975.0,
-          "adjustment_end_index": 103,
-          "adjustment_end_price": 15999.0,
+          "candles_excluding_start": 28.0,
+          "root_price": 16975.0,
+          "counter_index": 102,
+          "counter_price": 15999.0,
+          "closed": true,
+          "retracement_percent": 32.972972972972975,
+          "actual_H1_multiple": 1.0,
           "adjustment_shape_code": 1,
-          "adjustment_shape_label": "简单调整",
-          "simple_A_close_confirmed": true,
-          "ongoing": false,
-          "hidden": false
+          "adjustment_shape_label": "A SIMPLE"
         }
-      ],
-      "retracements_percent": {
-        "2": 32.972972972972975
-      }
+      ]
     },
     {
-      "key": "SW",
-      "owner": "主级当前段",
-      "owner_start_index": 127,
-      "owner_end_index": 136,
-      "direction": -1.0,
-      "count": 0,
-      "pending": false,
-      "first_Q_closed": false,
-      "merge_mode": 0.0,
+      "key": "P",
+      "owner": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 102,
+        "end_index": 127,
+        "start_price": 15999.0,
+        "end_price": 18150.0
+      },
+      "intervals": 0,
       "H1": null,
-      "points": [],
-      "Q": [],
-      "retracements_percent": {}
-    },
-    {
-      "key": "PW",
-      "owner": "主级前一段",
-      "owner_start_index": 103,
-      "owner_end_index": 127,
-      "direction": 1.0,
-      "count": 0,
-      "pending": false,
       "first_Q_closed": false,
-      "merge_mode": 0.0,
-      "H1": null,
-      "points": [],
-      "Q": [],
-      "retracements_percent": {}
-    },
-    {
-      "key": "GW",
-      "owner": "最近有效子级的最后一段",
-      "owner_start_index": 103,
-      "owner_end_index": 126,
-      "direction": 1.0,
-      "count": 0,
-      "pending": false,
-      "first_Q_closed": false,
-      "merge_mode": 0.0,
-      "H1": null,
-      "points": [],
-      "Q": [],
-      "retracements_percent": {}
-    },
-    {
-      "key": "E1",
-      "owner": "较早第1段完整主浪",
-      "owner_start_index": 59,
-      "owner_end_index": 85,
-      "direction": 1.0,
-      "count": 5,
-      "pending": false,
-      "first_Q_closed": true,
-      "merge_mode": 0.0,
-      "H1": 1386.0,
+      "classification": 0,
+      "pending": true,
+      "details_limited": false,
+      "actual_end_H1_multiple": null,
       "points": [
         {
           "wave": 0,
-          "bar_index": 59,
-          "price": 14015.0
+          "bar_index": 102,
+          "price": 15999.0
         },
         {
           "wave": 1,
-          "bar_index": 66,
-          "price": 15401.0
-        },
-        {
-          "wave": 2,
-          "bar_index": 68,
-          "price": 14999.0
-        },
-        {
-          "wave": 3,
-          "bar_index": 74,
-          "price": 16001.0
-        },
-        {
-          "wave": 4,
-          "bar_index": 76,
-          "price": 15599.0
-        },
-        {
-          "wave": 5,
-          "bar_index": 84,
-          "price": 16975.0
+          "bar_index": 127,
+          "price": 18150.0
         }
       ],
-      "Q": [
+      "Q": []
+    },
+    {
+      "key": "S",
+      "owner": {
+        "visible": true,
+        "direction": -1.0,
+        "start_index": 127,
+        "end_index": 136,
+        "start_price": 18150.0,
+        "end_price": 18098.0
+      },
+      "intervals": 0,
+      "H1": null,
+      "first_Q_closed": false,
+      "classification": 0,
+      "pending": true,
+      "details_limited": false,
+      "actual_end_H1_multiple": null,
+      "points": [
         {
-          "ordinal": 2,
-          "first_uses_close": false,
-          "start_index": 74,
-          "end_index": 79,
-          "candles_excluding_start": 5.0,
-          "first_close_index": 79,
-          "first_wick_index": 79,
-          "level": 16001.0,
-          "adjustment_end_index": 76,
-          "adjustment_end_price": 15599.0,
-          "adjustment_shape_code": 1,
-          "adjustment_shape_label": "简单调整",
-          "simple_A_close_confirmed": true,
-          "ongoing": false,
-          "hidden": false
+          "wave": 0,
+          "bar_index": 127,
+          "price": 18150.0
         },
         {
-          "ordinal": 1,
-          "first_uses_close": true,
-          "start_index": 66,
-          "end_index": 71,
-          "candles_excluding_start": 5.0,
-          "first_close_index": 71,
-          "first_wick_index": 71,
-          "level": 15401.0,
-          "adjustment_end_index": 68,
-          "adjustment_end_price": 14999.0,
-          "adjustment_shape_code": 1,
-          "adjustment_shape_label": "简单调整",
-          "simple_A_close_confirmed": true,
-          "ongoing": false,
-          "hidden": false
+          "wave": 1,
+          "bar_index": 136,
+          "price": 18098.0
         }
       ],
-      "retracements_percent": {
-        "2": 29.004329004329005,
-        "4": 40.119760479041915
-      }
-    },
-    {
-      "key": "E2",
-      "owner": "较早第2段完整主浪",
-      "owner_start_index": -7,
-      "owner_end_index": 41,
-      "direction": 1.0,
-      "count": 0,
-      "pending": false,
-      "first_Q_closed": false,
-      "merge_mode": 0.0,
-      "H1": null,
-      "points": [],
-      "Q": [],
-      "retracements_percent": {}
-    },
-    {
-      "key": "E3",
-      "owner": "较早第3段完整主浪",
-      "owner_start_index": -7,
-      "owner_end_index": -7,
-      "direction": -1.0,
-      "count": 0,
-      "pending": false,
-      "first_Q_closed": false,
-      "merge_mode": 0.0,
-      "H1": null,
-      "points": [],
-      "Q": [],
-      "retracements_percent": {}
+      "Q": []
     }
   ],
-  "complete_P": {
-    "visible": true,
-    "scope_start_index": 103,
-    "scope_end_index": 127,
-    "start_price": 15999.0,
-    "end_price": 18150.0,
-    "active_tip": false,
-    "details_limited": false,
-    "numbering": "chronological P legs; a count alone is not proof of a 5/7-wave degree",
-    "segments": [
-      {
-        "start_index": 103,
-        "start_price": 15999.0,
-        "end_index": 127,
-        "end_price": 18150.0
-      }
-    ],
-    "Q": []
-  },
-  "current_correction": {
-    "known": 0.0,
-    "code": 0.0,
-    "length": 0.0,
-    "root": 18150.0,
-    "root_age": 10.0,
-    "end": 15999.0,
-    "end_age": 33.0,
-    "confirmed": 0.0,
-    "confirm_age": 23.0,
-    "failed": 0.0,
-    "fail_age": 0.0,
-    "active": 0.0,
-    "broken": 0.0,
-    "confirmation_index": null,
-    "failure_index": null
-  },
   "price_plan": {
-    "dir": 1.0,
-    "regime": 1.0,
-    "phase": 2.0,
-    "proof": 1.0,
     "ton": 0.0,
     "fon": 1.0,
-    "h": 2960.0,
-    "base": 15999.0,
-    "origin": 14015.0,
-    "projection_direction": 1.0,
-    "fib_anchors": {
-      "start_price": 15999.0,
-      "end_price": 18150.0,
-      "start_index": 103,
-      "end_index": 127,
-      "manual": false
-    },
-    "legacy_fib_calculation_eligible": true,
-    "retracement_percent": 2.3709902370990235,
+    "h1": 0.0,
+    "proof": 0.0,
+    "direction": 1.0,
+    "phase": 2.0,
+    "ret": 2.3709902370990235,
+    "regime": 1.0,
     "market_type": "趋势",
     "last_leg_type": "回调",
+    "fib_anchors": {
+      "visible": true,
+      "direction": 1.0,
+      "start_index": 102,
+      "end_index": 127,
+      "start_price": 15999.0,
+      "end_price": 18150.0
+    },
     "fib_levels": [
       {
         "ratio": 0,
@@ -317,107 +179,84 @@
     "targets": [
       {
         "ratio": 1.208,
-        "price": 19574.68,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 1.618,
-        "price": 20788.28,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 2,
-        "price": 21919.0,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 2.382,
-        "price": 23049.72,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 2.618,
-        "price": 23748.28,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 3,
-        "price": 24879.0,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 3.236,
-        "price": 23593.56,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       },
       {
         "ratio": 4.236,
-        "price": 26553.559999999998,
-        "available": false,
+        "price": 15999.0,
         "displayed": false
       }
     ]
   },
+  "current_correction_visible": true,
   "turning_observations": [
     {
-      "bar_index": 70,
-      "price": 15016.366666666667,
-      "label": "OBS RV05"
-    },
-    {
-      "bar_index": 78,
-      "price": 15621.45,
-      "label": "OBS RV05"
-    },
-    {
-      "bar_index": 107,
-      "price": 16207.866666666667,
-      "label": "OBS RV05"
+      "bar_index": 59,
+      "price": 13673.8625,
+      "label": "M RV07"
     },
     {
       "bar_index": 103,
-      "price": 15849.7,
-      "label": "OBS RV07"
+      "price": 15657.8625,
+      "label": "M RV07"
+    },
+    {
+      "bar_index": 107,
+      "price": 16016.029166666665,
+      "label": "P RV05"
     },
     {
       "bar_index": 128,
-      "price": 18351.75,
-      "label": "OBS RV04"
+      "price": 18486.1375,
+      "label": "M RV04"
     },
     {
       "bar_index": 86,
-      "price": 17070.18888888889,
-      "label": "OBS RV05"
-    },
-    {
-      "bar_index": 67,
-      "price": 15550.3,
-      "label": "OBS RV07"
-    },
-    {
-      "bar_index": 75,
-      "price": 16150.3,
-      "label": "OBS RV07"
+      "price": 17262.02638888889,
+      "label": "M RV05"
     }
   ],
-  "segments": 25,
-  "labels": 61,
-  "fib_segments": 7,
+  "segments": 21,
+  "labels": 40,
+  "fib_segments": 9,
   "target_segments": 0,
   "synthetic_ohlc_only": true,
   "scenario": "earlier_complete",
   "installation_files_sha256": {
-    "install/EWT01.txt": "827f7f9d343838e6b37e153d1e0d66f3d3dd599ec62d03392316ffa4aa07629c",
-    "install/EWT02.txt": "ff77e7f72a63c4207d268a128e19c3853ca09c45793459ea1c62725a46c24051",
-    "install/EWT03.txt": "eba955e3313cb1dfba5a145ab5ac4cfe6e2d03fd9ba581bdfde9c1fc574d1a0d",
-    "install/EWT04.txt": "1649d36ee99f3cefecdeba7eab90aec68e50ddd1975dddca37b5404844681cf7"
+    "install/EWT01.txt": "9f8d065fb7e99118fd4abc59acab8c8eb3659adc1f6c1048c8ee3faa6004e80a",
+    "install/EWT02.txt": "c65c3b4c919d8e03f1133672a0656ec213ae0c3d45abf07ce927bd3b592417f4",
+    "install/EWT03.txt": "46c3c4dfb8d3122474f9d3f55bd68cbc55456358cdd8e593f899e813a8506eb4"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
 }

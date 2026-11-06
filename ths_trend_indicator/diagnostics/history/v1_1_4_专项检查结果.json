@@ -1,0 +1,6 @@
+{
+  "release": "1.1.4",
+  "status": "superseded_by_complete_suite",
+  "evidence": "本地检查结果.json",
+  "previous_release_report": "../diagnostics/history/v1_1_3_专项检查结果.json"
+}

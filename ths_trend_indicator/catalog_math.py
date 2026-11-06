@@ -31,6 +31,9 @@ def extra_math(fn,args,n):
     if fn=='VALUEWHEN':
         seen=np.maximum.accumulate(np.where(args[0]!=0,index,-1))
         return np.where(seen>=0,args[1][np.maximum(0,seen)],np.nan)
+    if fn=='BARSLAST':
+        last=np.maximum.accumulate(np.where(args[0]!=0,index,-1))
+        return np.where(last>=0,index-last,index).astype(float)
     if fn=='BARSSINCEN':
         flags,windows=args[0],args[1]
         hits=np.flatnonzero(flags)

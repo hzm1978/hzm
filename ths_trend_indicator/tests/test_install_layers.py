@@ -20,12 +20,12 @@ from scenarios import NAMES,sample
 
 
 def line_key(line):
-    return (tuple(map(float,line['start'])),tuple(map(float,line['end'])),
+    return (tuple(round(float(v),7)for v in line['start']),tuple(round(float(v),7)for v in line['end']),
             line['color'],line['function'],line['styles'])
 
 
 def label_key(label):
-    return (label['x'],label['y'],label['text'],label['align'],label['color'],label['function'])
+    return (label['x'],round(float(label['y']),7),label['text'],label['align'],label['color'],label['function'],label.get('font_size'))
 
 
 class InstallationLayerTests(unittest.TestCase):
@@ -37,18 +37,18 @@ class InstallationLayerTests(unittest.TestCase):
 
     def test_all_drawing_roots_are_installed_exactly_once_with_shared_settings(self):
         counts=Counter()
-        self.assertEqual(len(self.profile['install']),4)
+        self.assertEqual(len(self.profile['install']),3)
         self.assertEqual(len(self.profile['recommended_install']),3)
-        self.assertEqual(self.profile['optional_install'],['install/EWT04.txt'])
+        self.assertEqual(self.profile['optional_install'],[])
         for name in self.profile['install']:
             raw=(ROOT/'formulas'/name).read_bytes()
             profile=self.profile['files'][name]
             self.assertEqual(profile['role'],'install_layer')
-            self.assertLessEqual(len(raw),MAX_INSTALL_BYTES)
-            self.assertTrue(raw.isascii())
+            self.assertLessEqual(len(raw.decode(profile['encoding'])),MAX_INSTALL_BYTES)
+            self.assertFalse(raw.startswith(b'\xef\xbb\xbf'))
             self.assertEqual(hashlib.sha256(raw).hexdigest(),profile['sha256'])
             counts.update(profile['root_ids'])
-            settings={s.name for s in Parser(raw.decode('ascii')).parse()if s.name in SETTINGS}
+            settings={s.name for s in Parser(raw.decode(profile['encoding'])).parse()if s.name in SETTINGS}
             self.assertEqual(settings,SETTINGS-set(FIXED_DISPLAY))
             self.assertFalse({'V','LR','PR','TP','TV'}&set(profile['native_variable_aliases'].values()))
         self.assertEqual(len(counts),self.profile['installation_layers']['drawing_roots'])
@@ -61,13 +61,13 @@ class InstallationLayerTests(unittest.TestCase):
         lines=[];labels=[]
         for relative in self.profile['recommended_install']if recommended else self.profile['install']:
             profile=self.profile['files'][relative]
-            source=(ROOT/'formulas'/relative).read_text(encoding='ascii')
+            source=(ROOT/'formulas'/relative).read_text(encoding='utf-8')
             result=audit(source,data,settings,analysis_end_line=profile['analysis_end_line'])
             original_names={alias:original for original,alias in profile['native_variable_aliases'].items()}
             for key,array in result['env'].items():
                 key=original_names.get(key,key)
                 # Installation uses no generated numerical-mask G helpers.
-                if key.startswith('J')and key[1:].isdigit():continue
+                if (key.startswith('J')and key[1:].isdigit())or(key.startswith('PURE')and key[4:].isdigit()):continue
                 self.assertIn(key,expected['env'],name+':'+key)
                 np.testing.assert_allclose(array,expected['env'][key],rtol=0,atol=0,equal_nan=True,
                                            err_msg=relative+':'+name+':'+key)
@@ -85,16 +85,15 @@ class InstallationLayerTests(unittest.TestCase):
 
     def test_subwave_lines_numbers_and_prices_share_one_complete_layer(self):
         profiles=self.profile['files']
-        self.assertEqual(set(profiles['install/EWT02.txt']['families']),{'P_complete','prices'})
-        self.assertNotIn('GW',profiles['install/EWT01.txt']['families'])
-        self.assertEqual(set(profiles['install/EWT03.txt']['families']),{'E1','E2','tools'})
-        self.assertEqual(profiles['install/EWT04.txt']['families'],['SC'])
-        self.assertNotIn('E3',profiles['install/EWT01.txt']['families'])
+        self.assertEqual(set(profiles['install/EWT02.txt']['families']),{'new_P','prices'})
+        self.assertEqual(profiles['install/EWT01.txt']['families'],['new_M'])
+        self.assertEqual(profiles['install/EWT03.txt']['families'],['new_S'])
+        self.assertFalse((ROOT/'formulas/install/EWT04.txt').exists())
 
     def test_backset_series_is_materialized_before_native_consumers(self):
         count=0
         for relative in self.profile['install']:
-            source=(ROOT/'formulas'/relative).read_text(encoding='ascii')
+            source=(ROOT/'formulas'/relative).read_text(encoding='utf-8')
             for statement in Parser(source).parse():
                 for node in walk(statement.expression):
                     if node[0:2]==('call','BACKSET'):

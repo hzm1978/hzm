@@ -16,6 +16,10 @@ def path(prices, steps=18, tail=9, prefix=50):
 
 
 def sample(name):
+    if name=='main_owned':
+        # Inspired by parent boundary feedback; synthetic, not user OHLC.
+        return path([1080,865.7,910,880,1014.38,960,990,923,977,920,950,901,930,870,900,832,876],
+                    [18,18,8,18,10,4,5,5,8,4,6,4,7,5,8,10],tail=0),{'DIR':-1}
     if name=='p_white_up':
         data,settings=sample('p_white')
         reflected={'O':600-data['O'],'C':600-data['C'],
@@ -94,4 +98,4 @@ def sample(name):
 
 NAMES=('fall_rebound','five_up','nested_five_down','seven_expanding','triangle_e','trend_targets',
        'short_inner_q','parent_correction','sideways','earlier_complete',
-       'p_whole','p_white','p_triangle','p_no_h1','p_newtip','p_s_correction','p_white_up')
+       'p_whole','p_white','p_triangle','p_no_h1','p_newtip','p_s_correction','p_white_up','main_owned')

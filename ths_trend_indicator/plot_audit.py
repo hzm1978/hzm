@@ -141,7 +141,8 @@ def save_preview(source, data, path, overrides=None, last=160,analysis_end_line=
             ax.text(label['x'],label['y'],label['text'],fontsize=(label.get('font_size')or 9)*.72,
                     color=color(label['color']),fontproperties=font,ha=label.get('align','left'),clip_on=True)
     visible=np.r_[data['H'][begin:],data['L'][begin:],
-                  [y for line in result['lines'] for x,y in (line['start'],line['end']) if x>=begin]]
+                  [y for line in result['lines'] for x,y in (line['start'],line['end']) if x>=begin],
+                  [label['y']for label in result['labels']if label['x']>=begin]]
     lo,hi=float(min(visible)),float(max(visible)); margin=max((hi-lo)*.08,1)
     ax.set_ylim(lo-margin,hi+margin); ax.set_xlim(begin-1,n+2)
     ax.grid(alpha=.13); ax.tick_params(colors='#a2b2c4',labelsize=8)

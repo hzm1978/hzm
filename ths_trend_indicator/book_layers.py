@@ -42,13 +42,13 @@ class Builder:
         # dynamic POSITION can silently become NaN in native shape JSON.
         # Place the label on its historical candle with a literal offset 0.
         self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE{font};")
-    def number(self,cond,age,price,value,color,precision=1,font=9):
+    def number(self,cond,age,price,value,color,precision=1,font=9,align=0):
         # The official parser rejects an X variable in DRAWSHIFTNUMBER.
         # Wrapping it in INTPART compiles but yields an invalid constant
         # HorizontalOffset in the native shape description. Draw on the
         # target candle instead, freezing ALL four inputs at the as-of end.
         # In particular PAD/price and the gate may vary over history.
-        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN0,FONTSIZE{font};')
+        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN{align},FONTSIZE{font};')
     def segment(self,cond,from_age,from_price,to_age,to_price,color,style='LINETHICK1'):
         # DRAWLINE3 pairs a start bar with a LATER end bar. Use penultimate
         # and last bars as those triggers, then shift both to actual endpoints.

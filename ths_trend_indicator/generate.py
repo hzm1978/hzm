@@ -109,7 +109,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC 1.1.4；按用户导出函数库生成，结构解释需结合确认时刻 }",
+    lines = ["{ 趋势交易·期货通PC 1.2.0；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
@@ -122,9 +122,10 @@ def core():
              "SHOWF:=1;", "SHOWT:=1;", "SHOWC:=1;", "DETAIL:=0;",
              "SHOWBOOK:=1;", "SHOWSUB:=1;", "SHOWGRAND:=1;", "BOOKBARS:=600;"]
     lines += standard_k()
-    lines += pivots("S", "PN",8) + pivots("B", "BN",8) + pivots("G","GN",8,first_equal=True)
+    lines += pivots("S", "PN",8) + pivots("B", "BN",12) + pivots("G","GN",8,first_equal=True)
     from book_corrections import adjustment_seed_formulas
-    lines += adjustment_seed_formulas()
+    seeds=adjustment_seed_formulas()
+    lines += seeds+[re.sub(r'\bG(?=[A-Z0-9])','S',line)for line in seeds]
     lines += q_intervals("S", "PN") + q_intervals("B", "BN")
     lines += ["{ 工作方向观察：同侧双点或先前已知工作极值收盘突破；旧方向破位后不强行沿用 }",
               "BH0:=IF(BTYPE=1,BP0,BP1);", "BH1:=IF(BTYPE=1,BP2,BP3);",
@@ -250,7 +251,7 @@ def core():
             for s in lines]
 
 
-def drawing():
+def legacy_drawing():
     lines = ["{ 回标转折：必须等PN/BN根后才知道；历史连线会重绘，不作为当时的交易信号 }",
              "VX:=REFX1(BC,100000)-BC;",
              "VRECENT:=DETAIL OR VX<=SPAN;",
@@ -374,6 +375,29 @@ def drawing():
     return lines+book
 
 
+def drawing():
+    # The old model remains callable for independent core/book regressions;
+    # it is not evaluated as part of the new product drawing path.
+    historical=['VX:=REFX1(BC,100000)-BC;',
+                'BSAFEHI:=REFX1(IF(ISLASTBAR,MAX(ABS(HHV(H,BC)),ABS(LLV(L,BC)))+1,0),100000);',
+                'BSAFELO:=0-BSAFEHI;',
+                'BEPS:=REFX1(MAX(ABS(C)*0.0000000001,0.0000001),100000);',
+                'BPAD:=REFX1(PAD,100000);']
+    from interval_layers import layers
+    visible,_=layers()
+    return historical+visible
+
+
+def legacy_formula_source():
+    from compatibility import normalize
+    return normalize('\n'.join(core()+legacy_drawing()))
+
+
+def legacy_formula_names():
+    from compatibility import variable_names
+    return variable_names('\n'.join(core()+legacy_drawing()))
+
+
 def raw_probe():
     return """{ 新建主图；本文件逐项检查本包用到的关键绘图函数，不能当趋势指标使用 }
 X1:=REF(C,1);
@@ -457,13 +481,13 @@ def build():
         (path/relative).write_bytes(layer_data)
         profiles[relative]=layer_profile
         install.append(relative)
-    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.4','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
+    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.2.0','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
                                                'install':install,'p_focus_install':install[:2],
-                                               'recommended_install':install[:3],'optional_install':install[3:],
+                                               'recommended_install':install[:3],'optional_install':[],
                                                'installation_layers':layer_report,'files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     write_legend(ascii_profile)
     (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-    from book_layers import layers
+    from interval_layers import layers
     (ROOT/"结构字段.json").write_text(json.dumps(layers()[1], ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     return samples
 

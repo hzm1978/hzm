@@ -12,7 +12,7 @@ sys.path.insert(0,str(ROOT))
 from catalog import RAW, RECORDS, FUNCTIONS, parameter_bounds
 from check_formula import Parser,walk,check,FormulaError,evaluate
 from compatibility import normalize,variable_names
-from generate import formula_source,formula_names
+from generate import legacy_formula_source as formula_source,legacy_formula_names as formula_names
 from plot_audit import audit
 from book_layers import Builder,group,layers
 from book_corrections import correction_math,drawing as correction_drawing
@@ -381,7 +381,7 @@ class CorrectionAndPriceTests(unittest.TestCase):
         expected=sorted(2639.2+(2947.7-2639.2)*q for q in (0,.236,.382,.5,.618,.786,1))
         np.testing.assert_allclose(fib,expected,rtol=0,atol=1e-8)
         self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
-        from inspect_structure import snapshot
+        from legacy_inspect_structure import snapshot
         anchors=snapshot(data,r)['price_plan']['fib_anchors']
         self.assertAlmostEqual(anchors['start_price'],2947.7)
         self.assertLess(anchors['start_index'],anchors['end_index'])
@@ -480,7 +480,7 @@ class CorrectionAndPriceTests(unittest.TestCase):
                 self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
 
     def test_snapshot_retains_actual_ownership_q_counts_and_price_plan(self):
-        from inspect_structure import snapshot
+        from legacy_inspect_structure import snapshot
         data,r=full('fall_rebound');trace=snapshot(data,r)
         self.assertEqual(trace['groups'][2]['count'],5)
         self.assertEqual([q['candles_excluding_start']for q in trace['groups'][2]['Q']],[35,35])

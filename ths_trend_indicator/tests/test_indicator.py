@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from check_formula import FormulaError, Parser, RESERVED, check, walk, evaluate as raw_evaluate
 from compatibility import SETTINGS, normalize, variable_names, render
-from generate import build, core, drawing, probe, basic_probe, formula_source, formula_names
+from generate import build, core, legacy_drawing as drawing, probe, basic_probe, legacy_formula_source as formula_source, legacy_formula_names as formula_names
 from plot_audit import audit
 
 SOURCE = formula_source()
