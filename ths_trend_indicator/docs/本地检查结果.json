@@ -29843,7 +29843,7 @@
     "parser_client_version": "5.4.0.5",
     "passed": true,
     "target_client_ui_run": false,
-    "network_content_check": "pending_public_source_validation"
+    "network_content_check": "passed_separately_see_官方内容校验结果.json"
   },
   "function_catalog": {
     "source": "user-exported all_func.json",
@@ -29897,7 +29897,7 @@
     "release_gate": "完整P两层、历史工具层及可选回调S分别核对；目标4.39.1.2界面与公式消失原因未确认。",
     "next_full_main": {
       "release": "1.1.4",
-      "status": "local_145_native_68_passed_pending_public_content_validation",
+      "status": "local_145_native_68_and_public_content_8_passed_target_ui_not_run",
       "p_focus": [
         "../formulas/install/EWT01.txt",
         "../formulas/install/EWT02.txt"
@@ -29983,7 +29983,7 @@
       "accepted_ascii_characters": 80000,
       "rejected_ascii_characters": 80001,
       "automatic_approval": "Initial possible private-source export rejected. Anonymous public GitHub download verified the existing release SHA; automatic review then approved validation of that public source only. No private file or credential sent.",
-      "new_install_layers": "passed_all_six_code_and_combined_checks_on_anonymously_downloaded_public_v1_1_3_files",
+      "new_install_layers": "passed_all_eight_code_and_combined_checks_on_anonymously_downloaded_public_v1_1_4_files",
       "new_install_evidence": "../docs/官方内容校验结果.json"
     },
     "full_main_1_1_2": {
@@ -30030,12 +30030,22 @@
       "source_disappearance_cause": "unconfirmed"
     },
     "full_main_1_1_4": {
-      "status": "local_145_native_68_passed_pending_public_content_validation",
+      "status": "local_native_geometry_and_public_content_checks_passed",
       "target_client_ui_run": false,
       "source_disappearance_cause": "unconfirmed",
       "local_full_suite_tests": 145,
       "native_geometry_cases": 68,
-      "native_geometry_passed": true
+      "native_geometry_passed": true,
+      "official_content_checks": 8,
+      "official_content_passed": true,
+      "public_formula_commit": "0b80290050aa3cd123e3001fc7a6f4aee9823fdd"
     }
+  },
+  "official_content_validation": {
+    "report": "官方内容校验结果.json",
+    "public_commit": "0b80290050aa3cd123e3001fc7a6f4aee9823fdd",
+    "passed": true,
+    "checks": 8,
+    "target_client_ui_run": false
   }
 }
