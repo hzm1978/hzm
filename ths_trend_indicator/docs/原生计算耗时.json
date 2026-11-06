@@ -1,11 +1,33 @@
 {
   "release": "1.2.0",
-  "passed": false,
-  "status": "final_native_run_in_progress",
-  "installation_sha256": {
-    "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-    "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
-    "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
-  },
-  "target_client_ui_run": false
+  "checked_at_utc": "2026-11-06T12:53:56.649571+00:00",
+  "scope": "Single offline 1000-bar native run; not client UI speed. Parsing and arithmetic are measured separately.",
+  "target_client_ui_run": false,
+  "parser_client_version": "5.4.0.5",
+  "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
+  "harness_sha256": "a9541d050a1e0129d9f092078d03837925e4eb84b2f017af27b12089315acbf9",
+  "cases": [
+    {
+      "file": "install/EWT01.txt",
+      "rows": 1000,
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "parse_ms": 2176.603,
+      "calculate_ms": 1776.67
+    },
+    {
+      "file": "install/EWT02.txt",
+      "rows": 1000,
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "parse_ms": 3960.004,
+      "calculate_ms": 2326.118
+    },
+    {
+      "file": "install/EWT03.txt",
+      "rows": 1000,
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "parse_ms": 3317.695,
+      "calculate_ms": 2056.959
+    }
+  ],
+  "passed": true
 }

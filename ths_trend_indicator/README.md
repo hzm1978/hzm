@@ -62,7 +62,7 @@ M和P通过同一主浪的实际边界建立归属，P内部小高低点不再�
 
 [验证记录](docs/验证记录.md)区分本地回归、官方5.4.0.5离线解析与合成计算、公开源码的官方保存内容校验。**目标4.39.1.2界面未运行；公式自动消失的机制未确认。** 包内不含专有DLL/EXE，不执行交易。合成预览不等于用户行情复原，自动分级也不保证是唯一书本解释。
 
-依据用户指定第三版3.pdf，原函数导出完整保存在`reference/all_func.json`。主要实现为`hierarchy_scope.py`、`interval_engine.py`、`interval_render.py`、`interval_prices.py`、`interval_layers.py`；`native_layers.py`导出三个自足安装文件。旧模块保留用于历史/核心回归，不参与新版可见绘图。
+依据用户指定第三版3.pdf，原函数导出完整保存在`reference/all_func.json`。主要实现为`hierarchy_scope.py`、`interval_engine.py`、`interval_render.py`、`interval_prices.py`、`interval_layers.py`；`native_layers.py`导出三个自足安装文件。旧版分组入口保留用于历史/核心回归；Builder和Q比较辅助由新版复用。
 
 开发复查需要Python3.11+及NumPy，预览另需Matplotlib；安装使用不需要这些。
 

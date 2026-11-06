@@ -1,11 +1,1680 @@
 {
   "release": "1.2.0",
-  "passed": false,
-  "status": "final_native_run_in_progress",
-  "installation_sha256": {
-    "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-    "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
-    "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
+  "checked_at_utc": "2026-11-06T12:52:40.688257+00:00",
+  "scope": "Actual native arithmetic/coordinates on deterministic synthetic OHLC; not target-client UI, real-market interpretation, or order execution",
+  "harness_sha256": "a9541d050a1e0129d9f092078d03837925e4eb84b2f017af27b12089315acbf9",
+  "comparison_harness_sha256": "cbaed1ce66da6c305d033653a08833cb4091f0824f0af8ffdbbef903dd493e33",
+  "local_evaluator_sha256": {
+    "catalog_math.py": "c9b30592c9185936b3b5558609dfbdd0136bf3bac05a59496fb88f643cfc97d1",
+    "check_formula.py": "fc9ad5a2b73d2cf4dd1f8da551b0c9ba27fc02ded161585c99a9f7c7c1584b67",
+    "plot_audit.py": "c98303724a35da3209890fd5ce9f2cdf72379ca222732ce9d112906e86ca64b0"
   },
-  "target_client_ui_run": false
+  "parser_client_versions": [
+    "5.4.0.5"
+  ],
+  "parser_dll_sha256": [
+    "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72"
+  ],
+  "target_client_ui_run": false,
+  "account_login": false,
+  "price_coordinate_rounding_decimal_places": 7,
+  "cases": [
+    {
+      "name": "fall_rebound/install/EWT01.txt",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "input_rows_sha256": "47692ef562bd1fd95dd6c0b3f02b64f093d7442831573175d7080dcc807fc522",
+      "rows": 331,
+      "parse_ms": 2103.405,
+      "calculate_ms": 426.921,
+      "lines": {
+        "model": 11,
+        "native": 11,
+        "matches": true
+      },
+      "labels": {
+        "model": 36,
+        "native": 36,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "fall_rebound/install/EWT02.txt",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "input_rows_sha256": "47692ef562bd1fd95dd6c0b3f02b64f093d7442831573175d7080dcc807fc522",
+      "rows": 331,
+      "parse_ms": 3671.377,
+      "calculate_ms": 586.718,
+      "lines": {
+        "model": 22,
+        "native": 22,
+        "matches": true
+      },
+      "labels": {
+        "model": 40,
+        "native": 40,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 26.95852534562212,
+          "native": 26.95852534562212,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "fall_rebound/install/EWT03.txt",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "input_rows_sha256": "47692ef562bd1fd95dd6c0b3f02b64f093d7442831573175d7080dcc807fc522",
+      "rows": 331,
+      "parse_ms": 2890.673,
+      "calculate_ms": 500.661,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "five_up/install/EWT01.txt",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "input_rows_sha256": "b6f93cc8153d2e0d0b65438d817614d6217af04412aa5e422f14b8d9441538d9",
+      "rows": 168,
+      "parse_ms": 1841.196,
+      "calculate_ms": 279.583,
+      "lines": {
+        "model": 11,
+        "native": 11,
+        "matches": true
+      },
+      "labels": {
+        "model": 29,
+        "native": 29,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "five_up/install/EWT02.txt",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "input_rows_sha256": "b6f93cc8153d2e0d0b65438d817614d6217af04412aa5e422f14b8d9441538d9",
+      "rows": 168,
+      "parse_ms": 4080.096,
+      "calculate_ms": 262.821,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 12.686567164179104,
+          "native": 12.686567164179104,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "five_up/install/EWT03.txt",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "input_rows_sha256": "b6f93cc8153d2e0d0b65438d817614d6217af04412aa5e422f14b8d9441538d9",
+      "rows": 168,
+      "parse_ms": 2864.76,
+      "calculate_ms": 236.52,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "nested_five_down/install/EWT01.txt",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "input_rows_sha256": "da1951bc476607d5cc87f53cc0ffe32469ea843ff85ef1b2b2bdcfb9a022c4c9",
+      "rows": 96,
+      "parse_ms": 1926.601,
+      "calculate_ms": 118.847,
+      "lines": {
+        "model": 10,
+        "native": 10,
+        "matches": true
+      },
+      "labels": {
+        "model": 17,
+        "native": 17,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 3.0,
+          "native": 3.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 3.0,
+          "native": 3.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "nested_five_down/install/EWT02.txt",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "input_rows_sha256": "da1951bc476607d5cc87f53cc0ffe32469ea843ff85ef1b2b2bdcfb9a022c4c9",
+      "rows": 96,
+      "parse_ms": 3772.137,
+      "calculate_ms": 151.27,
+      "lines": {
+        "model": 22,
+        "native": 22,
+        "matches": true
+      },
+      "labels": {
+        "model": 40,
+        "native": 40,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 3.0,
+          "native": 3.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 5.65410199556541,
+          "native": 5.65410199556541,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "nested_five_down/install/EWT03.txt",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "input_rows_sha256": "da1951bc476607d5cc87f53cc0ffe32469ea843ff85ef1b2b2bdcfb9a022c4c9",
+      "rows": 96,
+      "parse_ms": 2911.511,
+      "calculate_ms": 132.136,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "seven_expanding/install/EWT01.txt",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "input_rows_sha256": "804747b5c917b7643f72b3f9f7af788c6bccc6ead15b00a09e34c347943e8d27",
+      "rows": 258,
+      "parse_ms": 2148.671,
+      "calculate_ms": 356.974,
+      "lines": {
+        "model": 16,
+        "native": 16,
+        "matches": true
+      },
+      "labels": {
+        "model": 40,
+        "native": 40,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "seven_expanding/install/EWT02.txt",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "input_rows_sha256": "804747b5c917b7643f72b3f9f7af788c6bccc6ead15b00a09e34c347943e8d27",
+      "rows": 258,
+      "parse_ms": 3712.558,
+      "calculate_ms": 460.417,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 12.686567164179104,
+          "native": 12.686567164179104,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "seven_expanding/install/EWT03.txt",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "input_rows_sha256": "804747b5c917b7643f72b3f9f7af788c6bccc6ead15b00a09e34c347943e8d27",
+      "rows": 258,
+      "parse_ms": 3323.123,
+      "calculate_ms": 385.897,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "triangle_e/install/EWT01.txt",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "input_rows_sha256": "0d2c170ded1f170efe7aa84092d284c699a1ccc4f4d629a2c6e19b474642add6",
+      "rows": 270,
+      "parse_ms": 1855.969,
+      "calculate_ms": 340.649,
+      "lines": {
+        "model": 9,
+        "native": 9,
+        "matches": true
+      },
+      "labels": {
+        "model": 32,
+        "native": 32,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "triangle_e/install/EWT02.txt",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "input_rows_sha256": "0d2c170ded1f170efe7aa84092d284c699a1ccc4f4d629a2c6e19b474642add6",
+      "rows": 270,
+      "parse_ms": 3845.095,
+      "calculate_ms": 580.888,
+      "lines": {
+        "model": 10,
+        "native": 10,
+        "matches": true
+      },
+      "labels": {
+        "model": 15,
+        "native": 15,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 0.0,
+          "native": 0.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "triangle_e/install/EWT03.txt",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "input_rows_sha256": "0d2c170ded1f170efe7aa84092d284c699a1ccc4f4d629a2c6e19b474642add6",
+      "rows": 270,
+      "parse_ms": 3306.455,
+      "calculate_ms": 426.592,
+      "lines": {
+        "model": 0,
+        "native": 0,
+        "matches": true
+      },
+      "labels": {
+        "model": 0,
+        "native": 0,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "trend_targets/install/EWT01.txt",
+      "source_sha256": "bbac2886ad6c92c2b7635d7b1ae2c9dabec530efb8d267f45051c248a0d19b46",
+      "input_rows_sha256": "d2b26918f39937dbbc55cf9901d61936c6455084c71123abaa02fb51207608a7",
+      "rows": 100,
+      "parse_ms": 1960.649,
+      "calculate_ms": 143.989,
+      "lines": {
+        "model": 0,
+        "native": 0,
+        "matches": true
+      },
+      "labels": {
+        "model": 0,
+        "native": 0,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "trend_targets/install/EWT02.txt",
+      "source_sha256": "11a0ed79300d0f60118c6b37f32cf99bdab0609cb98429544db0e07cb41a76a7",
+      "input_rows_sha256": "d2b26918f39937dbbc55cf9901d61936c6455084c71123abaa02fb51207608a7",
+      "rows": 100,
+      "parse_ms": 3744.039,
+      "calculate_ms": 159.553,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 6,
+        "native": 6,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 0.0,
+          "native": 0.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "trend_targets/install/EWT03.txt",
+      "source_sha256": "7217f79a9c2eabe544fd9d5f113654cca9ae3ae214ff390989ff9a9f200bd2e0",
+      "input_rows_sha256": "d2b26918f39937dbbc55cf9901d61936c6455084c71123abaa02fb51207608a7",
+      "rows": 100,
+      "parse_ms": 3211.498,
+      "calculate_ms": 153.929,
+      "lines": {
+        "model": 0,
+        "native": 0,
+        "matches": true
+      },
+      "labels": {
+        "model": 0,
+        "native": 0,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "short_inner_q/install/EWT01.txt",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "input_rows_sha256": "3bb40657ddf5e1f57ed43feed0cd9a8ed1335774b9909807864b9828e4dd2f5b",
+      "rows": 221,
+      "parse_ms": 2145.044,
+      "calculate_ms": 270.885,
+      "lines": {
+        "model": 16,
+        "native": 16,
+        "matches": true
+      },
+      "labels": {
+        "model": 46,
+        "native": 46,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "short_inner_q/install/EWT02.txt",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "input_rows_sha256": "3bb40657ddf5e1f57ed43feed0cd9a8ed1335774b9909807864b9828e4dd2f5b",
+      "rows": 221,
+      "parse_ms": 3671.318,
+      "calculate_ms": 378.471,
+      "lines": {
+        "model": 19,
+        "native": 19,
+        "matches": true
+      },
+      "labels": {
+        "model": 33,
+        "native": 33,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 13.357778941854367,
+          "native": 13.357778941854367,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "short_inner_q/install/EWT03.txt",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "input_rows_sha256": "3bb40657ddf5e1f57ed43feed0cd9a8ed1335774b9909807864b9828e4dd2f5b",
+      "rows": 221,
+      "parse_ms": 3063.792,
+      "calculate_ms": 312.378,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "parent_correction/install/EWT01.txt",
+      "source_sha256": "1a4f2fb8078efeb07b75c11b5e66ce13a6aa392aeba0c5b56cbfe25ba9914be1",
+      "input_rows_sha256": "c8e45f061498cd7023910d442a9da14eaf8482f70423673e458e478a11939703",
+      "rows": 152,
+      "parse_ms": 1902.141,
+      "calculate_ms": 174.329,
+      "lines": {
+        "model": 6,
+        "native": 6,
+        "matches": true
+      },
+      "labels": {
+        "model": 19,
+        "native": 19,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "parent_correction/install/EWT02.txt",
+      "source_sha256": "6c712340aefcfc860aa655c03164f8f72fe57f550c7e26ba9c51e9042634edf2",
+      "input_rows_sha256": "c8e45f061498cd7023910d442a9da14eaf8482f70423673e458e478a11939703",
+      "rows": 152,
+      "parse_ms": 3705.518,
+      "calculate_ms": 243.312,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 78.01276935355148,
+          "native": 78.01276935355148,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "parent_correction/install/EWT03.txt",
+      "source_sha256": "9ac2c472556f66bc76103be0ca1a7b737ecdf98d224e51cfb3c8339e6031c2b2",
+      "input_rows_sha256": "c8e45f061498cd7023910d442a9da14eaf8482f70423673e458e478a11939703",
+      "rows": 152,
+      "parse_ms": 3118.136,
+      "calculate_ms": 220.195,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "sideways/install/EWT01.txt",
+      "source_sha256": "481b3b5810ab1524c96a51146b9e3faa8e7c14580ef002de727823b82a13a31c",
+      "input_rows_sha256": "d9023b4ba18eaf9efbeabff063c7c040953ea3490dc90882a661e7b96c48fe8a",
+      "rows": 187,
+      "parse_ms": 1887.336,
+      "calculate_ms": 211.15,
+      "lines": {
+        "model": 1,
+        "native": 1,
+        "matches": true
+      },
+      "labels": {
+        "model": 5,
+        "native": 5,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 3.0,
+          "native": 3.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 3.0,
+          "native": 3.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "sideways/install/EWT02.txt",
+      "source_sha256": "861340a29128c24729203736083505985b31fe245818893bb49878b7b011fc3a",
+      "input_rows_sha256": "d9023b4ba18eaf9efbeabff063c7c040953ea3490dc90882a661e7b96c48fe8a",
+      "rows": 187,
+      "parse_ms": 3820.811,
+      "calculate_ms": 325.826,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 3.0,
+          "native": 3.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 17.142857142857142,
+          "native": 17.142857142857142,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "sideways/install/EWT03.txt",
+      "source_sha256": "955bc9b7580e962522dca0cc0f5cd8d392728913b1c9846ddda387ab644f7573",
+      "input_rows_sha256": "d9023b4ba18eaf9efbeabff063c7c040953ea3490dc90882a661e7b96c48fe8a",
+      "rows": 187,
+      "parse_ms": 3004.641,
+      "calculate_ms": 267.274,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "earlier_complete/install/EWT01.txt",
+      "source_sha256": "d4ee44c8fb9df4bae4a63a7523d080637ca60ce9e65b2b27f888c9422ff4d5b8",
+      "input_rows_sha256": "1f48fc5b9a93b3e6903d4442e391bd53811bc4665a58088d0cb5ae6cf3852f08",
+      "rows": 137,
+      "parse_ms": 2169.993,
+      "calculate_ms": 163.722,
+      "lines": {
+        "model": 6,
+        "native": 6,
+        "matches": true
+      },
+      "labels": {
+        "model": 17,
+        "native": 17,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "earlier_complete/install/EWT02.txt",
+      "source_sha256": "f416f05672b947e24c2a2b02244631b17c15ca9ee842d79900474d0aa1e67baa",
+      "input_rows_sha256": "1f48fc5b9a93b3e6903d4442e391bd53811bc4665a58088d0cb5ae6cf3852f08",
+      "rows": 137,
+      "parse_ms": 4497.873,
+      "calculate_ms": 222.063,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 2.3709902370990235,
+          "native": 2.3709902370990235,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "earlier_complete/install/EWT03.txt",
+      "source_sha256": "fb1169e1e67da78790c3a427bb40d3da4b43c3eaa7ad01f92c8174e7ec93f2b5",
+      "input_rows_sha256": "1f48fc5b9a93b3e6903d4442e391bd53811bc4665a58088d0cb5ae6cf3852f08",
+      "rows": 137,
+      "parse_ms": 3133.935,
+      "calculate_ms": 213.638,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_whole/install/EWT01.txt",
+      "source_sha256": "b76566890036cef3211517bbbb737d5b88bdd2fd742d29a53a3c1b2231a7a4df",
+      "input_rows_sha256": "703ea24b5bec40ab64914b0df6e01183f478c5d1378ce50482f085f1f824805a",
+      "rows": 127,
+      "parse_ms": 1999.233,
+      "calculate_ms": 148.075,
+      "lines": {
+        "model": 11,
+        "native": 11,
+        "matches": true
+      },
+      "labels": {
+        "model": 39,
+        "native": 39,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_whole/install/EWT02.txt",
+      "source_sha256": "23a9a716db76f2d7c26ca7bea539d9bf7efe450f3f3a5aaf28f0bea8460a7428",
+      "input_rows_sha256": "703ea24b5bec40ab64914b0df6e01183f478c5d1378ce50482f085f1f824805a",
+      "rows": 127,
+      "parse_ms": 3696.236,
+      "calculate_ms": 212.541,
+      "lines": {
+        "model": 27,
+        "native": 27,
+        "matches": true
+      },
+      "labels": {
+        "model": 49,
+        "native": 49,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 24.406117800195247,
+          "native": 24.406117800195247,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_whole/install/EWT03.txt",
+      "source_sha256": "e8fb734fc390a34eb4f19172286e5f4b3752909cfb519290f4e9616bb979d2a8",
+      "input_rows_sha256": "703ea24b5bec40ab64914b0df6e01183f478c5d1378ce50482f085f1f824805a",
+      "rows": 127,
+      "parse_ms": 2927.319,
+      "calculate_ms": 187.47,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_white/install/EWT01.txt",
+      "source_sha256": "dfa9518edcaac7392d49acf44263f63aba65b561bf88cd4010a305cf864c5163",
+      "input_rows_sha256": "eaf49f2c97d1233d12419a8d7aad6f6666c4a4b6f5fedb5918f3b34cbded5f48",
+      "rows": 104,
+      "parse_ms": 1829.658,
+      "calculate_ms": 120.987,
+      "lines": {
+        "model": 10,
+        "native": 10,
+        "matches": true
+      },
+      "labels": {
+        "model": 32,
+        "native": 32,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_white/install/EWT02.txt",
+      "source_sha256": "4b5d9540004ce94cd07771577b2d78aea9bbd03b8afb0f60bda4739e01c8b5b4",
+      "input_rows_sha256": "eaf49f2c97d1233d12419a8d7aad6f6666c4a4b6f5fedb5918f3b34cbded5f48",
+      "rows": 104,
+      "parse_ms": 3696.629,
+      "calculate_ms": 166.697,
+      "lines": {
+        "model": 24,
+        "native": 24,
+        "matches": true
+      },
+      "labels": {
+        "model": 43,
+        "native": 43,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 28.39506172839506,
+          "native": 28.39506172839506,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_white/install/EWT03.txt",
+      "source_sha256": "1a9ab23e2b30e893c9ed3cce1e040dad393e973383176d4e483050cb429f37b9",
+      "input_rows_sha256": "eaf49f2c97d1233d12419a8d7aad6f6666c4a4b6f5fedb5918f3b34cbded5f48",
+      "rows": 104,
+      "parse_ms": 3020.58,
+      "calculate_ms": 154.383,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_triangle/install/EWT01.txt",
+      "source_sha256": "f2f47225451c9d27705673754be3ed64cde7254e750377fc7f1cd9c5f57cc22d",
+      "input_rows_sha256": "c5d51e60964ddeb0ff37a19eb4f9243cd2e1ad9e646cecd0f038f599fa966163",
+      "rows": 106,
+      "parse_ms": 2032.038,
+      "calculate_ms": 124.598,
+      "lines": {
+        "model": 9,
+        "native": 9,
+        "matches": true
+      },
+      "labels": {
+        "model": 29,
+        "native": 29,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_triangle/install/EWT02.txt",
+      "source_sha256": "9ecb39bd118fca4b7500f4630c9b09f8246735e88e4b9225a4bb433c9fd3edb1",
+      "input_rows_sha256": "c5d51e60964ddeb0ff37a19eb4f9243cd2e1ad9e646cecd0f038f599fa966163",
+      "rows": 106,
+      "parse_ms": 4117.662,
+      "calculate_ms": 178.91,
+      "lines": {
+        "model": 21,
+        "native": 21,
+        "matches": true
+      },
+      "labels": {
+        "model": 35,
+        "native": 35,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 41.80327868852459,
+          "native": 41.80327868852459,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_triangle/install/EWT03.txt",
+      "source_sha256": "b1222f46381b991cf8c25e810591096e18c75035236be87c87cf8c5b684b716b",
+      "input_rows_sha256": "c5d51e60964ddeb0ff37a19eb4f9243cd2e1ad9e646cecd0f038f599fa966163",
+      "rows": 106,
+      "parse_ms": 3051.964,
+      "calculate_ms": 164.381,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_no_h1/install/EWT01.txt",
+      "source_sha256": "f460d07a0a62515030c906184b85531ddadd84497ab259caea1eebfc8cbb7ab6",
+      "input_rows_sha256": "f40a73d442dddc72f7e605cc7ec82f5c149a7c9a17251854962ce6a22485ccbc",
+      "rows": 106,
+      "parse_ms": 1886.225,
+      "calculate_ms": 125.565,
+      "lines": {
+        "model": 1,
+        "native": 1,
+        "matches": true
+      },
+      "labels": {
+        "model": 6,
+        "native": 6,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_no_h1/install/EWT02.txt",
+      "source_sha256": "b24ef7c4c35030693c5802a63f267ef8842acd38c25983a59cb07587bf5019f3",
+      "input_rows_sha256": "f40a73d442dddc72f7e605cc7ec82f5c149a7c9a17251854962ce6a22485ccbc",
+      "rows": 106,
+      "parse_ms": 3650.369,
+      "calculate_ms": 170.521,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 51.834268450582655,
+          "native": 51.834268450582655,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_no_h1/install/EWT03.txt",
+      "source_sha256": "c83866f4f94d68c4d464aca1870dc2d0db163debf8a65845c690609d3c43ec29",
+      "input_rows_sha256": "f40a73d442dddc72f7e605cc7ec82f5c149a7c9a17251854962ce6a22485ccbc",
+      "rows": 106,
+      "parse_ms": 2987.925,
+      "calculate_ms": 158.361,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_newtip/install/EWT01.txt",
+      "source_sha256": "9c3dbd7be66cad0f6c037efa6ce2f6df8141cb57b5963aeb2bbd1f467d82b4e1",
+      "input_rows_sha256": "2b96825bf0ea81d3f8d64c7c123f10ec452ebc48c008a2d5aeff960ae9c80476",
+      "rows": 158,
+      "parse_ms": 1926.313,
+      "calculate_ms": 190.068,
+      "lines": {
+        "model": 7,
+        "native": 7,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_newtip/install/EWT02.txt",
+      "source_sha256": "23b93ac7ae97f285f48f38eed59ee340bb084d1a7f702e895973113098ada53d",
+      "input_rows_sha256": "2b96825bf0ea81d3f8d64c7c123f10ec452ebc48c008a2d5aeff960ae9c80476",
+      "rows": 158,
+      "parse_ms": 3884.535,
+      "calculate_ms": 253.027,
+      "lines": {
+        "model": 12,
+        "native": 12,
+        "matches": true
+      },
+      "labels": {
+        "model": 20,
+        "native": 20,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 12.32876712328767,
+          "native": 12.32876712328767,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_newtip/install/EWT03.txt",
+      "source_sha256": "30efdbd5b4f03be63458360950985a011128517d632e6a66a5989321ca0ac136",
+      "input_rows_sha256": "2b96825bf0ea81d3f8d64c7c123f10ec452ebc48c008a2d5aeff960ae9c80476",
+      "rows": 158,
+      "parse_ms": 2975.571,
+      "calculate_ms": 227.359,
+      "lines": {
+        "model": 2,
+        "native": 2,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_s_correction/install/EWT01.txt",
+      "source_sha256": "eb4f896d0e7fdf57777daa346e3defa0bcead7cd46e173038b9ff9cee48442d0",
+      "input_rows_sha256": "41b488d910d8e88381a861bce81f139469e97514a8ddfe5ff2c7ed0503d3a63e",
+      "rows": 131,
+      "parse_ms": 2052.292,
+      "calculate_ms": 169.406,
+      "lines": {
+        "model": 11,
+        "native": 11,
+        "matches": true
+      },
+      "labels": {
+        "model": 37,
+        "native": 37,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_s_correction/install/EWT02.txt",
+      "source_sha256": "a16d502fb626949eedc6bd9ceb1928f9676db1dcedf4ccd1ed5a5f4cd64f571e",
+      "input_rows_sha256": "41b488d910d8e88381a861bce81f139469e97514a8ddfe5ff2c7ed0503d3a63e",
+      "rows": 131,
+      "parse_ms": 4303.298,
+      "calculate_ms": 211.041,
+      "lines": {
+        "model": 22,
+        "native": 22,
+        "matches": true
+      },
+      "labels": {
+        "model": 40,
+        "native": 40,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 30.952380952380953,
+          "native": 30.952380952380953,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_s_correction/install/EWT03.txt",
+      "source_sha256": "92400062d2195a9d68e107510a84e782d8fdb8d67faa08e8c78cdba19820f505",
+      "input_rows_sha256": "41b488d910d8e88381a861bce81f139469e97514a8ddfe5ff2c7ed0503d3a63e",
+      "rows": 131,
+      "parse_ms": 3209.375,
+      "calculate_ms": 218.358,
+      "lines": {
+        "model": 15,
+        "native": 15,
+        "matches": true
+      },
+      "labels": {
+        "model": 26,
+        "native": 26,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "p_white_up/install/EWT01.txt",
+      "source_sha256": "d2cc673c93060bbf6fb5d8c6cc7de40c67cd53b891eb793ae483cdad56878086",
+      "input_rows_sha256": "2c8a6a6d7074ed97086261f1bd29ccba3f0daff7d3eda696a28412acc9ec25b2",
+      "rows": 104,
+      "parse_ms": 1925.804,
+      "calculate_ms": 132.371,
+      "lines": {
+        "model": 10,
+        "native": 10,
+        "matches": true
+      },
+      "labels": {
+        "model": 32,
+        "native": 32,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_white_up/install/EWT02.txt",
+      "source_sha256": "ea06f12b2cdc7ee75c6f52fce5e6865a1a6f8ac6793f752f82fabea3ab0c17e7",
+      "input_rows_sha256": "2c8a6a6d7074ed97086261f1bd29ccba3f0daff7d3eda696a28412acc9ec25b2",
+      "rows": 104,
+      "parse_ms": 3935.585,
+      "calculate_ms": 174.893,
+      "lines": {
+        "model": 24,
+        "native": 24,
+        "matches": true
+      },
+      "labels": {
+        "model": 43,
+        "native": 43,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 28.39506172839506,
+          "native": 28.39506172839506,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "p_white_up/install/EWT03.txt",
+      "source_sha256": "b61b7fa1a4f9e0f14d7daa16b013032a24370de150a3ccf2318f2bea894331e6",
+      "input_rows_sha256": "2c8a6a6d7074ed97086261f1bd29ccba3f0daff7d3eda696a28412acc9ec25b2",
+      "rows": 104,
+      "parse_ms": 3115.518,
+      "calculate_ms": 164.112,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    },
+    {
+      "name": "main_owned/install/EWT01.txt",
+      "source_sha256": "9c3dbd7be66cad0f6c037efa6ce2f6df8141cb57b5963aeb2bbd1f467d82b4e1",
+      "input_rows_sha256": "5fa26fed9ce97d5fe43be4145ed2bc58fd6fbe6146070779470080d5416e686a",
+      "rows": 189,
+      "parse_ms": 1882.389,
+      "calculate_ms": 225.53,
+      "lines": {
+        "model": 10,
+        "native": 10,
+        "matches": true
+      },
+      "labels": {
+        "model": 30,
+        "native": 30,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XWD": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XREG": {
+          "model": 1.0,
+          "native": 1.0,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "main_owned/install/EWT02.txt",
+      "source_sha256": "23b93ac7ae97f285f48f38eed59ee340bb084d1a7f702e895973113098ada53d",
+      "input_rows_sha256": "5fa26fed9ce97d5fe43be4145ed2bc58fd6fbe6146070779470080d5416e686a",
+      "rows": 189,
+      "parse_ms": 3989.995,
+      "calculate_ms": 325.759,
+      "lines": {
+        "model": 27,
+        "native": 27,
+        "matches": true
+      },
+      "labels": {
+        "model": 50,
+        "native": 50,
+        "matches": true
+      },
+      "last_bar_states": {
+        "XRPH": {
+          "model": 2.0,
+          "native": 2.0,
+          "matches": true
+        },
+        "XRDIR": {
+          "model": -1.0,
+          "native": -1.0,
+          "matches": true
+        },
+        "XRET": {
+          "model": 24.406117800195247,
+          "native": 24.406117800195247,
+          "matches": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "main_owned/install/EWT03.txt",
+      "source_sha256": "30efdbd5b4f03be63458360950985a011128517d632e6a66a5989321ca0ac136",
+      "input_rows_sha256": "5fa26fed9ce97d5fe43be4145ed2bc58fd6fbe6146070779470080d5416e686a",
+      "rows": 189,
+      "parse_ms": 3349.529,
+      "calculate_ms": 306.878,
+      "lines": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "labels": {
+        "model": 3,
+        "native": 3,
+        "matches": true
+      },
+      "last_bar_states": {},
+      "passed": true
+    }
+  ],
+  "passed": true
 }
