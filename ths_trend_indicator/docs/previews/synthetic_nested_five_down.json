@@ -1,13 +1,14 @@
 {
-  "release": "1.1.3",
+  "release": "1.1.4",
   "bars": 96,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "5edb81ff9ba3b53bd40e2456170801c627b33142023c3085a373c2b86b3cfa47",
+  "formula_normalized_utf8_sha256": "141c860fceeaec0bf9ce1abc869cc37b0c6a6b7cbdcc8ca43133ddf0c818d8fe",
   "ohlc_float64_sha256": "a498c983b8eb9705884d2efbdcc3d8d61ae692d058eaede219b876845aac4c9f",
   "work_direction": 0.0,
   "phase": 3.0,
+  "correction_context_phase": 3.0,
   "groups": [
     {
       "key": "MW",
@@ -58,27 +59,27 @@
         },
         {
           "wave": 1,
-          "bar_index": 71,
+          "bar_index": 70,
           "price": 5999.0
         },
         {
           "wave": 2,
-          "bar_index": 75,
+          "bar_index": 74,
           "price": 6251.0
         },
         {
           "wave": 3,
-          "bar_index": 79,
+          "bar_index": 78,
           "price": 5749.0
         },
         {
           "wave": 4,
-          "bar_index": 83,
+          "bar_index": 82,
           "price": 6001.0
         },
         {
           "wave": 5,
-          "bar_index": 87,
+          "bar_index": 86,
           "price": 5499.0
         }
       ],
@@ -92,8 +93,10 @@
           "first_close_index": 85,
           "first_wick_index": 85,
           "level": 5749.0,
-          "adjustment_end_index": 83,
+          "adjustment_end_index": 82,
           "adjustment_end_price": 6001.0,
+          "adjustment_shape_code": 1,
+          "adjustment_shape_label": "简单调整",
           "simple_A_close_confirmed": true,
           "ongoing": false,
           "hidden": false
@@ -107,8 +110,10 @@
           "first_close_index": 77,
           "first_wick_index": 77,
           "level": 5999.0,
-          "adjustment_end_index": 75,
+          "adjustment_end_index": 74,
           "adjustment_end_price": 6251.0,
+          "adjustment_shape_code": 1,
+          "adjustment_shape_label": "简单调整",
           "simple_A_close_confirmed": true,
           "ongoing": false,
           "hidden": false
@@ -122,8 +127,53 @@
     {
       "key": "GW",
       "owner": "最近有效子级的最后一段",
-      "owner_start_index": 83,
-      "owner_end_index": 87,
+      "owner_start_index": 82,
+      "owner_end_index": 86,
+      "direction": -1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "E1",
+      "owner": "较早第1段完整主浪",
+      "owner_start_index": 55,
+      "owner_end_index": 67,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "E2",
+      "owner": "较早第2段完整主浪",
+      "owner_start_index": -7,
+      "owner_end_index": 51,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "E3",
+      "owner": "较早第3段完整主浪",
+      "owner_start_index": -7,
+      "owner_end_index": -7,
       "direction": -1.0,
       "count": 0,
       "pending": false,
@@ -135,6 +185,74 @@
       "retracements_percent": {}
     }
   ],
+  "complete_P": {
+    "visible": true,
+    "scope_start_index": 67,
+    "scope_end_index": 87,
+    "start_price": 6401.0,
+    "end_price": 5499.0,
+    "active_tip": false,
+    "details_limited": false,
+    "numbering": "chronological P legs; a count alone is not proof of a 5/7-wave degree",
+    "segments": [
+      {
+        "start_index": 67,
+        "start_price": 6401.0,
+        "end_index": 70,
+        "end_price": 5999.0
+      },
+      {
+        "start_index": 70,
+        "start_price": 5999.0,
+        "end_index": 75,
+        "end_price": 6251.0
+      },
+      {
+        "start_index": 75,
+        "start_price": 6251.0,
+        "end_index": 78,
+        "end_price": 5749.0
+      },
+      {
+        "start_index": 78,
+        "start_price": 5749.0,
+        "end_index": 83,
+        "end_price": 6001.0
+      },
+      {
+        "start_index": 83,
+        "start_price": 6001.0,
+        "end_index": 87,
+        "end_price": 5499.0
+      }
+    ],
+    "Q": [
+      {
+        "ordinal": 1,
+        "root_index": 70,
+        "root_price": 5999.0,
+        "end_index": 77,
+        "length_excluding_root": 7.0,
+        "closed": true,
+        "counter_index": 75,
+        "counter_price": 6251.0,
+        "retracement_percent": 62.68656716417911,
+        "adjustment_code": 1.0
+      },
+      {
+        "ordinal": 2,
+        "root_index": 78,
+        "root_price": 5749.0,
+        "end_index": 85,
+        "length_excluding_root": 7.0,
+        "closed": true,
+        "counter_index": 83,
+        "counter_price": 6001.0,
+        "retracement_percent": 50.199203187250994,
+        "adjustment_code": 1.0
+      }
+    ]
+  },
   "current_correction": {
     "known": 0.0,
     "code": 0.0,
@@ -154,14 +272,56 @@
   },
   "price_plan": {
     "dir": -1.0,
-    "phase": 2.0,
+    "regime": 3.0,
+    "phase": 3.0,
     "proof": 1.0,
     "ton": 0.0,
-    "fon": 0.0,
+    "fon": 1.0,
     "h": 402.0,
     "base": 6001.0,
     "origin": 6401.0,
-    "parent_fib_on": true,
+    "projection_direction": -1.0,
+    "fib_anchors": {
+      "start_price": 6401.0,
+      "end_price": 5499.0,
+      "start_index": 67,
+      "end_index": 87,
+      "manual": false
+    },
+    "legacy_fib_calculation_eligible": true,
+    "retracement_percent": 5.65410199556541,
+    "market_type": "震荡",
+    "last_leg_type": "震荡段",
+    "fib_levels": [
+      {
+        "ratio": 0,
+        "price": 5499.0
+      },
+      {
+        "ratio": 0.236,
+        "price": 5711.872
+      },
+      {
+        "ratio": 0.382,
+        "price": 5843.564
+      },
+      {
+        "ratio": 0.5,
+        "price": 5950.0
+      },
+      {
+        "ratio": 0.618,
+        "price": 6056.436
+      },
+      {
+        "ratio": 0.786,
+        "price": 6207.972
+      },
+      {
+        "ratio": 1,
+        "price": 6401.0
+      }
+    ],
     "targets": [
       {
         "ratio": 1.208,
@@ -213,16 +373,49 @@
       }
     ]
   },
-  "segments": 28,
-  "labels": 38,
+  "turning_observations": [
+    {
+      "bar_index": 88,
+      "price": 5384.055555555556,
+      "label": "OBS RV04"
+    },
+    {
+      "bar_index": 80,
+      "price": 5691.0,
+      "label": "OBS RV05"
+    },
+    {
+      "bar_index": 71,
+      "price": 5878.5,
+      "label": "OBS RV07"
+    },
+    {
+      "bar_index": 68,
+      "price": 6421.5,
+      "label": "OBS RV05"
+    },
+    {
+      "bar_index": 75,
+      "price": 6371.5,
+      "label": "OBS RV07"
+    },
+    {
+      "bar_index": 83,
+      "price": 6121.5,
+      "label": "OBS RV09"
+    }
+  ],
+  "segments": 18,
+  "labels": 52,
   "fib_segments": 7,
   "target_segments": 0,
   "synthetic_ohlc_only": true,
   "scenario": "nested_five_down",
   "installation_files_sha256": {
-    "install/EWT01.txt": "548bdc5fbe9cae8e33f03e89f75eb5bd2a7ddb7b6708a0686df4b64615639962",
-    "install/EWT02.txt": "4ca821595168df36f0891827e67cc85f1fa2d179b62969c4f4075a05656eb293",
-    "install/EWT03.txt": "bc76baa7f2c3bd1c8f2d0cd86ee0e729a871a7f65838ef5da29dfbaa36687488"
+    "install/EWT01.txt": "827f7f9d343838e6b37e153d1e0d66f3d3dd599ec62d03392316ffa4aa07629c",
+    "install/EWT02.txt": "ff77e7f72a63c4207d268a128e19c3853ca09c45793459ea1c62725a46c24051",
+    "install/EWT03.txt": "eba955e3313cb1dfba5a145ab5ac4cfe6e2d03fd9ba581bdfde9c1fc574d1a0d",
+    "install/EWT04.txt": "1649d36ee99f3cefecdeba7eab90aec68e50ddd1975dddca37b5404844681cf7"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
 }

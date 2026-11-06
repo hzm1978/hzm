@@ -31,7 +31,7 @@ class Builder:
     def extreme(self,name,mask,price,maximum=False):
         fn='HHV'if maximum else'LLV';fallback='BSAFELO'if maximum else'BSAFEHI'
         return self.frozen(name,f'{fn}(IF({mask},{price},{fallback}),BC)')
-    def text(self,cond,age,price,text,color,align=1):
+    def text(self,cond,age,price,text,color,align=1,font=9):
         # KTEXT documents position and text to the left/centre/right of its
         # candle. DRAWTEXT only documents COLOR, not ALIGN or FONTSIZE.
         # Native KTEXT LCR and number ALIGN share TextShape.HorizontalAlign:
@@ -41,14 +41,14 @@ class Builder:
         # KTEXT also stores POSITION as a constant HorizontalOffset. A
         # dynamic POSITION can silently become NaN in native shape JSON.
         # Place the label on its historical candle with a literal offset 0.
-        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE9;")
-    def number(self,cond,age,price,value,color,precision=1):
+        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE{font};")
+    def number(self,cond,age,price,value,color,precision=1,font=9):
         # The official parser rejects an X variable in DRAWSHIFTNUMBER.
         # Wrapping it in INTPART compiles but yields an invalid constant
         # HorizontalOffset in the native shape description. Draw on the
         # target candle instead, freezing ALL four inputs at the as-of end.
         # In particular PAD/price and the gate may vary over history.
-        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN0,FONTSIZE9;')
+        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN0,FONTSIZE{font};')
     def segment(self,cond,from_age,from_price,to_age,to_price,color,style='LINETHICK1'):
         # DRAWLINE3 pairs a start bar with a LATER end bar. Use penultimate
         # and last bars as those triggers, then shift both to actual endpoints.
@@ -82,6 +82,17 @@ def group(b,key,source,n,start_age,end_age,start_price,end_price,gate,label,colo
     direction=put('DIR',f'{kind}*(1-2*{run})')
     fp=[put(f'P{i}',f'IF({run},{rp if i==0 else p[i-1]},{p[i]})')for i in range(8)]
     fa=[put(f'A{i}',f'IF({run},{ra if i==0 else a[i-1]},{a[i]})')for i in range(8)]
+    raw_fa=list(fa)
+    if source=='G':
+        # Fractals may select the last equal price of a plateau. A bounce
+        # can first reach its high BEFORE the first-break candle but repeat
+        # that high at the next open. Restore each point's first occurrence
+        # chronologically, so a legitimate two-bar Q is not rejected as a
+        # fictitious same-bar bounce/break. No intrabar order is invented.
+        for i in range(6,-1,-1):
+            extreme=f'IF({direction}={1 if i%2==0 else -1},H,L)'
+            raw=put(f'FIRSTRAW{i}',f'IF(ISLASTBAR,BARSSINCEN(VX<={os} AND VX>={oe} AND VX<{fa[i+1]} AND VX>={fa[i]} AND ABS({extreme}-{fp[i]})<=BEPS,BC),0)')
+            fa[i]=frozen(f'FIRSTA{i}',f'IF(ISNULL({raw}),{fa[i]},{raw})')
     if correction:
         c=correction
         use=put('CENDUSE',f'{c["known"]} AND {c["direction"]}={direction} AND ABS({c["root"]}-{fp[2]})<=BEPS AND {c["end_age"]}<{fa[2]} AND {c["end_age"]}>{fa[0]}')
@@ -107,8 +118,11 @@ def group(b,key,source,n,start_age,end_age,start_price,end_price,gate,label,colo
         common=b.put(q+'OK',f'{ch} AND {wh} AND {wn}>=2 AND {clock}<DATACOUNT-1 AND {direction}*({fp[r]}-{prior})>BEPS AND {fa[r-1]}>{wa} AND ABS({before}-{total})<=BEPS AND {direction}*({fp[r-2]}-{fp[r]})>BEPS')
         close_ok=b.put(q+'COK',f'{common} AND {cc} AND {cn}>=2')
         hidden=b.frozen(q+'HIDDEN',f'{wh} AND COUNT(VX<{clock} AND VX>={wa} AND {direction}*(C-O)<=0,BC)=0')
-        qs.append(dict(clock=clock,wa=wa,ca=ca,wn=wn,cn=cn,ok=common,cok=close_ok,
-                       hidden=hidden,root=fp[r],counter=fp[r-1],counter_age=fa[r-1]))
+        item=dict(clock=clock,wa=wa,ca=ca,wn=wn,cn=cn,ok=common,cok=close_ok,
+                  hidden=hidden,root=fp[r],counter=fp[r-1],counter_age=fa[r-1])
+        if key in ('E1','E2','E3'):
+            item['snapshot_age']=put(f'QSNAP{j}',f'MAX(0,{raw_fa[r-1]}-GN)')
+        qs.append(item)
     rel5=put('REL5',relation(qs[1]['cn'],qs[0]['wn']))
     rel71=put('REL71',relation(qs[2]['cn'],qs[1]['wn']))
     rel72=put('REL72',relation(qs[1]['wn'],qs[0]['wn']))
@@ -145,8 +159,8 @@ def group(b,key,source,n,start_age,end_age,start_price,end_price,gate,label,colo
         price=put(f'WP{wave}','+'.join(f'IF({length}={v},{fp[v-wave]},0)'for v in possibilities))
         age=put(f'WA{wave}','+'.join(f'IF({length}={v},{fa[v-wave]},0)'for v in possibilities))
         y=f'{price}+{direction}*{1 if wave%2 else -1}*PAD*{lane}'
-        b.text(f'{on} AND {length}>={wave} AND IF({pending} AND {length}={wave},0,1)',age,y,f'{label}{wave}',color)
-        if wave in (3,5,7):b.text(f'{on} AND {pending} AND {length}={wave}',age,y,f'{label}{wave}?',color)
+        b.text(f'{on} AND {length}>={wave} AND IF({pending} AND {length}={wave},0,1)',age,y,f'{label}{wave}',color,font=11)
+        if wave in (3,5,7):b.text(f'{on} AND {pending} AND {length}={wave}',age,y,f'{label}{wave}?',color,font=11)
     for wave in (2,4,6):
         valid_lengths=[v for v in (3,5,7)if wave<v]
         ret=put(f'RET{wave}','+'.join(f'IF({length}={v},ABS({fp[v-wave]}-{fp[v-wave+1]})/MAX(ABS({fp[v-wave+1]}-{fp[v-wave+2]}),0.0000001)*100,0)'for v in valid_lengths))
@@ -173,10 +187,27 @@ def group(b,key,source,n,start_age,end_age,start_price,end_price,gate,label,colo
         # Historical single-leg adjustments may be marked on each selected
         # degree. Do not call a multi-turn correction "simple" or replace a
         # triangle's e with its most extreme a.
-        inner=frozen(f'QINNER{j}',f'COUNT((GHC OR GLC) AND VX+GN<{fa[2*j+2]} AND VX+GN>{q["counter_age"]},BC)')
+        # Equal-price repeats of the root are not an internal adjustment.
+        # Require an alternating return turn after a real opposite turn
+        # inside this adjustment; the ending extreme itself is excluded.
+        high_return=f'({direction}=1 AND GHC AND VX+GLT+GN<{fa[2*j+2]} AND VX+GLT+GN>{q["counter_age"]})'
+        low_return=f'({direction}=(0-1) AND GLC AND VX+GHT+GN<{fa[2*j+2]} AND VX+GHT+GN>{q["counter_age"]})'
+        inner=frozen(f'QINNER{j}',f'COUNT(({high_return} OR {low_return}) AND VX+GN<{fa[2*j+2]} AND VX+GN>{q["counter_age"]},BC)')
         covered=frozen(f'QCOVER{j}',f'COUNT((GHC OR GLC) AND VX+GN>={q["clock"]},BC)>0')
         simple=put(f'QSIMPLE{j}',f'{qshow} AND SHOWC AND {inner}=0 AND {covered} AND {q["cok"]}')
         b.text(simple,q['counter_age'],f'{q["counter"]}-{direction}*PAD*({lane}+2.5)',f'{label}A·简单调整',color,2)
+        if key in ('E1','E2','E3'):
+            snap=q['snapshot_age']
+            def shape_match(size):
+                return f'REF(GK{size},{snap}) AND ABS(REF(GP{size},{snap})-{q["root"]})<=BEPS AND ABS(REF(GA{size},{snap})+{snap}+GN-{q["clock"]})<=GN'
+            match=f'REF(GTYPE,{snap})=(0-{direction}) AND ABS(REF(GP0,{snap})-{q["counter"]})<=BEPS'
+            shape=frozen(f'QSHAPE{j}',f'IF({match},IF({shape_match(5)},REF(GAC5,{snap}),IF({shape_match(3)},REF(GAC3,{snap}),0)),0)')
+            q['shape_code']=shape
+            y=f'{q["counter"]}-{direction}*PAD*({lane}+2.5)'
+            compound=f'{qshow} AND SHOWC AND {inner}>0'
+            b.text(f'{compound} AND {shape}>0',q['counter_age'],y,f'{label}AD',color,2)
+            b.number(f'{compound} AND {shape}>0',q['counter_age'],y,shape,color,0)
+            b.text(f'{compound} AND {shape}=0',q['counter_age'],y,f'{label}调整待确认',color,2)
     caption_y=f'{fp[0]}+{direction}*PAD*({lane}+2)'
     b.text(f'{length}=5 AND {five} AND {rel5}=0',fa[0],caption_y,'同级5·结构解释',color,2)
     b.text(f'{length}=5 AND {five} AND {rel5}=1',fa[0],caption_y,'扩张5·待第三Q',color)
@@ -193,13 +224,21 @@ def group(b,key,source,n,start_age,end_age,start_price,end_price,gate,label,colo
     b.text(f'{mode}>=2 AND {pending}',fa[0],caption_y,'高度合并·待收盘Q',color,2)
     h1=put('PROJH',f'IF({length}=7,ABS({fp[6]}-{fp[7]}),IF({length}=5,ABS({fp[4]}-{fp[5]}),ABS({fp[2]}-{fp[3]})))')
     proof=put('PROOF',f'{on} AND IF({length}=7,{qs[2]["cok"]},IF({length}=5,{qs[1]["cok"]},{qs[0]["cok"]}))')
+    if key!='MW':
+        end_watch=f'SHOWT AND {on} AND {proof} AND {length}>=5 AND IF({pending},0,1)'
+        y=f'{fp[0]}-{direction}*PAD*({lane}+1.2)'
+        b.text(end_watch,fa[0],y,'段末·观察',color,2)
+        b.number(f'{end_watch} AND {oe}>0',fa[0],y,fp[0],color,2)
     return dict(key=key,on=on,length=length,direction=direction,p=fp,a=fa,qs=qs,h1=h1,run=run,pending=pending,proof=proof)
 
 
 def layers():
     b=Builder()
     b.lines.append('{ 当前前缀的书本结构图层：第一Q收盘，后续Q影线；候选与进行中分开 }')
-    b.frozen('BSAFEHI','MAX(ABS(HHV(H,0)),ABS(LLV(L,0)))+1')
+    # A positive BARPOS window explicitly spans the loaded prefix. The
+    # native host's zero-window extrema can be 0 inside this snapshot,
+    # making 1 an invalid "above every price" fallback for LLV masks.
+    b.frozen('BSAFEHI','MAX(ABS(HHV(H,BC)),ABS(LLV(L,BC)))+1')
     b.put('BSAFELO','0-BSAFEHI')
     b.frozen('BEPS','MAX(ABS(C)*0.0000000001,0.0000001)')
     b.frozen('BPAD','PAD')
@@ -209,16 +248,20 @@ def layers():
     groups.append(group(b,'MW','B','BN','WORKAGE','0','WORKSTART','C','WORKVALID','主',
                         'COLORYELLOW',2,True,correction))
     main=groups[0]
-    active=b.put('OWN_ACTIVE',f'{main["run"]} OR (PHASE=1 AND {main["direction"]}=WD)')
+    active=b.put('OWN_ACTIVE',f'{main["run"]} OR (PARENTPHASE=1 AND {main["direction"]}=WD)')
     current_start=b.put('OWN_CURRENTAGE',f'IF({main["on"]},IF({active},{main["a"][1]},{main["a"][0]}),BA0+BN)')
     current_price=b.put('OWN_CURRENTPRICE',f'IF({main["on"]},IF({active},{main["p"][1]},{main["p"][0]}),BP0)')
     previous_start=b.put('OWN_PREVSTART',f'IF({main["on"]},IF({active},{main["a"][2]},{main["a"][1]}),BA1+BN)')
     previous_end=b.put('OWN_PREVEND',f'IF({main["on"]},IF({active},{main["a"][1]},{main["a"][0]}),BA0+BN)')
     previous_p1=b.put('OWN_PREVP1',f'IF({main["on"]},IF({active},{main["p"][2]},{main["p"][1]}),BP1)')
     previous_p2=b.put('OWN_PREVP2',f'IF({main["on"]},IF({active},{main["p"][1]},{main["p"][0]}),BP0)')
-    groups.append(group(b,'SW','S','PN',current_start,'0',current_price,'C',f'({main["on"]} OR BK0) AND SHOWSUB','子',
+    # Degree is established by owned time windows and actual Q coupling,
+    # not by rejecting any pullback shorter than PN confirmation bars.
+    # Start child searches with the finest observed extrema, including
+    # first-equal/two-bar Qs. Each child's Q/merge rules still apply.
+    groups.append(group(b,'SW','G','GN',current_start,'0',current_price,'C',f'({main["on"]} OR BK0) AND SHOWSUB','子',
                         'COLORCYAN',0.6,correction=correction))
-    groups.append(group(b,'PW','S','PN',previous_start,previous_end,previous_p1,previous_p2,f'({main["on"]} OR BK1) AND SHOWSUB','子前',
+    groups.append(group(b,'PW','G','GN',previous_start,previous_end,previous_p1,previous_p2,f'({main["on"]} OR BK1) AND SHOWSUB','子前',
                         'COLORLIBLUE',0.6,correction=correction))
     live,previous=groups[1:]
     gp1=b.put('OWN_GP1',f'IF({live["on"]},{live["p"][1]},{previous["p"][1]})')
@@ -227,14 +270,36 @@ def layers():
     ga2=b.put('OWN_GA2',f'IF({live["on"]},{live["a"][0]},{previous["a"][0]})')
     groups.append(group(b,'GW','G','GN',ga1,ga2,gp1,gp2,f'({live["on"]} OR {previous["on"]}) AND SHOWGRAND','孙',
                         'COLORLIGREEN',1.1))
+    # Earlier completed impulses of the selected main structure need
+    # their own child details, even while a later main leg is running.
+    for index,(older,newer)in enumerate(((3,2),(5,4),(7,6)),1):
+        key=f'E{index}'
+        start=b.put(key+'OWNERSTART',f'IF({main["on"]},{main["a"][older]},IF(BTYPE=WD,BA{older}+BN,BA{older-1}+BN))')
+        end=b.put(key+'OWNEREND',f'IF({main["on"]},{main["a"][newer]},IF(BTYPE=WD,BA{newer}+BN,BA{newer-1}+BN))')
+        first_price=b.put(key+'OWNERFIRST',f'IF({main["on"]},{main["p"][older]},IF(BTYPE=WD,BP{older},BP{older-1}))')
+        last_price=b.put(key+'OWNERLAST',f'IF({main["on"]},{main["p"][newer]},IF(BTYPE=WD,BP{newer},BP{newer-1}))')
+        gate=f'SHOWSUB AND '+('SHOWGRAND AND 'if index==3 else'')+f'WD<>0 AND IF({main["on"]},{main["length"]}>={older},IF(BTYPE=WD,BK{older},BK{older-1})) AND WD*({last_price}-{first_price})>BEPS'
+        groups.append(group(b,key,'G','GN',start,end,first_price,last_price,gate,f'早{index}子','COLORLIBLUE',0.6))
+    # SW/PW are retained as mathematical degree/H1 evidence only. The
+    # visible blue structure is now one continuous P owner, never two
+    # disjoint latest-eight-turn fragments. This also removes S entirely.
+    b.lines=[line for line in b.lines if not any('{ OWNER:'+key+' }' in line for key in ('SW','PW','GW','E3'))]
     b.owner='corrections';correction_drawing(b,correction)
-    from candle_patterns import turning_labels
-    b.owner='reversals';turning_labels(b)
     from book_lines import draw as line_tools
     b.owner='tools';line_tools(b,groups[0])
     from book_prices import draw as price_plan
-    b.owner='prices';plan=price_plan(b,groups)
-    b.lines.append(f'价格尺方向:{plan["direction"]},NODRAW;')
+    b.owner='prices';plan=price_plan(b,groups[:4])
+    from p_complete import draw as complete_p
+    complete_p(b,plan)
+    # Optional current correction only. It starts at this P's actual end,
+    # and cannot substitute a disconnected S fragment for the full P.
+    group(b,'SC','G','GN','PCSTOP','0','PCLAST','C',
+          'PCON AND SHOWGRAND AND (PRPHASE=2 OR PRPHASE=3)',
+          '回调','COLORCYAN',0.6,correction=correction)
+    from candle_patterns import turning_labels
+    b.owner='reversals';turning_labels(b)
+    b.owner='prices'
+    b.draw(f'价格尺方向:{plan["direction"]},NODRAW;')
     b.text(f'SHOWBOOK AND {plan["source"]}>0 AND IF({groups[0]["on"]},0,1) AND ({plan["target_on"]} OR {plan["fib_on"]})',
            '0','C+PAD*5','子级价格尺·候选','COLORWHITE',2)
     return b.lines,groups

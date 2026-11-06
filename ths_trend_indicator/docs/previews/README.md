@@ -1,21 +1,14 @@
-# 合成预览与明细
+# 1.1.4合成预览与明细
 
-1.1.3图片读取完整开发模型EWTN_ASCII.txt，三个安装图层合计的线段、文字/数值和位置另逐项对照。原生计算坐标的独立比较见上级目录的原生计算核对.json，原始输出见原生计算样本.json。K线均由scenarios.py生成，不代表真实行情或期货通原生渲染。同名JSON保留源码哈希、结构、所属范围、Q起止/长度、回调、当前A及价格尺状态。图上ASCII简称见上级目录的ASCII图例对照.md。
+读取完整开发模型，含可选回调S；实际只加载EWT01/02时不显示较早历史层/可选S。图为Matplotlib预览，不是4.39客户端截图，也不是用户市场行情复原。安装等价与原生计算坐标另逐项核对。
 
-| 场景 | 核对重点 |
-|---|---|
-| fall_rebound | 长下降合并主三浪及内部子五浪、35/35的Q、前完整段七条分割 |
-| five_up | 自动上涨五浪和各自回调 |
-| nested_five_down | 工作方向尚未充分确认时的下降五子浪 |
-| seven_expanding | 自动扩张七浪、三组Q |
-| triangle_e | 自动收缩三角，e=175高于a=159，外起点201，A收盘确认 |
-| trend_targets | 人工H1的三个最近未触及目标，比例/价格在线上 |
+重点样本：p_whole（超过八个细转折仍覆盖整段），p_white（较晚c和强势abc），p_triangle（e非最极端a），p_no_h1（仍有P），p_newtip（回调不等BN），p_s_correction（可选S归属）；另有short_inner_q（5、2、5），parent_correction、sideways、earlier_complete及原有六场景。
 
-在本目录运行（NumPy，图片另需Matplotlib）：
+同名JSON的complete_P记录实际P起止、每个Q的起止/根数、调整末点、回调%、形态及细节限额。price_plan给实际取尺起止与方向；groups是保留的数学分级参考，不是所有组都被显示。所有合成场景由scenarios.py固定生成。
 
 ```text
-python inspect_structure.py --scenario fall_rebound --output docs/previews/synthetic_fall_rebound.json --preview docs/previews/synthetic_fall_rebound.png
-python inspect_structure.py --scenario triangle_e --output docs/previews/synthetic_triangle_e.json --preview docs/previews/synthetic_triangle_e.png
+python inspect_structure.py --scenario p_white --output structure.json --preview preview.png
+python inspect_structure.py --csv candles.csv --output own_structure.json --preview own.png
 ```
 
-没有额外隐藏标签。横轴从0起表示实际K线序号，字体与缩放仍须原生核对。
+CSV须按时间升序提供O/H/L/C；bar_index从0起。图例与形态编号见上级ASCII图例对照.md。实际字体/缩放仍需目标界面核验。

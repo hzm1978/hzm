@@ -1,6 +1,6 @@
 """Numerical models for functions newly verified in the client export.
 
-Missing BARSSINCEN/VALUEWHEN/extreme ages stay NULL; callers must explicitly
+Missing BARSSINCEN/VALUEWHEN values stay NULL; callers must explicitly
 guard them with the catalogued ISNULL/IFELSE pattern instead of multiplying by 0.
 """
 import numpy as np
@@ -47,10 +47,14 @@ def extra_math(fn,args,n):
         values,windows=args
         result=np.full(n,np.nan)
         for i,w in enumerate(windows):
-            if i==0 or not np.isfinite(w): continue
-            begin=0 if w==0 else max(0,i-int(w)+1)
-            # Tie convention: most recent equal extreme, documented locally.
-            sample=values[begin:i+1][::-1]
-            result[i]=(np.argmax(sample) if fn=='HHVBARS' else np.argmin(sample))
+            if not np.isfinite(w): continue
+            # Actual official 5.4 arithmetic: first equal extreme in the
+            # window, including the first bar. N=0 returns zero; it does
+            # not inherit HHV/LLV's whole-history N=0 convention.
+            if w==0:result[i]=0;continue
+            begin=max(0,i-int(w)+1)
+            sample=values[begin:i+1]
+            at=np.argmax(sample)if fn=='HHVBARS'else np.argmin(sample)
+            result[i]=i-begin-at
         return result
     return NotImplemented

@@ -37,9 +37,9 @@ class InstallationLayerTests(unittest.TestCase):
 
     def test_all_drawing_roots_are_installed_exactly_once_with_shared_settings(self):
         counts=Counter()
-        self.assertEqual(len(self.profile['install']),3)
-        self.assertEqual(len(self.profile['recommended_install']),2)
-        self.assertEqual(self.profile['optional_install'],['install/EWT03.txt'])
+        self.assertEqual(len(self.profile['install']),4)
+        self.assertEqual(len(self.profile['recommended_install']),3)
+        self.assertEqual(self.profile['optional_install'],['install/EWT04.txt'])
         for name in self.profile['install']:
             raw=(ROOT/'formulas'/name).read_bytes()
             profile=self.profile['files'][name]
@@ -85,9 +85,11 @@ class InstallationLayerTests(unittest.TestCase):
 
     def test_subwave_lines_numbers_and_prices_share_one_complete_layer(self):
         profiles=self.profile['files']
-        self.assertEqual(set(profiles['install/EWT02.txt']['families']),{'SW','PW','prices'})
+        self.assertEqual(set(profiles['install/EWT02.txt']['families']),{'P_complete','prices'})
         self.assertNotIn('GW',profiles['install/EWT01.txt']['families'])
-        self.assertEqual(profiles['install/EWT03.txt']['families'],['GW'])
+        self.assertEqual(set(profiles['install/EWT03.txt']['families']),{'E1','E2','tools'})
+        self.assertEqual(profiles['install/EWT04.txt']['families'],['SC'])
+        self.assertNotIn('E3',profiles['install/EWT01.txt']['families'])
 
     def test_backset_series_is_materialized_before_native_consumers(self):
         count=0

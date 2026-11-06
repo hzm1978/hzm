@@ -41,20 +41,29 @@ def standard_k():
     return lines
 
 
-def pivots(prefix, n, depth=6):
+def pivots(prefix, n, depth=6, first_equal=False):
     """Confirmed fractals; retain record extremes within same-kind runs.
 
     A0..An are ages of confirmation bars, not the earlier extreme bars.
     Actual extreme age = Ai + n. Every dynamic REF is clamped separately.
     """
     p = prefix
+    # Fine Q seeds retain the FIRST equal extreme. Requiring the following
+    # candle to have a strictly higher low/lower high loses a two-bar Q when
+    # a reversal opens at the previous close and shares its extreme.
+    high_turn=f'(REF(H,{n})>HHV(H,{n}) OR REF(H,{n})>REF(H,{n}+1))'if first_equal else f'REF(H,{n})>HHV(H,{n})'
+    low_turn=f'(REF(L,{n})<LLV(L,{n}) OR REF(L,{n})<REF(L,{n}+1))'if first_equal else f'REF(L,{n})<LLV(L,{n})'
+    # The opposite extreme's own candle can have a long wick above/below
+    # the entire subsequent bounce. It is not part of that bounce. Keeping
+    # it in this record window suppresses real inner turns and their Qs.
+    record_extra=''if first_equal else'+1'
     lines = [f"{{ {p}级：右侧{n}根确认；局部转折不是书中浪号 }}",
-             f"{p}RH:=BC>2*{n} AND REF(H,{n})=HHV(H,2*{n}+1) AND REF(H,{n})>HHV(H,{n});",
-             f"{p}RL:=BC>2*{n} AND REF(L,{n})=LLV(L,2*{n}+1) AND REF(L,{n})<LLV(L,{n});",
+             f"{p}RH:=BC>2*{n} AND REF(H,{n})=HHV(H,2*{n}+1) AND {high_turn};",
+             f"{p}RL:=BC>2*{n} AND REF(L,{n})=LLV(L,2*{n}+1) AND {low_turn};",
              f"{p}HA:={p}RH AND IF({p}RL,0,1);",
              f"{p}LA:={p}RL AND IF({p}RH,0,1);",
-             f"{p}HC:={p}HA AND REF(H,{n})>=HHV(REF(H,{n}),MIN(BC,MAX(1,IF(SUM({p}LA,0)>0,BARSLAST({p}LA)+1,BC))));",
-             f"{p}LC:={p}LA AND REF(L,{n})<=LLV(REF(L,{n}),MIN(BC,MAX(1,IF(SUM({p}HA,0)>0,BARSLAST({p}HA)+1,BC))));",
+             f"{p}HC:={p}HA AND REF(H,{n})>=HHV(REF(H,{n}),MIN(BC,MAX(1,IF(SUM({p}LA,0)>0,BARSLAST({p}LA){record_extra},BC))));",
+             f"{p}LC:={p}LA AND REF(L,{n})<=LLV(REF(L,{n}),MIN(BC,MAX(1,IF(SUM({p}HA,0)>0,BARSLAST({p}HA){record_extra},BC))));",
              f"{p}HT:=BARSLAST({p}HC);", f"{p}LT:=BARSLAST({p}LC);",
              f"{p}HS:=SUM({p}HC,0)>0;", f"{p}LS:=SUM({p}LC,0)>0;",
              f"{p}NOLOW:=IF({p}LS=0,1,0);",
@@ -100,7 +109,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC 1.1.3；按用户导出函数库生成，结构解释需结合确认时刻 }",
+    lines = ["{ 趋势交易·期货通PC 1.1.4；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
@@ -113,7 +122,9 @@ def core():
              "SHOWF:=1;", "SHOWT:=1;", "SHOWC:=1;", "DETAIL:=0;",
              "SHOWBOOK:=1;", "SHOWSUB:=1;", "SHOWGRAND:=1;", "BOOKBARS:=600;"]
     lines += standard_k()
-    lines += pivots("S", "PN",8) + pivots("B", "BN",8) + pivots("G","GN",8)
+    lines += pivots("S", "PN",8) + pivots("B", "BN",8) + pivots("G","GN",8,first_equal=True)
+    from book_corrections import adjustment_seed_formulas
+    lines += adjustment_seed_formulas()
     lines += q_intervals("S", "PN") + q_intervals("B", "BN")
     lines += ["{ 工作方向观察：同侧双点或先前已知工作极值收盘突破；旧方向破位后不强行沿用 }",
               "BH0:=IF(BTYPE=1,BP0,BP1);", "BH1:=IF(BTYPE=1,BP2,BP3);",
@@ -128,6 +139,7 @@ def core():
               "DSA:=MIN(BC-1,BARSLAST(DEVENT));",
               "WD:=IF(DIR=1,1,IF(DIR=-1,-1,IF(SUM(DEVENT,0)>0,REF(DVALUE,DSA),0)));",
               "LEG:=IF(STYPE=1,IF(C>SP0,1,-1),IF(C<SP0,-1,1));",
+              "PARENTLEG:=IF(BTYPE=1,IF(C>BP0,1,-1),IF(C<BP0,-1,1));",
               "SIDE:=BK3 AND MAX(BH0,BH1)-MIN(BL0,BL1)>0 AND ABS(BH0-BH1)+ABS(BL0-BL1)<(MAX(BH0,BH1)-MIN(BL0,BL1))*0.25;",
               "PHASE:=IF(KIND>0,KIND,IF(SIDE,3,IF(WD=0,0,IF(LEG=WD,1,2))));",
               "{ 工作方向最近一次切换时锁定起端；其后小回调不缩短工作段 }",
@@ -141,6 +153,10 @@ def core():
               "WORKAGE:=MIN(BC-1,WAGE+REF(ORIGAGE,WAGE));",
               "WORKEND:=IF(WD=1,HHV(H,WAGE+1),LLV(L,WAGE+1));",
               "WORKVALID:=SUM(WCHANGE,0)>0 AND REF(BK3,WAGE) AND WORKAGE>WAGE;",
+              "WORKTIPRAW:=IF(WD=1,HHVBARS(H,WAGE+1),LLVBARS(L,WAGE+1));",
+              "WORKTIPAGE:=IF(ISNULL(WORKTIPRAW),0,WORKTIPRAW);",
+              "BOOKTIPTURN:=WORKVALID AND WD<>0 AND WORKTIPAGE>=PN AND IF(WD=1,HHV(H,PN)<WORKEND,LLV(L,PN)>WORKEND);",
+              "PARENTPHASE:=IF(KIND>0,KIND,IF(SIDE,3,IF(WD=0,0,IF(BOOKTIPTURN,2,IF(PARENTLEG=WD,1,2)))));",
               "{ 逆势或横盘时：工作段末端0%，锁定起端100%，不以内部小腿替换 }",
               "ALIGN:=BTYPE=WD;",
               "FEND:=IF(MANF=1,MTO,IF(PHASE=3,BP0,WORKEND));",
@@ -308,8 +324,7 @@ def drawing():
     lines += ["DRAWTEXT(ISLASTBAR AND WD=0,C,'工作方向待确认：可设置DIR'),COLORWHITE;",
               "DRAWTEXT(ISLASTBAR AND PHASE=1 AND SHOWT AND IF(TON,0,1),C,'缺少同级H1依据：暂不投射目标'),COLORWHITE;",
               "DRAWTEXT(ISLASTBAR AND IF(SKOK,0,1),C,'标准K样本不足或全为零'),COLORWHITE;",
-              "工作方向:WD,NODRAW;", "末段状态:PHASE,NODRAW;", "方向模式:DIR,NODRAW;", "标准K:SK,NODRAW;",
-              "工作回调百分比:RET,NODRAW;",
+              "工作方向:WD,NODRAW;", "末段状态:IF(SHOWBOOK,PARENTPHASE,PHASE),NODRAW;", "方向模式:DIR,NODRAW;", "标准K:SK,NODRAW;",
               "DRAWTEXT(DETAIL AND ISLASTBAR AND SK1,L-PAD*3,'细腿回调%'),COLORCYAN;",
               "DRAWNUMBER1(DETAIL AND ISLASTBAR AND SK1,L-PAD*4,SRET,1),COLORCYAN;",
               "DRAWTEXT(SHOWQ AND (DETAIL OR VX=VQAGE) AND (BUQ OR BDQ) AND QOK AND QREL=0,C,'Q同级'),COLORYELLOW;",
@@ -321,20 +336,38 @@ def drawing():
                  '锤子·观察','倒锤子·观察','阳抱阴·观察','阴抱阳·观察','启明星·观察',
                  '黄昏星·观察','看涨十字·观察','看跌十字·观察','缺少同级H1依据')
     for i,line in enumerate(lines):
-        if line.startswith('VT:='):
+        if line.startswith('VF:='):
+            # Standard book mode has exactly ONE price plan. The legacy
+            # ruler is retained only for explicit development comparison.
+            lines[i]=line.replace('REFX1(FON,100000)','REFX1(FON AND SHOWBOOK=0,100000)')
+        elif line.startswith('VT:='):
             lines[i]=line.replace('REFX1(TON,100000)','REFX1(TON AND SHOWBOOK=0,100000)')
         elif 'SHOWQ AND' in line:
             lines[i]=line.replace('SHOWQ AND','SHOWQ AND (SHOWBOOK=0 OR DETAIL) AND')
         elif any(text in line for text in legacy_only) and line.startswith('DRAWTEXT('):
             lines[i]=line.replace('DRAWTEXT(','DRAWTEXT(SHOWBOOK=0 AND ',1)
-    from candle_patterns import PATTERNS,pattern_text
-    for code in PATTERNS:
-        for bull,flag,series,price,color in ((True,'VKBUY','BPCODE','L-PAD*4','COLORRED'),
-                                           (False,'VKSELL','SPCODE','H+PAD*4','COLORGREEN')):
-            lines.append(f"KTEXT(SHOWK AND {flag} AND {series}={code},0,{price},0,{color},'关键位·{pattern_text(code,bull)}');")
+    # A single named RV observation supplies the pattern. KEY is a separate
+    # two-root badge for standard size + key position, avoiding a second
+    # overlapping copy of every pattern name.
+    for flag,price,color in (('VKBUY','L-PAD*3','COLORRED'),('VKSELL','H+PAD*3','COLORGREEN')):
+        near='GLS AND GTYPE=(0-1) AND GLT<=3'if flag=='VKBUY'else'GHS AND GTYPE=1 AND GHT<=3'
+        lines.append(f"KTEXT(SHOWK AND {flag} AND {near} AND VX<=REFX1(MIN(WORKAGE,BOOKBARS),100000),0,{price},0,{color},'KEY'),FONTSIZE9;")
+    # Raw fractals are reference geometry; qualified book waves retain the
+    # coloured, thicker strokes. This separates the two interpretations.
+    refs=[]
+    for line in lines:
+        if line.startswith(('POLYLINE(VSH OR VSL','POLYLINE(VBH OR VBL','POLYLINE(REFX1(SK0','POLYLINE(REFX1(BK0')):
+            line=line.replace('POLYLINE(VSH OR VSL,','POLYLINE((VSH OR VSL),').replace('POLYLINE(VBH OR VBL,','POLYLINE((VBH OR VBL),')
+            refs.append(line.replace('POLYLINE(','POLYLINE(SHOWBOOK=0 AND ',1))
+            match=re.match(r'(.+),COLOR(?:CYAN|YELLOW)\)(?:,LINETHICK[12])?;',line)
+            if not match:raise ValueError('unknown reference-polyline template')
+            if not line.startswith(('POLYLINE((VSH','POLYLINE(REFX1(SK0')):
+                refs.append(match[1].replace('POLYLINE(','POLYLINE(SHOWBOOK AND ',1)+',COLORGRAY),DOT;')
+        else:refs.append(line)
+    lines=refs
     for i,line in enumerate(lines):
         if line.startswith(('POLYLINE(','DRAWTEXT(','DRAWNUMBER1(','KTEXT('))or ',NODRAW;'in line:
-            owner='prices'if 'COLORFFCC00'in line or 'COLORFF9900'in line else'reversals'if '关键位·'in line else'overview'
+            owner='prices'if 'COLORFFCC00'in line or 'COLORFF9900'in line else'key_reversals'if '关键位·'in line else'overview'
             lines[i]=line+' { OWNER:'+owner+' }'
     from book_layers import layers
     book,groups=layers()
@@ -424,8 +457,9 @@ def build():
         (path/relative).write_bytes(layer_data)
         profiles[relative]=layer_profile
         install.append(relative)
-    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.3','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
-                                               'install':install,'recommended_install':install[:2],'optional_install':install[2:],
+    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.1.4','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
+                                               'install':install,'p_focus_install':install[:2],
+                                               'recommended_install':install[:3],'optional_install':install[3:],
                                                'installation_layers':layer_report,'files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     write_legend(ascii_profile)
     (ROOT/"变量映射.json").write_text(json.dumps(formula_names(), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")

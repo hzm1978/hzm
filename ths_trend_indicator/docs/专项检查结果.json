@@ -1,25 +1,6 @@
 {
-  "release": "1.1.3",
-  "full_suite": {
-    "run": 121,
-    "passed": true,
-    "log_sha256": "eba9bfe3afb6a2a6a80a70e37fc9682056a3b0440f57d4b8898d8f0146820cfe"
-  },
-  "supplement": {
-    "command": "python -m unittest discover -s tests -p test_native_placement.py -v",
-    "run": 5,
-    "passed": true,
-    "tests": [
-      "test_dynamic_text_offsets_are_rejected_before_delivery (test_native_placement.NativePlacementTests.test_dynamic_text_offsets_are_rejected_before_delivery)",
-      "test_invalid_native_shape_offsets_cannot_be_reported_as_passed (test_native_placement.NativePlacementTests.test_invalid_native_shape_offsets_cannot_be_reported_as_passed)",
-      "test_labels_use_latest_gate_age_price_and_value_on_historical_candle (test_native_placement.NativePlacementTests.test_labels_use_latest_gate_age_price_and_value_on_historical_candle)",
-      "test_negative_parameter_assignment_has_no_complete_rhs_wrapper (test_native_placement.NativePlacementTests.test_negative_parameter_assignment_has_no_complete_rhs_wrapper)",
-      "test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch (test_native_placement.NativePlacementTests.test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch)"
-    ],
-    "log": "test_dynamic_text_offsets_are_rejected_before_delivery (test_native_placement.NativePlacementTests.test_dynamic_text_offsets_are_rejected_before_delivery) ... ok\ntest_invalid_native_shape_offsets_cannot_be_reported_as_passed (test_native_placement.NativePlacementTests.test_invalid_native_shape_offsets_cannot_be_reported_as_passed) ... ok\ntest_labels_use_latest_gate_age_price_and_value_on_historical_candle (test_native_placement.NativePlacementTests.test_labels_use_latest_gate_age_price_and_value_on_historical_candle) ... ok\ntest_negative_parameter_assignment_has_no_complete_rhs_wrapper (test_native_placement.NativePlacementTests.test_negative_parameter_assignment_has_no_complete_rhs_wrapper) ... ok\ntest_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch (test_native_placement.NativePlacementTests.test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.006s\n\nOK\n",
-    "log_sha256": "0f6b28ca4f7c10ea403cf56a99383f869362d9f0b2a4766c78b03f8a2bd616ea"
-  },
-  "unique_tests_covered": 122,
-  "new_method_after_full_suite_discovery": "NativePlacementTests.test_negative_parameter_assignment_has_no_complete_rhs_wrapper",
-  "scope": "Full run plus all native-placement tests after negative-assignment regression was added; default installation formula bytes unchanged by final emitter fix."
+  "release": "1.1.4",
+  "status": "superseded_by_complete_suite",
+  "evidence": "本地检查结果.json",
+  "previous_release_report": "../diagnostics/history/v1_1_3_专项检查结果.json"
 }

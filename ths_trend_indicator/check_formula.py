@@ -85,6 +85,7 @@ class Parser:
         self.source = source
         self.tokens = []
         offset = 0
+        line = 1
         for m in TOKEN.finditer(source):
             if m.start() != offset:
                 raise FormulaError(f"unexpected text at line {source.count(chr(10), 0, offset)+1}: {source[offset:m.start()]!r}")
@@ -92,11 +93,12 @@ class Parser:
             if not (t.isspace() or t.startswith(("{","//","/*"))):
                 token = t if t.startswith("'") else t.upper()
                 token = {"&&":"AND", "||":"OR"}.get(token, token)
-                self.tokens.append((token, source.count("\n", 0, m.start())+1))
+                self.tokens.append((token, line))
+            line += t.count("\n")
             offset = m.end()
         if offset != len(source):
             raise FormulaError(f"unclosed comment or unsupported text: {source[offset:offset+50]!r}")
-        self.tokens.append(("<EOF>", source.count("\n")+1))
+        self.tokens.append(("<EOF>", line))
         self.i = 0
 
     def peek(self, ahead=0):

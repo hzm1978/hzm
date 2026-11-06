@@ -1,0 +1,486 @@
+{
+  "scope": "Official 5.4 offline synthetic arithmetic controls; not target client UI",
+  "inputs": [
+    {
+      "name": "guarded_nested_sum",
+      "source": "F:=C>O;X:IF(ISLASTBAR,SUM(COUNT(F,1),0),0),NODRAW;",
+      "data": {
+        "O": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "C": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "H": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "L": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "roots": [
+        {
+          "function": "OUTPUT",
+          "output": true
+        }
+      ]
+    },
+    {
+      "name": "guarded_count_zero",
+      "source": "F:=C>O;X:IF(ISLASTBAR,COUNT(F,0),0),NODRAW;",
+      "data": {
+        "O": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "C": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "H": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "L": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "roots": [
+        {
+          "function": "OUTPUT",
+          "output": true
+        }
+      ]
+    },
+    {
+      "name": "guarded_count_positive",
+      "source": "F:=C>O;X:IF(ISLASTBAR,COUNT(F,BARPOS),0),NODRAW;",
+      "data": {
+        "O": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "C": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "H": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "L": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "roots": [
+        {
+          "function": "OUTPUT",
+          "output": true
+        }
+      ]
+    },
+    {
+      "name": "named_numeric_input",
+      "source": "F:=C>O;Y:=COUNT(F,1);X:IF(ISLASTBAR,SUM(Y,0),0),NODRAW;",
+      "data": {
+        "O": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "C": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "H": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "L": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "roots": [
+        {
+          "function": "OUTPUT",
+          "output": true
+        }
+      ]
+    },
+    {
+      "name": "named_prefix",
+      "source": "F:=C>O;Y:=SUM(COUNT(F,1),0);X:IF(ISLASTBAR,Y,0),NODRAW;",
+      "data": {
+        "O": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "C": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "H": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "L": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "roots": [
+        {
+          "function": "OUTPUT",
+          "output": true
+        }
+      ]
+    }
+  ],
+  "native_report": {
+    "checked_at_utc": "2026-11-06T02:17:40.563406+00:00",
+    "harness_sha256": "59e2536dc3af3f9eff3aa91eb7ada8a364d717b6defc51f3d3ebd10186c28f0a",
+    "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
+    "parser_client_version": "5.4.0.5",
+    "target_client_ui_run": false,
+    "scope": "Offline arithmetic on synthetic OHLC, not UI performance or account trading",
+    "cases": [
+      {
+        "name": "guarded_nested_sum",
+        "parse_ms": 0.811,
+        "calculate_ms": 0.036,
+        "rows": 8,
+        "source_sha256": "c62192dd2dff60385fa910d169a202bd090b756cfc010124a9e92069aba71b30",
+        "input_rows_sha256": "2b7ccf0a16c4ca0fce99b9083ec9b02246939e39459ab694e0294ef5e7923fe3",
+        "native_response": {
+          "ErrCode": 0,
+          "ExtraMsg": "",
+          "ErrLine": ""
+        },
+        "shapes": 1,
+        "notice_callbacks_enabled": false,
+        "account_login": false,
+        "trading_or_external_data": false,
+        "geometry": {
+          "lines": [],
+          "labels": [],
+          "visibility_examples": [
+            {
+              "field": 20003,
+              "values": {
+                "-10000.0": 8
+              }
+            }
+          ],
+          "line_diagnostics": []
+        },
+        "outputs": {
+          "X": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "name": "guarded_count_zero",
+        "parse_ms": 0.187,
+        "calculate_ms": 0.027,
+        "rows": 8,
+        "source_sha256": "49fa59a896bd6447ce32c861f30a5fe59588debac9fd0e1d566df7d66457dcba",
+        "input_rows_sha256": "2b7ccf0a16c4ca0fce99b9083ec9b02246939e39459ab694e0294ef5e7923fe3",
+        "native_response": {
+          "ErrCode": 0,
+          "ExtraMsg": "",
+          "ErrLine": ""
+        },
+        "shapes": 1,
+        "notice_callbacks_enabled": false,
+        "account_login": false,
+        "trading_or_external_data": false,
+        "geometry": {
+          "lines": [],
+          "labels": [],
+          "visibility_examples": [
+            {
+              "field": 20002,
+              "values": {
+                "-10000.0": 8
+              }
+            }
+          ],
+          "line_diagnostics": []
+        },
+        "outputs": {
+          "X": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "name": "guarded_count_positive",
+        "parse_ms": 0.21,
+        "calculate_ms": 0.045,
+        "rows": 8,
+        "source_sha256": "9c84ccddcfdb34a773580c3a5d2ee7fecb72ea39877656beb8853cce145abd8c",
+        "input_rows_sha256": "2b7ccf0a16c4ca0fce99b9083ec9b02246939e39459ab694e0294ef5e7923fe3",
+        "native_response": {
+          "ErrCode": 0,
+          "ExtraMsg": "",
+          "ErrLine": ""
+        },
+        "shapes": 1,
+        "notice_callbacks_enabled": false,
+        "account_login": false,
+        "trading_or_external_data": false,
+        "geometry": {
+          "lines": [],
+          "labels": [],
+          "visibility_examples": [
+            {
+              "field": 20002,
+              "values": {
+                "-10000.0": 8
+              }
+            }
+          ],
+          "line_diagnostics": []
+        },
+        "outputs": {
+          "X": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "name": "named_numeric_input",
+        "parse_ms": 0.224,
+        "calculate_ms": 0.025,
+        "rows": 8,
+        "source_sha256": "33e1a36345e7ef24c0843300b5b7d4e66340c39a6090dd0ac0f61a86c425acb7",
+        "input_rows_sha256": "2b7ccf0a16c4ca0fce99b9083ec9b02246939e39459ab694e0294ef5e7923fe3",
+        "native_response": {
+          "ErrCode": 0,
+          "ExtraMsg": "",
+          "ErrLine": ""
+        },
+        "shapes": 1,
+        "notice_callbacks_enabled": false,
+        "account_login": false,
+        "trading_or_external_data": false,
+        "geometry": {
+          "lines": [],
+          "labels": [],
+          "visibility_examples": [
+            {
+              "field": 20004,
+              "values": {
+                "-10000.0": 8
+              }
+            }
+          ],
+          "line_diagnostics": []
+        },
+        "outputs": {
+          "X": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "name": "named_prefix",
+        "parse_ms": 0.172,
+        "calculate_ms": 0.025,
+        "rows": 8,
+        "source_sha256": "840db239c370cdae56dc7a50b7108d3bb7c2a30e39296c047f370cc7e33f70b2",
+        "input_rows_sha256": "2b7ccf0a16c4ca0fce99b9083ec9b02246939e39459ab694e0294ef5e7923fe3",
+        "native_response": {
+          "ErrCode": 0,
+          "ExtraMsg": "",
+          "ErrLine": ""
+        },
+        "shapes": 1,
+        "notice_callbacks_enabled": false,
+        "account_login": false,
+        "trading_or_external_data": false,
+        "geometry": {
+          "lines": [],
+          "labels": [],
+          "visibility_examples": [
+            {
+              "field": 20003,
+              "values": {
+                "-10000.0": 8
+              }
+            }
+          ],
+          "line_diagnostics": []
+        },
+        "outputs": {
+          "X": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            8.0
+          ]
+        }
+      }
+    ],
+    "passed": true
+  }
+}

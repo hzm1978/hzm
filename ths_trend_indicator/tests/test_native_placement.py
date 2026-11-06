@@ -63,6 +63,16 @@ class NativePlacementTests(unittest.TestCase):
         self.assertEqual(guarded[0][2][0],('identifier','ISLASTBAR'))
         self.assertEqual(guarded[0][2][1][0:2],('call','HHV'))
 
+    def test_guarded_prefix_has_history_and_boolean_sum_uses_count(self):
+        from check_formula import walk
+        raw='BC:=BARPOS;FLAG:=C>O;\n{ END_ANALYSIS }\nAA:=REFX1(IF(ISLASTBAR,SUM(FLAG,0),0),100000);'
+        statements,_=typed_model(raw)
+        prefix=[s for s in statements if s.expression[0:2]==('call','COUNT')and s.expression[2][1]==('number',0.)]
+        self.assertEqual(len(prefix),1)
+        guarded=[n for s in statements for n in walk(s.expression)if n[0:2]==('call','IF')and n[2][0]==('identifier','ISLASTBAR')]
+        self.assertEqual(guarded[0][2][1],('identifier',prefix[0].name))
+        self.assertFalse(any(n[0:2]==('call','SUM')for s in statements for n in walk(s.expression)))
+
     def test_negative_parameter_assignment_has_no_complete_rhs_wrapper(self):
         statement=Parser('DIR:=(0-1);').parse()[0]
         # Parser represents binary parentheses structurally, so this is

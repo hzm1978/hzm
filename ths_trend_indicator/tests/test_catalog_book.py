@@ -23,7 +23,7 @@ MAP=formula_names()
 GROUPS=layers()[1]
 
 
-@lru_cache(maxsize=8)
+@lru_cache(maxsize=16)
 def full(name):
     data,settings=sample(name)
     return data,audit(SOURCE,data,settings)
@@ -54,7 +54,7 @@ def group_case(prices,steps=18,running=False,mirror=False):
         if at>=len(data['C']):at-=1
         point=data['H'][at] if (i%2==1)^mirror else data['L'][at]
         points.append((at,point))
-    raw=['BC:=BARPOS;','PN:=2;','BN:=7;','GN:=1;','SHOWC:=1;','GHC:=0;','GLC:=0;',f'WD:={-1 if mirror else 1};',
+    raw=['BC:=BARPOS;','PN:=2;','BN:=7;','GN:=1;','SHOWC:=1;','SHOWT:=1;','GHC:=0;','GLC:=0;','GHT:=0;','GLT:=0;',f'WD:={-1 if mirror else 1};',
          'SHOWBOOK:=1;','SHOWQ:=1;','BOOKBARS:=600;','PAD:=5;',f'CT:{kind},NODRAW;']
     for j in range(8):
         at,price=points[min(j,len(points)-1)]
@@ -104,6 +104,14 @@ def correction_case(prices,final=(94,),mirror=False):
 
 
 class ClientCatalogTests(unittest.TestCase):
+    def test_native_extreme_age_uses_first_equal_and_zero_window(self):
+        data={'O':np.full(8,5.),'C':np.full(8,6.),
+              'H':np.array([10,15,15,12,11,15,15,13],float),
+              'L':np.array([0,-2,-2,0,1,-2,-2,0],float)}
+        env=evaluate('QH:=HHVBARS(H,5);QL:=LLVBARS(L,5);QZ:=HHVBARS(H,0);',data)
+        np.testing.assert_array_equal(env['QH'],[0,0,1,2,3,4,4,2])
+        np.testing.assert_array_equal(env['QL'],[0,0,1,2,3,4,4,2])
+        np.testing.assert_array_equal(env['QZ'],np.zeros(8))
     def test_catalog_is_exact_user_export_with_286_records(self):
         self.assertEqual(len(RECORDS),286)
         self.assertEqual(hashlib.sha256(RAW).hexdigest(),
@@ -151,6 +159,33 @@ class ClientCatalogTests(unittest.TestCase):
 
 
 class BookStructureTests(unittest.TestCase):
+    def test_short_inner_q_is_not_swallowed_by_parent_leg(self):
+        data,r=full('short_inner_q');g=GROUPS[2]
+        self.assertEqual(value(r,g['length']),7)
+        self.assertEqual((value(r,'PWREL71'),value(r,'PWREL72')),(-1,1))
+        observed=[value(r,g['qs'][2]['cn']),value(r,g['qs'][1]['wn']),value(r,g['qs'][0]['wn'])]
+        self.assertEqual(observed,[5,2,5])
+        for j,q in enumerate(g['qs']):
+            start=len(data['C'])-1-int(value(r,q['clock']))
+            values=data['C']if j==2 else data['L']
+            first=start+1+int(np.flatnonzero(values[start+1:]<value(r,q['root']))[0])
+            age=q['ca']if j==2 else q['wa']
+            self.assertEqual(len(data['C'])-1-int(value(r,age)),first)
+            self.assertGreater(value(r,q['counter_age']),value(r,age))
+        labels={l['text']for l in r['labels']}
+        self.assertTrue({'P Q','RET%','P END'}.issubset(labels))
+        self.assertEqual(value(r,'PCQ4INDEX'),3)
+        self.assertTrue(all(value(r,f'PCQ{i}N')==q for i,q in enumerate((5,2,5))))
+
+    def test_short_inner_q_and_ruler_are_symmetric(self):
+        data,settings=sample('short_inner_q')
+        mirror={'O':-data['O'],'C':-data['C'],'H':-data['L'],'L':-data['H']}
+        r=audit(SOURCE,mirror,settings)
+        self.assertEqual(value(r,'PWLEN'),7)
+        self.assertEqual(value(r,'PWDIR'),1)
+        self.assertAlmostEqual(value(r,'PRFSTART'),-2947.7)
+        self.assertAlmostEqual(value(r,'PRFEND'),-2639.2)
+
     def test_actual_five_waves_and_each_return_ratio(self):
         _,r=full('five_up');g=GROUPS[0]
         self.assertEqual(value(r,g['length']),5)
@@ -161,7 +196,7 @@ class BookStructureTests(unittest.TestCase):
         self.assertEqual(value(r,'MWPROOF'),1)
 
     def test_long_down_subwave_is_owned_by_selected_main_leg(self):
-        _,r=full('fall_rebound');main,_,previous,_=GROUPS
+        _,r=full('fall_rebound');main,_,previous,_=GROUPS[:4]
         self.assertEqual(value(r,'MWMERGEMODE'),1)
         self.assertEqual(value(r,main['length']),3)
         self.assertEqual(value(r,previous['length']),5)
@@ -169,8 +204,8 @@ class BookStructureTests(unittest.TestCase):
         self.assertEqual(value(r,'PWOS'),value(r,main['a'][1]))
         self.assertEqual(value(r,'PWOE'),value(r,main['a'][0]))
         labels={l['text']for l in r['labels']}
-        self.assertTrue({'子前1','子前2','子前3','子前4','子前5','子前2回调%','子前4回调%'}.issubset(labels))
-        self.assertIn('子前A·简单调整',labels)
+        self.assertTrue({'P Q','RET%','P AD','P END'}.issubset(labels))
+        self.assertEqual(value(r,'PCQ4INDEX'),2)
         self.assertEqual(value(r,'CRKNOWN'),0)
         self.assertIn('调整进行中·未确认结束',labels)
 
@@ -245,6 +280,34 @@ class BookStructureTests(unittest.TestCase):
 
 
 class CorrectionAndPriceTests(unittest.TestCase):
+    def test_historical_adjustment_geometry_codes_and_mirrors(self):
+        from book_corrections import adjustment_seed_formulas
+        cases=[([100,120,110,130],2),([100,120,110,115],3),([100,120,90,130],4),
+               ([100,140,110,130,115,125],5),([100,110,95,120,90,125],6),
+               ([100,120,110,150,130,170],7),([100,120,101,119,102,120],8)]
+        data={k:np.full(20,v,dtype=float)for k,v in [('O',100),('C',101),('H',102),('L',99)]}
+        for prices,expected in cases:
+            for sign in (1,-1):
+                with self.subTest(prices=prices,sign=sign):
+                    points=list(reversed(prices));raw=['BC:=BARPOS;',f'GTYPE:={sign};','GK3:=1;',f'GK5:={int(len(prices)==6)};']
+                    for i in range(6):
+                        raw += [f'GP{i}:={sign*points[min(i,len(points)-1)]};',f'GA{i}:={i*5};']
+                    env=evaluate('\n'.join(raw+adjustment_seed_formulas()),data)
+                    self.assertEqual(env['GAC3'if len(prices)==4 else'GAC5'][-1],expected)
+
+    def test_unowned_adjustment_geometry_does_not_leak_into_historical_q(self):
+        import re
+        data,settings=sample('earlier_complete')
+        source=SOURCE
+        for name in ('E1QINNER0','E1QINNER1'):
+            name=MAP[name]
+            source,count=re.subn(r'^'+name+r':=[^;\n]+;',name+':=1;',source,flags=re.M)
+            self.assertEqual(count,1)
+        overrides={MAP.get(k,k):v for k,v in {'GAC3':2,'GAC5':5}.items()}
+        r=audit(source,data,(settings or {})|overrides)
+        self.assertFalse(any(l['text']=='早1子AD'for l in r['labels']))
+        self.assertIn('早1子调整待确认',{l['text']for l in r['labels']})
+
     def test_full_automatic_triangle_preserves_outer_root_through_inner_turns(self):
         _,r=full('triangle_e')
         self.assertEqual(value(r,'CRCODE'),5)
@@ -255,11 +318,26 @@ class CorrectionAndPriceTests(unittest.TestCase):
     def test_default_key_markers_keep_specific_shapes_and_reduce_consecutive_duplicates(self):
         data,r=full('triangle_e')
         detail=audit(SOURCE,data,{'DETAIL':1})
-        marked=[l for l in r['labels']if l['text'].startswith('关键位·')]
-        raw=[l for l in detail['labels']if l['text'].startswith('关键位·')]
+        marked=[l for l in r['labels']if l['text']=='KEY']
+        raw=[l for l in detail['labels']if l['text']=='KEY']
         self.assertGreater(len(marked),0);self.assertLess(len(marked),len(raw))
         self.assertTrue(all(l['align']=='left'for l in marked))
         self.assertTrue(all(l['align']=='right'for l in r['labels']if l['text'].startswith('转折观察·')))
+        for badge in marked:
+            self.assertTrue(any(l['x']==badge['x']and l['text'].startswith('转折观察·')for l in r['labels']))
+
+    def test_earlier_completed_parent_keeps_all_child_details(self):
+        data,r=full('earlier_complete')
+        self.assertEqual(value(r,'MWLEN'),3)
+        self.assertEqual(value(r,'E1LEN'),5)
+        labels={l['text']for l in r['labels']}
+        self.assertTrue({'早1子1','早1子2','早1子3','早1子4','早1子5','早1子Q1','早1子Q2',
+                         '早1子2回调%','早1子4回调%','段末·观察'}.issubset(labels))
+        for wave in (2,4):
+            g=GROUPS[4];prices=[value(r,p)for p in g['p']]
+            expected=abs(prices[5-wave]-prices[6-wave])/abs(prices[6-wave]-prices[7-wave])*100
+            self.assertAlmostEqual(value(r,'E1RET'+str(wave)),expected)
+        self.assertGreater(value(r,'E1OE'),0)
 
     def test_triangle_uses_e_even_when_a_is_lower(self):
         _,r,c,get=correction_case([100,80,96,85,93,88],final=[94])
@@ -290,8 +368,62 @@ class CorrectionAndPriceTests(unittest.TestCase):
         _,r=full('fall_rebound')
         fib=[l for l in r['lines']if l['color']=='COLORFFCC00']
         self.assertEqual(len(fib),7)
-        self.assertEqual(sorted(l['start'][1]for l in fib)[::6],[2199,4801])
+        self.assertEqual(sorted(l['start'][1]for l in fib)[::6],[2199,3501])
         self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
+
+    def test_fib_uses_preceding_complete_leg_not_earlier_trend_origin(self):
+        data,r=full('short_inner_q')
+        self.assertEqual(value(r,'PRREGIME'),1)
+        self.assertEqual(value(r,'PRPHASE'),2)
+        self.assertAlmostEqual(value(r,'PRFSTART'),2947.7)
+        self.assertAlmostEqual(value(r,'PRFEND'),2639.2)
+        fib=sorted(l['start'][1]for l in r['lines']if l['color']=='COLORFFCC00')
+        expected=sorted(2639.2+(2947.7-2639.2)*q for q in (0,.236,.382,.5,.618,.786,1))
+        np.testing.assert_allclose(fib,expected,rtol=0,atol=1e-8)
+        self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
+        from inspect_structure import snapshot
+        anchors=snapshot(data,r)['price_plan']['fib_anchors']
+        self.assertAlmostEqual(anchors['start_price'],2947.7)
+        self.assertLess(anchors['start_index'],anchors['end_index'])
+
+    def test_local_bounce_does_not_turn_parent_correction_into_main_wave(self):
+        data,r=full('parent_correction')
+        self.assertEqual(value(r,'STYPE'),-1)
+        self.assertGreater(data['C'][-1],value(r,'SP0'))
+        self.assertEqual(value(r,'LEG'),1)
+        self.assertEqual(value(r,'PARENTLEG'),-1)
+        self.assertEqual(value(r,'PRREGIME'),1)
+        self.assertEqual(value(r,'PRPHASE'),2)
+        self.assertEqual(value(r,'PRTON'),0)
+        self.assertEqual(sum(l['color']=='COLORFFCC00'for l in r['lines']),7)
+        self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
+
+    def test_sideways_market_uses_last_complete_leg_and_never_targets(self):
+        _,r=full('sideways')
+        self.assertEqual(value(r,'SIDE'),1)
+        self.assertEqual(value(r,'PRREGIME'),3)
+        self.assertEqual(value(r,'PRPHASE'),3)
+        self.assertEqual(value(r,'PRFSTART'),value(r,'BP1'))
+        self.assertEqual(value(r,'PRFEND'),value(r,'BP0'))
+        self.assertEqual(sum(l['color']=='COLORFFCC00'for l in r['lines']),7)
+        self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
+
+    def test_three_price_modes_are_mutually_exclusive(self):
+        data,settings=sample('trend_targets')
+        for phase in (1,2,3):
+            with self.subTest(phase=phase):
+                r=audit(SOURCE,data,settings|{'KIND':phase,'MANF':1,'MFROM':3500,'MTO':3300,'MFAGE':20})
+                self.assertEqual(value(r,'PRREGIME'),3 if phase==3 else 1)
+                self.assertEqual(value(r,'PRPHASE'),phase)
+                self.assertEqual(sum(l['color']=='COLORFFCC00'for l in r['lines']),0 if phase==1 else 7)
+                self.assertEqual(sum(l['color']=='COLORFF9900'for l in r['lines']),3 if phase==1 else 0)
+
+    def test_unresolved_market_has_no_unproven_targets(self):
+        data={k:np.full(80,v,dtype=float)for k,v in [('O',100),('C',100),('H',101),('L',99)]}
+        r=audit(SOURCE,data)
+        self.assertEqual(value(r,'PRREGIME'),0)
+        self.assertEqual(value(r,'PRPHASE'),0)
+        self.assertFalse(any(l['color']in ('COLORFF9900','COLORFFCC00')for l in r['lines']))
 
     def test_only_three_unhit_targets_with_both_ratio_and_number_on_lines(self):
         _,r=full('trend_targets')
@@ -301,9 +433,11 @@ class CorrectionAndPriceTests(unittest.TestCase):
         self.assertEqual(sorted(l['start'][1]for l in lines),[3152.8,3176.4,3258.4])
         self.assertFalse(any(l['color']=='COLORFFCC00'for l in r['lines']))
         for line in lines:
-            labels=[l for l in r['labels']if l['color']=='COLORFF9900'and l['y']==line['start'][1]]
+            caption=line['start'][1]+value(r,'BPAD')*.35
+            labels=[l for l in r['labels']if l['color']=='COLORFF9900'and abs(l['y']-caption)<1e-8]
             self.assertEqual(len(labels),2)
             self.assertTrue(all(line['start'][0]<=l['x']<=line['end'][0]for l in labels))
+            self.assertTrue(all(l['y']>line['start'][1]for l in labels))
 
     def test_no_new_degree_is_invented_after_all_targets_touched(self):
         data,_=sample('trend_targets')

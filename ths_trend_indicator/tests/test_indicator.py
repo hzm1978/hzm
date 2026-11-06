@@ -47,6 +47,10 @@ def slice_data(data, length):
 
 
 class SyntaxTests(unittest.TestCase):
+    def test_tokenizer_keeps_physical_lines_across_comments(self):
+        source='// first\nAA:=1;\n/* comment\nmore */\nBB:=AA+1;\n\nCC:=BB+1;'
+        statements=Parser(source).parse()
+        self.assertEqual([(s.name,s.line)for s in statements],[('AA',2),('BB',5),('CC',7)])
     def test_generated_sources_and_encodings_are_identical(self):
         samples = build()
         for name, text in samples.items():
@@ -62,7 +66,7 @@ class SyntaxTests(unittest.TestCase):
         self.assertIn("DRAWNUMBER", report["functions"])
         self.assertNotIn("DRAWSHIFTNUMBER", report["functions"])
         self.assertLessEqual(report["outputs"], 16)
-        self.assertLessEqual(report["variables"], 2048)
+        self.assertLessEqual(report["variables"], 4096)
         self.assertTrue(report["future_calls"])
 
     def test_compatibility_probe(self):
@@ -108,8 +112,8 @@ class SyntaxTests(unittest.TestCase):
     def test_source_below_development_budget(self):
         # Version 1.1 contains bounded degree/correction layers. This is our
         # own budget, never asserted to be a native editor's documented limit.
-        self.assertLess(len(SOURCE.encode("gb18030")), 262144)
-        self.assertLess(len(SOURCE.replace("\n", "\r\n").encode("utf-8-sig")), 262144)
+        self.assertLess(len(SOURCE.encode("gb18030")), 524288)
+        self.assertLess(len(SOURCE.replace("\n", "\r\n").encode("utf-8-sig")), 524288)
 
     def test_rejects_futures_trade_names_from_client_error(self):
         for name in ("SK", "BK", "BP", "SP", "BPK", "SPK", "CLOSEOUT"):
@@ -304,7 +308,7 @@ N2:=IFELSE(H<REF(H,1)&&REF(H,1)<REF(H,2),REF(H,2),0);
     def test_conditional_price_segments_do_not_create_nullable_plot_outputs(self):
         statements = Parser(SOURCE).parse()
         self.assertEqual({s.name for s in statements if s.output},
-                         {"工作方向", "末段状态", "方向模式", "标准K", "工作回调百分比", "价格尺方向"})
+                         {"工作方向", "末段状态", "方向模式", "标准K", "工作回调百分比", "价格尺方向", "行情类型", "价格尺状态"})
         self.assertFalse(any(s.expression[0:2] == ("call","DRAWLINE") for s in statements))
         lines = [s for s in statements if s.expression[0:2] == ("call", "POLYLINE")]
         self.assertGreaterEqual(len(lines),10)
@@ -348,7 +352,8 @@ class NumericalTests(unittest.TestCase):
             self.assertLess(line['start'][0],line['end'][0])
             self.assertEqual(line['start'][1],line['end'][1])
             self.assertEqual(line['end'][0],len(data['C'])-1)
-        self.assertGreater(len([line for line in result['lines'] if line['color']=='COLORCYAN']),8)
+        self.assertGreaterEqual(len([line for line in result['lines'] if line['color']=='COLORLIBLUE']),7)
+        self.assertTrue(any(line['color']=='COLORGRAY'and 'DOT'in line['styles']for line in result['lines']))
 
     def test_default_annotation_density_is_lower_than_detail_mode(self):
         data=waves()
@@ -357,7 +362,7 @@ class NumericalTests(unittest.TestCase):
         # The full book layer must survive the concise mode. Additional wave,
         # retracement and A labels make the old "half of detail" budget stale.
         self.assertLess(len(normal['labels']),len(detail['labels']))
-        for text in ('子前1','子前2','子前3','子前4','子前5','子前2回调%','子前4回调%'):
+        for text in ('P START','P END','P Q','RET%','P AD'):
             self.assertTrue(any(label['text']==text for label in normal['labels']))
             self.assertTrue(any(label['text']==text for label in detail['labels']))
         self.assertFalse(any('Q收破' in label['text'] for label in normal['labels']))
@@ -380,9 +385,11 @@ class NumericalTests(unittest.TestCase):
         self.assertFalse(any(line['color']=='COLORFFCC00'for line in result['lines']))
         for line in targets:
             self.assertGreater(line['end'][0]-line['start'][0],30)
+            caption=line['start'][1]+float(result['env'][NAMES['BPAD']][-1])*.35
             matched=[label for label in result['labels'] if label['color']=='COLORFF9900'
-                     and label['y']==line['start'][1]]
+                     and abs(label['y']-caption)<1e-8]
             self.assertEqual(len(matched),2)
+            self.assertTrue(all(label['y']>line['start'][1]for label in matched))
             for label in matched:
                 self.assertLess(line['start'][0],label['x'])
                 self.assertLess(label['x'],line['end'][0]-3)

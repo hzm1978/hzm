@@ -1,0 +1,170 @@
+{
+  "scope": "Official 5.4 offline synthetic arithmetic controls; not target client UI",
+  "inputs": [
+    {
+      "name": "equal_extreme_clock",
+      "source": "QH:HHVBARS(H,5),NODRAW;QL:LLVBARS(L,5),NODRAW;QHA:HHVBARS(H,0),NODRAW;QLA:LLVBARS(L,0),NODRAW;",
+      "data": {
+        "O": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "C": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "H": [
+          10,
+          15,
+          15,
+          12,
+          11,
+          15,
+          15,
+          13
+        ],
+        "L": [
+          0,
+          -2,
+          -2,
+          0,
+          1,
+          -2,
+          -2,
+          0
+        ]
+      },
+      "roots": [
+        {
+          "function": "OUTPUT",
+          "output": true
+        },
+        {
+          "function": "OUTPUT",
+          "output": true
+        },
+        {
+          "function": "OUTPUT",
+          "output": true
+        },
+        {
+          "function": "OUTPUT",
+          "output": true
+        }
+      ]
+    }
+  ],
+  "native_report": {
+    "checked_at_utc": "2026-11-06T01:50:20.898125+00:00",
+    "harness_sha256": "59e2536dc3af3f9eff3aa91eb7ada8a364d717b6defc51f3d3ebd10186c28f0a",
+    "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
+    "parser_client_version": "5.4.0.5",
+    "target_client_ui_run": false,
+    "scope": "Offline arithmetic on synthetic OHLC, not UI performance or account trading",
+    "cases": [
+      {
+        "name": "equal_extreme_clock",
+        "parse_ms": 0.833,
+        "calculate_ms": 0.06,
+        "rows": 8,
+        "source_sha256": "f9b41d774a2b043e92bded1c702b7522fde7d979f732e492251ce46f8966fe5d",
+        "input_rows_sha256": "54977b70be2174e68e66d4b05b68e6bd2e63770b14a6eebf7050ab95f8ec2fb9",
+        "native_response": {
+          "ErrCode": 0,
+          "ExtraMsg": "",
+          "ErrLine": ""
+        },
+        "shapes": 4,
+        "notice_callbacks_enabled": false,
+        "account_login": false,
+        "trading_or_external_data": false,
+        "geometry": {
+          "lines": [],
+          "labels": [],
+          "visibility_examples": [
+            {
+              "field": 20004,
+              "values": {
+                "-10000.0": 8
+              }
+            },
+            {
+              "field": 20005,
+              "values": {
+                "-10000.0": 8
+              }
+            },
+            {
+              "field": 20006,
+              "values": {
+                "-10000.0": 8
+              }
+            },
+            {
+              "field": 20007,
+              "values": {
+                "-10000.0": 8
+              }
+            }
+          ],
+          "line_diagnostics": []
+        },
+        "outputs": {
+          "QH": [
+            0.0,
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            4.0,
+            4.0,
+            2.0
+          ],
+          "QL": [
+            0.0,
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            4.0,
+            4.0,
+            2.0
+          ],
+          "QHA": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "QLA": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "passed": true
+  }
+}

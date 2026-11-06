@@ -9,6 +9,7 @@ from collections import Counter
 from datetime import datetime,timezone
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 
@@ -43,7 +44,8 @@ def line_key(item):
 
 
 def label_key(item):
-    return (item['function'],int(item['x']),round(float(item['y']),7),item['text'],item['align'])
+    font=item.get('font_size')if item['function']in ('KTEXT','DRAWNUMBER')else None
+    return (item['function'],int(item['x']),round(float(item['y']),7),item['text'],item['align'],font)
 
 
 def compare(reports):
@@ -79,10 +81,18 @@ def compare(reports):
             if not equal:
                 comparison[kind]['only_model']=list((model-native).elements())[:8]
                 comparison[kind]['only_native']=list((native-model).elements())[:8]
+        states={}
+        for title,values in result.get('outputs',{}).items():
+            if title not in ('XWD','XPH','XREG','XRPH','XRDIR','XRET'):continue
+            model_value=float(local['env'][title][-1]);native_value=values[-1]
+            equal=native_value is not None and math.isclose(model_value,native_value,rel_tol=1e-12,abs_tol=1e-8)
+            states[title]={'model':model_value,'native':native_value,'matches':equal};passed&=equal
+        comparison['last_bar_states']=states
         comparison['passed']=passed;comparisons.append(comparison)
     return {'release':profiles['release'],'checked_at_utc':datetime.now(timezone.utc).isoformat(),
             'scope':'Actual native arithmetic/coordinates on deterministic synthetic OHLC; not target-client UI, real-market interpretation, or order execution',
             'harness_sha256':harness,'comparison_harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            'local_evaluator_sha256':{name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest()for name in ('catalog_math.py','check_formula.py','plot_audit.py')},
             'parser_client_versions':sorted({r['parser_client_version']for r in reports}),
             'parser_dll_sha256':sorted({r['parser_dll_sha256']for r in reports}),
             'target_client_ui_run':False,'account_login':False,

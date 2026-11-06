@@ -57,7 +57,7 @@ def main():
     (ROOT/'docs'/'使用函数核对.json').write_text(json.dumps(function_evidence,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     evidence['function_catalog']={k:v for k,v in function_evidence.items() if k!='used'}
     evidence['development_budgets']={'note':'Project review budgets, NOT published client limits',
-                                    'source_gb18030_bytes':262144,'variables':2048}
+                                    'source_gb18030_bytes':524288,'variables':4096}
     feedback = ROOT/"diagnostics"/"client_compile_feedback.json"
     if feedback.exists():
         evidence["client_compile_feedback"] = json.loads(feedback.read_text(encoding="utf-8"))

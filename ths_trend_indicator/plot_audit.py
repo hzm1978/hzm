@@ -101,7 +101,8 @@ def audit(source, data, overrides=None, analysis_end_line=None):
                 x=i+int(args[1][i]) if fn=='KTEXT' else (i+(-1 if args[5][i]==0 else 1)*int(args[6][i]) if fn=='DRAWSHIFTNUMBER' else i)
                 y=args[2][i] if fn=='KTEXT' else args[1][i]
                 align=('left','center','right')[int(args[3][i])]if fn=='KTEXT'else next(({'ALIGN0':'left','ALIGN1':'center','ALIGN2':'right'}[s]for s in st.styles if s.startswith('ALIGN')),'center')
-                labels.append({'x':int(x),'y':float(y),'text':text,'align':align,
+                font=next((int(s[8:])for s in st.styles if s.startswith('FONTSIZE')),None)
+                labels.append({'x':int(x),'y':float(y),'text':text,'align':align,'font_size':font,
                                'color':color,'function':fn,'statement':st.line})
         else:
             raise FormulaError(f'plot audit refuses drawing {fn}')
@@ -137,7 +138,7 @@ def save_preview(source, data, path, overrides=None, last=160,analysis_end_line=
         ax.plot([a[0],b[0]],[a[1],b[1]],color=color(line['color']),lw=width,ls=style)
     for label in result['labels']:
         if label['x']>=begin:
-            ax.text(label['x'],label['y'],label['text'],fontsize=6.5,
+            ax.text(label['x'],label['y'],label['text'],fontsize=(label.get('font_size')or 9)*.72,
                     color=color(label['color']),fontproperties=font,ha=label.get('align','left'),clip_on=True)
     visible=np.r_[data['H'][begin:],data['L'][begin:],
                   [y for line in result['lines'] for x,y in (line['start'],line['end']) if x>=begin]]

@@ -17,7 +17,7 @@ def draw(b,main):
     envelope=f('ENVELOPE',f'COUNT(VX<={a0} AND VX>={a1} AND IF({d}=1,L<{value}-BEPS,H>{value}+BEPS),BC)=0')
     valid=f('VALID',f'SHOWC AND SHOWBOOK AND WORKVALID AND {a0}>{a1} AND {a1}>{tip} AND {d}*({second}-{start})>0 AND {envelope}')
     span=p('SPAN',f'MIN(SPAN,{a0})')
-    b.lines.append(f'POLYLINE({valid} AND (VX={span} OR ISLASTBAR),{value},COLORYELLOW),LINETHICK1;')
+    b.draw(f'POLYLINE({valid} AND (VX={span} OR ISLASTBAR),{value},COLORYELLOW),LINETHICK1;')
     # Book pivot tool: external side wave-1/wave-3 slope, translated to wave-2.
     # This is not a parallel copy of the trend-line slope.
     length=main['length'];points=main['p'];ages=main['a']
@@ -33,7 +33,7 @@ def draw(b,main):
     inside=f('INSIDE',f'COUNT(VX<={ea1} AND VX>={ea3} AND IF({d}=1,L<{translated}-BEPS,H>{translated}+BEPS),BC)=0')
     pivot_ok=p('PIVOTOK',f'SHOWBOOK AND SHOWC AND {main["on"]} AND {main["direction"]}={d} AND {ea1}>{ea3} AND {outside} AND {inside}')
     pspan=p('PSPAN',f'MIN(SPAN,{ea1})')
-    b.lines.append(f'POLYLINE({pivot_ok} AND (VX={pspan} OR ISLASTBAR),{translated},COLORMAGENTA);')
+    b.draw(f'POLYLINE({pivot_ok} AND (VX={pspan} OR ISLASTBAR),{translated},COLORMAGENTA);')
     # A frozen line cannot report a historical break before anchor 2 was known.
     known_age=p('KNOWNAGE',f'MAX(0,{a1}-BN)')
     ba,bh=b.first('LNBREAK',f'VX<{known_age} AND {d}*(C-{value})<(0-BEPS)')
@@ -50,7 +50,7 @@ def draw(b,main):
     delay_ready=p('DELAYREADY',f'{valid} AND {bh} AND {ba}>=2 AND IF({direct} OR {fresh},0,1)')
     b.text(f'{valid} AND {bh} AND {fresh}','0','C','创新极值·延时过滤','COLORGRAY')
     da,dh=b.first('LNDELAY',f'VX<{ba}-2 AND {d}*(C-{level})<(0-BEPS)')
-    b.lines.append(f'POLYLINE({delay_ready} AND (VX={ba} OR ISLASTBAR),{level},COLORWHITE),DOT;')
+    b.draw(f'POLYLINE({delay_ready} AND (VX={ba} OR ISLASTBAR),{level},COLORWHITE),DOT;')
     b.text(f'{delay_ready} AND IF({dh},0,1)','0',level,'延时线·待收盘','COLORWHITE',2)
     b.text(f'{delay_ready} AND {dh}',da,level,'延时收破·观察','COLORWHITE')
     return {'trend_valid':valid,'pivot_valid':pivot_ok,'delay_ready':delay_ready}

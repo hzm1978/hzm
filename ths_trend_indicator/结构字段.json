@@ -86,13 +86,13 @@
       "SWP7"
     ],
     "a": [
-      "SWA0",
+      "SWFIRSTA0",
       "SWMA1",
       "SWMA2",
       "SWMA3",
-      "SWA4",
-      "SWA5",
-      "SWA6",
+      "SWFIRSTA4",
+      "SWFIRSTA5",
+      "SWFIRSTA6",
       "SWA7"
     ],
     "qs": [
@@ -120,7 +120,7 @@
         "hidden": "SWQ1HIDDEN",
         "root": "SWP4",
         "counter": "SWP3",
-        "counter_age": "SWA3"
+        "counter_age": "SWFIRSTA3"
       },
       {
         "clock": "SWQ2CLOCK",
@@ -133,7 +133,7 @@
         "hidden": "SWQ2HIDDEN",
         "root": "SWP6",
         "counter": "SWP5",
-        "counter_age": "SWA5"
+        "counter_age": "SWFIRSTA5"
       }
     ],
     "h1": "SWPROJH",
@@ -157,13 +157,13 @@
       "PWP7"
     ],
     "a": [
-      "PWA0",
+      "PWFIRSTA0",
       "PWMA1",
       "PWMA2",
       "PWMA3",
-      "PWA4",
-      "PWA5",
-      "PWA6",
+      "PWFIRSTA4",
+      "PWFIRSTA5",
+      "PWFIRSTA6",
       "PWA7"
     ],
     "qs": [
@@ -191,7 +191,7 @@
         "hidden": "PWQ1HIDDEN",
         "root": "PWP4",
         "counter": "PWP3",
-        "counter_age": "PWA3"
+        "counter_age": "PWFIRSTA3"
       },
       {
         "clock": "PWQ2CLOCK",
@@ -204,7 +204,7 @@
         "hidden": "PWQ2HIDDEN",
         "root": "PWP6",
         "counter": "PWP5",
-        "counter_age": "PWA5"
+        "counter_age": "PWFIRSTA5"
       }
     ],
     "h1": "PWPROJH",
@@ -228,13 +228,13 @@
       "GWP7"
     ],
     "a": [
-      "GWA0",
+      "GWFIRSTA0",
       "GWMA1",
       "GWMA2",
       "GWMA3",
-      "GWA4",
-      "GWA5",
-      "GWA6",
+      "GWFIRSTA4",
+      "GWFIRSTA5",
+      "GWFIRSTA6",
       "GWA7"
     ],
     "qs": [
@@ -262,7 +262,7 @@
         "hidden": "GWQ1HIDDEN",
         "root": "GWP4",
         "counter": "GWP3",
-        "counter_age": "GWA3"
+        "counter_age": "GWFIRSTA3"
       },
       {
         "clock": "GWQ2CLOCK",
@@ -275,12 +275,243 @@
         "hidden": "GWQ2HIDDEN",
         "root": "GWP6",
         "counter": "GWP5",
-        "counter_age": "GWA5"
+        "counter_age": "GWFIRSTA5"
       }
     ],
     "h1": "GWPROJH",
     "run": "GWRUN",
     "pending": "GWPENDING",
     "proof": "GWPROOF"
+  },
+  {
+    "key": "E1",
+    "on": "E1ON",
+    "length": "E1LEN",
+    "direction": "E1DIR",
+    "p": [
+      "E1P0",
+      "E1MP1",
+      "E1MP2",
+      "E1MP3",
+      "E1P4",
+      "E1P5",
+      "E1P6",
+      "E1P7"
+    ],
+    "a": [
+      "E1FIRSTA0",
+      "E1MA1",
+      "E1MA2",
+      "E1MA3",
+      "E1FIRSTA4",
+      "E1FIRSTA5",
+      "E1FIRSTA6",
+      "E1A7"
+    ],
+    "qs": [
+      {
+        "clock": "E1MERGEDQCLOCK",
+        "wa": "E1MERGEDQWA",
+        "ca": "E1MERGEDQCA",
+        "wn": "E1MERGEDQWN",
+        "cn": "E1MERGEDQCN",
+        "ok": "E1MERGEDQOK",
+        "cok": "E1MERGEDQCOK",
+        "hidden": "E1MERGEDQHIDDEN",
+        "root": "E1MERGEDQROOT",
+        "counter": "E1MERGEDQCOUNTER",
+        "counter_age": "E1MERGEDQCOUNTER_AGE",
+        "snapshot_age": "E1MERGEDQSNAPSHOT_AGE",
+        "shape_code": "E1QSHAPE0"
+      },
+      {
+        "clock": "E1Q1CLOCK",
+        "wa": "E1Q1WA",
+        "ca": "E1Q1CA",
+        "wn": "E1Q1WN",
+        "cn": "E1Q1CN",
+        "ok": "E1Q1OK",
+        "cok": "E1Q1COK",
+        "hidden": "E1Q1HIDDEN",
+        "root": "E1P4",
+        "counter": "E1P3",
+        "counter_age": "E1FIRSTA3",
+        "snapshot_age": "E1QSNAP1",
+        "shape_code": "E1QSHAPE1"
+      },
+      {
+        "clock": "E1Q2CLOCK",
+        "wa": "E1Q2WA",
+        "ca": "E1Q2CA",
+        "wn": "E1Q2WN",
+        "cn": "E1Q2CN",
+        "ok": "E1Q2OK",
+        "cok": "E1Q2COK",
+        "hidden": "E1Q2HIDDEN",
+        "root": "E1P6",
+        "counter": "E1P5",
+        "counter_age": "E1FIRSTA5",
+        "snapshot_age": "E1QSNAP2",
+        "shape_code": "E1QSHAPE2"
+      }
+    ],
+    "h1": "E1PROJH",
+    "run": "E1RUN",
+    "pending": "E1PENDING",
+    "proof": "E1PROOF"
+  },
+  {
+    "key": "E2",
+    "on": "E2ON",
+    "length": "E2LEN",
+    "direction": "E2DIR",
+    "p": [
+      "E2P0",
+      "E2MP1",
+      "E2MP2",
+      "E2MP3",
+      "E2P4",
+      "E2P5",
+      "E2P6",
+      "E2P7"
+    ],
+    "a": [
+      "E2FIRSTA0",
+      "E2MA1",
+      "E2MA2",
+      "E2MA3",
+      "E2FIRSTA4",
+      "E2FIRSTA5",
+      "E2FIRSTA6",
+      "E2A7"
+    ],
+    "qs": [
+      {
+        "clock": "E2MERGEDQCLOCK",
+        "wa": "E2MERGEDQWA",
+        "ca": "E2MERGEDQCA",
+        "wn": "E2MERGEDQWN",
+        "cn": "E2MERGEDQCN",
+        "ok": "E2MERGEDQOK",
+        "cok": "E2MERGEDQCOK",
+        "hidden": "E2MERGEDQHIDDEN",
+        "root": "E2MERGEDQROOT",
+        "counter": "E2MERGEDQCOUNTER",
+        "counter_age": "E2MERGEDQCOUNTER_AGE",
+        "snapshot_age": "E2MERGEDQSNAPSHOT_AGE",
+        "shape_code": "E2QSHAPE0"
+      },
+      {
+        "clock": "E2Q1CLOCK",
+        "wa": "E2Q1WA",
+        "ca": "E2Q1CA",
+        "wn": "E2Q1WN",
+        "cn": "E2Q1CN",
+        "ok": "E2Q1OK",
+        "cok": "E2Q1COK",
+        "hidden": "E2Q1HIDDEN",
+        "root": "E2P4",
+        "counter": "E2P3",
+        "counter_age": "E2FIRSTA3",
+        "snapshot_age": "E2QSNAP1",
+        "shape_code": "E2QSHAPE1"
+      },
+      {
+        "clock": "E2Q2CLOCK",
+        "wa": "E2Q2WA",
+        "ca": "E2Q2CA",
+        "wn": "E2Q2WN",
+        "cn": "E2Q2CN",
+        "ok": "E2Q2OK",
+        "cok": "E2Q2COK",
+        "hidden": "E2Q2HIDDEN",
+        "root": "E2P6",
+        "counter": "E2P5",
+        "counter_age": "E2FIRSTA5",
+        "snapshot_age": "E2QSNAP2",
+        "shape_code": "E2QSHAPE2"
+      }
+    ],
+    "h1": "E2PROJH",
+    "run": "E2RUN",
+    "pending": "E2PENDING",
+    "proof": "E2PROOF"
+  },
+  {
+    "key": "E3",
+    "on": "E3ON",
+    "length": "E3LEN",
+    "direction": "E3DIR",
+    "p": [
+      "E3P0",
+      "E3MP1",
+      "E3MP2",
+      "E3MP3",
+      "E3P4",
+      "E3P5",
+      "E3P6",
+      "E3P7"
+    ],
+    "a": [
+      "E3FIRSTA0",
+      "E3MA1",
+      "E3MA2",
+      "E3MA3",
+      "E3FIRSTA4",
+      "E3FIRSTA5",
+      "E3FIRSTA6",
+      "E3A7"
+    ],
+    "qs": [
+      {
+        "clock": "E3MERGEDQCLOCK",
+        "wa": "E3MERGEDQWA",
+        "ca": "E3MERGEDQCA",
+        "wn": "E3MERGEDQWN",
+        "cn": "E3MERGEDQCN",
+        "ok": "E3MERGEDQOK",
+        "cok": "E3MERGEDQCOK",
+        "hidden": "E3MERGEDQHIDDEN",
+        "root": "E3MERGEDQROOT",
+        "counter": "E3MERGEDQCOUNTER",
+        "counter_age": "E3MERGEDQCOUNTER_AGE",
+        "snapshot_age": "E3MERGEDQSNAPSHOT_AGE",
+        "shape_code": "E3QSHAPE0"
+      },
+      {
+        "clock": "E3Q1CLOCK",
+        "wa": "E3Q1WA",
+        "ca": "E3Q1CA",
+        "wn": "E3Q1WN",
+        "cn": "E3Q1CN",
+        "ok": "E3Q1OK",
+        "cok": "E3Q1COK",
+        "hidden": "E3Q1HIDDEN",
+        "root": "E3P4",
+        "counter": "E3P3",
+        "counter_age": "E3FIRSTA3",
+        "snapshot_age": "E3QSNAP1",
+        "shape_code": "E3QSHAPE1"
+      },
+      {
+        "clock": "E3Q2CLOCK",
+        "wa": "E3Q2WA",
+        "ca": "E3Q2CA",
+        "wn": "E3Q2WN",
+        "cn": "E3Q2CN",
+        "ok": "E3Q2OK",
+        "cok": "E3Q2COK",
+        "hidden": "E3Q2HIDDEN",
+        "root": "E3P6",
+        "counter": "E3P5",
+        "counter_age": "E3FIRSTA5",
+        "snapshot_age": "E3QSNAP2",
+        "shape_code": "E3QSHAPE2"
+      }
+    ],
+    "h1": "E3PROJH",
+    "run": "E3RUN",
+    "pending": "E3PENDING",
+    "proof": "E3PROOF"
   }
 ]

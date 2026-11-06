@@ -1,7 +1,7 @@
 """Generate bounded independent main-chart overlays from one formula model.
 
 The official content check observed on 2026-11-05 accepts 80000 characters
-and rejects 80001, even for repeated PN assignments. Keep 1000 characters
+and rejects 80001, even for repeated PN assignments. Keep 500 characters
 of headroom. This is an observed service rule, not a documented compiler
 limit. Each drawing belongs to exactly one file; dependencies are copied,
 never shared via another indicator or an account/network lookup.
@@ -15,7 +15,7 @@ from check_formula import (Parser,Statement,NUMBER,CONDITION,STRING,COLOR,
 from compatibility import variable_names,render,SETTINGS
 from export_native import OUTPUTS,ascii_label
 
-MAX_INSTALL_BYTES=79000
+MAX_INSTALL_BYTES=79500
 FIXED_DISPLAY={'SHOWBOOK':1.,'DETAIL':0.}
 
 
@@ -139,6 +139,8 @@ def typed_model(raw):
         return ('binary','<>',num(node),('number',0.))
     def call(node):
         fn,args=node[1],node[2]
+        if fn=='SUM'and is_condition(args[0]):
+            return ('call','COUNT',[cond(args[0]),num(args[1])])
         kinds=SIGNATURES[fn][0]
         if fn in ('SORT','SORTPOS','MAX1','MIN1'):kinds=(NUMBER,)*len(args)
         if len(args)!=len(kinds):raise ValueError('invalid function arity')
@@ -202,6 +204,11 @@ def typed_model(raw):
     statements=simplified
     # The native parser rejects IF/IFELSE as nested function arguments
     # (ErrCode 15), despite the catalog's general expression examples.
+    # Zero-window prefix functions must also have a populated history:
+    # guarded SUM(COUNT(flag,1),0) calculates 0 instead of 8 in an 8-row
+    # native control. A named prefix or COUNT(flag,0) calculates 8.
+    # Materialize prefixes outside the last-bar guard; positive-window
+    # snapshot scans stay guarded and retain the performance improvement.
     # Nested BACKSET also differs from a named series in the native engine:
     # FILTER(BACKSET(...),N) can mark every N+1 bars instead of filtering
     # the completed back-set series. Materialize it before its consumer.
@@ -213,7 +220,8 @@ def typed_model(raw):
             nonlocal serial
             if node[0]=='call':
                 value=('call',node[1],[hoist(a)for a in node[2]])
-                if node[1]in ('IF','IFELSE','BACKSET')and not top:
+                prefix=(node[1]in ('COUNT','SUM','HHV','LLV')and value[2][1]==('number',0.))
+                if (node[1]in ('IF','IFELSE','BACKSET')or prefix)and not top:
                     key=render(value)
                     if key not in cached:
                         serial+=1;name=f'J{serial}'
@@ -257,11 +265,12 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
     roots=[i for i,s in enumerate(statements)if not s.name or s.output]
     owners={i+1:(re.search(r'\{ OWNER:([^}]+) \}',line).group(1)if '{ OWNER:'in line else'overview')for i,line in enumerate(raw.splitlines())}
     bins=[{'title':'主浪、趋势拐点与反转形态','families':set(),'needed':set(parameters),'roots':[]},
-          {'title':'当前及前一段子浪、回调和止盈价位','families':{'SW','PW','prices'},'needed':set(parameters),'roots':[]},
-          {'title':'孙浪（可选）','families':{'GW'},'needed':set(parameters),'roots':[]}]
+          {'title':'完整P浪、区间回调与价格尺','families':{'P_complete','prices'},'needed':set(parameters),'roots':[]},
+          {'title':'较早完整主浪、趋势线与拐点工具','families':{'E1','E2','tools'},'needed':set(parameters),'roots':[]},
+          {'title':'当前回调S结构（可选）','families':{'SC'},'needed':set(parameters),'roots':[]}]
     for i in roots:
         owner=owners[statements[i].line]
-        group=bins[1]if owner in ('SW','PW','prices')else bins[2]if owner=='GW'else bins[0]
+        group=bins[1]if owner in ('P_complete','prices')else bins[3]if owner=='SC'else bins[2]if owner in ('E1','E2','tools','history','key_reversals')else bins[0]
         group['roots'].append(i);group['needed'].update(closure(i));group['families'].add(owner)
     files={}
     for number,group in enumerate(bins,1):
@@ -271,7 +280,7 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
         phase=sum(statements[i].line<=boundary for i in indices)
         profile={'analysis_end_line':phase,'ascii_only':True,'bom':False,'comments':False,'encoding':'ascii','role':'install_layer',
                  'root_ids':sorted(group['roots']),'parameter_names':sorted(SETTINGS-set(FIXED_DISPLAY)),'max_install_bytes':max_bytes,
-                 'title':group['title'],'families':sorted(group['families']),'optional':number==3,
+                 'title':group['title'],'families':sorted(group['families']),'optional':number==4,
                  'fixed_display_settings':FIXED_DISPLAY,'native_variable_aliases':aliases}
         check(text,analysis_end_line=phase)
         data=text.replace('\n','\r\n').encode('ascii')
@@ -279,7 +288,7 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
         files[f'EWT{number:02}.txt']=(data,profile|{'sha256':hashlib.sha256(data).hexdigest()})
     observed=Counter(i for group in bins for i in group['roots'])
     if observed!=Counter(roots):raise ValueError('a drawing was lost or duplicated')
-    return files,{'drawing_roots':len(roots),'layers':len(files),'recommended_layers':2,'all_roots_exactly_once':True,
+    return files,{'drawing_roots':len(roots),'layers':len(files),'recommended_layers':3,'all_roots_exactly_once':True,
                   'compile_time_disabled_legacy_roots':omitted,'fixed_display_settings':FIXED_DISPLAY,
                   'max_install_bytes':max_bytes,'observed_service_boundary':{'accepted_characters':80000,'rejected_characters':80001,'observed_date':'2026-11-05','documented_compiler_limit':False},
                   'model':'typed IF; same settings and algorithms; dependency pruning only'}

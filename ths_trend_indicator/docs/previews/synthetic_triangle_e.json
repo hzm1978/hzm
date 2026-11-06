@@ -1,13 +1,14 @@
 {
-  "release": "1.1.3",
+  "release": "1.1.4",
   "bars": 270,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "5edb81ff9ba3b53bd40e2456170801c627b33142023c3085a373c2b86b3cfa47",
+  "formula_normalized_utf8_sha256": "141c860fceeaec0bf9ce1abc869cc37b0c6a6b7cbdcc8ca43133ddf0c818d8fe",
   "ohlc_float64_sha256": "ccde38d36a11a8630ed55a56b024a9435ea763dd47a7aeba419d82b9c6feeef1",
   "work_direction": 1.0,
-  "phase": 1.0,
+  "phase": 2.0,
+  "correction_context_phase": 1.0,
   "groups": [
     {
       "key": "MW",
@@ -58,7 +59,52 @@
       "key": "GW",
       "owner": "最近有效子级的最后一段",
       "owner_start_index": 231,
-      "owner_end_index": 249,
+      "owner_end_index": 248,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "E1",
+      "owner": "较早第1段完整主浪",
+      "owner_start_index": 195,
+      "owner_end_index": 213,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "E2",
+      "owner": "较早第2段完整主浪",
+      "owner_start_index": 159,
+      "owner_end_index": 177,
+      "direction": 1.0,
+      "count": 0,
+      "pending": false,
+      "first_Q_closed": false,
+      "merge_mode": 0.0,
+      "H1": null,
+      "points": [],
+      "Q": [],
+      "retracements_percent": {}
+    },
+    {
+      "key": "E3",
+      "owner": "较早第3段完整主浪",
+      "owner_start_index": 123,
+      "owner_end_index": 141,
       "direction": 1.0,
       "count": 0,
       "pending": false,
@@ -70,6 +116,18 @@
       "retracements_percent": {}
     }
   ],
+  "complete_P": {
+    "visible": false,
+    "scope_start_index": 231,
+    "scope_end_index": 176,
+    "start_price": 169.0,
+    "end_price": 201.0,
+    "active_tip": false,
+    "details_limited": false,
+    "numbering": "chronological P legs; a count alone is not proof of a 5/7-wave degree",
+    "segments": [],
+    "Q": []
+  },
   "current_correction": {
     "known": 1.0,
     "code": 5.0,
@@ -89,14 +147,27 @@
   },
   "price_plan": {
     "dir": 1.0,
-    "phase": 1.0,
+    "regime": 1.0,
+    "phase": 2.0,
     "proof": 0.0,
     "ton": 0.0,
     "fon": 0.0,
     "h": 18.0,
     "base": 175.0,
     "origin": 169.0,
-    "parent_fib_on": false,
+    "projection_direction": 1.0,
+    "fib_anchors": {
+      "start_price": 169.0,
+      "end_price": 201.0,
+      "start_index": 231,
+      "end_index": 176,
+      "manual": false
+    },
+    "legacy_fib_calculation_eligible": false,
+    "retracement_percent": 0.0,
+    "market_type": "趋势",
+    "last_leg_type": "回调",
+    "fib_levels": [],
     "targets": [
       {
         "ratio": 1.208,
@@ -148,16 +219,54 @@
       }
     ]
   },
-  "segments": 29,
-  "labels": 17,
+  "turning_observations": [
+    {
+      "bar_index": 198,
+      "price": 159.23333333333335,
+      "label": "OBS RV04"
+    },
+    {
+      "bar_index": 267,
+      "price": 171.9,
+      "label": "OBS RV04"
+    },
+    {
+      "bar_index": 106,
+      "price": 163.0388888888889,
+      "label": "OBS RV04"
+    },
+    {
+      "bar_index": 142,
+      "price": 184.0388888888889,
+      "label": "OBS RV04"
+    },
+    {
+      "bar_index": 177,
+      "price": 206.1,
+      "label": "OBS RV07"
+    },
+    {
+      "bar_index": 249,
+      "price": 190.76666666666668,
+      "label": "OBS RV07"
+    },
+    {
+      "bar_index": 253,
+      "price": 188.1,
+      "label": "OBS RV08"
+    }
+  ],
+  "segments": 17,
+  "labels": 20,
   "fib_segments": 0,
   "target_segments": 0,
   "synthetic_ohlc_only": true,
   "scenario": "triangle_e",
   "installation_files_sha256": {
-    "install/EWT01.txt": "548bdc5fbe9cae8e33f03e89f75eb5bd2a7ddb7b6708a0686df4b64615639962",
-    "install/EWT02.txt": "4ca821595168df36f0891827e67cc85f1fa2d179b62969c4f4075a05656eb293",
-    "install/EWT03.txt": "bc76baa7f2c3bd1c8f2d0cd86ee0e729a871a7f65838ef5da29dfbaa36687488"
+    "install/EWT01.txt": "827f7f9d343838e6b37e153d1e0d66f3d3dd599ec62d03392316ffa4aa07629c",
+    "install/EWT02.txt": "ff77e7f72a63c4207d268a128e19c3853ca09c45793459ea1c62725a46c24051",
+    "install/EWT03.txt": "eba955e3313cb1dfba5a145ab5ac4cfe6e2d03fd9ba581bdfde9c1fc574d1a0d",
+    "install/EWT04.txt": "1649d36ee99f3cefecdeba7eab90aec68e50ddd1975dddca37b5404844681cf7"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
 }

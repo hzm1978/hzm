@@ -64,17 +64,18 @@ def formulas():
 
 
 def turning_labels(builder):
-    from book_layers import Builder
     b=builder
-    for i in range(2):
-        age=b.frozen(f'TPATAGE{i}',f'SA{i}+PN')
-        kind=b.frozen(f'TPATTYPE{i}',f'STYPE*{1 if i==0 else -1}')
-        # Prefer a one-candle-later confirmation at the same observed turn;
-        # never place that knowledge back on the preceding candle.
-        event_age=b.put(f'TPATEVENT{i}',f'MAX(0,{age}-1)')
-        point=b.frozen(f'TPATPRICE{i}',f'SP{i}')
-        valid=b.frozen(f'TPATVALID{i}',f'SK{i}')
-        code=b.frozen(f'TPATCODE{i}',f'IF(REF(IF({kind}=1,SPCODE,BPCODE),{event_age})>0,REF(IF({kind}=1,SPCODE,BPCODE),{event_age}),REF(IF({kind}=1,SPCODE,BPCODE),{age}))')
+    scope=b.frozen('TPATSCOPE','MIN(MAX(WORKAGE,PCSTART),BOOKBARS)')
+    recent=b.frozen('TPATRECENT','SA1+PN+3')
+    for bull in (True,False):
+        code='BPCODE'if bull else'SPCODE';age='GLT'if bull else'GHT'
+        valid='GLS'if bull else'GHS';kind=-1 if bull else 1
+        # Historical trend legs keep their observed reversal patterns.
+        # The current correction is quieter: only its latest turns remain.
+        # Draw at pattern completion, never on an earlier pivot candle.
+        key='VKBUY'if bull else'VKSELL'
+        near=f'{valid} AND GTYPE={kind} AND {age}<=3'
+        gate=b.put('TPATBUY'if bull else'TPATSELL',f'SHOWK AND VX<={scope} AND (({key} AND {near}) OR FILTER((PARENTPHASE=1 OR VX<={recent} OR (PCON AND VX<=PCSTART AND VX>=MAX(0,PCSTOP-3))) AND {near} AND {code}>0,3))')
         for number,text in PATTERNS.items():
-            b.text(f'SHOWK AND {valid} AND {code}={number}',event_age,
-                   f'{point}-{kind}*PAD*4',f'转折观察·{text}','COLORWHITE',2)
+            price='L-PAD*2'if bull else'H+PAD*2'
+            b.draw(f"KTEXT({gate} AND {code}={number},0,{price},2,COLORWHITE,'转折观察·{text}'),FONTSIZE9;")

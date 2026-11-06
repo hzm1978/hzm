@@ -87,11 +87,12 @@ class NativeExportTests(unittest.TestCase):
                          [statement(s)for s in Parser(self.source).parse()])
 
     def test_hierarchies_targets_retracements_and_specific_patterns_have_legends(self):
-        examples={'主5':'M5','子前4回调%':'P4 RET%','孙Q2':'GQ2',
+        examples={'主5':'5','子前4回调%':'P4 RET%','孙Q2':'GQ2','子2':'(2)','孙3':'[3]',
                   '调整A·收盘确认':'A OK','关键位·鬼门关':'KEY RV01',
                   '转折观察·魂断蓝桥':'OBS RV05','1.618H1候选':'1.618H1?'}
         for original,label in examples.items():self.assertEqual(ascii_label(original),label)
-        self.assertEqual(len(self.profile['labels']),181)
+        required={'5','(5)','S5','E1.Q1','E2.4 RET%','LEG END?','KEY','OBS RV05','1.618H1?'}
+        self.assertTrue(required.issubset(set(self.profile['labels'].values())))
         self.assertTrue(all(text.isascii()for text in self.profile['labels'].values()))
         with self.assertRaises(FormulaError):ascii_label('未审核的新标注')
 

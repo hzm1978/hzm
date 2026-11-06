@@ -1,5 +1,27 @@
 """Current owned correction and its actual c/e endpoint, not the global low."""
 
+ADJUSTMENT_TYPES={0:'结构待确认',1:'简单调整',2:'标准abc候选',3:'收缩abc候选',4:'强势abc候选',
+                  5:'收缩三角候选',6:'扩张三角候选',7:'趋势abcde候选',8:'横向abcde候选',9:'不规则abcde候选'}
+
+
+def adjustment_seed_formulas():
+    """Causal local geometry, later matched to an owned historical Q.
+
+    These codes alone do not establish a correction's degree or its end.
+    Historical labels also require matching start/end prices and time.
+    """
+    out=[f'GZ{i}:=GTYPE*GP{i};'for i in range(6)]
+    out += [f'GSZ{i}:=ABS(GP{i}-GP{i+1});'for i in range(5)]
+    out += ['GACON:='+' AND '.join(f'GSZ{i}<GSZ{i+1}'for i in range(4))+';',
+            'GAEXP:='+' AND '.join(f'GSZ{i}>GSZ{i+1}'for i in range(4))+';',
+            'GATREND:=GZ0>GZ2 AND GZ2>GZ4 AND GZ1>GZ3 AND GZ3>GZ5;',
+            'GABAND:=(MAX1(GZ0,GZ1,GZ2,GZ3,GZ4,GZ5)-MIN1(GZ0,GZ1,GZ2,GZ3,GZ4,GZ5))*0.2;',
+            'GASIDE:=MAX1(GZ0,GZ2,GZ4)-MIN1(GZ0,GZ2,GZ4)<=GABAND AND MAX1(GZ1,GZ3,GZ5)-MIN1(GZ1,GZ3,GZ5)<=GABAND;',
+            'GAIRREG:=ABS((GA1-GA0)-(GA3-GA2))<=MAX(1,MIN(GA1-GA0,GA3-GA2)*0.208) AND ABS((GA2-GA1)-(GA4-GA3))<=MAX(1,MIN(GA2-GA1,GA4-GA3)*0.208);',
+            'GAC3:=IF(GK3,IF(GZ1<=GZ3,4,IF(GZ0>GZ2,2,3)),0);',
+            'GAC5:=IF(GK5,IF(GACON,5,IF(GAEXP,6,IF(GATREND,7,IF(GASIDE,8,IF(GAIRREG,9,0))))),0);']
+    return out
+
 
 def context_formulas():
     return ['{ 保留最后一次调整的起点与恢复时刻；内部小转折不移动已确认A }',

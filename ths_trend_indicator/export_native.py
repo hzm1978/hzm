@@ -14,7 +14,8 @@ from compatibility import render
 
 ROOT=Path(__file__).resolve().parent
 OUTPUTS={'工作方向':'XWD','末段状态':'XPH','方向模式':'XMODE','标准K':'XSTD',
-         '工作回调百分比':'XRET','价格尺方向':'XRDIR','均线':'XMA','根数':'XCNT','检查':'XTEST'}
+         '工作回调百分比':'XRET','价格尺方向':'XRDIR','行情类型':'XREG','价格尺状态':'XRPH',
+         '均线':'XMA','根数':'XCNT','检查':'XTEST'}
 MESSAGES={
     '3?·第一Q进行中':'3? Q1 OPEN','3浪·待耦合':'3 Q WAIT','5?·未破浪3':'5? NO3BREAK',
     'A?·待收盘确认':'A? WAIT','A?候选·非确认分界':'A? WATCH','A?候选失效':'A? FAIL','A失守':'A BREAK',
@@ -32,7 +33,7 @@ MESSAGES={
     '缺少同级H1依据：暂不投射目标':'H1 NA','调整A·收盘确认':'A OK','调整结束点失效':'ADJ END FAIL',
     '调整进行中·未确认结束':'ADJ OPEN','趋势abcde':'ADJ ABCDE T','钻石7·结构解释':'7 DIA','隐形Q':'Q HIDDEN',
     '高度合并·3浪解释':'3 MERGE H','高度合并·待收盘Q':'MERGE H:Q?',
-    '函数兼容检查':'FUNC CHECK','左侧文字':'TEXT LEFT',
+    '函数兼容检查':'FUNC CHECK','左侧文字':'TEXT LEFT','段末·观察':'LEG END?',
 }
 REVERSALS={
     '鬼门关':'RV01','十字星确认':'RV02','急停加速':'RV03','补缺影线':'RV04','魂断蓝桥':'RV05',
@@ -46,13 +47,18 @@ REVERSALS={
 def ascii_label(text):
     if text.isascii():return text
     if text in MESSAGES:return MESSAGES[text]
-    group=re.fullmatch(r'(子前|主|子|孙)(.*)',text)
+    group=re.fullmatch(r'(早[123]子|子前|回调|主|子|孙)(.*)',text)
     if group:
-        prefix={'主':'M','子':'S','子前':'P','孙':'G'}[group[1]]
+        prefix={'主':'M','子':'S','子前':'P','孙':'G','回调':'S','早1子':'E1.','早2子':'E2.','早3子':'E3.'}[group[1]]
         tail=group[2]
-        if re.fullmatch(r'(?:[1-7]\??|Q[1-3])',tail):return prefix+tail
+        if re.fullmatch(r'[1-7]\??',tail):
+            if group[1]=='回调':return prefix+tail
+            return tail if group[1]=='主'else '['+tail+']'if group[1]=='孙'else '('+tail+')'
+        if re.fullmatch(r'Q[1-3]',tail):return prefix+tail
         if re.fullmatch(r'[246]回调%',tail):return prefix+tail[0]+' RET%'
         if tail=='A·简单调整':return prefix+'A SIMPLE'
+        if tail=='AD':return prefix+'AD'
+        if tail=='调整待确认':return prefix+'ADJ?'
     if re.fullmatch(r'[0-9.]+H1候选',text):return text.replace('候选','?')
     for prefix,tag in [('转折观察·','OBS '),('关键位·','KEY ')]:
         if text.startswith(prefix):return tag+REVERSALS[text[len(prefix):]]
@@ -118,12 +124,25 @@ def load_primary():
 
 def write_legend(profile):
     rows=['# ASCII图例中文对照\n',
-          '主图使用M=主、S=子、P=前一段子、G=孙；Q为实际区间根数，RET%为回调百分比。',
+          '黄线1、2…是主级Q结构解释；浅蓝P是整段连续走势；青色回调S只在可选EWT04中显示。E1./E2.为较早第1/2段完整主浪的子结构。Q为区间根数，RET%为相对前一推进腿的回调比例。',
           'RV为形态编号；B/S区分对应的看涨/看跌几何。OBS是转折观察，KEY还要求标准大小与关键位置。',
           '文字改为ASCII用于兼容客户端保存过滤，数浪、价格和确认条件保持不变。\n',
           '| 图上文字 | 中文含义 |','|---|---|']
     for original,translated in sorted(profile['labels'].items(),key=lambda item:(item[1],item[0])):
         if original!=translated:rows.append('| '+translated+' | '+original+' |')
+    rows += ['| P START / P END | P实际起点 / 已观察末端及价格 |',
+             '| P TIP? | 尚在变化的P末端，不是已确认终点 |',
+             '| P LEN | P起止之间的K线跨度，起始根不计 |',
+             '| P Q + 数字 | Q实际跨度；首个用收盘越过、以后允许影线 |',
+             '| RET% + 数字 | 调整幅度除以前一推进腿幅度，可超过100% |',
+             '| P AD + 数字 | 调整形态候选，编号见下表 |',
+             '| P上的浅蓝1、2… | 按突破/调整结束选出的顺序腿号，不单凭数量认定书中5/7浪成立 |',
+             '| P DETAIL LIMIT | 超过5组详细Q或BOOKBARS；轮廓继续、细节受限 |']
     rows+=['\n| 标题字段 | 中文含义 |','|---|---|']
     rows.extend('| '+translated+' | '+original+' |'for original,translated in profile['outputs'].items())
+    rows+=['\nKEY单独表示标准大小与关键位置；同根OBS RV名称给出具体K线形态。LEG END?为完整子结构的段末观察，数字是已观察端价。',
+           '\n历史调整的AD编号是候选形态，开始价、结束价、时间归属须匹配该Q；ADJ?表示证据不足。',
+           '\n| AD编号 | 中文含义 |','|---|---|']
+    from book_corrections import ADJUSTMENT_TYPES
+    rows.extend('| '+str(code)+' | '+name+' |'for code,name in ADJUSTMENT_TYPES.items())
     (ROOT/'docs'/'ASCII图例对照.md').write_text('\n'.join(rows)+'\n',encoding='utf-8')
