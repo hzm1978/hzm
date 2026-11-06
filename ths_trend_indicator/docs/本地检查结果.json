@@ -32993,7 +32993,7 @@
     "parser_client_version": "5.4.0.5",
     "passed": true,
     "target_client_ui_run": false,
-    "network_content_check": "pending_new_public_source"
+    "network_content_check": "raw_and_windows_representations_passed_350_550"
   },
   "function_catalog": {
     "source": "user-exported all_func.json",
