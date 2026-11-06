@@ -6,11 +6,19 @@ from interval_render import draw as render,adjustment
 from interval_prices import draw as prices
 
 
-def observations(b,h,main_points):
+def observations(b,h,main):
     """One observation per completion bar, assigned to its visible level."""
     for bull in (True,False):
         tag='HB'if bull else'HS';code='BPCODE'if bull else'SPCODE'
-        near_main=b.put(tag+'MAIN',f'COUNT({main_points["low"if bull else"high"]},0)>0 AND BARSLAST({main_points["low"if bull else"high"]})<=3')
+        s=main['scope'];d=s['direction']
+        near=lambda a:f'(VX<={a} AND VX>={a}-3)'
+        trend_side=f'{d}='+('(0-1)'if bull else'1')
+        terms=[f'IF({trend_side},{near(s["end"])},{near(s["start"])})']
+        for q in main['q']:
+            terms.append(f'({q["show"]} AND IF({trend_side},{near(q["a"])},{near(q["t"])}))')
+        # Running BARSLAST on a retrospectively filled pivot mask is not
+        # equivalent in the native engine. Compare frozen candle ages.
+        near_main=b.put(tag+'MAIN',f'{s["on"]} AND ('+' OR '.join(terms)+')')
         fine='GLC'if bull else'GHC'
         near_fine=f'COUNT({fine},0)>0 AND BARSLAST({fine})<=3'
         on=b.put(tag+'ON',f'SHOWK AND {h["P"]["on"]} AND VX<=MAX({h["M"]["start"]},{h["P"]["start"]}) AND FILTER(({near_main} OR ({near_fine})) AND {code}>0,3)')
@@ -35,7 +43,7 @@ def layers():
     pscope['start']=b.frozen('PQOWNERSTART',f'IF({use_main},{main["base_age"]},{h["P"]["start"]})')
     pscope['on']=b.put('PQENABLED',f'{pscope["on"]} AND SHOWSUB AND {pscope["start"]}>{pscope["end"]}')
     h=h|{'P':pscope}
-    b.owner='new_M';observations(b,h,main_points);b.owner='new_P'
+    b.owner='new_M';observations(b,h,main);b.owner='new_P'
     primary=Engine(b,'PQ',pscope).build('G','GN',5)
     render(b,primary,'P','COLORLIBLUE',0.7,with_patterns=False)
     b.owner='prices';plan=prices(b,h,primary)

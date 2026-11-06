@@ -57,7 +57,7 @@ def build(b):
     start=f('PSTART',f'IF(MANF=1,MFAGE,IF({ranged},BA1+BN,HXAUTOSTART))')
     last=f('PLAST',f'IF(MANF=1,MTO,IF({ranged},BP0,HXAUTOLAST))')
     end=f('PEND',f'IF(MANF=1,{manual_age},IF({ranged},BA0+BN,HXAUTOEND))')
-    on=f('PON',f'{direction}<>0 AND {start}>{end} AND {start}<DATACOUNT AND IF(MANF=1,MFAGE>=1 AND {manual_has},IF({ranged},BK1,HXAUTOON))')
+    on=f('PON',f'{direction}<>0 AND {start}>{end} AND {start}<DATACOUNT AND HHV(C,BC)-LLV(C,BC)>BEPS AND IF(MANF=1,MFAGE>=1 AND {manual_has},IF({ranged},BK1,HXAUTOON))')
     turned=f('TURNED',f'{end}>=PN AND IF({direction}=1,HHV(H,PN)<{last},LLV(L,PN)>{last})')
     phase=f('PHASE',f'IF(KIND>0,KIND,IF({ranged},3,IF({on},IF({turned},2,1),0)))')
     regime=f('REGIME',f'IF({phase}=3,3,IF({on} OR MH1>0,1,0))')

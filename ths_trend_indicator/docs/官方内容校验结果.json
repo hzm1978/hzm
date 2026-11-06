@@ -1,7 +1,6 @@
 {
   "release": "1.2.0",
-  "status": "pending_public_copy_validation",
   "passed": false,
-  "scope": "Only public hash-verified copies will be submitted after source publication.",
+  "status": "pending_validation_of_updated_public_source",
   "target_client_ui_run": false
 }

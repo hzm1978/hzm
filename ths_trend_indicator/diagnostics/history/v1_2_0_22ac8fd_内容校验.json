@@ -1,0 +1,124 @@
+{
+  "checked_at_utc": "2026-11-06T10:26:38.756989+00:00",
+  "release": "1.2.0",
+  "endpoint": "https://ftapi.10jqka.com.cn/gw/openapi/post/v3/pre_check",
+  "public_commit": "22ac8fd03a7c6573308a3e438f18b44f2d69ed41",
+  "scope": "Only anonymously downloaded, hash-verified public GitHub copies; no local/private source, credential or account data submitted.",
+  "combined_check_assumption": "EWT01..EWT03; empty external parameters and description, matching installation instructions",
+  "target_client_version": "4.39.1.2",
+  "target_client_ui_run": false,
+  "files": {
+    "install/EWT01.txt": {
+      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/22ac8fd03a7c6573308a3e438f18b44f2d69ed41/ths_trend_indicator/formulas/install/EWT01.txt",
+      "sha256": "9f8d065fb7e99118fd4abc59acab8c8eb3659adc1f6c1048c8ee3faa6004e80a",
+      "bytes": 73672,
+      "http_status": 200,
+      "matches_local_and_profile": true,
+      "formula_name": "EWT01",
+      "source_characters": 56536,
+      "checks": {
+        "350": {
+          "http_status": 200,
+          "content_characters": 56536,
+          "submitted_content_utf8_sha256": "9f8d065fb7e99118fd4abc59acab8c8eb3659adc1f6c1048c8ee3faa6004e80a",
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "passed": true
+        },
+        "550": {
+          "http_status": 200,
+          "content_characters": 56541,
+          "submitted_content_utf8_sha256": "fceb81bb0b2d51b0f7a8c0a4837e8ce3bf9fa65e8a8e38f1dd1b34127f600c93",
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "passed": true
+        }
+      }
+    },
+    "install/EWT02.txt": {
+      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/22ac8fd03a7c6573308a3e438f18b44f2d69ed41/ths_trend_indicator/formulas/install/EWT02.txt",
+      "sha256": "c65c3b4c919d8e03f1133672a0656ec213ae0c3d45abf07ce927bd3b592417f4",
+      "bytes": 104134,
+      "http_status": 200,
+      "matches_local_and_profile": true,
+      "formula_name": "EWT02",
+      "source_characters": 78926,
+      "checks": {
+        "350": {
+          "http_status": 200,
+          "content_characters": 78926,
+          "submitted_content_utf8_sha256": "c65c3b4c919d8e03f1133672a0656ec213ae0c3d45abf07ce927bd3b592417f4",
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "passed": true
+        },
+        "550": {
+          "http_status": 200,
+          "content_characters": 78931,
+          "submitted_content_utf8_sha256": "642daf8c8bf379eff36ba2d42a873a2bb99f6ddd731274b508f0674dc98384e8",
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "passed": true
+        }
+      }
+    },
+    "install/EWT03.txt": {
+      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/22ac8fd03a7c6573308a3e438f18b44f2d69ed41/ths_trend_indicator/formulas/install/EWT03.txt",
+      "sha256": "46c3c4dfb8d3122474f9d3f55bd68cbc55456358cdd8e593f899e813a8506eb4",
+      "bytes": 92794,
+      "http_status": 200,
+      "matches_local_and_profile": true,
+      "formula_name": "EWT03",
+      "source_characters": 70180,
+      "checks": {
+        "350": {
+          "http_status": 200,
+          "content_characters": 70180,
+          "submitted_content_utf8_sha256": "46c3c4dfb8d3122474f9d3f55bd68cbc55456358cdd8e593f899e813a8506eb4",
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "passed": true
+        },
+        "550": {
+          "http_status": 200,
+          "content_characters": 70185,
+          "submitted_content_utf8_sha256": "43b72042962bdb0f2cff0912039c4dbe79e8af70509ff730a751857a222984d8",
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "passed": true
+        }
+      }
+    }
+  },
+  "passed": true
+}

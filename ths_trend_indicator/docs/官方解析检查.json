@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-06T10:19:42.528656+00:00",
+  "checked_at_utc": "2026-11-06T12:48:32.708515+00:00",
   "release": "1.2.0",
   "check_kind": "official_native_syntax_preparse_and_shape_description",
   "execution_platform": "Windows-10-10.0.19043",
@@ -389,10 +389,10 @@
   },
   "files": {
     "install/EWT01.txt": {
-      "source_bytes": 73672,
+      "source_bytes": 74211,
       "source_encoding": "utf-8",
-      "source_sha256": "9f8d065fb7e99118fd4abc59acab8c8eb3659adc1f6c1048c8ee3faa6004e80a",
-      "parser_input_utf8_sha256": "9f8d065fb7e99118fd4abc59acab8c8eb3659adc1f6c1048c8ee3faa6004e80a",
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "parser_input_utf8_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -427,10 +427,10 @@
       "passed": true
     },
     "install/EWT02.txt": {
-      "source_bytes": 104134,
+      "source_bytes": 104155,
       "source_encoding": "utf-8",
-      "source_sha256": "c65c3b4c919d8e03f1133672a0656ec213ae0c3d45abf07ce927bd3b592417f4",
-      "parser_input_utf8_sha256": "c65c3b4c919d8e03f1133672a0656ec213ae0c3d45abf07ce927bd3b592417f4",
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "parser_input_utf8_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -465,10 +465,10 @@
       "passed": true
     },
     "install/EWT03.txt": {
-      "source_bytes": 92794,
+      "source_bytes": 92815,
       "source_encoding": "utf-8",
-      "source_sha256": "46c3c4dfb8d3122474f9d3f55bd68cbc55456358cdd8e593f899e813a8506eb4",
-      "parser_input_utf8_sha256": "46c3c4dfb8d3122474f9d3f55bd68cbc55456358cdd8e593f899e813a8506eb4",
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "parser_input_utf8_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],

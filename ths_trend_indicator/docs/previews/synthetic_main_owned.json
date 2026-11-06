@@ -4,7 +4,7 @@
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "3d5c63bbc220fd234d3a31b30408f4f2b506b504ac8ff2b6a67a75e580912591",
+  "formula_normalized_utf8_sha256": "b4a2827c6178a15d7e205aeae9632aa1f9d48a8de5301b72d4363eecc274dd5c",
   "ohlc_float64_sha256": "10ffafdc7b232b2f11ff36eaa06679996d0ae800cc053a3156570f8bb58c3f3c",
   "groups": [
     {
@@ -395,9 +395,9 @@
   "synthetic_ohlc_only": true,
   "scenario": "main_owned",
   "installation_files_sha256": {
-    "install/EWT01.txt": "9f8d065fb7e99118fd4abc59acab8c8eb3659adc1f6c1048c8ee3faa6004e80a",
-    "install/EWT02.txt": "c65c3b4c919d8e03f1133672a0656ec213ae0c3d45abf07ce927bd3b592417f4",
-    "install/EWT03.txt": "46c3c4dfb8d3122474f9d3f55bd68cbc55456358cdd8e593f899e813a8506eb4"
+    "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+    "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+    "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
 }
