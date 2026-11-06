@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-06",
+  "version": "v14.2 abstract clarification",
+  "file": "RQI_review_v14_2_abstract_full.zip",
+  "bytes": 2732485,
+  "sha256": "374a08da940748a955268dd64ce64c86abdf2b95b0f56f0c637bd9ed9dd26fc6",
+  "archive_files": 97,
+  "english_abstract_words": 150,
+  "bilingual_abstracts_revised": true,
+  "outside_abstract_scientific_sources_unchanged": true,
+  "figures_data_and_calculation_files_match_v14_1": true,
+  "current_build_citation_numbering_anonymity_checks": "PASS",
+  "scientific_calculation_evidence": "Retained unchanged from verified v14.1; not unnecessarily rerun for an abstract-only edit.",
+  "archive_crc_bytes_and_actual_extraction": "PASS",
+  "extracted_abstract_preservation_check": "PASS",
+  "english_pages": 62,
+  "chinese_pages": 48,
+  "journal_submission": false
+}
