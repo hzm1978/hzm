@@ -11,6 +11,7 @@ import numpy
 
 from generate import build
 from export_native import check_delivered
+from native_layers import windows_text
 from catalog import evidence as catalog_evidence
 
 ROOT = Path(__file__).resolve().parent
@@ -29,6 +30,7 @@ def main():
         source = data.decode(encoding).replace("\r\n", "\n")
         reports[relative] = check_delivered(source,profile) | {
             "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
+            "characters":len(data.decode(encoding)),"windows_characters":len(windows_text(source)),
             "lines": len(source.splitlines()), "encoding": encoding,'bom':False,
             'ascii_only':source.isascii(),'analysis_end_line':profile['analysis_end_line'],'role':profile['role']}
     evidence = {

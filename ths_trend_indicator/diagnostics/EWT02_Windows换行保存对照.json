@@ -1,0 +1,71 @@
+{
+  "checked_at_utc": "2026-11-06T13:42:22.305453+00:00",
+  "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/30afea6170fcad4136f758f49d99e15d8ca1bace/ths_trend_indicator/formulas/install/EWT02.txt",
+  "public_source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+  "scope": "Only anonymous public formula bytes, plus deterministic LF-to-CRLF newline normalization; no private source or account data.",
+  "target_client_ui_run": false,
+  "variants": {
+    "LF": {
+      "characters": 78947,
+      "utf8_bytes": 104155,
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "checks": {
+        "350": {
+          "characters": 78947,
+          "http_status": 200,
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "accepted": true
+        },
+        "550": {
+          "characters": 78952,
+          "http_status": 200,
+          "response": {
+            "data": {
+              "result": true
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "accepted": true
+        }
+      }
+    },
+    "CRLF": {
+      "characters": 82942,
+      "utf8_bytes": 108150,
+      "source_sha256": "59f94e582749fa96bc7fe56aca4cec2b7fb243e0bdc15f55d42d449c01411cb9",
+      "checks": {
+        "350": {
+          "characters": 82942,
+          "http_status": 200,
+          "response": {
+            "data": {
+              "result": false
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "accepted": false
+        },
+        "550": {
+          "characters": 82947,
+          "http_status": 200,
+          "response": {
+            "data": {
+              "result": false
+            },
+            "status_code": 0,
+            "status_msg": "success"
+          },
+          "accepted": false
+        }
+      }
+    }
+  }
+}

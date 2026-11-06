@@ -1,17 +1,17 @@
 {
-  "release": "1.2.0",
+  "release": "1.2.1",
   "native_client_run": false,
   "synthetic_ohlc_only": true,
   "formula_normalized_utf8_sha256": "b4a2827c6178a15d7e205aeae9632aa1f9d48a8de5301b72d4363eecc274dd5c",
   "installation_files_sha256": {
     "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-    "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+    "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
     "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
   },
   "installation_equivalence_test": "tests/test_install_layers.py",
   "scenarios": [
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 331,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -383,13 +383,13 @@
       "scenario": "fall_rebound",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 168,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -680,13 +680,13 @@
       "scenario": "five_up",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 96,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -1008,13 +1008,13 @@
       "scenario": "nested_five_down",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 258,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -1340,13 +1340,13 @@
       "scenario": "seven_expanding",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 270,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -1653,13 +1653,13 @@
       "scenario": "triangle_e",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 100,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -1801,13 +1801,13 @@
       "scenario": "trend_targets",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 221,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -2194,13 +2194,13 @@
       "scenario": "short_inner_q",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 152,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -2466,13 +2466,13 @@
       "scenario": "parent_correction",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 187,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -2692,13 +2692,13 @@
       "scenario": "sideways",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 137,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -2954,13 +2954,13 @@
       "scenario": "earlier_complete",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 127,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -3377,13 +3377,13 @@
       "scenario": "p_whole",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 104,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -3740,13 +3740,13 @@
       "scenario": "p_white",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 106,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -4063,13 +4063,13 @@
       "scenario": "p_triangle",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 106,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -4294,13 +4294,13 @@
       "scenario": "p_no_h1",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 158,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -4556,13 +4556,13 @@
       "scenario": "p_newtip",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 131,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -4995,13 +4995,13 @@
       "scenario": "p_s_correction",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 104,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -5358,13 +5358,13 @@
       "scenario": "p_white_up",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.2.0",
+      "release": "1.2.1",
       "bars": 189,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -5761,7 +5761,7 @@
       "scenario": "main_owned",
       "installation_files_sha256": {
         "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-        "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+        "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
         "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"

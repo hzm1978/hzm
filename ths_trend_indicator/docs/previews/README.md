@@ -1,4 +1,4 @@
-# 1.2.0合成预览与明细
+# 1.2.1合成预览与明细
 
 18个固定合成场景检查完整M/P/S及唯一价格尺。图为Matplotlib预览，非客户端截图、非用户行情复原。main_owned覆盖主次级1015.38→831共用边界；p_whole检查细拐点经Q合并成为7浪；p_white检查较晚c，p_triangle检查e不同于极端a；trend_targets检查主浪期间S空白；p_s_correction检查只画末段回调。
 

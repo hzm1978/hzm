@@ -26,7 +26,7 @@ def cases():
     for scenario in NAMES:
         data,settings=sample(scenario)
         for name in profile['install']:
-            source=(ROOT/'formulas'/name).read_text(encoding=profile['files'][name]['encoding'])
+            source=(ROOT/'formulas'/name).read_bytes().decode(profile['files'][name]['encoding'])
             for key,value in (settings or {}).items():
                 # A complete negative parameter assignment must not wrap
                 # its entire RHS in parentheses (native NULL regression).

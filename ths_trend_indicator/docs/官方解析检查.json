@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-11-06T12:48:32.708515+00:00",
-  "release": "1.2.0",
+  "checked_at_utc": "2026-11-06T13:49:47.121852+00:00",
+  "release": "1.2.1",
   "check_kind": "official_native_syntax_preparse_and_shape_description",
   "execution_platform": "Windows-10-10.0.19043",
   "python": "3.12.10",
@@ -427,10 +427,10 @@
       "passed": true
     },
     "install/EWT02.txt": {
-      "source_bytes": 104155,
+      "source_bytes": 101230,
       "source_encoding": "utf-8",
-      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
-      "parser_input_utf8_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "source_sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
+      "parser_input_utf8_sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],

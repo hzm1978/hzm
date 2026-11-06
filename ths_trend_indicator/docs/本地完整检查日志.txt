@@ -131,9 +131,12 @@ test_tokenizer_keeps_physical_lines_across_comments (test_indicator.SyntaxTests.
 test_whole_formula_static_check (test_indicator.SyntaxTests.test_whole_formula_static_check) ... ok
 test_all_drawing_roots_are_installed_exactly_once_with_shared_settings (test_install_layers.InstallationLayerTests.test_all_drawing_roots_are_installed_exactly_once_with_shared_settings) ... ok
 test_backset_series_is_materialized_before_native_consumers (test_install_layers.InstallationLayerTests.test_backset_series_is_materialized_before_native_consumers) ... ok
+test_native_cases_preserve_delivered_crlf_and_editable_parameter_rows (test_install_layers.InstallationLayerTests.test_native_cases_preserve_delivered_crlf_and_editable_parameter_rows) ... ok
+test_repacking_preserves_every_published_statement_and_causal_boundary (test_install_layers.InstallationLayerTests.test_repacking_preserves_every_published_statement_and_causal_boundary) ... ok
 test_six_scenes_preserve_every_value_line_and_annotation (test_install_layers.InstallationLayerTests.test_six_scenes_preserve_every_value_line_and_annotation) ... ok
 test_subwave_lines_numbers_and_prices_share_one_complete_layer (test_install_layers.InstallationLayerTests.test_subwave_lines_numbers_and_prices_share_one_complete_layer) ... ok
 test_supported_parameters_and_recommended_pair_are_preserved (test_install_layers.InstallationLayerTests.test_supported_parameters_and_recommended_pair_are_preserved) ... ok
+test_windows_paste_cannot_push_any_layer_over_the_saving_budget (test_install_layers.InstallationLayerTests.test_windows_paste_cannot_push_any_layer_over_the_saving_budget) ... ok
 test_all_delivered_files_use_native_export_checks (test_native_export.NativeExportTests.test_all_delivered_files_use_native_export_checks) ... ok
 test_all_numeric_and_drawing_arguments_survive_export_unchanged (test_native_export.NativeExportTests.test_all_numeric_and_drawing_arguments_survive_export_unchanged) ... ok
 test_every_analysis_statement_is_identical_to_mathematical_model (test_native_export.NativeExportTests.test_every_analysis_statement_is_identical_to_mathematical_model) ... ok
@@ -151,7 +154,7 @@ test_negative_parameter_assignment_has_no_complete_rhs_wrapper (test_native_plac
 test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch (test_native_placement.NativePlacementTests.test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch) ... ok
 
 ----------------------------------------------------------------------
-Ran 151 tests in 147.782s
+Ran 154 tests in 152.270s
 
 OK
 Local checks passed; native THS compilation NOT performed.

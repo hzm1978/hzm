@@ -1,6 +1,6 @@
 {
-  "release": "1.2.0",
-  "checked_at_utc": "2026-11-06T12:53:56.649571+00:00",
+  "release": "1.2.1",
+  "checked_at_utc": "2026-11-06T13:55:03.932358+00:00",
   "scope": "Single offline 1000-bar native run; not client UI speed. Parsing and arithmetic are measured separately.",
   "target_client_ui_run": false,
   "parser_client_version": "5.4.0.5",
@@ -12,22 +12,29 @@
       "rows": 1000,
       "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
       "parse_ms": 2176.603,
-      "calculate_ms": 1776.67
+      "calculate_ms": 1776.67,
+      "measured_for_release": "1.2.0",
+      "unchanged_source_reuse": true
     },
     {
       "file": "install/EWT02.txt",
       "rows": 1000,
-      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
-      "parse_ms": 3960.004,
-      "calculate_ms": 2326.118
+      "source_sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
+      "parse_ms": 4446.561,
+      "calculate_ms": 2181.217,
+      "measured_for_release": "1.2.1",
+      "unchanged_source_reuse": false
     },
     {
       "file": "install/EWT03.txt",
       "rows": 1000,
       "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
       "parse_ms": 3317.695,
-      "calculate_ms": 2056.959
+      "calculate_ms": 2056.959,
+      "measured_for_release": "1.2.0",
+      "unchanged_source_reuse": true
     }
   ],
-  "passed": true
+  "passed": true,
+  "reuse_basis": "Only EWT02 changed bytes; EWT01/03 measurements retain their explicit 1.2.0 provenance."
 }

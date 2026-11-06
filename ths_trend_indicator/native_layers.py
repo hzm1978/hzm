@@ -1,9 +1,9 @@
 """Generate bounded independent main-chart overlays from one formula model.
 
-The official content check observed on 2026-11-05 accepts 80000 characters
-and rejects 80001, even for repeated PN assignments. Keep 500 characters
-of headroom. This is an observed service rule, not a documented compiler
-limit. Each drawing belongs to exactly one file; dependencies are copied,
+The official content check accepts 80000 characters and rejects 80001.
+Budget Windows CRLF, including the characters added when LF text is
+copied through an editor. This is an observed service rule, not a
+documented compiler limit. Each drawing belongs to exactly one file; dependencies are copied,
 never shared via another indicator or an account/network lookup.
 """
 from collections import Counter
@@ -15,8 +15,8 @@ from check_formula import (Parser,Statement,NUMBER,CONDITION,STRING,COLOR,
 from compatibility import variable_names,render,SETTINGS
 from export_native import OUTPUTS,ascii_label
 
-MAX_INSTALL_BYTES=79500
-MAX_INSTALL_CHARACTERS=MAX_INSTALL_BYTES
+MAX_INSTALL_CHARACTERS=79500
+MAX_INSTALL_BYTES=MAX_INSTALL_CHARACTERS  # Historical import; count characters.
 FIXED_DISPLAY={'SHOWBOOK':1.,'DETAIL':0.}
 
 
@@ -375,6 +375,30 @@ def share_elementwise(statements,boundary):
     return out
 
 
+def windows_text(source):
+    """Count/save the conservative Windows newline representation once."""
+    return source.replace('\r\n','\n').replace('\r','\n').replace('\n','\r\n')
+
+
+def packed_rows(statements,width=240,limit=8):
+    """Pack complete statements only; editable parameters keep their rows.
+
+    Analysis and drawing are packed separately by the caller. A physical
+    row never straddles the causal boundary, and no token or order changes.
+    """
+    rows=[];row='';count=0
+    for s in statements:
+        value=emit(s)
+        own_row=s.name in SETTINGS
+        if row and (own_row or count>=limit or len(row)+len(value)>width):
+            rows.append(row);row='';count=0
+        if own_row:
+            rows.append(value);continue
+        row+=value;count+=1
+    if row:rows.append(row)
+    return rows
+
+
 def generate(raw,max_bytes=MAX_INSTALL_BYTES):
     statements,boundary=typed_model(raw)
     statements,omitted=specialize(statements)
@@ -406,20 +430,28 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
         indices=sorted(group['needed'])
         selected,aliases=short_names([statements[i]for i in indices])
         aliases={next((builtin for builtin,field in builtin_aliases.items()if field==key),key):value for key,value in aliases.items()}
-        text='\n'.join(emit(s)for s in selected)+'\n'
-        phase=sum(statements[i].line<=boundary for i in indices)
+        if number==2:
+            analysis=packed_rows([s for s in selected if s.line<=boundary])
+            drawing=packed_rows([s for s in selected if s.line>boundary])
+            text='\r\n'.join(analysis+drawing)+'\r\n'
+            phase=len(analysis)
+        else:
+            text='\n'.join(emit(s)for s in selected)+'\n'
+            phase=sum(statements[i].line<=boundary for i in indices)
         profile={'analysis_end_line':phase,'ascii_only':False,'visible_labels_ascii_only':True,'bom':False,'comments':False,'encoding':'utf-8','role':'install_layer',
                  'root_ids':sorted(group['roots']),'parameter_names':sorted(SETTINGS-set(FIXED_DISPLAY)),'max_install_characters':max_bytes,
                  'title':group['title'],'families':sorted(group['families']),'optional':False,
                  'fixed_display_settings':FIXED_DISPLAY,'native_variable_aliases':aliases}
         check(text,analysis_end_line=phase)
         data=text.encode('utf-8')
-        profile['line_ending']='LF'
-        if len(text)>max_bytes:raise ValueError(f'{group["title"]} installation character budget exceeded: {len(text)}')
-        files[f'EWT{number:02}.txt']=(data,profile|{'sha256':hashlib.sha256(data).hexdigest(),'characters':len(text),'bytes':len(data)})
+        profile['line_ending']='CRLF'if number==2 else'LF'
+        profile['packed_statements']=number==2
+        windows_characters=len(windows_text(text))
+        if windows_characters>max_bytes:raise ValueError(f'{group["title"]} Windows character budget exceeded: {windows_characters}')
+        files[f'EWT{number:02}.txt']=(data,profile|{'sha256':hashlib.sha256(data).hexdigest(),'characters':len(text),'windows_characters':windows_characters,'bytes':len(data)})
     observed=Counter(i for group in bins for i in group['roots'])
     if observed!=Counter(roots):raise ValueError('a drawing was lost or duplicated')
     return files,{'drawing_roots':len(roots),'layers':len(files),'recommended_layers':3,'all_roots_exactly_once':True,
                   'compile_time_disabled_legacy_roots':omitted,'fixed_display_settings':FIXED_DISPLAY,
-                  'max_install_characters':max_bytes,'observed_service_boundary':{'accepted_characters':80000,'rejected_characters':80001,'observed_date':'2026-11-05','documented_compiler_limit':False},
+                  'max_install_characters':max_bytes,'budget_line_ending':'CRLF','observed_service_boundary':{'accepted_characters':80000,'rejected_characters':80001,'observed_date':'2026-11-05','documented_compiler_limit':False},
                   'model':'typed IF; same settings and algorithms; dependency pruning only'}

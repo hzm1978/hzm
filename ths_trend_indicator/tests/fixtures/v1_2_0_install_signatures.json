@@ -1,0 +1,29 @@
+{
+  "public_commit": "30afea6170fcad4136f758f49d99e15d8ca1bace",
+  "files": {
+    "install/EWT01.txt": {
+      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "statements_ast_sha256": "bd8f48ec9c369ccfecb4b0869e6a774e0d2ade08714fe341172ce1ec72895a71",
+      "analysis_ast_sha256": "d855e28d88490598b957a4bf78ea03af3f189f4049c82893219b35d2aa17035f",
+      "statements": 2722,
+      "characters_lf": 56913,
+      "characters_crlf": 59635
+    },
+    "install/EWT02.txt": {
+      "source_sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+      "statements_ast_sha256": "c18271fe1e42fdaeb2a45d0b88d60b039eb8c5b22cc56525505f282ba3adcbe3",
+      "analysis_ast_sha256": "4b32464b48abeeef1d7ae6fcd8184d1e7083c73dabf9a1d6dbe5005a94c1a2f9",
+      "statements": 3995,
+      "characters_lf": 78947,
+      "characters_crlf": 82942
+    },
+    "install/EWT03.txt": {
+      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "statements_ast_sha256": "a019ffa42052b952cf4ae919679f9acc45459b608d132de331b48073e6456a91",
+      "analysis_ast_sha256": "6d3f67840d763b2196150f672619b4767bb5c9f82064520c7ebf5aa968c9cfb3",
+      "statements": 3522,
+      "characters_lf": 70201,
+      "characters_crlf": 73723
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "release": "1.2.0",
+  "release": "1.2.1",
   "primary": "EWTN_ASCII.txt",
   "primary_role": "full_model_reference",
   "install": [
@@ -28,6 +28,7 @@
       "DETAIL": 0.0
     },
     "max_install_characters": 79500,
+    "budget_line_ending": "CRLF",
     "observed_service_boundary": {
       "accepted_characters": 80000,
       "rejected_characters": 80001,
@@ -42,7 +43,7 @@
       "ascii_only": false,
       "bom": false,
       "comments": false,
-      "model_normalized_utf8_sha256": "f14176151eaea8cda5ace4e7b97ca509b09ce5a94f78187d5dee098d278dbcfa",
+      "model_normalized_utf8_sha256": "ca9faf4af5e8b58892659cc19ea28bf03850b2c174aad31b0b1ad60f302e0c37",
       "labels": {},
       "outputs": {},
       "encoding": "utf-8",
@@ -54,7 +55,7 @@
       "ascii_only": false,
       "bom": false,
       "comments": false,
-      "model_normalized_utf8_sha256": "f14176151eaea8cda5ace4e7b97ca509b09ce5a94f78187d5dee098d278dbcfa",
+      "model_normalized_utf8_sha256": "ca9faf4af5e8b58892659cc19ea28bf03850b2c174aad31b0b1ad60f302e0c37",
       "labels": {},
       "outputs": {},
       "encoding": "gb18030",
@@ -114,7 +115,7 @@
       "ascii_only": true,
       "bom": false,
       "comments": false,
-      "model_normalized_utf8_sha256": "f14176151eaea8cda5ace4e7b97ca509b09ce5a94f78187d5dee098d278dbcfa",
+      "model_normalized_utf8_sha256": "ca9faf4af5e8b58892659cc19ea28bf03850b2c174aad31b0b1ad60f302e0c37",
       "labels": {
         "M Q1 LEN ": "M Q1 LEN ",
         "M1": "M1",
@@ -3002,12 +3003,14 @@
         "T999": "棕"
       },
       "line_ending": "LF",
+      "packed_statements": false,
       "sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
       "characters": 56913,
+      "windows_characters": 59635,
       "bytes": 74211
     },
     "install/EWT02.txt": {
-      "analysis_end_line": 543,
+      "analysis_end_line": 92,
       "ascii_only": false,
       "visible_labels_ascii_only": true,
       "bom": false,
@@ -7026,10 +7029,12 @@
         "T999": "秒",
         "TTSTD": "秕"
       },
-      "line_ending": "LF",
-      "sha256": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
-      "characters": 78947,
-      "bytes": 104155
+      "line_ending": "CRLF",
+      "packed_statements": true,
+      "sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
+      "characters": 76022,
+      "windows_characters": 76022,
+      "bytes": 101230
     },
     "install/EWT03.txt": {
       "analysis_end_line": 543,
@@ -10578,8 +10583,10 @@
         "TTSTD": "瑰"
       },
       "line_ending": "LF",
+      "packed_statements": false,
       "sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
       "characters": 70201,
+      "windows_characters": 73723,
       "bytes": 92815
     }
   }

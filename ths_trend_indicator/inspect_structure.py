@@ -63,7 +63,7 @@ def snapshot(data,result,mapping=None,source=None):
                  'last_leg_type':{0:'待确认',1:'主浪',2:'回调',3:'震荡段'}[phase],
                  'fib_anchors':scope(p),'fib_levels':[{'ratio':r,'price':val('IPF'+str(i))}for i,r in enumerate((0,.236,.382,.5,.618,.786,1))]if plan['fon']else [],
                  'targets':[{'ratio':r,'price':val('IPT'+str(i)),'displayed':bool(val('IPSHOW'+str(i)))}for i,r in enumerate((1.208,1.618,2,2.382,2.618,3,3.236,4.236),1)]})
-    return {'release':'1.2.0','bars':n,'native_client_run':False,
+    return {'release':'1.2.1','bars':n,'native_client_run':False,
             'mode':'current-prefix retrospective drawing, not historical trade signals',
             'catalog_sha256':hashlib.sha256(RAW).hexdigest(),
             'formula_normalized_utf8_sha256':hashlib.sha256((source if source is not None else formula_source()).encode()).hexdigest(),

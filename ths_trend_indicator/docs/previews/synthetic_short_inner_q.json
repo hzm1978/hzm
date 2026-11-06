@@ -1,5 +1,5 @@
 {
-  "release": "1.2.0",
+  "release": "1.2.1",
   "bars": 221,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
@@ -386,7 +386,7 @@
   "scenario": "short_inner_q",
   "installation_files_sha256": {
     "install/EWT01.txt": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-    "install/EWT02.txt": "a1a36b6cc48f2c04a037901121e30a3c62c246aa20948af7ec4bed27c0448591",
+    "install/EWT02.txt": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
     "install/EWT03.txt": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
