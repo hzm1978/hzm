@@ -84,7 +84,7 @@ def layers():
     render(b,final,'S','COLORCYAN',1.2,with_patterns=False,side=-1)
     small=counter_scope(b,'SC',owned)
     outer,sq,_,small_owner=current_adjustment(b,'SO',owned,small,4.2)
-    splan=correction_ruler(b,'SF',owned,small['on'])
+    splan=correction_ruler(b,'SF',owned,small['on'],final)
     sguides=guides(b,'SGL',final,'1')
     b.draw(f'S细级状态:IF({small["on"]},2,1),NODRAW;')
     b.draw(f'S所属P段:IF({use_counter},2,1),NODRAW;')

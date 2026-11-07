@@ -74,7 +74,7 @@ def snapshot(data,result,mapping=None,source=None):
                              'origin':val(schemas['plan']['total_origin'if i>=7 else'leg_base'])}
                             for i,r in enumerate(TARGETS,1)]})
     sf=schemas['S_plan']
-    return {'release':'1.4.0','bars':n,'native_client_run':False,
+    return {'release':'1.4.1','bars':n,'native_client_run':False,
             'mode':'current-prefix retrospective drawing, not historical trade signals',
             'catalog_sha256':hashlib.sha256(RAW).hexdigest(),
             'formula_normalized_utf8_sha256':hashlib.sha256((source if source is not None else formula_source()).encode()).hexdigest(),
@@ -83,6 +83,7 @@ def snapshot(data,result,mapping=None,source=None):
             'current_P':scope(schemas['current_P']),'current_P_adjustment_code':val(schemas['current_P_shape']['code']),
             'S_parent_leg':'counter'if val(schemas['S_parent_counter'])else'main',
             'S_fib':{'visible':bool(val(sf['on'])),'anchors':scope(sf['scope']),
+                     'basis':'whole_group'if val(sf['whole_group'])else'preceding_subwave',
                      'levels':[{'ratio':r,'price':val(q)}for r,q in zip(RETRACEMENTS,sf['levels'])]if val(sf['on'])else[]},
             'guides':{level:{k:val(v)for k,v in g.items()}for level,g in schemas['guides'].items()},
             'turning_observations':[{'bar_index':l['x'],'price':l['y'],'label':l['text']}for l in result['labels']if l['text'].startswith('RV')],

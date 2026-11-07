@@ -4,9 +4,13 @@ RETRACEMENTS=(0,.191,.382,.5,.618,.786,1)
 TARGETS=(1.208,1.618,2,2.382,2.618,3,3.236,4.236)
 
 
-def correction_ruler(b,key,scope,correction_on):
-    """An S correction measures its preceding WHOLE S impulse."""
-    on=b.frozen(key+'ON',f'SHOWF AND {scope["on"]} AND {correction_on}')
+def correction_ruler(b,key,scope,correction_on,trace):
+    """Measure a completed group, or the preceding leg inside an open group."""
+    whole=b.frozen(key+'WHOLE',f'({trace["kind"]}=5 OR {trace["kind"]}>=71) AND {trace["limited"]}=0 AND {trace["ambiguous"]}=0 AND {trace["pending"]}=0')
+    scope=scope|{
+        'first':b.frozen(key+'FIRST',f'IF({whole},{scope["first"]},{trace["base"]})'),
+        'start':b.frozen(key+'START',f'IF({whole},{scope["start"]},{trace["base_age"]})')}
+    on=b.frozen(key+'ON',f'SHOWF AND {scope["on"]} AND {correction_on} AND {scope["start"]}>{scope["end"]} AND {scope["direction"]}*({scope["last"]}-{scope["first"]})>BEPS')
     span=b.put(key+'SPAN',f'MIN({scope["start"]},BOOKBARS)')
     levels=[]
     for i,value in enumerate(RETRACEMENTS):
@@ -18,7 +22,7 @@ def correction_ruler(b,key,scope,correction_on):
     for age,price,text in ((scope['start'],scope['first'],'S 100%'),(scope['end'],scope['last'],'S 0%')):
         b.segment(on,age,price+'-BPAD*0.25',age,price+'+BPAD*0.25','COLORWHITE','LINETHICK2')
         b.text(on,age,price+'+BPAD*1.8',text,'COLORWHITE',2)
-    return dict(on=on,levels=levels,scope=scope)
+    return dict(on=on,levels=levels,scope=scope,whole_group=whole)
 
 
 def draw(b,hierarchy,trace):

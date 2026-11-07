@@ -16,6 +16,28 @@ def path(prices, steps=18, tail=9, prefix=50):
 
 
 def sample(name):
+    if name in ('s_auto_five','s_five_tail','s_leg_fib','s_first_fib','s_five_live'):
+        lead=[3907,3720,3740,3680,3725,3200,3280,3124]
+        lead_steps=[14,5,5,4,20,3,7]
+        legs,steps={
+            's_auto_five':([3350,3241,3590,3512,3619,3408,3440],[5,3,10,3,5,3,1]),
+            's_five_tail':([3350,3241,3590,3512,3619,3408,3470,3430],[5,3,10,3,5,3,3,3]),
+            's_leg_fib':([3350,3241,3590,3512],[5,3,10,3]),
+            's_first_fib':([3350,3260],[5,3]),
+            's_five_live':([3350,3241,3590,3512,3619],[5,3,10,3,5]),
+        }[name]
+        d=path(lead+legs,lead_steps+steps,tail=0)
+        settings=({'DIR':-1,'KIND':2,'MANF':1,'MFROM':3908,'MTO':3123,'MFAGE':len(d['C'])-1-50}
+                  if name in ('s_leg_fib','s_first_fib')else {'DIR':0})
+        return d,settings
+    if name in ('s_auto_five_down','s_leg_fib_down'):
+        data,settings=sample('s_auto_five'if name=='s_auto_five_down'else's_leg_fib')
+        reflected={'O':10000-data['O'],'C':10000-data['C'],
+                   'H':10000-data['L'],'L':10000-data['H']}
+        settings=dict(settings)
+        if settings.get('MANF'):
+            settings.update(DIR=1,MFROM=10000-settings['MFROM'],MTO=10000-settings['MTO'])
+        return reflected,settings
     if name in ('same_three','same_four','contract_equal','recouple_equal','white_same','graded_expand','graded_contract'):
         cases={
             'same_three':([100,120,112,132,124,144,136,156],[10,6,10,6,10,6,10],98),
@@ -153,4 +175,5 @@ NAMES=('fall_rebound','five_up','nested_five_down','seven_expanding','triangle_e
        'q_early','q_failed','q_merge','q_tiny','s_main','s_fib','q_failed_auto','q_reversal',
        'main_left','main_three','target_bases','guides_up',
        'same_three','same_four','contract_equal','recouple_equal','white_same','white_same_down',
-       'graded_expand','graded_contract')
+       'graded_expand','graded_contract','s_auto_five','s_auto_five_down','s_five_tail',
+       's_leg_fib','s_leg_fib_down','s_first_fib','s_five_live')

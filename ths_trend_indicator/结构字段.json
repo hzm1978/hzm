@@ -831,13 +831,14 @@
       "SF6"
     ],
     "scope": {
-      "first": "SQOWNERFIRST",
-      "start": "SQOWNERSTART",
+      "first": "SFFIRST",
+      "start": "SFSTART",
       "last": "SQOWNERLAST",
       "end": "SQOWNEREND",
       "direction": "SQOWNERDIRECTION",
       "on": "SQOWNERON"
-    }
+    },
+    "whole_group": "SFWHOLE"
   },
   "S_parent_counter": "SQCOUNTER",
   "S_counter": {

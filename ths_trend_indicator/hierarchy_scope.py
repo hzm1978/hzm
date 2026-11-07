@@ -32,10 +32,17 @@ def terminal_hint(b,s,ranged):
     live=f('LIVEPRICE',f'{d}*{z}')
     live_age,live_has=b.first('HTLIVEAGE',f'{mask} AND ABS(IF({d}=1,H,L)-{live})<=BEPS')
     lok=p('LOK',f'{live_has} AND {la}<{ta} AND {la}>{live_age} AND ABS({live}-{tip})<={distance} AND {d}*({live}-{lp})>BEPS')
+    # A near-tip pullback can be the second leg of the NEW opposite
+    # excursion. Once that excursion has five ordered fine legs rooted
+    # at the actual old tip, do not keep relabelling its first pullback
+    # as an older truncated terminal wave and cut off its first two legs.
+    opposite=p('OPPOSINGEVENT',f'VX<{ta} AND GTYPE=(0-{d}) AND GK5 AND ABS(GP5-{tip})<=BEPS AND ABS(VX+GA5+GN-{ta})<=GN AND '+
+               ' AND '.join(f'{d}*(GP{i}-GP{i+2})<(0-BEPS)'for i in range(3)))
+    opposing_five=f('OPPOSING5',f'COUNT({opposite},BC)>0')
     choose=p('LIVECHOSEN',f'{lok} AND (IF({eok},0,1) OR {live_age}<{efirst})')
     price=f('PRICE',f'IF({choose},{live},{ep})')
     age=f('AGE',f'IF({choose},{live_age},{efirst})')
-    ok=f('ON',f'MANF=0 AND IF({ranged},0,1) AND {s["on"]} AND {qproof} AND ({eok} OR {lok}) AND {age}<{ta} AND {d}*({price}-{origin})>BEPS AND {d}*({price}-{tip})<(0-BEPS)')
+    ok=f('ON',f'MANF=0 AND IF({ranged} OR {opposing_five},0,1) AND {s["on"]} AND {qproof} AND ({eok} OR {lok}) AND {age}<{ta} AND {d}*({price}-{origin})>BEPS AND {d}*({price}-{tip})<(0-BEPS)')
     return dict(s,last=f('ENDPRICE',f'IF({ok},{price},{tip})'),
                 end=f('ENDAGE',f'IF({ok},{age},{ta})'),truncated=ok,reference_tip=tip,reference_age=ta)
 
