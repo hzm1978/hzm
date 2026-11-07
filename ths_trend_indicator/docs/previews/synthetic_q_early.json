@@ -1,0 +1,412 @@
+{
+  "release": "1.3.0",
+  "bars": 112,
+  "native_client_run": false,
+  "mode": "current-prefix retrospective drawing, not historical trade signals",
+  "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+  "formula_normalized_utf8_sha256": "11bfaf63e4ac5d0e15a21466ebedb048003e0acf8dd2cb79dfba1bd8634ef845",
+  "ohlc_float64_sha256": "75427a837323b64f0e6ef6429430fd835e7009db1bf57cbdac90eded1b231225",
+  "groups": [
+    {
+      "key": "M",
+      "owner": {
+        "visible": true,
+        "direction": -1.0,
+        "start_index": 50,
+        "end_index": 108,
+        "start_price": 3908.0,
+        "end_price": 3129.0
+      },
+      "intervals": 0,
+      "H1": null,
+      "first_Q_closed": false,
+      "classification": 0,
+      "pending": true,
+      "details_limited": false,
+      "actual_end_H1_multiple": null,
+      "points": [
+        {
+          "wave": 0,
+          "bar_index": 50,
+          "price": 3908.0
+        },
+        {
+          "wave": 1,
+          "bar_index": 108,
+          "price": 3129.0
+        }
+      ],
+      "Q": [],
+      "internal_Q": []
+    },
+    {
+      "key": "P",
+      "owner": {
+        "visible": true,
+        "direction": -1.0,
+        "start_index": 50,
+        "end_index": 108,
+        "start_price": 3908.0,
+        "end_price": 3129.0
+      },
+      "intervals": 2,
+      "H1": 189.0,
+      "first_Q_closed": true,
+      "classification": 0,
+      "pending": true,
+      "details_limited": false,
+      "actual_end_H1_multiple": 0.8042328042328042,
+      "points": [
+        {
+          "wave": 0,
+          "bar_index": 50,
+          "price": 3908.0
+        },
+        {
+          "wave": 1,
+          "bar_index": 64,
+          "price": 3719.0
+        },
+        {
+          "wave": 2,
+          "bar_index": 78,
+          "price": 3726.0
+        },
+        {
+          "wave": 3,
+          "bar_index": 98,
+          "price": 3199.0
+        },
+        {
+          "wave": 4,
+          "bar_index": 101,
+          "price": 3281.0
+        },
+        {
+          "wave": 5,
+          "bar_index": 108,
+          "price": 3129.0
+        }
+      ],
+      "Q": [
+        {
+          "ordinal": 1,
+          "first_uses_close": true,
+          "start_index": 64,
+          "end_index": 79,
+          "candles_excluding_start": 15.0,
+          "root_price": 3719.0,
+          "counter_index": 78,
+          "counter_price": 3726.0,
+          "closed": true,
+          "retracement_percent": 3.7037037037037033,
+          "actual_H1_multiple": 1.0,
+          "adjustment_shape_code": 4,
+          "adjustment_shape_label": "ABC STR"
+        },
+        {
+          "ordinal": 2,
+          "first_uses_close": false,
+          "start_index": 98,
+          "end_index": 105,
+          "candles_excluding_start": 7.0,
+          "root_price": 3199.0,
+          "counter_index": 101,
+          "counter_price": 3281.0,
+          "closed": true,
+          "retracement_percent": 15.559772296015181,
+          "actual_H1_multiple": 2.7883597883597884,
+          "adjustment_shape_code": 1,
+          "adjustment_shape_label": "A SIMPLE"
+        }
+      ],
+      "internal_Q": []
+    },
+    {
+      "key": "S",
+      "owner": {
+        "visible": true,
+        "direction": -1.0,
+        "start_index": 101,
+        "end_index": 108,
+        "start_price": 3281.0,
+        "end_price": 3129.0
+      },
+      "intervals": 0,
+      "H1": null,
+      "first_Q_closed": false,
+      "classification": 0,
+      "pending": true,
+      "details_limited": false,
+      "actual_end_H1_multiple": null,
+      "points": [
+        {
+          "wave": 0,
+          "bar_index": 101,
+          "price": 3281.0
+        },
+        {
+          "wave": 1,
+          "bar_index": 108,
+          "price": 3129.0
+        }
+      ],
+      "Q": [],
+      "internal_Q": []
+    }
+  ],
+  "price_plan": {
+    "ton": 0.0,
+    "fon": 1.0,
+    "h1": 189.0,
+    "proof": 1.0,
+    "direction": -1.0,
+    "phase": 2.0,
+    "ret": 15.532734274711169,
+    "regime": 1.0,
+    "market_type": "趋势",
+    "last_leg_type": "回调",
+    "fib_anchors": {
+      "visible": true,
+      "direction": -1.0,
+      "start_index": 50,
+      "end_index": 108,
+      "start_price": 3908.0,
+      "end_price": 3129.0
+    },
+    "fib_levels": [
+      {
+        "ratio": 0,
+        "price": 3129.0
+      },
+      {
+        "ratio": 0.191,
+        "price": 3277.789
+      },
+      {
+        "ratio": 0.382,
+        "price": 3426.578
+      },
+      {
+        "ratio": 0.5,
+        "price": 3518.5
+      },
+      {
+        "ratio": 0.618,
+        "price": 3610.422
+      },
+      {
+        "ratio": 0.786,
+        "price": 3741.294
+      },
+      {
+        "ratio": 1,
+        "price": 3908.0
+      }
+    ],
+    "targets": [
+      {
+        "ratio": 1.208,
+        "price": 3052.688,
+        "displayed": false,
+        "basis": "latest same-degree adjustment end",
+        "origin": 3281.0
+      },
+      {
+        "ratio": 1.618,
+        "price": 2975.198,
+        "displayed": false,
+        "basis": "latest same-degree adjustment end",
+        "origin": 3281.0
+      },
+      {
+        "ratio": 2,
+        "price": 2903.0,
+        "displayed": false,
+        "basis": "latest same-degree adjustment end",
+        "origin": 3281.0
+      },
+      {
+        "ratio": 2.382,
+        "price": 2830.802,
+        "displayed": false,
+        "basis": "latest same-degree adjustment end",
+        "origin": 3281.0
+      },
+      {
+        "ratio": 2.618,
+        "price": 2786.198,
+        "displayed": false,
+        "basis": "latest same-degree adjustment end",
+        "origin": 3281.0
+      },
+      {
+        "ratio": 3,
+        "price": 2714.0,
+        "displayed": false,
+        "basis": "latest same-degree adjustment end",
+        "origin": 3281.0
+      },
+      {
+        "ratio": 3.236,
+        "price": 3296.3959999999997,
+        "displayed": false,
+        "basis": "whole-trend origin",
+        "origin": 3908.0
+      },
+      {
+        "ratio": 4.236,
+        "price": 3107.396,
+        "displayed": false,
+        "basis": "whole-trend origin",
+        "origin": 3908.0
+      }
+    ]
+  },
+  "current_correction_visible": true,
+  "current_P": {
+    "visible": true,
+    "direction": 1.0,
+    "start_index": 108,
+    "end_index": 111,
+    "start_price": 3129.0,
+    "end_price": 3251.0
+  },
+  "current_P_adjustment_code": 1.0,
+  "S_parent_leg": "main",
+  "S_fib": {
+    "visible": true,
+    "anchors": {
+      "visible": true,
+      "direction": -1.0,
+      "start_index": 101,
+      "end_index": 108,
+      "start_price": 3281.0,
+      "end_price": 3129.0
+    },
+    "levels": [
+      {
+        "ratio": 0,
+        "price": 3129.0
+      },
+      {
+        "ratio": 0.191,
+        "price": 3158.032
+      },
+      {
+        "ratio": 0.382,
+        "price": 3187.064
+      },
+      {
+        "ratio": 0.5,
+        "price": 3205.0
+      },
+      {
+        "ratio": 0.618,
+        "price": 3222.936
+      },
+      {
+        "ratio": 0.786,
+        "price": 3248.472
+      },
+      {
+        "ratio": 1,
+        "price": 3281.0
+      }
+    ]
+  },
+  "guides": {
+    "P": {
+      "trend": 0.0,
+      "pivot": 0.0,
+      "trend_first_age": 32.0,
+      "trend_second_age": 9.0,
+      "trend_first_price": 3726.0,
+      "trend_second_price": 3281.0,
+      "pivot_slope": -15.294117647058824
+    },
+    "S": {
+      "trend": 0.0,
+      "pivot": 0.0,
+      "trend_first_age": 9.0,
+      "trend_second_age": 110.0,
+      "trend_first_price": 3281.0,
+      "trend_second_price": 3908.0,
+      "pivot_slope": 0.0
+    }
+  },
+  "turning_observations": [
+    {
+      "bar_index": 66,
+      "price": 3635.3625,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 109,
+      "price": 3041.3625,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 75,
+      "price": 3591.3625,
+      "label": "RV07"
+    },
+    {
+      "bar_index": 99,
+      "price": 3111.3625,
+      "label": "RV07"
+    },
+    {
+      "bar_index": 54,
+      "price": 3955.5660714285714,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 70,
+      "price": 3828.6375,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 74,
+      "price": 3780.6375,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 79,
+      "price": 3813.6375,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 83,
+      "price": 3708.6375,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 106,
+      "price": 3282.923214285714,
+      "label": "RV04"
+    },
+    {
+      "bar_index": 102,
+      "price": 3368.6375,
+      "label": "RV07"
+    },
+    {
+      "bar_index": 50,
+      "price": 3995.6375,
+      "label": "RV08"
+    }
+  ],
+  "segments": 35,
+  "labels": 79,
+  "fib_segments": 9,
+  "target_segments": 0,
+  "synthetic_ohlc_only": true,
+  "scenario": "q_early",
+  "installation_files_sha256": {
+    "install/EWT01.txt": "184faa4a165a6a9274aef0440ea8f5d6718309e44f455cd1d016e1841c477649",
+    "install/EWT02.txt": "025c6d923642fcc9fe8b5398dbd740c652f3d028941819ff774823c189fd5442",
+    "install/EWT03.txt": "a0d70cda5d440b2c8ee758d947bc63df700043db7a5df124726fa4f0e9d56a8d"
+  },
+  "installation_equivalence_test": "tests/test_install_layers.py"
+}

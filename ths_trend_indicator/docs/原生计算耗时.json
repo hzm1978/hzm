@@ -1,40 +1,39 @@
 {
-  "release": "1.2.1",
-  "checked_at_utc": "2026-11-06T13:55:03.932358+00:00",
-  "scope": "Single offline 1000-bar native run; not client UI speed. Parsing and arithmetic are measured separately.",
-  "target_client_ui_run": false,
+  "checked_at_utc": "2026-11-07T02:03:20.220741+00:00",
   "parser_client_version": "5.4.0.5",
   "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
   "harness_sha256": "a9541d050a1e0129d9f092078d03837925e4eb84b2f017af27b12089315acbf9",
+  "target_client_ui_run": false,
+  "release": "1.3.0",
+  "scope": "One offline 1000-bar run per unchanged delivered source; parsing and arithmetic measured separately. Not target-client UI speed.",
   "cases": [
     {
       "file": "install/EWT01.txt",
       "rows": 1000,
-      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-      "parse_ms": 2176.603,
-      "calculate_ms": 1776.67,
-      "measured_for_release": "1.2.0",
-      "unchanged_source_reuse": true
+      "source_sha256": "184faa4a165a6a9274aef0440ea8f5d6718309e44f455cd1d016e1841c477649",
+      "parse_ms": 2071.318,
+      "calculate_ms": 1742.658,
+      "measured_for_release": "1.3.0",
+      "unchanged_source_reuse": false
     },
     {
       "file": "install/EWT02.txt",
       "rows": 1000,
-      "source_sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
-      "parse_ms": 4446.561,
-      "calculate_ms": 2181.217,
-      "measured_for_release": "1.2.1",
+      "source_sha256": "025c6d923642fcc9fe8b5398dbd740c652f3d028941819ff774823c189fd5442",
+      "parse_ms": 2989.421,
+      "calculate_ms": 1916.829,
+      "measured_for_release": "1.3.0",
       "unchanged_source_reuse": false
     },
     {
       "file": "install/EWT03.txt",
       "rows": 1000,
-      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
-      "parse_ms": 3317.695,
-      "calculate_ms": 2056.959,
-      "measured_for_release": "1.2.0",
-      "unchanged_source_reuse": true
+      "source_sha256": "a0d70cda5d440b2c8ee758d947bc63df700043db7a5df124726fa4f0e9d56a8d",
+      "parse_ms": 4239.332,
+      "calculate_ms": 2360.628,
+      "measured_for_release": "1.3.0",
+      "unchanged_source_reuse": false
     }
   ],
-  "passed": true,
-  "reuse_basis": "Only EWT02 changed bytes; EWT01/03 measurements retain their explicit 1.2.0 provenance."
+  "passed": true
 }

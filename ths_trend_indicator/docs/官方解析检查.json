@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-11-06T13:49:47.121852+00:00",
-  "release": "1.2.1",
+  "checked_at_utc": "2026-11-07T01:55:18.562417+00:00",
+  "release": "1.3.0",
   "check_kind": "official_native_syntax_preparse_and_shape_description",
   "execution_platform": "Windows-10-10.0.19043",
   "python": "3.12.10",
@@ -389,10 +389,10 @@
   },
   "files": {
     "install/EWT01.txt": {
-      "source_bytes": 74211,
+      "source_bytes": 69914,
       "source_encoding": "utf-8",
-      "source_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
-      "parser_input_utf8_sha256": "195f4bda94dddbea37ef8a3ec7c4ccf41491e5390a3ac92ad2126b25e88534f8",
+      "source_sha256": "184faa4a165a6a9274aef0440ea8f5d6718309e44f455cd1d016e1841c477649",
+      "parser_input_utf8_sha256": "184faa4a165a6a9274aef0440ea8f5d6718309e44f455cd1d016e1841c477649",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -415,22 +415,22 @@
       },
       "shape_validation": {
         "status": "passed",
-        "shapes": 190,
+        "shapes": 131,
         "by_shape": {
           "StraightLineShape": 3,
-          "TextShape": 178,
+          "TextShape": 119,
           "PolylineShape": 9
         },
-        "constant_offsets_checked": 356,
+        "constant_offsets_checked": 238,
         "max_absolute_offset": 0.0
       },
       "passed": true
     },
     "install/EWT02.txt": {
-      "source_bytes": 101230,
+      "source_bytes": 89058,
       "source_encoding": "utf-8",
-      "source_sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
-      "parser_input_utf8_sha256": "649c56f1c2757d17064ddbf4b19df2c5c765e0871c0400560795c81422a6c2e1",
+      "source_sha256": "025c6d923642fcc9fe8b5398dbd740c652f3d028941819ff774823c189fd5442",
+      "parser_input_utf8_sha256": "025c6d923642fcc9fe8b5398dbd740c652f3d028941819ff774823c189fd5442",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -453,22 +453,22 @@
       },
       "shape_validation": {
         "status": "passed",
-        "shapes": 164,
+        "shapes": 191,
         "by_shape": {
-          "StraightLineShape": 22,
-          "TextShape": 135,
-          "PolylineShape": 7
+          "StraightLineShape": 27,
+          "TextShape": 154,
+          "PolylineShape": 10
         },
-        "constant_offsets_checked": 270,
+        "constant_offsets_checked": 308,
         "max_absolute_offset": 0.0
       },
       "passed": true
     },
     "install/EWT03.txt": {
-      "source_bytes": 92815,
+      "source_bytes": 105034,
       "source_encoding": "utf-8",
-      "source_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
-      "parser_input_utf8_sha256": "2d0ec96223a030a0a7ee87b03750647d1eb921cf2fdbe1c67e92c0f6e3d9dd6a",
+      "source_sha256": "a0d70cda5d440b2c8ee758d947bc63df700043db7a5df124726fa4f0e9d56a8d",
+      "parser_input_utf8_sha256": "a0d70cda5d440b2c8ee758d947bc63df700043db7a5df124726fa4f0e9d56a8d",
       "native_response": {
         "MaxPeriodCount": 160,
         "CrossSecurityList": [],
@@ -491,13 +491,13 @@
       },
       "shape_validation": {
         "status": "passed",
-        "shapes": 127,
+        "shapes": 148,
         "by_shape": {
-          "StraightLineShape": 3,
-          "TextShape": 119,
-          "PolylineShape": 5
+          "StraightLineShape": 12,
+          "TextShape": 127,
+          "PolylineShape": 9
         },
-        "constant_offsets_checked": 238,
+        "constant_offsets_checked": 254,
         "max_absolute_offset": 0.0
       },
       "passed": true
