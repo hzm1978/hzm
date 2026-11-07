@@ -30,7 +30,7 @@ def draw(b,hierarchy,trace):
     base=p('BASE',f'IF(MH1>0,MBASE,{trace["base"]})')
     origin=p('ORIGIN',f'IF(MH1>0,MORG,{s["first"]})')
     age=p('AGE',f'IF(MH1>0,MAGE,{trace["base_age"]})')
-    proof=p('PROOF',f'IF(MH1>0,MAGE>=1 AND MAGE<DATACOUNT,{trace["proof"]})')
+    proof=p('PROOF',f'IF(MH1>0,MAGE>=1 AND MAGE<DATACOUNT,{trace["proof"]} AND {trace["limited"]}=0 AND {trace["ambiguous"]}=0)')
     ton=f('TON',f'SHOWT AND {phase}=1 AND {proof} AND {d}<>0 AND {h}>BEPS AND {age}>=1 AND {age}<DATACOUNT')
     extreme=f('EXTREME',f'IF({d}=1,HHV(H,MAX(1,{age})),LLV(L,MAX(1,{age})))')
     prices=[];valid=[];ranked=[]

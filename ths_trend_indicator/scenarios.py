@@ -16,6 +16,25 @@ def path(prices, steps=18, tail=9, prefix=50):
 
 
 def sample(name):
+    if name in ('same_three','same_four','contract_equal','recouple_equal','white_same','graded_expand','graded_contract'):
+        cases={
+            'same_three':([100,120,112,132,124,144,136,156],[10,6,10,6,10,6,10],98),
+            'same_four':([100,120,112,132,124,144,136,156,148,168],[10,6,10,6,10,6,10,6,10],98),
+            'contract_equal':([100,150,125,175,155,205,185,235],[15,18,15,8,15,8,15],98),
+            'recouple_equal':([100,150,125,175,155,205,185,235,210,260],[15,18,15,8,15,8,15,18,15],98),
+            'graded_expand':([100,150,125,175,150,200,175,225],[15,6,8,14,10,30,18],98),
+            'graded_contract':([100,150,125,175,150,200,175,225],[15,30,18,14,10,6,8],98),
+            'white_same':([6705,7040,7000,7200,7150,8035,7750,8254,7465,8769,8094,9055,8494,9845],
+                          [8,2,8,2,15,12,12,8,18,10,12,12,12],6704),
+        }
+        prices,steps,origin=cases[name];d=path(prices,steps,tail=0)
+        return d,{'DIR':1,'MANF':1,'MFROM':origin,'MTO':prices[-1]+1,
+                  'MFAGE':len(d['C'])-1-(50 if name=='white_same'else 0),'KIND':1}
+    if name=='white_same_down':
+        data,settings=sample('white_same')
+        reflected={'O':20000-data['O'],'C':20000-data['C'],
+                   'H':20000-data['L'],'L':20000-data['H']}
+        return reflected,dict(settings)|{'DIR':-1,'MFROM':20000-settings['MFROM'],'MTO':20000-settings['MTO']}
     # Conceptual regressions inspired by interval feedback. These paths
     # are explicitly synthetic and cannot verify the user's exact chart.
     if name in ('q_early','q_failed','q_merge','q_tiny','s_main','s_fib'):
@@ -132,4 +151,6 @@ NAMES=('fall_rebound','five_up','nested_five_down','seven_expanding','triangle_e
        'short_inner_q','parent_correction','sideways','earlier_complete',
        'p_whole','p_white','p_triangle','p_no_h1','p_newtip','p_s_correction','p_white_up','main_owned',
        'q_early','q_failed','q_merge','q_tiny','s_main','s_fib','q_failed_auto','q_reversal',
-       'main_left','main_three','target_bases','guides_up')
+       'main_left','main_three','target_bases','guides_up',
+       'same_three','same_four','contract_equal','recouple_equal','white_same','white_same_down',
+       'graded_expand','graded_contract')

@@ -109,7 +109,7 @@ def q_intervals(prefix, n):
 
 
 def core():
-    lines = ["{ 趋势交易·期货通PC 1.3.0；按用户导出函数库生成，结构解释需结合确认时刻 }",
+    lines = ["{ 趋势交易·期货通PC 1.4.0；按用户导出函数库生成，结构解释需结合确认时刻 }",
              "{ PN细/BN工作转折；DIR=0自动，1上升，-1下降 }",
              "{ KIND=0自动，1顺势，2调整，3横盘；参数详见README }",
              "{ MANF=1人工前浪：MFROM起价、MTO止价、MFAGE起点距今 }",
@@ -481,7 +481,7 @@ def build():
         (path/relative).write_bytes(layer_data)
         profiles[relative]=layer_profile
         install.append(relative)
-    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.3.0','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
+    (ROOT/'导出配置.json').write_text(json.dumps({'release':'1.4.0','primary':'EWTN_ASCII.txt','primary_role':'full_model_reference',
                                                'install':install,'p_focus_install':install[:2],
                                                'recommended_install':install[:3],'optional_install':[],
                                                'installation_layers':layer_report,'files':profiles},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

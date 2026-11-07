@@ -13,7 +13,8 @@ def relation(a,b):
 
 
 class Builder:
-    def __init__(self,font=9): self.lines=[];self.owner='overview';self.font=font
+    def __init__(self,font=9,collect_text=False):
+        self.lines=[];self.owner='overview';self.font=font;self.collect_text=collect_text;self.text_groups={}
     def draw(self,text):
         self.lines.append(text+' { OWNER:'+self.owner+' }')
     def put(self,name,expr):
@@ -38,10 +39,34 @@ class Builder:
         # 0/1/2. Reversing it made the RET prefix overlap its number.
         import re
         price=re.sub(r'\bPAD\b','BPAD',price)
+        font=self.font if font is None else font
+        if self.collect_text:
+            self.text_groups.setdefault((self.owner,text,color,align,font),[]).append((cond,age,price))
+            return
         # KTEXT also stores POSITION as a constant HorizontalOffset. A
         # dynamic POSITION can silently become NaN in native shape JSON.
         # Place the label on its historical candle with a literal offset 0.
-        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE{self.font if font is None else font};")
+        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE{font};")
+    def flush_text(self):
+        """Share identical labels at distinct owned turns, preserving fonts.
+
+        Each group's turns are chronologically disjoint within its owner.
+        Nullable coordinates stay behind IF; they are never masked by 0.
+        """
+        original=self.owner;self.collect_text=False
+        for serial,((owner,text,color,align,font),entries)in enumerate(self.text_groups.items()):
+            self.owner=owner
+            if len(entries)==1:
+                self.text(*entries[0],text,color,align,font);continue
+            masks=[];prices=[]
+            for i,(cond,age,y)in enumerate(entries):
+                masks.append(self.put(f'TXT{serial}M{i}',f'VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0'))
+                prices.append(f'REFX1({y},100000)')
+            value='0'
+            for mask,y in reversed(list(zip(masks,prices))):value=f'IF({mask},{y},{value})'
+            value=self.put(f'TXT{serial}Y',value)
+            self.draw(f"KTEXT({' OR '.join(masks)},0,{value},{align},{color},'{text}'),FONTSIZE{font};")
+        self.owner=original;self.text_groups={}
     def number(self,cond,age,price,value,color,precision=1,font=None,align=0):
         # The official parser rejects an X variable in DRAWSHIFTNUMBER.
         # Wrapping it in INTPART compiles but yields an invalid constant

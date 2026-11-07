@@ -393,7 +393,62 @@ def windows_text(source):
     return source.replace('\r\n','\n').replace('\r','\n').replace('\n','\r\n')
 
 
-def packed_rows(statements,width=240,limit=8):
+def inline_single_use_pure(statements,boundary):
+    """Inline one-use elementwise bindings; keep all history/selector calls.
+
+    Nonconstant expressions are not moved into history functions. Frozen
+    arithmetic can be substituted without copying its broadcast or guard.
+    IF, COUNT, scans, lookups and BACKSET remain named at their old phase.
+    """
+    pure={'ABS','MAX','MIN','MAX1','MIN1','SIGN','INTPART','ISNULL'}
+    elementwise=pure|{'IF','IFELSE'}
+    constants=set(SETTINGS)|{'DATACOUNT'}
+    def constant(n):
+        if n[0]in ('number','string'):return True
+        if n[0]=='identifier':return n[1]in constants or n[1].startswith('COLOR')
+        if n[0]=='binary':return constant(n[2])and constant(n[3])
+        if n[0]=='unary':return constant(n[2])
+        if n[0]=='call':
+            if n[1]=='REFX1'and n[2][1]==('number',100000.):return True
+            if n[1]in elementwise:return all(constant(a)for a in n[2])
+            if n[1]=='COUNT'and n[2][1]==('number',1.):return constant(n[2][0])
+        return False
+    def safe(n):
+        if n[0]in ('number','identifier'):return True
+        if n[0]=='binary':return safe(n[2])and safe(n[3])
+        if n[0]=='unary':return safe(n[2])
+        return n[0]=='call'and n[1]in pure and all(safe(a)for a in n[2])
+    counts=Counter();uses={}
+    for i,s in enumerate(statements):
+        if s.name and constant(s.expression):constants.add(s.name)
+        for n in walk(s.expression):
+            if n[0]=='identifier':counts[n[1]]+=1;uses.setdefault(n[1],set()).add(i)
+    result=list(statements)
+    for i in range(len(result)-1,-1,-1):
+        s=result[i]
+        if not s or not s.name or s.output or s.name in SETTINGS or counts[s.name]!=1 or not safe(s.expression):continue
+        j=next(iter(uses[s.name]));consumer=result[j]
+        if (s.line<=boundary)!=(consumer.line<=boundary):continue
+        movable=constant(s.expression);blocked=False
+        def replace(n,history=False):
+            nonlocal blocked
+            if n[0]=='identifier'and n[1]==s.name:
+                if history and not movable:blocked=True
+                return s.expression
+            if n[0]=='call':return ('call',n[1],[replace(a,history or n[1]not in elementwise)for a in n[2]])
+            if n[0]=='binary':return ('binary',n[1],replace(n[2],history),replace(n[3],history))
+            if n[0]=='unary':return ('unary',n[1],replace(n[2],history))
+            return n
+        expression=replace(consumer.expression)
+        if blocked:continue
+        result[j]=Statement(consumer.name,expression,consumer.output,consumer.styles,consumer.line)
+        result[i]=None
+        for n in walk(s.expression):
+            if n[0]=='identifier':uses[n[1]].discard(i);uses[n[1]].add(j)
+    return [s for s in result if s is not None]
+
+
+def packed_rows(statements,width=400,limit=12):
     """Pack complete statements only; editable parameters keep their rows.
 
     Analysis and drawing are packed separately by the caller. A physical
@@ -418,6 +473,7 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
     statements=deduplicate(statements,boundary)
     statements=share_elementwise(statements,boundary)
     statements=deduplicate(statements,boundary)
+    statements=inline_single_use_pure(statements,boundary)
     statements,builtin_aliases=compact_builtins(statements,boundary)
     definitions={s.name:i for i,s in enumerate(statements)if s.name}
     refs=[{definitions[n[1]]for n in walk(s.expression)if n[0]=='identifier'and n[1]in definitions}for s in statements]

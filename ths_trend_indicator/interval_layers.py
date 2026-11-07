@@ -40,24 +40,26 @@ def counter_scope(b,key,parent,gate='1'):
 
 
 def current_adjustment(b,key,previous,counter,lane,display='1'):
-    shape=Engine(b,key,previous).geometry('AD',previous['last'],previous['end'],'0',
-                 fallback=dict(p=counter['last'],t=counter['end'],has=counter['on']),allow_live=True)
-    q=dict(show=b.put(key+'DISPLAY',f'{counter["on"]} AND {display}'),r=previous['last'],a=previous['end'],p=shape['p'],t=shape['t'],shape=shape)
+    engine=Engine(b,key,previous)
+    ending=engine.endpoint('END',previous['last'],previous['end'],'0',
+               dict(p=counter['last'],t=counter['end'],has=counter['on']),allow_live=True)
+    shape=engine.geometry('AD',previous['last'],previous['end'],'0',fallback=ending,allow_live=True,canonical=True)
+    q=dict(show=b.put(key+'DISPLAY',f'{counter["on"]} AND {display}'),r=previous['last'],a=previous['end'],p=ending['p'],t=ending['t'],shape=shape)
     pts=adjustment(b,key+'DRAW',q,previous['direction'],lane=lane)
-    owner=counter|dict(last=shape['p'],end=shape['t'])
+    owner=counter|dict(last=ending['p'],end=ending['t'])
     return shape,q,pts,owner
 
 
 def layers():
-    b=Builder(font=11);h=scopes(b)
+    b=Builder(font=11,collect_text=True);h=scopes(b)
     b.owner='new_M'
-    main=Engine(b,'MQ',h['M']).build('B','BN',3)
+    main=Engine(b,'MQ',h['M']).build('B','BN',5,scan_limit=8)
     render(b,main,'M','COLORYELLOW',5.7,with_patterns=False)
     observations(b,h,main)
     b.owner='new_P'
     # A later M counter-point must not discard the preceding P intervals.
     pscope=h['P']
-    primary=Engine(b,'PQ',pscope).build('G','GN',5)
+    primary=Engine(b,'PQ',pscope).build('G','GN',5,scan_limit=8)
     visible=primary|{'scope':pscope|{'on':b.put('PQDISPLAY',f'{pscope["on"]} AND SHOWSUB')}}
     render(b,visible,'P','COLORLIBLUE',1.2,with_patterns=False,internal=True)
     primary['internal']=visible['internal']
@@ -78,7 +80,7 @@ def layers():
     main_leg=dict(first=primary['base'],start=primary['base_age'],last=pscope['last'],end=pscope['end'],direction=pscope['direction'])
     owned={k:b.frozen('SQOWNER'+k.upper(),f'IF({use_counter},{current[k]},{main_leg[k]})')for k in ('first','start','last','end','direction')}
     owned['on']=b.frozen('SQOWNERON',f'SHOWGRAND AND {pscope["on"]} AND {owned["start"]}>{owned["end"]} AND {owned["direction"]}*({owned["last"]}-{owned["first"]})>BEPS')
-    final=Engine(b,'SQ',owned).build('G','GN',3)
+    final=Engine(b,'SQ',owned).build('G','GN',3,scan_limit=3)
     render(b,final,'S','COLORCYAN',1.2,with_patterns=False,side=-1)
     small=counter_scope(b,'SC',owned)
     outer,sq,_,small_owner=current_adjustment(b,'SO',owned,small,4.2)
@@ -95,6 +97,7 @@ def layers():
     b.draw(f'价格尺状态:{plan["phase"]},NODRAW;')
     b.draw(f'价格尺方向:{plan["direction"]},NODRAW;')
     b.draw(f'工作回调百分比:{plan["ret"]},NODRAW;')
+    b.flush_text()
     return b.lines,{'M':main,'P':primary,'S':final,'hierarchy':h,'plan':plan,
                     'current_P':current,'current_P_shape':shape,'last_adjustment':outer,
                     'S_plan':splan,'S_parent_counter':use_counter,'S_counter':small_owner,

@@ -13,26 +13,101 @@
       {
         "a": "MQR0SAFEA",
         "t": "MQR0SAFET",
-        "w": "MQR0WA",
-        "c": "MQR0CA",
+        "b": "MQR0RETURN",
         "boundary": "MQR0BOUNDARY",
-        "closed": "MQR0CLOSED"
+        "closed": "MQR0CLOSED",
+        "span": "MQPOOLN0",
+        "picked": "MQPOOLPICK0"
       },
       {
         "a": "MQR1SAFEA",
         "t": "MQR1SAFET",
-        "w": "MQR1WA",
-        "c": "MQR1CA",
+        "b": "MQR1RETURN",
         "boundary": "MQR1BOUNDARY",
-        "closed": "MQR1CLOSED"
+        "closed": "MQR1CLOSED",
+        "span": "MQPOOLN1",
+        "picked": "MQPOOLPICK1"
       },
       {
         "a": "MQR2SAFEA",
         "t": "MQR2SAFET",
-        "w": "MQR2WA",
-        "c": "MQR2CA",
+        "b": "MQR2RETURN",
         "boundary": "MQR2BOUNDARY",
-        "closed": "MQR2CLOSED"
+        "closed": "MQR2CLOSED",
+        "span": "MQPOOLN2",
+        "picked": "MQPOOLPICK2"
+      },
+      {
+        "a": "MQR3SAFEA",
+        "t": "MQR3SAFET",
+        "b": "MQR3RETURN",
+        "boundary": "MQR3BOUNDARY",
+        "closed": "MQR3CLOSED",
+        "span": "MQPOOLN3",
+        "picked": "MQPOOLPICK3"
+      },
+      {
+        "a": "MQR4SAFEA",
+        "t": "MQR4SAFET",
+        "b": "MQR4RETURN",
+        "boundary": "MQR4BOUNDARY",
+        "closed": "MQR4CLOSED",
+        "span": "MQPOOLN4",
+        "picked": "MQPOOLPICK4"
+      },
+      {
+        "a": "MQR5SAFEA",
+        "t": "MQR5SAFET",
+        "b": "MQR5RETURN",
+        "boundary": "MQR5BOUNDARY",
+        "closed": "MQR5CLOSED",
+        "span": "MQPOOLN5",
+        "picked": "MQPOOLPICK5"
+      },
+      {
+        "a": "MQR6SAFEA",
+        "t": "MQR6SAFET",
+        "b": "MQR6RETURN",
+        "boundary": "MQR6BOUNDARY",
+        "closed": "MQR6CLOSED",
+        "span": "MQPOOLN6",
+        "picked": "MQPOOLPICK6"
+      },
+      {
+        "a": "MQR7SAFEA",
+        "t": "MQR7SAFET",
+        "b": "MQR7RETURN",
+        "boundary": "MQR7BOUNDARY",
+        "closed": "MQR7CLOSED",
+        "span": "MQPOOLN7",
+        "picked": "MQPOOLPICK7"
+      }
+    ],
+    "pool": [
+      {
+        "a": "MQPOOL0A",
+        "t": "MQPOOL0ENDENDT",
+        "b": "MQPOOL0CLOSE"
+      },
+      {
+        "a": "MQPOOL1A",
+        "t": "MQPOOL1ENDENDT",
+        "b": "MQPOOL1WICK"
+      },
+      {
+        "a": "MQPOOL2A",
+        "t": "MQPOOL2ENDENDT",
+        "b": "MQPOOL2WICK"
+      },
+      {
+        "a": "MQPOOL3A",
+        "t": "MQPOOL3ENDENDT",
+        "b": "MQPOOL3WICK"
+      },
+      {
+        "a": "MQPOOL4A",
+        "t": "MQPOOL4ENDENDT",
+        "b": "MQPOOL4WICK"
       }
     ],
     "q": [
@@ -41,19 +116,20 @@
         "a": "MQF1S0A",
         "p": "MQF1S0P",
         "t": "MQF1S0T",
-        "w": "MQF1S0W",
-        "c": "MQF1S0C",
-        "wh": "MQF1S0WH",
-        "ch": "MQF1S0CH",
         "v": "MQF1S0V",
         "shape": {
-          "p": "MQF1S0P",
-          "t": "MQF1S0T",
-          "code": "MQF1S0ACODE",
-          "snap": "MQF1S0ASNAP",
-          "source": "MQF1S0ASOURCE",
-          "length": "MQF1S0ALEN"
+          "p": "MQQ0ADENDP",
+          "t": "MQQ0ADENDA",
+          "has": "MQF1S0V",
+          "code": "MQQ0ADCODE",
+          "snap": "MQQ0ADSNAP",
+          "source": "MQQ0ADSOURCE",
+          "length": "MQQ0ADLEN",
+          "live": "0",
+          "only_g": false
         },
+        "closed": "MQF1S0RETURNED",
+        "return_age": "MQF1S0B",
         "n": "MQQ0N",
         "boundary": "MQQ0BOUND",
         "show": "MQQ0SHOW"
@@ -63,19 +139,20 @@
         "a": "MQF1S1A",
         "p": "MQF1S1P",
         "t": "MQF1S1T",
-        "w": "MQF1S1W",
-        "c": "MQF1S1C",
-        "wh": "MQF1S1WH",
-        "ch": "MQF1S1CH",
         "v": "MQF1S1V",
         "shape": {
-          "p": "MQF1S1P",
-          "t": "MQF1S1T",
-          "code": "MQF1S1ACODE",
-          "snap": "MQF1S1ASNAP",
-          "source": "MQF1S1ASOURCE",
-          "length": "MQF1S1ALEN"
+          "p": "MQQ1ADENDP",
+          "t": "MQQ1ADENDA",
+          "has": "MQF1S1V",
+          "code": "MQQ1ADCODE",
+          "snap": "MQQ1ADSNAP",
+          "source": "MQQ1ADSOURCE",
+          "length": "MQQ1ADLEN",
+          "live": "0",
+          "only_g": false
         },
+        "closed": "MQF1S1RETURNED",
+        "return_age": "MQF1S1B",
         "n": "MQQ1N",
         "boundary": "MQQ1BOUND",
         "show": "MQQ1SHOW"
@@ -85,19 +162,20 @@
         "a": "MQF1S2A",
         "p": "MQF1S2P",
         "t": "MQF1S2T",
-        "w": "MQF1S2W",
-        "c": "MQF1S2C",
-        "wh": "MQF1S2WH",
-        "ch": "MQF1S2CH",
         "v": "MQF1S2V",
         "shape": {
-          "p": "MQF1S2P",
-          "t": "MQF1S2T",
-          "code": "MQF1S2ACODE",
-          "snap": "MQF1S2ASNAP",
-          "source": "MQF1S2ASOURCE",
-          "length": "MQF1S2ALEN"
+          "p": "MQQ2ADENDP",
+          "t": "MQQ2ADENDA",
+          "has": "MQF1S2V",
+          "code": "MQQ2ADCODE",
+          "snap": "MQQ2ADSNAP",
+          "source": "MQQ2ADSOURCE",
+          "length": "MQQ2ADLEN",
+          "live": "0",
+          "only_g": false
         },
+        "closed": "MQF1S2RETURNED",
+        "return_age": "MQF1S2B",
         "n": "MQQ2N",
         "boundary": "MQQ2BOUND",
         "show": "MQQ2SHOW"
@@ -107,13 +185,63 @@
     "h1": "MQH1",
     "proof": "MQPROOF",
     "kind": "MQTYPE",
-    "ambiguous": "MQT2AMB",
+    "ambiguous": "MQT4AMB",
     "limited": "MQLIMIT",
     "base": "MQBASE",
     "base_age": "MQBASEAGE",
     "rel1": "MQREL1",
     "rel2": "MQREL2",
-    "pending": "MQOPEN"
+    "pending": "MQOPEN",
+    "steps": [
+      {
+        "reference": "MQT1REFERENCE",
+        "comparison_span": "MQT1PLASTN",
+        "same_reference": "MQT1REFSAME",
+        "pre_height": "0",
+        "pre_couple": "0",
+        "inner_demotion": "MQT1EQUALDROP",
+        "pre_demotion": "MQT1PREDROP",
+        "upgrade": "MQT1UP",
+        "downgrade": "MQT1DOWN",
+        "count": "MQT1COUNT"
+      },
+      {
+        "reference": "MQT2REFERENCE",
+        "comparison_span": "MQT2PLASTN",
+        "same_reference": "MQT2REFSAME",
+        "pre_height": "MQT2PREHEIGHT",
+        "pre_couple": "0",
+        "inner_demotion": "MQT2EQUALDROP",
+        "pre_demotion": "MQT2PREDROP",
+        "upgrade": "MQT2UP",
+        "downgrade": "MQT2DOWN",
+        "count": "MQT2COUNT"
+      },
+      {
+        "reference": "MQT3REFERENCE",
+        "comparison_span": "MQT3PLASTN",
+        "same_reference": "MQT3REFSAME",
+        "pre_height": "MQT3PREHEIGHT",
+        "pre_couple": "MQT3PRECOUPLE",
+        "inner_demotion": "MQT3EQUALDROP",
+        "pre_demotion": "MQT3PREDROP",
+        "upgrade": "MQT3UP",
+        "downgrade": "MQT3DOWN",
+        "count": "MQT3COUNT"
+      },
+      {
+        "reference": "MQT4REFERENCE",
+        "comparison_span": "MQT4PLASTN",
+        "same_reference": "MQT4REFSAME",
+        "pre_height": "MQT4PREHEIGHT",
+        "pre_couple": "MQT4PRECOUPLE",
+        "inner_demotion": "MQT4EQUALDROP",
+        "pre_demotion": "MQT4PREDROP",
+        "upgrade": "MQT4UP",
+        "downgrade": "MQT4DOWN",
+        "count": "MQT4COUNT"
+      }
+    ]
   },
   "P": {
     "key": "PQ",
@@ -132,42 +260,101 @@
       {
         "a": "PQR0SAFEA",
         "t": "PQR0SAFET",
-        "w": "PQR0WA",
-        "c": "PQR0CA",
+        "b": "PQR0RETURN",
         "boundary": "PQR0BOUNDARY",
-        "closed": "PQR0CLOSED"
+        "closed": "PQR0CLOSED",
+        "span": "PQPOOLN0",
+        "picked": "PQPOOLPICK0"
       },
       {
         "a": "PQR1SAFEA",
         "t": "PQR1SAFET",
-        "w": "PQR1WA",
-        "c": "PQR1CA",
+        "b": "PQR1RETURN",
         "boundary": "PQR1BOUNDARY",
-        "closed": "PQR1CLOSED"
+        "closed": "PQR1CLOSED",
+        "span": "PQPOOLN1",
+        "picked": "PQPOOLPICK1"
       },
       {
         "a": "PQR2SAFEA",
         "t": "PQR2SAFET",
-        "w": "PQR2WA",
-        "c": "PQR2CA",
+        "b": "PQR2RETURN",
         "boundary": "PQR2BOUNDARY",
-        "closed": "PQR2CLOSED"
+        "closed": "PQR2CLOSED",
+        "span": "PQPOOLN2",
+        "picked": "PQPOOLPICK2"
       },
       {
         "a": "PQR3SAFEA",
         "t": "PQR3SAFET",
-        "w": "PQR3WA",
-        "c": "PQR3CA",
+        "b": "PQR3RETURN",
         "boundary": "PQR3BOUNDARY",
-        "closed": "PQR3CLOSED"
+        "closed": "PQR3CLOSED",
+        "span": "PQPOOLN3",
+        "picked": "PQPOOLPICK3"
       },
       {
         "a": "PQR4SAFEA",
         "t": "PQR4SAFET",
-        "w": "PQR4WA",
-        "c": "PQR4CA",
+        "b": "PQR4RETURN",
         "boundary": "PQR4BOUNDARY",
-        "closed": "PQR4CLOSED"
+        "closed": "PQR4CLOSED",
+        "span": "PQPOOLN4",
+        "picked": "PQPOOLPICK4"
+      },
+      {
+        "a": "PQR5SAFEA",
+        "t": "PQR5SAFET",
+        "b": "PQR5RETURN",
+        "boundary": "PQR5BOUNDARY",
+        "closed": "PQR5CLOSED",
+        "span": "PQPOOLN5",
+        "picked": "PQPOOLPICK5"
+      },
+      {
+        "a": "PQR6SAFEA",
+        "t": "PQR6SAFET",
+        "b": "PQR6RETURN",
+        "boundary": "PQR6BOUNDARY",
+        "closed": "PQR6CLOSED",
+        "span": "PQPOOLN6",
+        "picked": "PQPOOLPICK6"
+      },
+      {
+        "a": "PQR7SAFEA",
+        "t": "PQR7SAFET",
+        "b": "PQR7RETURN",
+        "boundary": "PQR7BOUNDARY",
+        "closed": "PQR7CLOSED",
+        "span": "PQPOOLN7",
+        "picked": "PQPOOLPICK7"
+      }
+    ],
+    "pool": [
+      {
+        "a": "PQPOOL0A",
+        "t": "PQPOOL0ENDENDT",
+        "b": "PQPOOL0CLOSE"
+      },
+      {
+        "a": "PQPOOL1A",
+        "t": "PQPOOL1ENDENDT",
+        "b": "PQPOOL1WICK"
+      },
+      {
+        "a": "PQPOOL2A",
+        "t": "PQPOOL2ENDENDT",
+        "b": "PQPOOL2WICK"
+      },
+      {
+        "a": "PQPOOL3A",
+        "t": "PQPOOL3ENDENDT",
+        "b": "PQPOOL3WICK"
+      },
+      {
+        "a": "PQPOOL4A",
+        "t": "PQPOOL4ENDENDT",
+        "b": "PQPOOL4WICK"
       }
     ],
     "q": [
@@ -176,19 +363,20 @@
         "a": "PQF1S0A",
         "p": "PQF1S0P",
         "t": "PQF1S0T",
-        "w": "PQF1S0W",
-        "c": "PQF1S0C",
-        "wh": "PQF1S0WH",
-        "ch": "PQF1S0CH",
         "v": "PQF1S0V",
         "shape": {
-          "p": "PQF1S0P",
-          "t": "PQF1S0T",
-          "code": "PQF1S0ACODE",
-          "snap": "PQF1S0ASNAP",
-          "source": "PQF1S0ASOURCE",
-          "length": "PQF1S0ALEN"
+          "p": "PQQ0ADENDP",
+          "t": "PQQ0ADENDA",
+          "has": "PQF1S0V",
+          "code": "PQQ0ADCODE",
+          "snap": "PQQ0ADSNAP",
+          "source": "PQQ0ADSOURCE",
+          "length": "PQQ0ADLEN",
+          "live": "0",
+          "only_g": false
         },
+        "closed": "PQF1S0RETURNED",
+        "return_age": "PQF1S0B",
         "n": "PQQ0N",
         "boundary": "PQQ0BOUND",
         "show": "PQQ0SHOW"
@@ -198,19 +386,20 @@
         "a": "PQF1S1A",
         "p": "PQF1S1P",
         "t": "PQF1S1T",
-        "w": "PQF1S1W",
-        "c": "PQF1S1C",
-        "wh": "PQF1S1WH",
-        "ch": "PQF1S1CH",
         "v": "PQF1S1V",
         "shape": {
-          "p": "PQF1S1P",
-          "t": "PQF1S1T",
-          "code": "PQF1S1ACODE",
-          "snap": "PQF1S1ASNAP",
-          "source": "PQF1S1ASOURCE",
-          "length": "PQF1S1ALEN"
+          "p": "PQQ1ADENDP",
+          "t": "PQQ1ADENDA",
+          "has": "PQF1S1V",
+          "code": "PQQ1ADCODE",
+          "snap": "PQQ1ADSNAP",
+          "source": "PQQ1ADSOURCE",
+          "length": "PQQ1ADLEN",
+          "live": "0",
+          "only_g": false
         },
+        "closed": "PQF1S1RETURNED",
+        "return_age": "PQF1S1B",
         "n": "PQQ1N",
         "boundary": "PQQ1BOUND",
         "show": "PQQ1SHOW"
@@ -220,19 +409,20 @@
         "a": "PQF1S2A",
         "p": "PQF1S2P",
         "t": "PQF1S2T",
-        "w": "PQF1S2W",
-        "c": "PQF1S2C",
-        "wh": "PQF1S2WH",
-        "ch": "PQF1S2CH",
         "v": "PQF1S2V",
         "shape": {
-          "p": "PQF1S2P",
-          "t": "PQF1S2T",
-          "code": "PQF1S2ACODE",
-          "snap": "PQF1S2ASNAP",
-          "source": "PQF1S2ASOURCE",
-          "length": "PQF1S2ALEN"
+          "p": "PQQ2ADENDP",
+          "t": "PQQ2ADENDA",
+          "has": "PQF1S2V",
+          "code": "PQQ2ADCODE",
+          "snap": "PQQ2ADSNAP",
+          "source": "PQQ2ADSOURCE",
+          "length": "PQQ2ADLEN",
+          "live": "0",
+          "only_g": false
         },
+        "closed": "PQF1S2RETURNED",
+        "return_age": "PQF1S2B",
         "n": "PQQ2N",
         "boundary": "PQQ2BOUND",
         "show": "PQQ2SHOW"
@@ -249,6 +439,56 @@
     "rel1": "PQREL1",
     "rel2": "PQREL2",
     "pending": "PQOPEN",
+    "steps": [
+      {
+        "reference": "PQT1REFERENCE",
+        "comparison_span": "PQT1PLASTN",
+        "same_reference": "PQT1REFSAME",
+        "pre_height": "0",
+        "pre_couple": "0",
+        "inner_demotion": "PQT1EQUALDROP",
+        "pre_demotion": "PQT1PREDROP",
+        "upgrade": "PQT1UP",
+        "downgrade": "PQT1DOWN",
+        "count": "PQT1COUNT"
+      },
+      {
+        "reference": "PQT2REFERENCE",
+        "comparison_span": "PQT2PLASTN",
+        "same_reference": "PQT2REFSAME",
+        "pre_height": "PQT2PREHEIGHT",
+        "pre_couple": "0",
+        "inner_demotion": "PQT2EQUALDROP",
+        "pre_demotion": "PQT2PREDROP",
+        "upgrade": "PQT2UP",
+        "downgrade": "PQT2DOWN",
+        "count": "PQT2COUNT"
+      },
+      {
+        "reference": "PQT3REFERENCE",
+        "comparison_span": "PQT3PLASTN",
+        "same_reference": "PQT3REFSAME",
+        "pre_height": "PQT3PREHEIGHT",
+        "pre_couple": "PQT3PRECOUPLE",
+        "inner_demotion": "PQT3EQUALDROP",
+        "pre_demotion": "PQT3PREDROP",
+        "upgrade": "PQT3UP",
+        "downgrade": "PQT3DOWN",
+        "count": "PQT3COUNT"
+      },
+      {
+        "reference": "PQT4REFERENCE",
+        "comparison_span": "PQT4PLASTN",
+        "same_reference": "PQT4REFSAME",
+        "pre_height": "PQT4PREHEIGHT",
+        "pre_couple": "PQT4PRECOUPLE",
+        "inner_demotion": "PQT4EQUALDROP",
+        "pre_demotion": "PQT4PREDROP",
+        "upgrade": "PQT4UP",
+        "downgrade": "PQT4DOWN",
+        "count": "PQT4COUNT"
+      }
+    ],
     "internal": [
       {
         "on": "IRPINNERON0",
@@ -294,6 +534,33 @@
         "t": "PQR4SAFET",
         "n": "IRPINNERLEN4",
         "ret": "IRPINNERRET4"
+      },
+      {
+        "on": "IRPINNERON5",
+        "mid": "IRPINNERMID5",
+        "r": "PQR5P",
+        "p": "PQR5ADEXT",
+        "t": "PQR5SAFET",
+        "n": "IRPINNERLEN5",
+        "ret": "IRPINNERRET5"
+      },
+      {
+        "on": "IRPINNERON6",
+        "mid": "IRPINNERMID6",
+        "r": "PQR6P",
+        "p": "PQR6ADEXT",
+        "t": "PQR6SAFET",
+        "n": "IRPINNERLEN6",
+        "ret": "IRPINNERRET6"
+      },
+      {
+        "on": "IRPINNERON7",
+        "mid": "IRPINNERMID7",
+        "r": "PQR7P",
+        "p": "PQR7ADEXT",
+        "t": "PQR7SAFET",
+        "n": "IRPINNERLEN7",
+        "ret": "IRPINNERRET7"
       }
     ]
   },
@@ -311,26 +578,46 @@
       {
         "a": "SQR0SAFEA",
         "t": "SQR0SAFET",
-        "w": "SQR0WA",
-        "c": "SQR0CA",
+        "b": "SQR0RETURN",
         "boundary": "SQR0BOUNDARY",
-        "closed": "SQR0CLOSED"
+        "closed": "SQR0CLOSED",
+        "span": "SQPOOLN0",
+        "picked": "SQR0ON"
       },
       {
         "a": "SQR1SAFEA",
         "t": "SQR1SAFET",
-        "w": "SQR1WA",
-        "c": "SQR1CA",
+        "b": "SQR1RETURN",
         "boundary": "SQR1BOUNDARY",
-        "closed": "SQR1CLOSED"
+        "closed": "SQR1CLOSED",
+        "span": "SQPOOLN1",
+        "picked": "SQR1ON"
       },
       {
         "a": "SQR2SAFEA",
         "t": "SQR2SAFET",
-        "w": "SQR2WA",
-        "c": "SQR2CA",
+        "b": "SQR2RETURN",
         "boundary": "SQR2BOUNDARY",
-        "closed": "SQR2CLOSED"
+        "closed": "SQR2CLOSED",
+        "span": "SQPOOLN2",
+        "picked": "SQR2ON"
+      }
+    ],
+    "pool": [
+      {
+        "a": "SQR0SAFEA",
+        "t": "SQPOOL0ENDENDT",
+        "b": "SQPOOL0CLOSE"
+      },
+      {
+        "a": "SQR1SAFEA",
+        "t": "SQPOOL1ENDENDT",
+        "b": "SQPOOL1WICK"
+      },
+      {
+        "a": "SQR2SAFEA",
+        "t": "SQPOOL2ENDENDT",
+        "b": "SQPOOL2WICK"
       }
     ],
     "q": [
@@ -339,19 +626,20 @@
         "a": "SQF1S0A",
         "p": "SQF1S0P",
         "t": "SQF1S0T",
-        "w": "SQF1S0W",
-        "c": "SQF1S0C",
-        "wh": "SQF1S0WH",
-        "ch": "SQF1S0CH",
         "v": "SQF1S0V",
         "shape": {
-          "p": "SQF1S0P",
-          "t": "SQF1S0T",
-          "code": "SQF1S0ACODE",
-          "snap": "SQF1S0ASNAP",
-          "source": "SQF1S0ASOURCE",
-          "length": "SQF1S0ALEN"
+          "p": "SQQ0ADENDP",
+          "t": "SQQ0ADENDA",
+          "has": "SQF1S0V",
+          "code": "SQQ0ADCODE",
+          "snap": "SQQ0ADSNAP",
+          "source": "SQQ0ADSOURCE",
+          "length": "SQQ0ADLEN",
+          "live": "0",
+          "only_g": true
         },
+        "closed": "SQF1S0RETURNED",
+        "return_age": "SQF1S0B",
         "n": "SQQ0N",
         "boundary": "SQQ0BOUND",
         "show": "SQQ0SHOW"
@@ -361,19 +649,20 @@
         "a": "SQF1S1A",
         "p": "SQF1S1P",
         "t": "SQF1S1T",
-        "w": "SQF1S1W",
-        "c": "SQF1S1C",
-        "wh": "SQF1S1WH",
-        "ch": "SQF1S1CH",
         "v": "SQF1S1V",
         "shape": {
-          "p": "SQF1S1P",
-          "t": "SQF1S1T",
-          "code": "SQF1S1ACODE",
-          "snap": "SQF1S1ASNAP",
-          "source": "SQF1S1ASOURCE",
-          "length": "SQF1S1ALEN"
+          "p": "SQQ1ADENDP",
+          "t": "SQQ1ADENDA",
+          "has": "SQF1S1V",
+          "code": "SQQ1ADCODE",
+          "snap": "SQQ1ADSNAP",
+          "source": "SQQ1ADSOURCE",
+          "length": "SQQ1ADLEN",
+          "live": "0",
+          "only_g": true
         },
+        "closed": "SQF1S1RETURNED",
+        "return_age": "SQF1S1B",
         "n": "SQQ1N",
         "boundary": "SQQ1BOUND",
         "show": "SQQ1SHOW"
@@ -383,19 +672,20 @@
         "a": "SQF1S2A",
         "p": "SQF1S2P",
         "t": "SQF1S2T",
-        "w": "SQF1S2W",
-        "c": "SQF1S2C",
-        "wh": "SQF1S2WH",
-        "ch": "SQF1S2CH",
         "v": "SQF1S2V",
         "shape": {
-          "p": "SQF1S2P",
-          "t": "SQF1S2T",
-          "code": "SQF1S2ACODE",
-          "snap": "SQF1S2ASNAP",
-          "source": "SQF1S2ASOURCE",
-          "length": "SQF1S2ALEN"
+          "p": "SQQ2ADENDP",
+          "t": "SQQ2ADENDA",
+          "has": "SQF1S2V",
+          "code": "SQQ2ADCODE",
+          "snap": "SQQ2ADSNAP",
+          "source": "SQQ2ADSOURCE",
+          "length": "SQQ2ADLEN",
+          "live": "0",
+          "only_g": true
         },
+        "closed": "SQF1S2RETURNED",
+        "return_age": "SQF1S2B",
         "n": "SQQ2N",
         "boundary": "SQQ2BOUND",
         "show": "SQQ2SHOW"
@@ -411,7 +701,33 @@
     "base_age": "SQBASEAGE",
     "rel1": "SQREL1",
     "rel2": "SQREL2",
-    "pending": "SQOPEN"
+    "pending": "SQOPEN",
+    "steps": [
+      {
+        "reference": "SQT1REFERENCE",
+        "comparison_span": "SQT1PLASTN",
+        "same_reference": "SQT1REFSAME",
+        "pre_height": "0",
+        "pre_couple": "0",
+        "inner_demotion": "SQT1EQUALDROP",
+        "pre_demotion": "SQT1PREDROP",
+        "upgrade": "SQT1UP",
+        "downgrade": "SQT1DOWN",
+        "count": "SQT1COUNT"
+      },
+      {
+        "reference": "SQT2REFERENCE",
+        "comparison_span": "SQT2PLASTN",
+        "same_reference": "SQT2REFSAME",
+        "pre_height": "SQT2PREHEIGHT",
+        "pre_couple": "0",
+        "inner_demotion": "SQT2EQUALDROP",
+        "pre_demotion": "SQT2PREDROP",
+        "upgrade": "SQT2UP",
+        "downgrade": "SQT2DOWN",
+        "count": "SQT2COUNT"
+      }
+    ]
   },
   "hierarchy": {
     "P": {
@@ -476,8 +792,8 @@
   "current_P": {
     "first": "HTENDPRICE",
     "start": "HTENDAGE",
-    "last": "POADENDP",
-    "end": "POADENDA",
+    "last": "POENDLENDP",
+    "end": "POENDLENDT",
     "direction": "PCDIR",
     "on": "PCON"
   },
@@ -489,7 +805,8 @@
     "snap": "POADSNAP",
     "source": "POADSOURCE",
     "length": "POADLEN",
-    "live": "POADLIVE"
+    "live": "POADLIVE",
+    "only_g": false
   },
   "last_adjustment": {
     "p": "SOADENDP",
@@ -499,7 +816,8 @@
     "snap": "SOADSNAP",
     "source": "SOADSOURCE",
     "length": "SOADLEN",
-    "live": "SOADLIVE"
+    "live": "SOADLIVE",
+    "only_g": true
   },
   "S_plan": {
     "on": "SFON",
@@ -525,8 +843,8 @@
   "S_counter": {
     "first": "SQOWNERLAST",
     "start": "SQOWNEREND",
-    "last": "SOADENDP",
-    "end": "SOADENDA",
+    "last": "SOENDLENDP",
+    "end": "SOENDLENDT",
     "direction": "SCDIR",
     "on": "SCON"
   },

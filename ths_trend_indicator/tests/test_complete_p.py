@@ -23,10 +23,10 @@ def points(r,color='COLORLIBLUE'):
 class CompletePTests(unittest.TestCase):
     def test_raw_turns_keep_internal_intervals_without_inventing_extra_parent_numbers(self):
         d,r,t=scene('p_whole');g=t['groups'][1]
-        self.assertEqual(points(r),[1015.38,959,991,922,931,869,901,831])
+        self.assertEqual(points(r),[1015.38,959,991,922,978,919,951,900,931,869,901,831])
         self.assertEqual(g['intervals'],2)
-        self.assertEqual(g['internal_Q'][0]['root_price'],869)
-        self.assertEqual(g['internal_Q'][0]['length'],9)
+        self.assertEqual([q['root_price']for q in g['internal_Q']],[922,919,900])
+        self.assertEqual([q['length']for q in g['internal_Q']],[13,7,8])
         self.assertFalse(any(l['text']in ('P8','P9','P10','P11')for l in r['labels']))
         self.assertEqual(t['price_plan']['fib_anchors']['start_price'],1015.38)
         self.assertNotEqual(t['price_plan']['fib_anchors']['start_price'],977.26)
@@ -52,7 +52,7 @@ class CompletePTests(unittest.TestCase):
         self.assertEqual(q['counter_price'],121);self.assertNotEqual(q['counter_price'],131)
     def test_endpoint_reports_actual_h1_multiple_not_price_or_target_ratio(self):
         _,r,t=scene('p_whole');g=t['groups'][1]
-        self.assertAlmostEqual(g['actual_end_H1_multiple'],100/56.38)
+        self.assertAlmostEqual(g['actual_end_H1_multiple'],70/56.38)
         self.assertNotEqual(round(g['actual_end_H1_multiple'],3),1.208)
         h1_labels=[l for l in r['labels']if l['text']==' H1']
         self.assertTrue(h1_labels)

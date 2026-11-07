@@ -44,7 +44,7 @@ def snapshot(data,result,mapping=None,source=None):
                        'start_index':at(val(q['a'])),'end_index':at(val(q['boundary'])),
                        'candles_excluding_start':val(q['n']),
                        'root_price':root,'counter_index':at(val(q['t'])),'counter_price':counter,
-                       'closed':bool(val(q['ch']if i==0 else q['wh'])),
+                       'closed':bool(val(q['closed'])),
                        'retracement_percent':abs(counter-root)/max(abs(root-base),1e-7)*100,
                        'actual_H1_multiple':(root-base)*val(s['direction'])/h1 if val(t['proof'])and h1 else None,
                        'adjustment_shape_code':shape,'adjustment_shape_label':SHAPES[shape]})
@@ -54,10 +54,13 @@ def snapshot(data,result,mapping=None,source=None):
         points.append({'wave':2*count+1,'bar_index':at(val(s['end'])),'price':val(s['last'])})
         groups.append({'key':label,'owner':scope(s),'intervals':count,'H1':h1 if val(t['proof'])else None,
                        'first_Q_closed':bool(val(t['proof'])),'classification':int(val(t['kind'])),
-                       'pending':not bool(val(t['kind']))or bool(val(t['ambiguous']))or bool(val(t['pending'])),
+                       'pending':not bool(val(t['kind']))or bool(val(t['ambiguous']))or bool(val(t['pending']))or bool(val(t['limited'])),
                        'details_limited':bool(val(t['limited'])or val(t['ambiguous'])),
                        'actual_end_H1_multiple':(val(s['last'])-val(t['base']))*val(s['direction'])/h1 if val(t['proof'])and h1 else None,
                        'points':points if val(s['on'])else [],'Q':qs,
+                       'degree_reference_bars':qs[0]['candles_excluding_start']if qs else None,
+                       'raw_candidates_scanned':len(t['raw']),'grading_slots':len(t['pool']),
+                       'counting_steps':[{k:val(v)for k,v in step.items()}for step in t['steps']],
                        'internal_Q':[{'root_price':val(q['r']),'counter_price':val(q['p']),
                                       'length':val(q['n']),'retracement_percent':val(q['ret'])}
                                      for q in t.get('internal',[])if val(q['on'])]})
@@ -71,7 +74,7 @@ def snapshot(data,result,mapping=None,source=None):
                              'origin':val(schemas['plan']['total_origin'if i>=7 else'leg_base'])}
                             for i,r in enumerate(TARGETS,1)]})
     sf=schemas['S_plan']
-    return {'release':'1.3.0','bars':n,'native_client_run':False,
+    return {'release':'1.4.0','bars':n,'native_client_run':False,
             'mode':'current-prefix retrospective drawing, not historical trade signals',
             'catalog_sha256':hashlib.sha256(RAW).hexdigest(),
             'formula_normalized_utf8_sha256':hashlib.sha256((source if source is not None else formula_source()).encode()).hexdigest(),

@@ -16,12 +16,19 @@ def adjustment(b,key,q,d,color='COLORMAGENTA',lane=3):
         b.text(f'{show} AND {shape["code"]}={code}',q['t'],y,label,color,2)
     known=b.put(key+'KNOWN',f'{shape["source"]}>0 AND {shape["length"]}>=3')
     live=shape.get('live','0');points=[]
+    only_g=shape.get('only_g',False)
     for i in range(5):
         age_expr=f'IF({shape["source"]}=2,REF(SA{i},{shape["snap"]})+PN,REF(GA{i},{shape["snap"]})+GN)+{shape["snap"]}'
         price_expr=f'IF({shape["source"]}=2,REF(SP{i},{shape["snap"]}),REF(GP{i},{shape["snap"]}))'
+        if only_g:
+            age_expr=f'REF(GA{i},{shape["snap"]})+GN+{shape["snap"]}'
+            price_expr=f'REF(GP{i},{shape["snap"]})'
         if live!='0':
             la=q['t']if i==0 else f'IF({shape["source"]}=2,REF(SA{i-1},{shape["snap"]})+PN,REF(GA{i-1},{shape["snap"]})+GN)+{shape["snap"]}'
             lp=q['p']if i==0 else f'IF({shape["source"]}=2,REF(SP{i-1},{shape["snap"]}),REF(GP{i-1},{shape["snap"]}))'
+            if only_g:
+                la=q['t']if i==0 else f'REF(GA{i-1},{shape["snap"]})+GN+{shape["snap"]}'
+                lp=q['p']if i==0 else f'REF(GP{i-1},{shape["snap"]})'
             age_expr=f'IF({live},{la},{age_expr})';price_expr=f'IF({live},{lp},{price_expr})'
         points.append((b.frozen(key+f'LA{i}',age_expr),b.frozen(key+f'LP{i}',price_expr)))
     mask=b.put(key+'MASK',f'VX={q["a"]} OR VX={q["t"]} OR ('+known+' AND ('+' OR '.join(f'({shape["length"]}>{i} AND VX={a})'for i,(a,_)in enumerate(points))+'))')
@@ -47,7 +54,7 @@ def internal_intervals(b,trace,key,color):
     d=trace['scope']['direction'];base=trace['scope']['first'];points=[];items=[]
     for i,q in enumerate(trace['raw']):
         represented=' OR '.join(f'({s["show"]} AND {q["a"]}<={s["a"]} AND {q["a"]}>={s["t"]})'for s in trace['q'])
-        on=b.put(key+f'ON{i}',f'{trace["scope"]["on"]} AND {q["v"]} AND {q["closed"]} AND IF({represented},0,1)')
+        on=b.put(key+f'ON{i}',f'{trace["scope"]["on"]} AND {q.get("picked","1")} AND {q["v"]} AND {q["closed"]} AND IF({represented},0,1)')
         mid=b.put(key+f'MID{i}',f'INTPART(({q["a"]}+{q["boundary"]})/2)')
         ret=b.put(key+f'RET{i}',f'ABS({q["p"]}-{q["r"]})/MAX(ABS({q["r"]}-{base}),0.0000001)*100')
         b.segment(f'{on} AND SHOWQ',q['a'],q['r'],q['boundary'],q['r'],'COLORWHITE','DOT')
@@ -105,14 +112,14 @@ def draw(b,trace,label,color,lane=1,with_patterns=True,side=1,internal=False):
     price=b.put(key+'PRICE',f'IF(VX={s["start"]},{s["first"]},IF(VX={s["end"]},{s["last"]},{price}))')
     b.draw(f'POLYLINE({on} AND {mask},{price},{color}),LINETHICK2;')
     for n in range(4):
-        pending=f'{trace["kind"]}=0 OR {trace["ambiguous"]} OR {trace["pending"]}'
+        pending=f'{trace["kind"]}=0 OR {trace["ambiguous"]} OR {trace["pending"]} OR {trace["limited"]}'
         b.text(f'{on} AND {count}={n} AND IF({pending},0,1)',s['end'],f'{s["last"]}+{d}*BPAD*{lane}',f'{label}{2*n+1}',color,font=13)
         b.text(f'{on} AND {count}={n} AND ({pending})',s['end'],f'{s["last"]}+{d}*BPAD*{lane}',f'{label}{2*n+1}?',color,font=13)
     actual=b.put(key+'ENDMULT',f'{direction}*({s["last"]}-{trace["base"]})/MAX({h1},0.0000001)')
     ratio(b,f'{on} AND {trace["proof"]}',s['end'],f'{s["last"]}+{d}*BPAD*({lane}+1.3)',actual,color)
     b.text(f'{on} AND IF({trace["proof"]},0,1)',s['end'],f'{s["last"]}+{d}*BPAD*({lane}+1.3)','H1 ?',color,2)
-    for value,text in ((3,'3'),(5,'5 EQ'),(71,'7 EXP'),(72,'7 CON'),(73,'7 DIA'),(74,'7 X')):
-        b.text(f'{on} AND {trace["kind"]}={value}',s['end'],f'{s["last"]}+{d}*BPAD*({lane}+2.6)',text,color,2)
+    for value,text in ((3,'3 Q WAIT'),(5,'5 EQ'),(71,'7 EXP'),(72,'7 CON'),(73,'7 DIA'),(74,'7 X')):
+        b.text(f'{on} AND {trace["kind"]}={value} AND {trace["limited"]}=0 AND {trace["ambiguous"]}=0',s['end'],f'{s["last"]}+{d}*BPAD*({lane}+2.6)',text,color,2)
     for value,text in ((1,'5 EXP:Q3?'),(-1,'5 CON:Q3?')):
         b.text(f'{on} AND {count}=2 AND {trace["rel1"]}={value}',s['end'],f'{s["last"]}+{d}*BPAD*({lane}+2.6)',text,color,2)
     b.text(f'{on} AND ({trace["limited"]} OR {trace["ambiguous"]})',s['end'],f'{s["last"]}+{d}*BPAD*({lane}+3.8)','Q EXTENSION?',color,2)
