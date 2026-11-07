@@ -1,27 +1,27 @@
 {
-  "checked_at_utc": "2026-11-07T07:03:56.431474+00:00",
-  "release": "1.4.0",
+  "checked_at_utc": "2026-11-07T12:34:04.489877+00:00",
+  "release": "1.4.1",
   "endpoint": "https://ftapi.10jqka.com.cn/gw/openapi/post/v3/pre_check",
-  "public_commit": "8ae355c18c2559463d773b57adedc536d084744e",
+  "public_commit": "929b6a49beceec62912d5dd317565e187667de91",
   "scope": "Only anonymously downloaded, hash-verified public GitHub copies; no local/private source, credential or account data submitted.",
   "combined_check_assumption": "EWT01..EWT03; empty external parameters and description, matching installation instructions",
   "target_client_version": "4.39.1.2",
   "target_client_ui_run": false,
   "files": {
     "install/EWT01.txt": {
-      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/8ae355c18c2559463d773b57adedc536d084744e/ths_trend_indicator/formulas/install/EWT01.txt",
-      "sha256": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-      "bytes": 92920,
+      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/929b6a49beceec62912d5dd317565e187667de91/ths_trend_indicator/formulas/install/EWT01.txt",
+      "sha256": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+      "bytes": 93104,
       "http_status": 200,
       "matches_local_and_profile": true,
       "formula_name": "EWT01",
-      "source_characters": 70248,
-      "windows_characters": 70248,
+      "source_characters": 70388,
+      "windows_characters": 70388,
       "checks": {
         "350": {
           "http_status": 200,
-          "content_characters": 70248,
-          "submitted_content_utf8_sha256": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
+          "content_characters": 70388,
+          "submitted_content_utf8_sha256": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
           "response": {
             "data": {
               "result": true
@@ -33,8 +33,8 @@
         },
         "550": {
           "http_status": 200,
-          "content_characters": 70253,
-          "submitted_content_utf8_sha256": "f002f2b3dee82fb7d722ffd5c853ac94ab2227204c0d439d571baf96f7c248f4",
+          "content_characters": 70393,
+          "submitted_content_utf8_sha256": "fa26b55900c22bbcd97cbb2db4c15f8e585ec6087367f224187f73dfd78d37a4",
           "response": {
             "data": {
               "result": true
@@ -48,8 +48,8 @@
       "windows_checks": {
         "350": {
           "http_status": 200,
-          "content_characters": 70248,
-          "submitted_content_utf8_sha256": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
+          "content_characters": 70388,
+          "submitted_content_utf8_sha256": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
           "response": {
             "data": {
               "result": true
@@ -61,8 +61,8 @@
         },
         "550": {
           "http_status": 200,
-          "content_characters": 70253,
-          "submitted_content_utf8_sha256": "f002f2b3dee82fb7d722ffd5c853ac94ab2227204c0d439d571baf96f7c248f4",
+          "content_characters": 70393,
+          "submitted_content_utf8_sha256": "fa26b55900c22bbcd97cbb2db4c15f8e585ec6087367f224187f73dfd78d37a4",
           "response": {
             "data": {
               "result": true
@@ -75,19 +75,19 @@
       }
     },
     "install/EWT02.txt": {
-      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/8ae355c18c2559463d773b57adedc536d084744e/ths_trend_indicator/formulas/install/EWT02.txt",
-      "sha256": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-      "bytes": 105067,
+      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/929b6a49beceec62912d5dd317565e187667de91/ths_trend_indicator/formulas/install/EWT02.txt",
+      "sha256": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+      "bytes": 105249,
       "http_status": 200,
       "matches_local_and_profile": true,
       "formula_name": "EWT02",
-      "source_characters": 79191,
-      "windows_characters": 79191,
+      "source_characters": 79329,
+      "windows_characters": 79329,
       "checks": {
         "350": {
           "http_status": 200,
-          "content_characters": 79191,
-          "submitted_content_utf8_sha256": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
+          "content_characters": 79329,
+          "submitted_content_utf8_sha256": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
           "response": {
             "data": {
               "result": true
@@ -99,8 +99,8 @@
         },
         "550": {
           "http_status": 200,
-          "content_characters": 79196,
-          "submitted_content_utf8_sha256": "17a1aec4eb2e447fb730b9290b90d8cf6ea9c899987c9cf0c393e4e17e32dbc3",
+          "content_characters": 79334,
+          "submitted_content_utf8_sha256": "304f915a09ab8c8832b5b71ca73f4536384e645ca2c18b77350e53b8c8e2741f",
           "response": {
             "data": {
               "result": true
@@ -114,8 +114,8 @@
       "windows_checks": {
         "350": {
           "http_status": 200,
-          "content_characters": 79191,
-          "submitted_content_utf8_sha256": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
+          "content_characters": 79329,
+          "submitted_content_utf8_sha256": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
           "response": {
             "data": {
               "result": true
@@ -127,8 +127,8 @@
         },
         "550": {
           "http_status": 200,
-          "content_characters": 79196,
-          "submitted_content_utf8_sha256": "17a1aec4eb2e447fb730b9290b90d8cf6ea9c899987c9cf0c393e4e17e32dbc3",
+          "content_characters": 79334,
+          "submitted_content_utf8_sha256": "304f915a09ab8c8832b5b71ca73f4536384e645ca2c18b77350e53b8c8e2741f",
           "response": {
             "data": {
               "result": true
@@ -141,19 +141,19 @@
       }
     },
     "install/EWT03.txt": {
-      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/8ae355c18c2559463d773b57adedc536d084744e/ths_trend_indicator/formulas/install/EWT03.txt",
-      "sha256": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86",
-      "bytes": 102411,
+      "public_url": "https://raw.githubusercontent.com/hzm1978/hzm/929b6a49beceec62912d5dd317565e187667de91/ths_trend_indicator/formulas/install/EWT03.txt",
+      "sha256": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c",
+      "bytes": 102798,
       "http_status": 200,
       "matches_local_and_profile": true,
       "formula_name": "EWT03",
-      "source_characters": 76605,
-      "windows_characters": 76605,
+      "source_characters": 76894,
+      "windows_characters": 76894,
       "checks": {
         "350": {
           "http_status": 200,
-          "content_characters": 76605,
-          "submitted_content_utf8_sha256": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86",
+          "content_characters": 76894,
+          "submitted_content_utf8_sha256": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c",
           "response": {
             "data": {
               "result": true
@@ -165,8 +165,8 @@
         },
         "550": {
           "http_status": 200,
-          "content_characters": 76610,
-          "submitted_content_utf8_sha256": "e0e2cadbfaceb361ff48baeca1e31f47c46c4fc356e303dd35483353c89170cd",
+          "content_characters": 76899,
+          "submitted_content_utf8_sha256": "24fd9fb5e9b771c8a176249b7d19e0a0932f9a15d74eca4165972ede4e4467fd",
           "response": {
             "data": {
               "result": true
@@ -180,8 +180,8 @@
       "windows_checks": {
         "350": {
           "http_status": 200,
-          "content_characters": 76605,
-          "submitted_content_utf8_sha256": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86",
+          "content_characters": 76894,
+          "submitted_content_utf8_sha256": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c",
           "response": {
             "data": {
               "result": true
@@ -193,8 +193,8 @@
         },
         "550": {
           "http_status": 200,
-          "content_characters": 76610,
-          "submitted_content_utf8_sha256": "e0e2cadbfaceb361ff48baeca1e31f47c46c4fc356e303dd35483353c89170cd",
+          "content_characters": 76899,
+          "submitted_content_utf8_sha256": "24fd9fb5e9b771c8a176249b7d19e0a0932f9a15d74eca4165972ede4e4467fd",
           "response": {
             "data": {
               "result": true

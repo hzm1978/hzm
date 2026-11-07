@@ -1,10 +1,10 @@
 {
-  "release": "1.4.0",
+  "release": "1.4.1",
   "bars": 171,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+  "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
   "ohlc_float64_sha256": "5982a963ed8a776309e573bbd28796e81267b430b8529f490b41eafaefbfb50c",
   "groups": [
     {
@@ -441,6 +441,7 @@
       "start_price": 741.5,
       "end_price": 666.7
     },
+    "basis": "preceding_subwave",
     "levels": []
   },
   "guides": {
@@ -512,9 +513,9 @@
   "synthetic_ohlc_only": true,
   "scenario": "main_left",
   "installation_files_sha256": {
-    "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-    "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-    "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+    "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+    "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+    "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
 }

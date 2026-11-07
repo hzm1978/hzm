@@ -164,6 +164,12 @@ test_invalid_native_shape_offsets_cannot_be_reported_as_passed (test_native_plac
 test_labels_use_latest_gate_age_price_and_value_on_historical_candle (test_native_placement.NativePlacementTests.test_labels_use_latest_gate_age_price_and_value_on_historical_candle) ... ok
 test_negative_parameter_assignment_has_no_complete_rhs_wrapper (test_native_placement.NativePlacementTests.test_negative_parameter_assignment_has_no_complete_rhs_wrapper) ... ok
 test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch (test_native_placement.NativePlacementTests.test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch) ... ok
+test_a_fourth_wave_correction_measures_only_the_preceding_third (test_s_wave_ruler.SWaveRulerTests.test_a_fourth_wave_correction_measures_only_the_preceding_third) ... ok
+test_after_five_the_ruler_measures_3123_to_3620 (test_s_wave_ruler.SWaveRulerTests.test_after_five_the_ruler_measures_3123_to_3620) ... ok
+test_automatic_scope_keeps_both_early_legs_of_the_s_five (test_s_wave_ruler.SWaveRulerTests.test_automatic_scope_keeps_both_early_legs_of_the_s_five) ... ok
+test_downward_five_has_the_same_scope_and_ruler_by_reflection (test_s_wave_ruler.SWaveRulerTests.test_downward_five_has_the_same_scope_and_ruler_by_reflection) ... ok
+test_first_leg_and_absence_of_a_pullback_do_not_invent_a_whole_five (test_s_wave_ruler.SWaveRulerTests.test_first_leg_and_absence_of_a_pullback_do_not_invent_a_whole_five) ... ok
+test_five_origin_survives_later_correction_turns (test_s_wave_ruler.SWaveRulerTests.test_five_origin_survives_later_correction_turns) ... ok
 test_completed_inner_pair_does_not_move_the_original_reference (test_same_degree.SameDegreeTests.test_completed_inner_pair_does_not_move_the_original_reference) ... ok
 test_continuation_recouples_later_interval_with_original_same_degree (test_same_degree.SameDegreeTests.test_continuation_recouples_later_interval_with_original_same_degree) ... ok
 test_current_model_has_a_measured_bounded_review_budget (test_same_degree.SameDegreeTests.test_current_model_has_a_measured_bounded_review_budget) ... ok
@@ -179,7 +185,7 @@ test_three_same_degree_q_demote_trailing_pair_without_a_price_union (test_same_d
 test_white_structure_reaches_late_equal_q_despite_startup_noise (test_same_degree.SameDegreeTests.test_white_structure_reaches_late_equal_q_despite_startup_noise) ... ok
 
 ----------------------------------------------------------------------
-Ran 179 tests in 309.957s
+Ran 185 tests in 442.187s
 
 OK
 Local checks passed; native THS compilation NOT performed.

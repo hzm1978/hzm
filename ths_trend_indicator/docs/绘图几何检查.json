@@ -1,22 +1,22 @@
 {
-  "release": "1.4.0",
+  "release": "1.4.1",
   "native_client_run": false,
   "synthetic_ohlc_only": true,
-  "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+  "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
   "installation_files_sha256": {
-    "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-    "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-    "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+    "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+    "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+    "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
   },
   "installation_equivalence_test": "tests/test_install_layers.py",
   "scenarios": [
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 331,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "3bc130e5dd0ba5e800b4f3c9d062d14f8f3d06009987bcbb00d7780ce0f2ae6c",
       "groups": [
         {
@@ -470,6 +470,7 @@
           "start_price": 2901.0,
           "end_price": 2199.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -620,19 +621,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "fall_rebound",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 168,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "2e31c60c2642d0eba4ef26b9343527c31e8cdd5972c51240a4d0f081f59a41cb",
       "groups": [
         {
@@ -1098,6 +1099,7 @@
           "start_price": 5399.0,
           "end_price": 5801.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -1198,19 +1200,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "five_up",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 96,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "a498c983b8eb9705884d2efbdcc3d8d61ae692d058eaede219b876845aac4c9f",
       "groups": [
         {
@@ -1651,6 +1653,7 @@
           "start_price": 5499.0,
           "end_price": 5551.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -1732,19 +1735,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "nested_five_down",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 258,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "fee494761d751fd1f50591b93c029f76c98fe15951ad55396f12dc566adca914",
       "groups": [
         {
@@ -2260,6 +2263,7 @@
           "start_price": 5599.0,
           "end_price": 6001.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -2375,19 +2379,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "seven_expanding",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 270,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "ccde38d36a11a8630ed55a56b024a9435ea763dd47a7aeba419d82b9c6feeef1",
       "groups": [
         {
@@ -2874,6 +2878,7 @@
           "start_price": 175.0,
           "end_price": 189.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -2995,19 +3000,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "triangle_e",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 100,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "1b12f7c495cd0e2634fc26b9ff43b1019e39e44c0ed0694a40bd962011daaa78",
       "groups": [
         {
@@ -3309,6 +3314,7 @@
           "start_price": null,
           "end_price": null
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -3339,19 +3345,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "trend_targets",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 221,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "9eb86856a36347dae7e9a4677b1e56c5bb993f400051598f0fc6b754454cad5b",
       "groups": [
         {
@@ -3895,11 +3901,12 @@
         "anchors": {
           "visible": true,
           "direction": -1.0,
-          "start_index": 148,
+          "start_index": 199,
           "end_index": 210,
-          "start_price": 3021.0,
+          "start_price": 2881.0,
           "end_price": 2639.2
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -3907,27 +3914,27 @@
           },
           {
             "ratio": 0.191,
-            "price": 2712.1238
+            "price": 2685.3838
           },
           {
             "ratio": 0.382,
-            "price": 2785.0476
+            "price": 2731.5676
           },
           {
             "ratio": 0.5,
-            "price": 2830.1
+            "price": 2760.1
           },
           {
             "ratio": 0.618,
-            "price": 2875.1524
+            "price": 2788.6324
           },
           {
             "ratio": 0.786,
-            "price": 2939.2948
+            "price": 2829.2548
           },
           {
             "ratio": 1,
-            "price": 3021.0
+            "price": 2881.0
           }
         ]
       },
@@ -4055,19 +4062,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "short_inner_q",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 152,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "4a3269f8bf01fc2a1e7790e27713ffdb010a8e9245b552afc5faea06243bbe54",
       "groups": [
         {
@@ -4533,6 +4540,7 @@
           "start_price": 21005.0,
           "end_price": 18904.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -4643,19 +4651,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "parent_correction",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 187,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "f85b2e70396f19a9323b8a9ae2016033c5b1b7cf3411858c65caf0891a2379ea",
       "groups": [
         {
@@ -5019,6 +5027,7 @@
           "start_price": 138.0,
           "end_price": 131.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -5065,19 +5074,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "sideways",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 137,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "a3f5a512aa222f9844ec7ab602151e16d1bea576156f97d9d9342b91fe77b042",
       "groups": [
         {
@@ -5506,6 +5515,7 @@
           "start_price": 15999.0,
           "end_price": 18150.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -5616,19 +5626,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "earlier_complete",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 127,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "a70097dfbc43d8e2bc552dfa97bf1b29e07fd9f75f5b7c40f5cb9a6f6ec506ec",
       "groups": [
         {
@@ -6113,6 +6123,7 @@
           "start_price": 831.0,
           "end_price": 877.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -6229,19 +6240,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_whole",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 104,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "fc0a6558783357b8bc39ee8281947437e25ebbee6a2e4619bd884154e03466f0",
       "groups": [
         {
@@ -6707,6 +6718,7 @@
           "start_price": 39.0,
           "end_price": 86.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -6788,19 +6800,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_white",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 106,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "f97c0a8b1dcc8ce544ebd13364864817a762fc2a4bc7afb39af885b43c262ed0",
       "groups": [
         {
@@ -7216,6 +7228,7 @@
           "start_price": 79.0,
           "end_price": 131.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -7307,19 +7320,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_triangle",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 106,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "09d27ffdd90a72d475125123bc7e6bd4b5168cd8e9924fcef791f99be03a9428",
       "groups": [
         {
@@ -7683,6 +7696,7 @@
           "start_price": 12999.0,
           "end_price": 14201.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -7734,19 +7748,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_no_h1",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 158,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "7787479081e46f9966c7906c776bd923bc1ea51c3b79551e8a6ba2e4d4cb071f",
       "groups": [
         {
@@ -8136,6 +8150,7 @@
           "start_price": 2022.0,
           "end_price": 1438.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -8241,19 +8256,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_newtip",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 131,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "f98ee7327d00f8154823747e77ab6adfb63c3d118b45359247a644d70b622605",
       "groups": [
         {
@@ -8770,6 +8785,7 @@
           "start_price": 823.0,
           "end_price": 941.0
         },
+        "basis": "whole_group",
         "levels": []
       },
       "guides": {
@@ -8876,19 +8892,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_s_correction",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 104,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "0e5d36178dc07efd11efd91b1e34fa0c9d6a0c0c32210158d2c93d0c67b095eb",
       "groups": [
         {
@@ -9354,6 +9370,7 @@
           "start_price": 561.0,
           "end_price": 514.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -9435,19 +9452,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "p_white_up",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 189,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "10ffafdc7b232b2f11ff36eaa06679996d0ae800cc053a3156570f8bb58c3f3c",
       "groups": [
         {
@@ -9907,6 +9924,7 @@
           "start_price": 831.0,
           "end_price": 877.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -10053,19 +10071,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "main_owned",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 112,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "75427a837323b64f0e6ef6429430fd835e7009db1bf57cbdac90eded1b231225",
       "groups": [
         {
@@ -10480,6 +10498,7 @@
           "start_price": 3281.0,
           "end_price": 3129.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -10600,19 +10619,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "q_early",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 131,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "f91dbe5b3935e58ab81c436b56293197735dd4c6e3fb4bcd10355b871ed1f230",
       "groups": [
         {
@@ -11078,6 +11097,7 @@
           "start_price": 8839.0,
           "end_price": 9195.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -11178,19 +11198,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "q_failed",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 159,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "f86e890d77b33c8e3fd348e107ea68285bd2e6e88f4c3edec20c8b474d2312d3",
       "groups": [
         {
@@ -11606,6 +11626,7 @@
           "start_price": 99.0,
           "end_price": 131.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -11682,19 +11703,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "q_merge",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 117,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "89911d0e2de522bde984436c8a358ce9fef7797809b66e5fb18ca1e83d51121f",
       "groups": [
         {
@@ -12110,6 +12131,7 @@
           "start_price": 4470.0,
           "end_price": 4601.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -12171,19 +12193,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "q_tiny",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 163,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "2385f8044dba7a715239c76c399120c53827141d816e1311f7e5b01974a8f728",
       "groups": [
         {
@@ -12570,6 +12592,7 @@
           "start_price": 439750.0,
           "end_price": 337400.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -12626,19 +12649,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "s_main",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 165,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "7f13476435792aec46e356ba30682385cfb911092720f440d339dd41a40698d5",
       "groups": [
         {
@@ -13104,6 +13127,7 @@
           "start_price": 3129.0,
           "end_price": 3625.0
         },
+        "basis": "whole_group",
         "levels": [
           {
             "ratio": 0,
@@ -13259,19 +13283,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "s_fib",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 131,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "f91dbe5b3935e58ab81c436b56293197735dd4c6e3fb4bcd10355b871ed1f230",
       "groups": [
         {
@@ -13737,6 +13761,7 @@
           "start_price": 8839.0,
           "end_price": 9195.0
         },
+        "basis": "preceding_subwave",
         "levels": [
           {
             "ratio": 0,
@@ -13837,19 +13862,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "q_failed_auto",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 158,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "1f0a7ebc667994d86448dd0fc3c1c33c047136ac68abf0b4e1ee2fb47d9f4a25",
       "groups": [
         {
@@ -14286,11 +14311,12 @@
         "anchors": {
           "visible": true,
           "direction": -1.0,
-          "start_index": 112,
+          "start_index": 148,
           "end_index": 157,
-          "start_price": 929.4,
+          "start_price": 769.9,
           "end_price": 604.8
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -14377,19 +14403,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "q_reversal",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 171,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "5982a963ed8a776309e573bbd28796e81267b430b8529f490b41eafaefbfb50c",
       "groups": [
         {
@@ -14826,6 +14852,7 @@
           "start_price": 741.5,
           "end_price": 666.7
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -14897,19 +14924,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "main_left",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 141,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "1d71a6ec2b621a130ba0be640fdc46c1f044c6c7e5c23e49ecdf794b8b80f223",
       "groups": [
         {
@@ -15296,6 +15323,7 @@
           "start_price": 3415.0,
           "end_price": 3141.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -15352,19 +15380,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "main_three",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 100,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "b69131efdb04aefceb239c12cb9a0c7566071e44fae1dde867a71c2db85dfb85",
       "groups": [
         {
@@ -15666,6 +15694,7 @@
           "start_price": null,
           "end_price": null
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -15696,19 +15725,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "target_bases",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 122,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "4fd55fba8c8fa4f3417eb39949e951f4300b9920e4d51f3047d58f1cee02eece",
       "groups": [
         {
@@ -16145,6 +16174,7 @@
           "start_price": 134.0,
           "end_price": 181.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -16221,19 +16251,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "guides_up",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 109,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "548f10e823d0fba03e558c05a666a003573918ef309ac0efe005c3f084f4517d",
       "groups": [
         {
@@ -16684,6 +16714,7 @@
           "start_price": 111.0,
           "end_price": 157.0
         },
+        "basis": "whole_group",
         "levels": []
       },
       "guides": {
@@ -16780,19 +16811,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "same_three",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 125,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "5579b89ed5a785a654f2725d35fc5581a32b4facc864248a564f059f523bd3af",
       "groups": [
         {
@@ -17242,6 +17273,7 @@
           "start_price": 147.0,
           "end_price": 169.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -17358,19 +17390,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "same_four",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 145,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "674c48380459f983a044b25870889ded5fa761ea6cdf9b88acaeae1f196281ce",
       "groups": [
         {
@@ -17857,6 +17889,7 @@
           "start_price": 184.0,
           "end_price": 236.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -17948,19 +17981,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "contract_equal",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 178,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "e6b240844c6bf9aa17aed2b1682187e9d959ad24cd0bb25e758baeebc212c72c",
       "groups": [
         {
@@ -18410,6 +18443,7 @@
           "start_price": 209.0,
           "end_price": 261.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -18516,19 +18550,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "recouple_equal",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 182,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "c42ec12beff16f6b22cb617e8f85057ec265a178bf9539d74962011175624cc7",
       "groups": [
         {
@@ -18972,6 +19006,7 @@
           "start_price": 8493.0,
           "end_price": 9846.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -19098,19 +19133,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "white_same",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 182,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "9d2f3d2a685148d1d553785936149b70f24e36c6d51e63b83026fdcc61ec639a",
       "groups": [
         {
@@ -19554,6 +19589,7 @@
           "start_price": 11507.0,
           "end_price": 10154.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -19680,19 +19716,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "white_same_down",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 152,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "7bc9d33d350f44a9e25a148e37224d0178fe64072e846f60fc7a0a362edab685",
       "groups": [
         {
@@ -20179,6 +20215,7 @@
           "start_price": 174.0,
           "end_price": 226.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -20260,19 +20297,19 @@
       "synthetic_ohlc_only": true,
       "scenario": "graded_expand",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     },
     {
-      "release": "1.4.0",
+      "release": "1.4.1",
       "bars": 152,
       "native_client_run": false,
       "mode": "current-prefix retrospective drawing, not historical trade signals",
       "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-      "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
       "ohlc_float64_sha256": "21936dfef6e48dfbdd4e86bee92a0110768ed8f04963022e255460406b259aed",
       "groups": [
         {
@@ -20759,6 +20796,7 @@
           "start_price": 174.0,
           "end_price": 226.0
         },
+        "basis": "preceding_subwave",
         "levels": []
       },
       "guides": {
@@ -20845,9 +20883,4248 @@
       "synthetic_ohlc_only": true,
       "scenario": "graded_contract",
       "installation_files_sha256": {
-        "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
-        "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
-        "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 139,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "ee86c01e1565c4fa661e02670561a2562cabf7b7dce18eaa4e15004276a9ec02",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 0,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 0,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.8359788359788359,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 3719.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 3726.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 3199.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 101,
+              "price": 3281.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 3719.0,
+              "counter_index": 78,
+              "counter_price": 3726.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 105,
+              "candles_excluding_start": 7.0,
+              "root_price": 3199.0,
+              "counter_index": 101,
+              "counter_price": 3281.0,
+              "closed": true,
+              "retracement_percent": 15.559772296015181,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 108,
+            "end_index": 135,
+            "start_price": 3123.0,
+            "end_price": 3620.0
+          },
+          "intervals": 2,
+          "H1": 228.0,
+          "first_Q_closed": true,
+          "classification": 5,
+          "pending": false,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.4780701754385965,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 108,
+              "price": 3123.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 113,
+              "price": 3351.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 116,
+              "price": 3240.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 126,
+              "price": 3591.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 129,
+              "price": 3511.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 135,
+              "price": 3620.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 113,
+              "end_index": 120,
+              "candles_excluding_start": 7.0,
+              "root_price": 3351.0,
+              "counter_index": 116,
+              "counter_price": 3240.0,
+              "closed": true,
+              "retracement_percent": 48.68421052631579,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 126,
+              "end_index": 133,
+              "candles_excluding_start": 7.0,
+              "root_price": 3591.0,
+              "counter_index": 129,
+              "counter_price": 3511.0,
+              "closed": true,
+              "retracement_percent": 22.79202279202279,
+              "actual_H1_multiple": 1.5394736842105263,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 7.0,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": -1.0,
+        "phase": 2.0,
+        "ret": 40.382165605095544,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 0,
+          "end_index": 108,
+          "start_price": 3908.0,
+          "end_price": 3123.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 3123.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3272.935
+          },
+          {
+            "ratio": 0.382,
+            "price": 3422.87
+          },
+          {
+            "ratio": 0.5,
+            "price": 3515.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3608.13
+          },
+          {
+            "ratio": 0.786,
+            "price": 3740.01
+          },
+          {
+            "ratio": 1,
+            "price": 3908.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 3052.688,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 2975.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2,
+            "price": 2903.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 2830.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 2786.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3,
+            "price": 2714.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 3296.3959999999997,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 3107.396,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 108,
+        "end_index": 135,
+        "start_price": 3123.0,
+        "end_price": 3620.0
+      },
+      "current_P_adjustment_code": 7.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": true,
+        "anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 108,
+          "end_index": 135,
+          "start_price": 3123.0,
+          "end_price": 3620.0
+        },
+        "basis": "whole_group",
+        "levels": [
+          {
+            "ratio": 0,
+            "price": 3620.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3525.073
+          },
+          {
+            "ratio": 0.382,
+            "price": 3430.146
+          },
+          {
+            "ratio": 0.5,
+            "price": 3371.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3312.854
+          },
+          {
+            "ratio": 0.786,
+            "price": 3229.358
+          },
+          {
+            "ratio": 1,
+            "price": 3123.0
+          }
+        ]
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 59.0,
+          "trend_second_age": 36.0,
+          "trend_first_price": 3726.0,
+          "trend_second_price": 3281.0,
+          "pivot_slope": -15.294117647058824
+        },
+        "S": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 21.0,
+          "trend_second_age": 8.0,
+          "trend_first_price": 3240.0,
+          "trend_second_price": 3511.0,
+          "pivot_slope": 18.46153846153846
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 66,
+          "price": 3634.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 3034.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 131,
+          "price": 3444.0875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 3215.4875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 118,
+          "price": 3186.5875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 3590.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 3110.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 52,
+          "price": 3982.9553571428573,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 3829.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 3781.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 3814.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 3709.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 3280.1696428571427,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 128,
+          "price": 3653.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 135,
+          "price": 3708.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 3402.9791666666665,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 102,
+          "price": 3369.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 3,
+          "price": 3996.3125,
+          "label": "RV08"
+        }
+      ],
+      "segments": 47,
+      "labels": 111,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_auto_five",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 139,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "df22ba6111bbb6b18f3b27ccc865c60aa0142b2004f744e6839f2a2b53d4910e",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 0,
+            "end_index": 108,
+            "start_price": 6092.0,
+            "end_price": 6877.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 6092.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 6877.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 0,
+            "end_index": 108,
+            "start_price": 6092.0,
+            "end_price": 6877.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.8359788359788359,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 6092.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 6281.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 6274.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 6801.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 101,
+              "price": 6719.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 108,
+              "price": 6877.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 6281.0,
+              "counter_index": 78,
+              "counter_price": 6274.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 105,
+              "candles_excluding_start": 7.0,
+              "root_price": 6801.0,
+              "counter_index": 101,
+              "counter_price": 6719.0,
+              "closed": true,
+              "retracement_percent": 15.559772296015181,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 108,
+            "end_index": 135,
+            "start_price": 6877.0,
+            "end_price": 6380.0
+          },
+          "intervals": 2,
+          "H1": 228.0,
+          "first_Q_closed": true,
+          "classification": 5,
+          "pending": false,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.4780701754385965,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 108,
+              "price": 6877.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 113,
+              "price": 6649.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 116,
+              "price": 6760.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 126,
+              "price": 6409.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 129,
+              "price": 6489.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 135,
+              "price": 6380.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 113,
+              "end_index": 120,
+              "candles_excluding_start": 7.0,
+              "root_price": 6649.0,
+              "counter_index": 116,
+              "counter_price": 6760.0,
+              "closed": true,
+              "retracement_percent": 48.68421052631579,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 126,
+              "end_index": 133,
+              "candles_excluding_start": 7.0,
+              "root_price": 6409.0,
+              "counter_index": 129,
+              "counter_price": 6489.0,
+              "closed": true,
+              "retracement_percent": 22.79202279202279,
+              "actual_H1_multiple": 1.5394736842105263,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 7.0,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": 1.0,
+        "phase": 2.0,
+        "ret": 40.382165605095544,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 0,
+          "end_index": 108,
+          "start_price": 6092.0,
+          "end_price": 6877.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 6877.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 6727.065
+          },
+          {
+            "ratio": 0.382,
+            "price": 6577.13
+          },
+          {
+            "ratio": 0.5,
+            "price": 6484.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 6391.87
+          },
+          {
+            "ratio": 0.786,
+            "price": 6259.99
+          },
+          {
+            "ratio": 1,
+            "price": 6092.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 6947.312,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 7024.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 2,
+            "price": 7097.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 7169.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 7213.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 3,
+            "price": 7286.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 6703.604,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 6092.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 6892.604,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 6092.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": -1.0,
+        "start_index": 108,
+        "end_index": 135,
+        "start_price": 6877.0,
+        "end_price": 6380.0
+      },
+      "current_P_adjustment_code": 7.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": true,
+        "anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 108,
+          "end_index": 135,
+          "start_price": 6877.0,
+          "end_price": 6380.0
+        },
+        "basis": "whole_group",
+        "levels": [
+          {
+            "ratio": 0,
+            "price": 6380.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 6474.927
+          },
+          {
+            "ratio": 0.382,
+            "price": 6569.854
+          },
+          {
+            "ratio": 0.5,
+            "price": 6628.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 6687.146
+          },
+          {
+            "ratio": 0.786,
+            "price": 6770.642
+          },
+          {
+            "ratio": 1,
+            "price": 6877.0
+          }
+        ]
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 59.0,
+          "trend_second_age": 36.0,
+          "trend_first_price": 6274.0,
+          "trend_second_price": 6719.0,
+          "pivot_slope": 15.294117647058824
+        },
+        "S": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 21.0,
+          "trend_second_age": 8.0,
+          "trend_first_price": 6760.0,
+          "trend_second_price": 6489.0,
+          "pivot_slope": -18.46153846153846
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 52,
+          "price": 6017.044642857143,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 6170.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 6218.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 6185.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 6290.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 6719.830357142857,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 128,
+          "price": 6346.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 135,
+          "price": 6291.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 6597.020833333334,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 102,
+          "price": 6630.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 3,
+          "price": 6003.6875,
+          "label": "RV08"
+        },
+        {
+          "bar_index": 66,
+          "price": 6365.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 6965.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 131,
+          "price": 6555.9125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 6784.5125,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 118,
+          "price": 6813.4125,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 6409.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 6889.3125,
+          "label": "RV07"
+        }
+      ],
+      "segments": 47,
+      "labels": 111,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_auto_five_down",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 144,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "053eb8c6464af3c676ef88460144126568913c2cf016c17268cbcd85c2674097",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 0,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 0,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.8359788359788359,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 3719.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 3726.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 3199.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 101,
+              "price": 3281.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 3719.0,
+              "counter_index": 78,
+              "counter_price": 3726.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 105,
+              "candles_excluding_start": 7.0,
+              "root_price": 3199.0,
+              "counter_index": 101,
+              "counter_price": 3281.0,
+              "closed": true,
+              "retracement_percent": 15.559772296015181,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 108,
+            "end_index": 134,
+            "start_price": 3123.0,
+            "end_price": 3620.0
+          },
+          "intervals": 2,
+          "H1": 228.0,
+          "first_Q_closed": true,
+          "classification": 5,
+          "pending": false,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.4780701754385965,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 108,
+              "price": 3123.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 113,
+              "price": 3351.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 116,
+              "price": 3240.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 126,
+              "price": 3591.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 129,
+              "price": 3511.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 134,
+              "price": 3620.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 113,
+              "end_index": 120,
+              "candles_excluding_start": 7.0,
+              "root_price": 3351.0,
+              "counter_index": 116,
+              "counter_price": 3240.0,
+              "closed": true,
+              "retracement_percent": 48.68421052631579,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 126,
+              "end_index": 133,
+              "candles_excluding_start": 7.0,
+              "root_price": 3591.0,
+              "counter_index": 129,
+              "counter_price": 3511.0,
+              "closed": true,
+              "retracement_percent": 22.79202279202279,
+              "actual_H1_multiple": 1.5394736842105263,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 7.0,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": -1.0,
+        "phase": 2.0,
+        "ret": 39.10828025477707,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 0,
+          "end_index": 108,
+          "start_price": 3908.0,
+          "end_price": 3123.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 3123.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3272.935
+          },
+          {
+            "ratio": 0.382,
+            "price": 3422.87
+          },
+          {
+            "ratio": 0.5,
+            "price": 3515.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3608.13
+          },
+          {
+            "ratio": 0.786,
+            "price": 3740.01
+          },
+          {
+            "ratio": 1,
+            "price": 3908.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 3052.688,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 2975.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2,
+            "price": 2903.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 2830.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 2786.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3,
+            "price": 2714.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 3296.3959999999997,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 3107.396,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 108,
+        "end_index": 134,
+        "start_price": 3123.0,
+        "end_price": 3620.0
+      },
+      "current_P_adjustment_code": 10.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": true,
+        "anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 108,
+          "end_index": 134,
+          "start_price": 3123.0,
+          "end_price": 3620.0
+        },
+        "basis": "whole_group",
+        "levels": [
+          {
+            "ratio": 0,
+            "price": 3620.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3525.073
+          },
+          {
+            "ratio": 0.382,
+            "price": 3430.146
+          },
+          {
+            "ratio": 0.5,
+            "price": 3371.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3312.854
+          },
+          {
+            "ratio": 0.786,
+            "price": 3229.358
+          },
+          {
+            "ratio": 1,
+            "price": 3123.0
+          }
+        ]
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 64.0,
+          "trend_second_age": 41.0,
+          "trend_first_price": 3726.0,
+          "trend_second_price": 3281.0,
+          "pivot_slope": -15.294117647058824
+        },
+        "S": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 26.0,
+          "trend_second_age": 13.0,
+          "trend_first_price": 3240.0,
+          "trend_second_price": 3511.0,
+          "pivot_slope": 18.46153846153846
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 66,
+          "price": 3634.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 3034.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 131,
+          "price": 3444.0875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 139,
+          "price": 3339.3541666666665,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 3215.4875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 118,
+          "price": 3186.5875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 3590.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 3110.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 52,
+          "price": 3982.9553571428573,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 3829.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 3781.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 3814.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 3709.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 3280.1696428571427,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 128,
+          "price": 3653.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 135,
+          "price": 3708.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 142,
+          "price": 3545.9791666666665,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 3402.9791666666665,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 102,
+          "price": 3369.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 3,
+          "price": 3996.3125,
+          "label": "RV08"
+        }
+      ],
+      "segments": 45,
+      "labels": 110,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_five_tail",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 130,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "cadb56041777ba4f06e2cd5e8235a2005c62ed92aade8ec724cf3adccf7f7811",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 50,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 50,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 50,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.8359788359788359,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 50,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 3719.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 3726.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 3199.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 101,
+              "price": 3281.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 3719.0,
+              "counter_index": 78,
+              "counter_price": 3726.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 105,
+              "candles_excluding_start": 7.0,
+              "root_price": 3199.0,
+              "counter_index": 101,
+              "counter_price": 3281.0,
+              "closed": true,
+              "retracement_percent": 15.559772296015181,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 108,
+            "end_index": 127,
+            "start_price": 3123.0,
+            "end_price": 3591.0
+          },
+          "intervals": 1,
+          "H1": 228.0,
+          "first_Q_closed": true,
+          "classification": 3,
+          "pending": false,
+          "details_limited": false,
+          "actual_end_H1_multiple": 1.5394736842105263,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 108,
+              "price": 3123.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 113,
+              "price": 3351.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 116,
+              "price": 3240.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 127,
+              "price": 3591.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 113,
+              "end_index": 120,
+              "candles_excluding_start": 7.0,
+              "root_price": 3351.0,
+              "counter_index": 116,
+              "counter_price": 3240.0,
+              "closed": true,
+              "retracement_percent": 48.68421052631579,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 7.0,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": -1.0,
+        "phase": 2.0,
+        "ret": 49.554140127388536,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 50,
+          "end_index": 108,
+          "start_price": 3908.0,
+          "end_price": 3123.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 3123.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3272.935
+          },
+          {
+            "ratio": 0.382,
+            "price": 3422.87
+          },
+          {
+            "ratio": 0.5,
+            "price": 3515.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3608.13
+          },
+          {
+            "ratio": 0.786,
+            "price": 3740.01
+          },
+          {
+            "ratio": 1,
+            "price": 3908.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 3052.688,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 2975.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2,
+            "price": 2903.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 2830.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 2786.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3,
+            "price": 2714.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 3296.3959999999997,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 3107.396,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 108,
+        "end_index": 127,
+        "start_price": 3123.0,
+        "end_price": 3591.0
+      },
+      "current_P_adjustment_code": 2.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": true,
+        "anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 116,
+          "end_index": 127,
+          "start_price": 3240.0,
+          "end_price": 3591.0
+        },
+        "basis": "preceding_subwave",
+        "levels": [
+          {
+            "ratio": 0,
+            "price": 3591.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3523.959
+          },
+          {
+            "ratio": 0.382,
+            "price": 3456.918
+          },
+          {
+            "ratio": 0.5,
+            "price": 3415.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3374.082
+          },
+          {
+            "ratio": 0.786,
+            "price": 3315.114
+          },
+          {
+            "ratio": 1,
+            "price": 3240.0
+          }
+        ]
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 50.0,
+          "trend_second_age": 27.0,
+          "trend_first_price": 3726.0,
+          "trend_second_price": 3281.0,
+          "pivot_slope": -15.294117647058824
+        },
+        "S": {
+          "trend": 1.0,
+          "pivot": 0.0,
+          "trend_first_age": 20.0,
+          "trend_second_age": 12.0,
+          "trend_first_price": 3123.0,
+          "trend_second_price": 3240.0,
+          "pivot_slope": 557.0
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 66,
+          "price": 3634.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 3034.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 3215.4875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 118,
+          "price": 3186.5875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 3590.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 3110.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 54,
+          "price": 3956.2410714285716,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 3829.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 3781.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 3814.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 3709.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 3280.1696428571427,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 128,
+          "price": 3653.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 3402.9791666666665,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 102,
+          "price": 3369.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 50,
+          "price": 3996.3125,
+          "label": "RV08"
+        }
+      ],
+      "segments": 42,
+      "labels": 99,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_leg_fib",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 130,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "94c4ad4c8b90e46dd44d8acb539931c52d21153ac5fb9db564d30be6af9a80f6",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 50,
+            "end_index": 108,
+            "start_price": 6092.0,
+            "end_price": 6877.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 50,
+              "price": 6092.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 6877.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 50,
+            "end_index": 108,
+            "start_price": 6092.0,
+            "end_price": 6877.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.8359788359788359,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 50,
+              "price": 6092.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 6281.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 6274.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 6801.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 101,
+              "price": 6719.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 108,
+              "price": 6877.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 6281.0,
+              "counter_index": 78,
+              "counter_price": 6274.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 105,
+              "candles_excluding_start": 7.0,
+              "root_price": 6801.0,
+              "counter_index": 101,
+              "counter_price": 6719.0,
+              "closed": true,
+              "retracement_percent": 15.559772296015181,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 108,
+            "end_index": 127,
+            "start_price": 6877.0,
+            "end_price": 6409.0
+          },
+          "intervals": 1,
+          "H1": 228.0,
+          "first_Q_closed": true,
+          "classification": 3,
+          "pending": false,
+          "details_limited": false,
+          "actual_end_H1_multiple": 1.5394736842105263,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 108,
+              "price": 6877.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 113,
+              "price": 6649.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 116,
+              "price": 6760.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 127,
+              "price": 6409.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 113,
+              "end_index": 120,
+              "candles_excluding_start": 7.0,
+              "root_price": 6649.0,
+              "counter_index": 116,
+              "counter_price": 6760.0,
+              "closed": true,
+              "retracement_percent": 48.68421052631579,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 7.0,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": 1.0,
+        "phase": 2.0,
+        "ret": 49.554140127388536,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 50,
+          "end_index": 108,
+          "start_price": 6092.0,
+          "end_price": 6877.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 6877.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 6727.065
+          },
+          {
+            "ratio": 0.382,
+            "price": 6577.13
+          },
+          {
+            "ratio": 0.5,
+            "price": 6484.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 6391.87
+          },
+          {
+            "ratio": 0.786,
+            "price": 6259.99
+          },
+          {
+            "ratio": 1,
+            "price": 6092.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 6947.312,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 7024.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 2,
+            "price": 7097.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 7169.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 7213.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 3,
+            "price": 7286.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 6719.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 6703.604,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 6092.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 6892.604,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 6092.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": -1.0,
+        "start_index": 108,
+        "end_index": 127,
+        "start_price": 6877.0,
+        "end_price": 6409.0
+      },
+      "current_P_adjustment_code": 2.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": true,
+        "anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 116,
+          "end_index": 127,
+          "start_price": 6760.0,
+          "end_price": 6409.0
+        },
+        "basis": "preceding_subwave",
+        "levels": [
+          {
+            "ratio": 0,
+            "price": 6409.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 6476.041
+          },
+          {
+            "ratio": 0.382,
+            "price": 6543.082
+          },
+          {
+            "ratio": 0.5,
+            "price": 6584.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 6625.918
+          },
+          {
+            "ratio": 0.786,
+            "price": 6684.886
+          },
+          {
+            "ratio": 1,
+            "price": 6760.0
+          }
+        ]
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 50.0,
+          "trend_second_age": 27.0,
+          "trend_first_price": 6274.0,
+          "trend_second_price": 6719.0,
+          "pivot_slope": 15.294117647058824
+        },
+        "S": {
+          "trend": 1.0,
+          "pivot": 0.0,
+          "trend_first_age": 20.0,
+          "trend_second_age": 12.0,
+          "trend_first_price": 6877.0,
+          "trend_second_price": 6760.0,
+          "pivot_slope": -557.0
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 54,
+          "price": 6043.758928571428,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 6170.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 6218.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 6185.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 6290.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 6719.830357142857,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 128,
+          "price": 6346.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 6597.020833333334,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 102,
+          "price": 6630.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 50,
+          "price": 6003.6875,
+          "label": "RV08"
+        },
+        {
+          "bar_index": 66,
+          "price": 6365.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 6965.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 6784.5125,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 118,
+          "price": 6813.4125,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 6409.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 6889.3125,
+          "label": "RV07"
+        }
+      ],
+      "segments": 42,
+      "labels": 99,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_leg_fib_down",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 117,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "097e2c70f3561bbcadd6d6219c74bfbd390e42ad83b66f19f3041cda5878a15e",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 50,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 50,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 109.0,
+              "comparison_span": 109.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 50,
+            "end_index": 108,
+            "start_price": 3908.0,
+            "end_price": 3123.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.8359788359788359,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 50,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 3719.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 3726.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 3199.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 101,
+              "price": 3281.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 108,
+              "price": 3123.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 3719.0,
+              "counter_index": 78,
+              "counter_price": 3726.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 105,
+              "candles_excluding_start": 7.0,
+              "root_price": 3199.0,
+              "counter_index": 101,
+              "counter_price": 3281.0,
+              "closed": true,
+              "retracement_percent": 15.559772296015181,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 108,
+            "end_index": 113,
+            "start_price": 3123.0,
+            "end_price": 3351.0
+          },
+          "intervals": 0,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 108,
+              "price": 3123.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 113,
+              "price": 3351.0
+            }
+          ],
+          "Q": [],
+          "degree_reference_bars": null,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 114.0,
+              "comparison_span": 114.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            },
+            {
+              "reference": 114.0,
+              "comparison_span": 114.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 0.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": -1.0,
+        "phase": 2.0,
+        "ret": 17.452229299363058,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 50,
+          "end_index": 108,
+          "start_price": 3908.0,
+          "end_price": 3123.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 3123.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3272.935
+          },
+          {
+            "ratio": 0.382,
+            "price": 3422.87
+          },
+          {
+            "ratio": 0.5,
+            "price": 3515.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3608.13
+          },
+          {
+            "ratio": 0.786,
+            "price": 3740.01
+          },
+          {
+            "ratio": 1,
+            "price": 3908.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 3052.688,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 2975.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2,
+            "price": 2903.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 2830.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 2786.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3,
+            "price": 2714.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3281.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 3296.3959999999997,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 3107.396,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 108,
+        "end_index": 113,
+        "start_price": 3123.0,
+        "end_price": 3351.0
+      },
+      "current_P_adjustment_code": 1.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": true,
+        "anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 108,
+          "end_index": 113,
+          "start_price": 3123.0,
+          "end_price": 3351.0
+        },
+        "basis": "preceding_subwave",
+        "levels": [
+          {
+            "ratio": 0,
+            "price": 3351.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3307.452
+          },
+          {
+            "ratio": 0.382,
+            "price": 3263.904
+          },
+          {
+            "ratio": 0.5,
+            "price": 3237.0
+          },
+          {
+            "ratio": 0.618,
+            "price": 3210.096
+          },
+          {
+            "ratio": 0.786,
+            "price": 3171.792
+          },
+          {
+            "ratio": 1,
+            "price": 3123.0
+          }
+        ]
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 37.0,
+          "trend_second_age": 14.0,
+          "trend_first_price": 3726.0,
+          "trend_second_price": 3281.0,
+          "pivot_slope": -15.294117647058824
+        },
+        "S": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 7.0,
+          "trend_second_age": 116.0,
+          "trend_first_price": 3123.0,
+          "trend_second_price": 3905.0,
+          "pivot_slope": 0.0
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 66,
+          "price": 3634.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 3034.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 3215.4875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 3590.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 3110.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 54,
+          "price": 3956.2410714285716,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 3829.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 3781.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 3814.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 3709.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 3280.1696428571427,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 3409.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 102,
+          "price": 3369.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 50,
+          "price": 3996.3125,
+          "label": "RV08"
+        }
+      ],
+      "segments": 35,
+      "labels": 81,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_first_fib",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
+      },
+      "installation_equivalence_test": "tests/test_install_layers.py"
+    },
+    {
+      "release": "1.4.1",
+      "bars": 135,
+      "native_client_run": false,
+      "mode": "current-prefix retrospective drawing, not historical trade signals",
+      "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
+      "formula_normalized_utf8_sha256": "556e51d98d1573ec15608367651458805162aa0c9db378b0c4da881d28266e30",
+      "ohlc_float64_sha256": "9a06c27cfa361298cb44779654f6c7c8440e6b41682da68da47763ee04cd8359",
+      "groups": [
+        {
+          "key": "M",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 0,
+            "end_index": 116,
+            "start_price": 3908.0,
+            "end_price": 3240.0
+          },
+          "intervals": 1,
+          "H1": null,
+          "first_Q_closed": false,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": null,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 108,
+              "price": 3123.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 113,
+              "price": 3351.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 116,
+              "price": 3240.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 108,
+              "end_index": 116,
+              "candles_excluding_start": 8.0,
+              "root_price": 3123.0,
+              "counter_index": 113,
+              "counter_price": 3351.0,
+              "closed": false,
+              "retracement_percent": 29.044585987261147,
+              "actual_H1_multiple": null,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 8.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 8.0,
+              "comparison_span": 8.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            },
+            {
+              "reference": 8.0,
+              "comparison_span": 8.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            },
+            {
+              "reference": 8.0,
+              "comparison_span": 8.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            },
+            {
+              "reference": 8.0,
+              "comparison_span": 8.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "P",
+          "owner": {
+            "visible": true,
+            "direction": -1.0,
+            "start_index": 0,
+            "end_index": 116,
+            "start_price": 3908.0,
+            "end_price": 3240.0
+          },
+          "intervals": 2,
+          "H1": 189.0,
+          "first_Q_closed": true,
+          "classification": 0,
+          "pending": true,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.5873015873015873,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 0,
+              "price": 3908.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 64,
+              "price": 3719.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 78,
+              "price": 3726.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 98,
+              "price": 3199.0
+            },
+            {
+              "wave": 4,
+              "bar_index": 113,
+              "price": 3351.0
+            },
+            {
+              "wave": 5,
+              "bar_index": 116,
+              "price": 3240.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 64,
+              "end_index": 79,
+              "candles_excluding_start": 15.0,
+              "root_price": 3719.0,
+              "counter_index": 78,
+              "counter_price": 3726.0,
+              "closed": true,
+              "retracement_percent": 3.7037037037037033,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            },
+            {
+              "ordinal": 2,
+              "first_uses_close": false,
+              "start_index": 98,
+              "end_index": 116,
+              "candles_excluding_start": 18.0,
+              "root_price": 3199.0,
+              "counter_index": 113,
+              "counter_price": 3351.0,
+              "closed": false,
+              "retracement_percent": 28.842504743833018,
+              "actual_H1_multiple": 2.7883597883597884,
+              "adjustment_shape_code": 4,
+              "adjustment_shape_label": "ABC STR"
+            }
+          ],
+          "degree_reference_bars": 15.0,
+          "raw_candidates_scanned": 8,
+          "grading_slots": 5,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 1.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 15.0,
+              "same_reference": 1.0,
+              "pre_height": 1.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            },
+            {
+              "reference": 15.0,
+              "comparison_span": 18.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 2.0
+            }
+          ],
+          "internal_Q": []
+        },
+        {
+          "key": "S",
+          "owner": {
+            "visible": true,
+            "direction": 1.0,
+            "start_index": 116,
+            "end_index": 134,
+            "start_price": 3240.0,
+            "end_price": 3620.0
+          },
+          "intervals": 1,
+          "H1": 351.0,
+          "first_Q_closed": true,
+          "classification": 3,
+          "pending": false,
+          "details_limited": false,
+          "actual_end_H1_multiple": 0.31054131054131057,
+          "points": [
+            {
+              "wave": 0,
+              "bar_index": 116,
+              "price": 3240.0
+            },
+            {
+              "wave": 1,
+              "bar_index": 126,
+              "price": 3591.0
+            },
+            {
+              "wave": 2,
+              "bar_index": 129,
+              "price": 3511.0
+            },
+            {
+              "wave": 3,
+              "bar_index": 134,
+              "price": 3620.0
+            }
+          ],
+          "Q": [
+            {
+              "ordinal": 1,
+              "first_uses_close": true,
+              "start_index": 126,
+              "end_index": 133,
+              "candles_excluding_start": 7.0,
+              "root_price": 3591.0,
+              "counter_index": 129,
+              "counter_price": 3511.0,
+              "closed": true,
+              "retracement_percent": 22.79202279202279,
+              "actual_H1_multiple": 1.0,
+              "adjustment_shape_code": 1,
+              "adjustment_shape_label": "A SIMPLE"
+            }
+          ],
+          "degree_reference_bars": 7.0,
+          "raw_candidates_scanned": 3,
+          "grading_slots": 3,
+          "counting_steps": [
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            },
+            {
+              "reference": 7.0,
+              "comparison_span": 7.0,
+              "same_reference": 0.0,
+              "pre_height": 0.0,
+              "pre_couple": 0.0,
+              "inner_demotion": 0.0,
+              "pre_demotion": 0.0,
+              "upgrade": 0.0,
+              "downgrade": 0.0,
+              "count": 1.0
+            }
+          ],
+          "internal_Q": []
+        }
+      ],
+      "price_plan": {
+        "ton": 0.0,
+        "fon": 1.0,
+        "h1": 189.0,
+        "proof": 1.0,
+        "direction": -1.0,
+        "phase": 2.0,
+        "ret": 63.18471337579618,
+        "regime": 1.0,
+        "market_type": "趋势",
+        "last_leg_type": "回调",
+        "fib_anchors": {
+          "visible": true,
+          "direction": -1.0,
+          "start_index": 0,
+          "end_index": 108,
+          "start_price": 3908.0,
+          "end_price": 3123.0
+        },
+        "fib_levels": [
+          {
+            "ratio": 0,
+            "price": 3123.0
+          },
+          {
+            "ratio": 0.191,
+            "price": 3272.935
+          },
+          {
+            "ratio": 0.382,
+            "price": 3422.87
+          },
+          {
+            "ratio": 0.5,
+            "price": 3515.5
+          },
+          {
+            "ratio": 0.618,
+            "price": 3608.13
+          },
+          {
+            "ratio": 0.786,
+            "price": 3740.01
+          },
+          {
+            "ratio": 1,
+            "price": 3908.0
+          }
+        ],
+        "targets": [
+          {
+            "ratio": 1.208,
+            "price": 3122.688,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3351.0
+          },
+          {
+            "ratio": 1.618,
+            "price": 3045.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3351.0
+          },
+          {
+            "ratio": 2,
+            "price": 2973.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3351.0
+          },
+          {
+            "ratio": 2.382,
+            "price": 2900.802,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3351.0
+          },
+          {
+            "ratio": 2.618,
+            "price": 2856.198,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3351.0
+          },
+          {
+            "ratio": 3,
+            "price": 2784.0,
+            "displayed": false,
+            "basis": "latest same-degree adjustment end",
+            "origin": 3351.0
+          },
+          {
+            "ratio": 3.236,
+            "price": 3296.3959999999997,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          },
+          {
+            "ratio": 4.236,
+            "price": 3107.396,
+            "displayed": false,
+            "basis": "whole-trend origin",
+            "origin": 3908.0
+          }
+        ]
+      },
+      "current_correction_visible": true,
+      "current_P": {
+        "visible": true,
+        "direction": 1.0,
+        "start_index": 116,
+        "end_index": 134,
+        "start_price": 3240.0,
+        "end_price": 3620.0
+      },
+      "current_P_adjustment_code": 2.0,
+      "S_parent_leg": "counter",
+      "S_fib": {
+        "visible": false,
+        "anchors": {
+          "visible": true,
+          "direction": 1.0,
+          "start_index": 129,
+          "end_index": 134,
+          "start_price": 3511.0,
+          "end_price": 3620.0
+        },
+        "basis": "preceding_subwave",
+        "levels": []
+      },
+      "guides": {
+        "P": {
+          "trend": 0.0,
+          "pivot": 0.0,
+          "trend_first_age": 55.0,
+          "trend_second_age": 20.0,
+          "trend_first_price": 3726.0,
+          "trend_second_price": 3351.0,
+          "pivot_slope": -15.294117647058824
+        },
+        "S": {
+          "trend": 1.0,
+          "pivot": 0.0,
+          "trend_first_age": 17.0,
+          "trend_second_age": 4.0,
+          "trend_first_price": 3240.0,
+          "trend_second_price": 3511.0,
+          "pivot_slope": 317.0
+        }
+      },
+      "turning_observations": [
+        {
+          "bar_index": 66,
+          "price": 3634.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 109,
+          "price": 3034.6875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 131,
+          "price": 3444.0875,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 113,
+          "price": 3215.4875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 118,
+          "price": 3186.5875,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 75,
+          "price": 3590.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 99,
+          "price": 3110.6875,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 52,
+          "price": 3982.9553571428573,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 70,
+          "price": 3829.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 74,
+          "price": 3781.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 79,
+          "price": 3814.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 83,
+          "price": 3709.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 106,
+          "price": 3280.1696428571427,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 128,
+          "price": 3653.3125,
+          "label": "RV04"
+        },
+        {
+          "bar_index": 115,
+          "price": 3402.9791666666665,
+          "label": "RV05"
+        },
+        {
+          "bar_index": 102,
+          "price": 3369.3125,
+          "label": "RV07"
+        },
+        {
+          "bar_index": 3,
+          "price": 3996.3125,
+          "label": "RV08"
+        }
+      ],
+      "segments": 39,
+      "labels": 93,
+      "fib_segments": 9,
+      "target_segments": 0,
+      "synthetic_ohlc_only": true,
+      "scenario": "s_five_live",
+      "installation_files_sha256": {
+        "install/EWT01.txt": "1a97e4c5509de62ac82c0aec0435fc330903599872c9f6917344baa4418171d0",
+        "install/EWT02.txt": "12fe6109fb8577f6c77dfc1503204722017e0a1fb90d9cc75eb086221a8f54df",
+        "install/EWT03.txt": "053eec3494a4192b6f28211b8eaf13a98d4bc4896b7309880e8c0f35dea7588c"
       },
       "installation_equivalence_test": "tests/test_install_layers.py"
     }

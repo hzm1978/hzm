@@ -1,6 +1,10 @@
-# 1.4.0合成预览与明细
+# 1.4.1合成预览与明细
 
-38个固定合成场景覆盖M/P/S、内部区间、两种分割及不同基准的目标价。图由导出公式AST在Matplotlib绘制，非客户端截图，非用户行情复原。
+45个固定合成场景覆盖M/P/S、内部区间、两种分割及不同基准的目标价。图由导出公式AST在Matplotlib绘制，非客户端截图，非用户行情复原。
+
+1.4.1新增s_auto_five，自动范围下保留3123→3351→3240→3591→3511→3620五浪，首浪H1=228，五浪后回调的分割量3123→3620。s_auto_five_down检查镜像；s_five_tail检查更多后续调整转折不会重新截掉早期两腿。s_leg_fib及其镜像在S4阶段只量紧前S3，即3240→3591；s_first_fib量首腿3123→3351；s_five_live没有回调时不画S尺。
+
+synthetic_s_auto_five_EWT03.png、synthetic_s_leg_fib_EWT03.png、synthetic_s_five_tail_EWT03.png为安装版EWT03单层图，分别便于核对完整五浪、前一子浪分割及后续调整。对应JSON的S_fib.basis明确记录whole_group或preceding_subwave。数据只复现问题特征，不代表截图对应的实际逐根K线。
 
 本版新增same_three、same_four检查第三同级Q的内部降级与第四Q重新配对；contract_equal允许七浪最后一对相等；recouple_equal检查内部同级对完成后回配原级。graded_expand、graded_contract用相邻合法、累计跨度越过大级别阈值的样本，防止把有效逐级七浪强制改为五浪。
 
