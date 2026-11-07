@@ -16,6 +16,38 @@ def path(prices, steps=18, tail=9, prefix=50):
 
 
 def sample(name):
+    # Conceptual regressions inspired by interval feedback. These paths
+    # are explicitly synthetic and cannot verify the user's exact chart.
+    if name in ('q_early','q_failed','q_merge','q_tiny','s_main','s_fib'):
+        cases={
+            'q_early':([3907,3720,3740,3680,3725,3200,3280,3130,3250],[14,5,5,4,20,3,7,3],-1,3908,3129),
+            'q_failed':([8271,8656,8369,9285,8840,9194,9100],[15,18,20,14,10,3],1,8270,9195),
+            'q_merge':([200,160,180,152,175,100,130],[10,22,8,23,40,5],-1,201,99),
+            'q_tiny':([4987,4950,4948,4946,4944,4890,4593,4775,4471,4600],[10,1,1,1,4,18,10,18,3],-1,4988,4470),
+            's_main':([451859,374501,439749,337401],[36,28,48],-1,451860,337400),
+            's_fib':([3907,3720,3740,3680,3725,3200,3280,3130,3340,3220,3500,3380,3624,3550],[14,5,5,4,20,3,7,14,6,12,6,14,4],-1,3908,3129),
+        }
+        seq,steps,direction,first,last=cases[name]
+        data=path(seq,steps,tail=0)
+        if name=='q_tiny':data['L'][60]=4900
+        return data,{'DIR':direction,'MANF':1,'MFROM':first,'MTO':last,
+                     'MFAGE':len(data['C'])-1-50,'KIND':1 if name=='s_main'else 2}
+    if name=='q_failed_auto':
+        data,settings=sample('q_failed')
+        return data,{'DIR':1}
+    if name=='q_reversal':
+        data=path([433.3,620,501,928.4,650,768.9,605.8],[22,12,28,12,24,9],tail=0)
+        data['O'][0]=data['C'][0];data['L'][0]=data['C'][0]-1
+        return data,{'DIR':0}
+    if name=='main_left':
+        return path([825.5,732.4,764.1,694.5,740.5,667.7],[30,16,22,28,24],tail=0),{'DIR':-1}
+    if name=='main_three':
+        return path([3512,3185,3414,3142],[35,20,35],tail=0),{'DIR':-1}
+    if name=='guides_up':
+        return path([100,140,120,160,135,180],[15,10,16,12,18],tail=0),{'DIR':1}
+    if name=='target_bases':
+        return ({k:np.full(100,v)for k,v in (('O',3225.),('C',3220.),('H',3230.),('L',3210.))},
+                {'DIR':-1,'KIND':1,'MH1':200,'MBASE':3500,'MORG':4000,'MAGE':5})
     if name=='main_owned':
         # Inspired by parent boundary feedback; synthetic, not user OHLC.
         return path([1080,865.7,910,880,1014.38,960,990,923,977,920,950,901,930,870,900,832,876],
@@ -98,4 +130,6 @@ def sample(name):
 
 NAMES=('fall_rebound','five_up','nested_five_down','seven_expanding','triangle_e','trend_targets',
        'short_inner_q','parent_correction','sideways','earlier_complete',
-       'p_whole','p_white','p_triangle','p_no_h1','p_newtip','p_s_correction','p_white_up','main_owned')
+       'p_whole','p_white','p_triangle','p_no_h1','p_newtip','p_s_correction','p_white_up','main_owned',
+       'q_early','q_failed','q_merge','q_tiny','s_main','s_fib','q_failed_auto','q_reversal',
+       'main_left','main_three','target_bases','guides_up')

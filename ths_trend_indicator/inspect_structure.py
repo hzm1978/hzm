@@ -17,6 +17,7 @@ def snapshot(data,result,mapping=None,source=None):
     """Trace exactly the displayed M/P/S owners, intervals and ruler."""
     from interval_layers import layers as current_layers
     from interval_render import SHAPES
+    from interval_prices import RETRACEMENTS,TARGETS
     names=formula_names()if mapping is None else mapping
     n=len(data['C']);env=result['env'];schemas=current_layers()[1]
     def val(name):
@@ -53,23 +54,35 @@ def snapshot(data,result,mapping=None,source=None):
         points.append({'wave':2*count+1,'bar_index':at(val(s['end'])),'price':val(s['last'])})
         groups.append({'key':label,'owner':scope(s),'intervals':count,'H1':h1 if val(t['proof'])else None,
                        'first_Q_closed':bool(val(t['proof'])),'classification':int(val(t['kind'])),
-                       'pending':not bool(val(t['kind']))or bool(val(t['ambiguous'])),
+                       'pending':not bool(val(t['kind']))or bool(val(t['ambiguous']))or bool(val(t['pending'])),
                        'details_limited':bool(val(t['limited'])or val(t['ambiguous'])),
                        'actual_end_H1_multiple':(val(s['last'])-val(t['base']))*val(s['direction'])/h1 if val(t['proof'])and h1 else None,
-                       'points':points if val(s['on'])else [],'Q':qs})
+                       'points':points if val(s['on'])else [],'Q':qs,
+                       'internal_Q':[{'root_price':val(q['r']),'counter_price':val(q['p']),
+                                      'length':val(q['n']),'retracement_percent':val(q['ret'])}
+                                     for q in t.get('internal',[])if val(q['on'])]})
     h=schemas['hierarchy'];p=h['P'];phase=int(val(h['phase']))
     plan={key:val(schemas['plan'][key])for key in ('ton','fon','h1','proof','direction','phase','ret')}
     plan.update({'regime':val(h['regime']),'market_type':{0:'待确认',1:'趋势',3:'震荡'}.get(int(val(h['regime'])),'待确认'),
                  'last_leg_type':{0:'待确认',1:'主浪',2:'回调',3:'震荡段'}[phase],
-                 'fib_anchors':scope(p),'fib_levels':[{'ratio':r,'price':val('IPF'+str(i))}for i,r in enumerate((0,.236,.382,.5,.618,.786,1))]if plan['fon']else [],
-                 'targets':[{'ratio':r,'price':val('IPT'+str(i)),'displayed':bool(val('IPSHOW'+str(i)))}for i,r in enumerate((1.208,1.618,2,2.382,2.618,3,3.236,4.236),1)]})
-    return {'release':'1.2.1','bars':n,'native_client_run':False,
+                 'fib_anchors':scope(schemas['plan']['ruler']),'fib_levels':[{'ratio':r,'price':val('IPF'+str(i))}for i,r in enumerate(RETRACEMENTS)]if plan['fon']else [],
+                 'targets':[{'ratio':r,'price':val('IPT'+str(i)),'displayed':bool(val('IPSHOW'+str(i))),
+                             'basis':'whole-trend origin'if i>=7 else'latest same-degree adjustment end',
+                             'origin':val(schemas['plan']['total_origin'if i>=7 else'leg_base'])}
+                            for i,r in enumerate(TARGETS,1)]})
+    sf=schemas['S_plan']
+    return {'release':'1.3.0','bars':n,'native_client_run':False,
             'mode':'current-prefix retrospective drawing, not historical trade signals',
             'catalog_sha256':hashlib.sha256(RAW).hexdigest(),
             'formula_normalized_utf8_sha256':hashlib.sha256((source if source is not None else formula_source()).encode()).hexdigest(),
             'ohlc_float64_sha256':hashlib.sha256(np.column_stack([data[k]for k in('O','H','L','C')]).astype('<f8').tobytes()).hexdigest(),
-            'groups':groups,'price_plan':plan,'current_correction_visible':bool(val(schemas['S']['scope']['on'])),
-            'turning_observations':[{'bar_index':l['x'],'price':l['y'],'label':l['text']}for l in result['labels']if ' RV'in l['text']],
+            'groups':groups,'price_plan':plan,'current_correction_visible':bool(val(schemas['current_P']['on'])),
+            'current_P':scope(schemas['current_P']),'current_P_adjustment_code':val(schemas['current_P_shape']['code']),
+            'S_parent_leg':'counter'if val(schemas['S_parent_counter'])else'main',
+            'S_fib':{'visible':bool(val(sf['on'])),'anchors':scope(sf['scope']),
+                     'levels':[{'ratio':r,'price':val(q)}for r,q in zip(RETRACEMENTS,sf['levels'])]if val(sf['on'])else[]},
+            'guides':{level:{k:val(v)for k,v in g.items()}for level,g in schemas['guides'].items()},
+            'turning_observations':[{'bar_index':l['x'],'price':l['y'],'label':l['text']}for l in result['labels']if l['text'].startswith('RV')],
             'segments':len(result['lines']),'labels':len(result['labels']),
             'fib_segments':int(sum(l['color']=='COLORFFCC00'and l['start'][1]==l['end'][1]for l in result['lines'])),
             'target_segments':sum(l['color']=='COLORFF9900'for l in result['lines'])}

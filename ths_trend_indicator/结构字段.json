@@ -4,8 +4,8 @@
     "scope": {
       "first": "HXMFIRST",
       "start": "HXMSTART",
-      "last": "HXPLAST",
-      "end": "HXPEND",
+      "last": "HTENDPRICE",
+      "end": "HTENDAGE",
       "direction": "HXPDIR",
       "on": "HXMON"
     },
@@ -14,19 +14,25 @@
         "a": "MQR0SAFEA",
         "t": "MQR0SAFET",
         "w": "MQR0WA",
-        "c": "MQR0CA"
+        "c": "MQR0CA",
+        "boundary": "MQR0BOUNDARY",
+        "closed": "MQR0CLOSED"
       },
       {
         "a": "MQR1SAFEA",
         "t": "MQR1SAFET",
         "w": "MQR1WA",
-        "c": "MQR1CA"
+        "c": "MQR1CA",
+        "boundary": "MQR1BOUNDARY",
+        "closed": "MQR1CLOSED"
       },
       {
         "a": "MQR2SAFEA",
         "t": "MQR2SAFET",
         "w": "MQR2WA",
-        "c": "MQR2CA"
+        "c": "MQR2CA",
+        "boundary": "MQR2BOUNDARY",
+        "closed": "MQR2CLOSED"
       }
     ],
     "q": [
@@ -106,48 +112,62 @@
     "base": "MQBASE",
     "base_age": "MQBASEAGE",
     "rel1": "MQREL1",
-    "rel2": "MQREL2"
+    "rel2": "MQREL2",
+    "pending": "MQOPEN"
   },
   "P": {
     "key": "PQ",
     "scope": {
-      "first": "PQOWNERFIRST",
-      "start": "PQOWNERSTART",
-      "last": "HXPLAST",
-      "end": "HXPEND",
+      "first": "HXPFIRST",
+      "start": "HXPSTART",
+      "last": "HTENDPRICE",
+      "end": "HTENDAGE",
       "direction": "HXPDIR",
-      "on": "PQENABLED"
+      "on": "HXPON",
+      "truncated": "HTON",
+      "reference_tip": "HXPLAST",
+      "reference_age": "HXPEND"
     },
     "raw": [
       {
         "a": "PQR0SAFEA",
         "t": "PQR0SAFET",
         "w": "PQR0WA",
-        "c": "PQR0CA"
+        "c": "PQR0CA",
+        "boundary": "PQR0BOUNDARY",
+        "closed": "PQR0CLOSED"
       },
       {
         "a": "PQR1SAFEA",
         "t": "PQR1SAFET",
         "w": "PQR1WA",
-        "c": "PQR1CA"
+        "c": "PQR1CA",
+        "boundary": "PQR1BOUNDARY",
+        "closed": "PQR1CLOSED"
       },
       {
         "a": "PQR2SAFEA",
         "t": "PQR2SAFET",
         "w": "PQR2WA",
-        "c": "PQR2CA"
+        "c": "PQR2CA",
+        "boundary": "PQR2BOUNDARY",
+        "closed": "PQR2CLOSED"
       },
       {
         "a": "PQR3SAFEA",
         "t": "PQR3SAFET",
         "w": "PQR3WA",
-        "c": "PQR3CA"
+        "c": "PQR3CA",
+        "boundary": "PQR3BOUNDARY",
+        "closed": "PQR3CLOSED"
       },
       {
         "a": "PQR4SAFEA",
         "t": "PQR4SAFET",
         "w": "PQR4WA",
-        "c": "PQR4CA"
+        "c": "PQR4CA",
+        "boundary": "PQR4BOUNDARY",
+        "closed": "PQR4CLOSED"
       }
     ],
     "q": [
@@ -227,7 +247,55 @@
     "base": "PQBASE",
     "base_age": "PQBASEAGE",
     "rel1": "PQREL1",
-    "rel2": "PQREL2"
+    "rel2": "PQREL2",
+    "pending": "PQOPEN",
+    "internal": [
+      {
+        "on": "IRPINNERON0",
+        "mid": "IRPINNERMID0",
+        "r": "PQR0P",
+        "p": "PQR0ADEXT",
+        "t": "PQR0SAFET",
+        "n": "IRPINNERLEN0",
+        "ret": "IRPINNERRET0"
+      },
+      {
+        "on": "IRPINNERON1",
+        "mid": "IRPINNERMID1",
+        "r": "PQR1P",
+        "p": "PQR1ADEXT",
+        "t": "PQR1SAFET",
+        "n": "IRPINNERLEN1",
+        "ret": "IRPINNERRET1"
+      },
+      {
+        "on": "IRPINNERON2",
+        "mid": "IRPINNERMID2",
+        "r": "PQR2P",
+        "p": "PQR2ADEXT",
+        "t": "PQR2SAFET",
+        "n": "IRPINNERLEN2",
+        "ret": "IRPINNERRET2"
+      },
+      {
+        "on": "IRPINNERON3",
+        "mid": "IRPINNERMID3",
+        "r": "PQR3P",
+        "p": "PQR3ADEXT",
+        "t": "PQR3SAFET",
+        "n": "IRPINNERLEN3",
+        "ret": "IRPINNERRET3"
+      },
+      {
+        "on": "IRPINNERON4",
+        "mid": "IRPINNERMID4",
+        "r": "PQR4P",
+        "p": "PQR4ADEXT",
+        "t": "PQR4SAFET",
+        "n": "IRPINNERLEN4",
+        "ret": "IRPINNERRET4"
+      }
+    ]
   },
   "S": {
     "key": "SQ",
@@ -236,7 +304,7 @@
       "start": "SQOWNERSTART",
       "last": "SQOWNERLAST",
       "end": "SQOWNEREND",
-      "direction": "SQOWNERDIR",
+      "direction": "SQOWNERDIRECTION",
       "on": "SQOWNERON"
     },
     "raw": [
@@ -244,19 +312,25 @@
         "a": "SQR0SAFEA",
         "t": "SQR0SAFET",
         "w": "SQR0WA",
-        "c": "SQR0CA"
+        "c": "SQR0CA",
+        "boundary": "SQR0BOUNDARY",
+        "closed": "SQR0CLOSED"
       },
       {
         "a": "SQR1SAFEA",
         "t": "SQR1SAFET",
         "w": "SQR1WA",
-        "c": "SQR1CA"
+        "c": "SQR1CA",
+        "boundary": "SQR1BOUNDARY",
+        "closed": "SQR1CLOSED"
       },
       {
         "a": "SQR2SAFEA",
         "t": "SQR2SAFET",
         "w": "SQR2WA",
-        "c": "SQR2CA"
+        "c": "SQR2CA",
+        "boundary": "SQR2BOUNDARY",
+        "closed": "SQR2CLOSED"
       }
     ],
     "q": [
@@ -336,22 +410,26 @@
     "base": "SQBASE",
     "base_age": "SQBASEAGE",
     "rel1": "SQREL1",
-    "rel2": "SQREL2"
+    "rel2": "SQREL2",
+    "pending": "SQOPEN"
   },
   "hierarchy": {
     "P": {
-      "first": "PQOWNERFIRST",
-      "start": "PQOWNERSTART",
-      "last": "HXPLAST",
-      "end": "HXPEND",
+      "first": "HXPFIRST",
+      "start": "HXPSTART",
+      "last": "HTENDPRICE",
+      "end": "HTENDAGE",
       "direction": "HXPDIR",
-      "on": "PQENABLED"
+      "on": "HXPON",
+      "truncated": "HTON",
+      "reference_tip": "HXPLAST",
+      "reference_age": "HXPEND"
     },
     "M": {
       "first": "HXMFIRST",
       "start": "HXMSTART",
-      "last": "HXPLAST",
-      "end": "HXPEND",
+      "last": "HTENDPRICE",
+      "end": "HTENDAGE",
       "direction": "HXPDIR",
       "on": "HXMON"
     },
@@ -370,15 +448,106 @@
     "proof": "IPPROOF",
     "direction": "HXPDIR",
     "phase": "HXPHASE",
-    "ret": "IPRET"
+    "ret": "IPRET",
+    "ruler": {
+      "first": "HXPFIRST",
+      "start": "HXPSTART",
+      "last": "HXPLAST",
+      "end": "HXPEND",
+      "direction": "HXPDIR",
+      "on": "HXPON",
+      "truncated": "HTON",
+      "reference_tip": "HXPLAST",
+      "reference_age": "HXPEND"
+    },
+    "leg_base": "IPBASE",
+    "total_origin": "IPORIGIN",
+    "targets": [
+      "IPT1",
+      "IPT2",
+      "IPT3",
+      "IPT4",
+      "IPT5",
+      "IPT6",
+      "IPT7",
+      "IPT8"
+    ]
+  },
+  "current_P": {
+    "first": "HTENDPRICE",
+    "start": "HTENDAGE",
+    "last": "POADENDP",
+    "end": "POADENDA",
+    "direction": "PCDIR",
+    "on": "PCON"
+  },
+  "current_P_shape": {
+    "p": "POADENDP",
+    "t": "POADENDA",
+    "has": "PCON",
+    "code": "POADCODE",
+    "snap": "POADSNAP",
+    "source": "POADSOURCE",
+    "length": "POADLEN",
+    "live": "POADLIVE"
   },
   "last_adjustment": {
     "p": "SOADENDP",
     "t": "SOADENDA",
-    "has": "SOADEXTAHAS",
+    "has": "SCON",
     "code": "SOADCODE",
     "snap": "SOADSNAP",
     "source": "SOADSOURCE",
-    "length": "SOADLEN"
+    "length": "SOADLEN",
+    "live": "SOADLIVE"
+  },
+  "S_plan": {
+    "on": "SFON",
+    "levels": [
+      "SF0",
+      "SF1",
+      "SF2",
+      "SF3",
+      "SF4",
+      "SF5",
+      "SF6"
+    ],
+    "scope": {
+      "first": "SQOWNERFIRST",
+      "start": "SQOWNERSTART",
+      "last": "SQOWNERLAST",
+      "end": "SQOWNEREND",
+      "direction": "SQOWNERDIRECTION",
+      "on": "SQOWNERON"
+    }
+  },
+  "S_parent_counter": "SQCOUNTER",
+  "S_counter": {
+    "first": "SQOWNERLAST",
+    "start": "SQOWNEREND",
+    "last": "SOADENDP",
+    "end": "SOADENDA",
+    "direction": "SCDIR",
+    "on": "SCON"
+  },
+  "guides": {
+    "P": {
+      "trend": "PGLON",
+      "pivot": "PGLPON",
+      "trend_first_age": "PGLALAST",
+      "trend_second_age": "PGLZLAST",
+      "trend_first_price": "PGLPA",
+      "trend_second_price": "PGLPZ",
+      "pivot_slope": "PGLPSLOPE"
+    },
+    "S": {
+      "trend": "SGLON",
+      "pivot": "SGLPON",
+      "trend_first_age": "SGLALAST",
+      "trend_second_age": "SGLZLAST",
+      "trend_first_price": "SGLPA",
+      "trend_second_price": "SGLPZ",
+      "pivot_slope": "SGLPSLOPE"
+    }
   }
 }

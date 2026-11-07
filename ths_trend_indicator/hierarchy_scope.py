@@ -5,6 +5,41 @@ the first older contrary extreme. A child's last few turns cannot move it.
 """
 
 
+def terminal_hint(b,s,ranged):
+    """Retain a near-peak/trough fifth-leg candidate without demanding a record.
+
+    This is a candidate, not proof of a terminal wave. Require a completed
+    earlier close-Q, a later counter leg and a recovery near the old tip.
+    Keep confirmed endpoints even after price starts moving away from them.
+    """
+    p=lambda k,e:b.put('HT'+k,e)
+    f=lambda k,e:b.frozen('HT'+k,e)
+    d=s['direction'];tip=s['last'];ta=s['end'];origin=s['first'];start=s['start']
+    distance=p('DIST',f'ABS({tip}-{origin})*0.236')
+    qproof=f('QPROOF',f'COUNT(IF({d}=1,SUQ,SDQ) AND VX>={ta} AND VX<{start} AND VX+IF({d}=1,SUN,SDN)<{start},BC)>0')
+    events=p('EVENTS',f'IF({d}=1,GHC,GLC) AND VX+GN<{ta} AND ABS(REF(IF({d}=1,H,L),GN)-{tip})<={distance}')
+    ea=f('EA',f'LLV(IF({events},VX+GN,DATACOUNT),BC)')
+    es=f('ES',f'MAX(0,{ea}-GN)')
+    ep=f('EP',f'REF(IF({d}=1,H,L),MIN(DATACOUNT-1,{ea}))')
+    eca=f('ECA',f'REF(GA1,MIN(DATACOUNT-1,{es}))+{es}+GN')
+    ecp=f('ECP',f'REF(IF({d}=1,L,H),MIN(DATACOUNT-1,{eca}))')
+    efirst,efound=b.first('HTEFIRST',f'VX<{eca} AND VX>={ea} AND ABS(IF({d}=1,H,L)-{ep})<=BEPS')
+    eok=p('EOK',f'{ea}<DATACOUNT AND {efound} AND {eca}<{ta} AND {eca}>{efirst} AND {d}*({ep}-{ecp})>BEPS')
+    la=f('LA',f'IF(IF({d}=1,GLS,GHS),IF({d}=1,GLT,GHT)+GN,DATACOUNT)')
+    lp=f('LP',f'REF(IF({d}=1,L,H),MIN(DATACOUNT-1,{la}))')
+    mask=p('LIVE','VX<'+la)
+    z=b.extreme('HTLZ',mask,f'{d}*IF({d}=1,H,L)',True)
+    live=f('LIVEPRICE',f'{d}*{z}')
+    live_age,live_has=b.first('HTLIVEAGE',f'{mask} AND ABS(IF({d}=1,H,L)-{live})<=BEPS')
+    lok=p('LOK',f'{live_has} AND {la}<{ta} AND {la}>{live_age} AND ABS({live}-{tip})<={distance} AND {d}*({live}-{lp})>BEPS')
+    choose=p('LIVECHOSEN',f'{lok} AND (IF({eok},0,1) OR {live_age}<{efirst})')
+    price=f('PRICE',f'IF({choose},{live},{ep})')
+    age=f('AGE',f'IF({choose},{live_age},{efirst})')
+    ok=f('ON',f'MANF=0 AND IF({ranged},0,1) AND {s["on"]} AND {qproof} AND ({eok} OR {lok}) AND {age}<{ta} AND {d}*({price}-{origin})>BEPS AND {d}*({price}-{tip})<(0-BEPS)')
+    return dict(s,last=f('ENDPRICE',f'IF({ok},{price},{tip})'),
+                end=f('ENDAGE',f'IF({ok},{age},{ta})'),truncated=ok,reference_tip=tip,reference_age=ta)
+
+
 def build(b):
     p=lambda k,e:b.put('HX'+k,e)
     f=lambda k,e:b.frozen('HX'+k,e)
@@ -41,8 +76,15 @@ def build(b):
         fallback_mask=put('FMASK',f'VX>{end_age} AND VX<=MIN(BOOKBARS,DATACOUNT-1)')
         fallback=b.extreme('HX'+tag+'FALLBACK',fallback_mask,f'{direction}*'+('L'if direction==1 else'H'))
         fallback_age,has_fallback=b.first('HX'+tag+'FA',f'{fallback_mask} AND ABS('+('L'if direction==1 else'H')+f'-{direction}*{fallback})<=BEPS')
-        first=frozen('FIRST',f'IF({seen},{value},{direction}*{fallback})')
-        start=frozen('START',f'IF({seen},{age},{fallback_age})')
+        complete_origin=put('FULLORIGIN',f'{has_fallback} AND IF({stopped} OR {eligible},0,1) AND (IF({seen},0,1) OR ({fallback_age}>{age} AND {direction}*({direction}*{fallback}-{value})<=BEPS))')
+        first=frozen('FIRST',f'IF({complete_origin} OR IF({seen},0,1),{direction}*{fallback},{value})')
+        start=frozen('START',f'IF({complete_origin} OR IF({seen},0,1),{fallback_age},{age})')
+        # A later rebound high/low must not replace the true terminal
+        # extreme of the whole owned impulse (e.g. 769.9 vs 929.4).
+        whole_mask=put('WHOLEMASK',f'VX<={start}')
+        whole_z=b.extreme('HX'+tag+'WHOLEZ',whole_mask,f'{direction}*'+('H'if direction==1 else'L'),True)
+        end=frozen('WHOLEEND',f'{direction}*{whole_z}')
+        end_age,whole_has=b.first('HX'+tag+'WHOLEAGE',f'{whole_mask} AND ABS('+('H'if direction==1 else'L')+f'-{end})<=BEPS')
         valid=frozen('ON',f'({seen} OR {has_fallback}) AND {start}>{end_age} AND {direction}*({end}-{first})>BEPS')
         candidates[direction]=dict(first=first,start=start,last=end,end=end_age,on=valid,
                                    height=put('HEIGHT',f'IF({valid},ABS({end}-{first}),0)'))
@@ -58,6 +100,8 @@ def build(b):
     last=f('PLAST',f'IF(MANF=1,MTO,IF({ranged},BP0,HXAUTOLAST))')
     end=f('PEND',f'IF(MANF=1,{manual_age},IF({ranged},BA0+BN,HXAUTOEND))')
     on=f('PON',f'{direction}<>0 AND {start}>{end} AND {start}<DATACOUNT AND HHV(C,BC)-LLV(C,BC)>BEPS AND IF(MANF=1,MFAGE>=1 AND {manual_has},IF({ranged},BK1,HXAUTOON))')
+    resolved=terminal_hint(b,dict(first=first,start=start,last=last,end=end,direction=direction,on=on),ranged)
+    last,end=resolved['last'],resolved['end']
     turned=f('TURNED',f'{end}>=PN AND IF({direction}=1,HHV(H,PN)<{last},LLV(L,PN)>{last})')
     phase=f('PHASE',f'IF(KIND>0,KIND,IF({ranged},3,IF({on},IF({turned},2,1),0)))')
     regime=f('REGIME',f'IF({phase}=3,3,IF({on} OR MH1>0,1,0))')
@@ -84,7 +128,7 @@ def build(b):
     main_start=f('MSTART',f'IF({has_before},{before_age},{start})')
     main_first=f('MFIRST',f'IF({has_before},{before},{first})')
     main_on=f('MON',f'{on} AND {main_start}>{end} AND {direction}*({last}-{main_first})>BEPS')
-    return {'P':dict(first=first,start=start,last=last,end=end,direction=direction,on=on),
+    return {'P':resolved,
             'M':dict(first=main_first,start=main_start,last=last,end=end,direction=direction,on=main_on),
             'prior':dict(price=prior,age=prior_age,on=has_prior),
             'phase':phase,'regime':regime}

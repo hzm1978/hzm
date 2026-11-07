@@ -352,6 +352,19 @@ def share_elementwise(statements,boundary):
     counts=Counter((s.line<=boundary,render(n))for s in statements for n in walk(s.expression)
                    if n[0]in ('binary','unary','call')and safe(n))
     shared={};out=[];serial=0
+    def short_size(node):
+        # Factoring is priced AFTER private names become single letters.
+        # Long model identifiers otherwise make A<B look expensive and
+        # generate a binding larger than the two original comparisons.
+        def abbreviated(value):
+            if value[0]=='identifier':
+                name=value[1]
+                return ('identifier',name if name in SETTINGS or name.startswith('COLOR')else'Z')
+            if value[0]=='call':return ('call',value[1],[abbreviated(a)for a in value[2]])
+            if value[0]=='binary':return ('binary',value[1],abbreviated(value[2]),abbreviated(value[3]))
+            if value[0]=='unary':return ('unary',value[1],abbreviated(value[2]))
+            return value
+        return len(render(abbreviated(node)))
     def visit(node,phase,line,root=False):
         nonlocal serial
         if node[0]in ('number','identifier','string'):return node
@@ -361,7 +374,7 @@ def share_elementwise(statements,boundary):
         elif node[0]=='unary':value=('unary',node[1],visit(node[2],phase,line))
         elif node[0]=='call':value=('call',node[1],[visit(a,phase,line)for a in node[2]])
         else:return node
-        size=len(render(value));n=counts[key]
+        size=short_size(value);n=counts[key]
         if not root and safe(node)and n>=2 and (n-1)*size-n-5>2:
             serial+=1;name=f'PURE{serial}'
             out.append(Statement(name,value,False,(),line));shared[key]=name
@@ -404,6 +417,7 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
     statements,omitted=specialize(statements)
     statements=deduplicate(statements,boundary)
     statements=share_elementwise(statements,boundary)
+    statements=deduplicate(statements,boundary)
     statements,builtin_aliases=compact_builtins(statements,boundary)
     definitions={s.name:i for i,s in enumerate(statements)if s.name}
     refs=[{definitions[n[1]]for n in walk(s.expression)if n[0]=='identifier'and n[1]in definitions}for s in statements]
@@ -430,22 +444,28 @@ def generate(raw,max_bytes=MAX_INSTALL_BYTES):
         indices=sorted(group['needed'])
         selected,aliases=short_names([statements[i]for i in indices])
         aliases={next((builtin for builtin,field in builtin_aliases.items()if field==key),key):value for key,value in aliases.items()}
-        if number==2:
-            analysis=packed_rows([s for s in selected if s.line<=boundary])
-            drawing=packed_rows([s for s in selected if s.line>boundary])
-            text='\r\n'.join(analysis+drawing)+'\r\n'
-            phase=len(analysis)
-        else:
-            text='\n'.join(emit(s)for s in selected)+'\n'
-            phase=sum(statements[i].line<=boundary for i in indices)
+        analysis_statements=[s for s in selected if s.line<=boundary]
+        analysis=packed_rows(analysis_statements)
+        drawing=packed_rows([s for s in selected if s.line>boundary])
+        text='\r\n'.join(analysis+drawing)+'\r\n'
+        phase=len(analysis)
+        def ast_digest(items):
+            import json
+            # Parse the emitted, unpacked text as the source of truth;
+            # rendering can canonically simplify a negative literal.
+            parsed=Parser('\n'.join(emit(s)for s in items)).parse()
+            values=[(s.name,s.expression,s.output,s.styles)for s in parsed]
+            return hashlib.sha256(json.dumps(values,ensure_ascii=True,separators=(',',':')).encode()).hexdigest()
         profile={'analysis_end_line':phase,'ascii_only':False,'visible_labels_ascii_only':True,'bom':False,'comments':False,'encoding':'utf-8','role':'install_layer',
                  'root_ids':sorted(group['roots']),'parameter_names':sorted(SETTINGS-set(FIXED_DISPLAY)),'max_install_characters':max_bytes,
                  'title':group['title'],'families':sorted(group['families']),'optional':False,
-                 'fixed_display_settings':FIXED_DISPLAY,'native_variable_aliases':aliases}
+                 'fixed_display_settings':FIXED_DISPLAY,'native_variable_aliases':aliases,
+                 'unpacked_ast_sha256':ast_digest(selected),'unpacked_analysis_ast_sha256':ast_digest(analysis_statements),
+                 'statements':len(selected)}
         check(text,analysis_end_line=phase)
         data=text.encode('utf-8')
-        profile['line_ending']='CRLF'if number==2 else'LF'
-        profile['packed_statements']=number==2
+        profile['line_ending']='CRLF'
+        profile['packed_statements']=True
         windows_characters=len(windows_text(text))
         if windows_characters>max_bytes:raise ValueError(f'{group["title"]} Windows character budget exceeded: {windows_characters}')
         files[f'EWT{number:02}.txt']=(data,profile|{'sha256':hashlib.sha256(data).hexdigest(),'characters':len(text),'windows_characters':windows_characters,'bytes':len(data)})

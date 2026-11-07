@@ -21,10 +21,12 @@ def points(r,color='COLORLIBLUE'):
     lines=outline(r,color)
     return [lines[0]['start'][1]]+[l['end'][1]for l in lines]if lines else []
 class CompletePTests(unittest.TestCase):
-    def test_raw_eleven_turns_reduce_to_book_seven_by_intervals(self):
+    def test_raw_turns_keep_internal_intervals_without_inventing_extra_parent_numbers(self):
         d,r,t=scene('p_whole');g=t['groups'][1]
-        self.assertEqual(points(r),[1015.38,959,991,922,978,869,901,831])
-        self.assertEqual(g['intervals'],3);self.assertEqual(g['classification'],73)
+        self.assertEqual(points(r),[1015.38,959,991,922,931,869,901,831])
+        self.assertEqual(g['intervals'],2)
+        self.assertEqual(g['internal_Q'][0]['root_price'],869)
+        self.assertEqual(g['internal_Q'][0]['length'],9)
         self.assertFalse(any(l['text']in ('P8','P9','P10','P11')for l in r['labels']))
         self.assertEqual(t['price_plan']['fib_anchors']['start_price'],1015.38)
         self.assertNotEqual(t['price_plan']['fib_anchors']['start_price'],977.26)
@@ -32,9 +34,10 @@ class CompletePTests(unittest.TestCase):
         for name in ('p_whole','p_white','p_triangle'):
             d,r,t=scene(name);end=t['groups'][1]['owner']['end_index']
             for q in t['groups'][1]['Q']:
-                a=q['start_index'];root=q['root_price'];column=d['C']if q['first_uses_close']else d['L']
-                crossed=np.flatnonzero(column[a+1:end+1]<root-1e-7)
-                boundary=a+1+int(crossed[0])if len(crossed)else end
+                a=q['start_index'];resume=q['counter_index']+1
+                root=q['root_price'];column=d['C']if q['first_uses_close']else d['L']
+                crossed=np.flatnonzero(column[resume:end+1]<root-1e-7)
+                boundary=resume+int(crossed[0])if len(crossed)else end
                 self.assertEqual(q['end_index'],boundary)
                 self.assertEqual(q['candles_excluding_start'],boundary-a)
     def test_white_structure_keeps_late_c_and_complete_adjustment(self):
@@ -49,17 +52,17 @@ class CompletePTests(unittest.TestCase):
         self.assertEqual(q['counter_price'],121);self.assertNotEqual(q['counter_price'],131)
     def test_endpoint_reports_actual_h1_multiple_not_price_or_target_ratio(self):
         _,r,t=scene('p_whole');g=t['groups'][1]
-        self.assertAlmostEqual(g['actual_end_H1_multiple'],70/56.38)
+        self.assertAlmostEqual(g['actual_end_H1_multiple'],100/56.38)
         self.assertNotEqual(round(g['actual_end_H1_multiple'],3),1.208)
         h1_labels=[l for l in r['labels']if l['text']==' H1']
         self.assertTrue(h1_labels)
         expected=f"{g['actual_end_H1_multiple']:.3f}"
         self.assertTrue(any(l['text']==expected and l['function']=='DRAWNUMBER'for l in r['labels']))
-    def test_m_and_p_share_one_parent_impulse_boundary(self):
+    def test_p_keeps_the_whole_selected_parent_frame_after_main_interval_reduction(self):
         for name in ('short_inner_q','earlier_complete','five_up','p_newtip'):
             _,r,t=scene(name);m=SCHEMA['M'];p=SCHEMA['P']['scope']
-            self.assertEqual(value(r,p['first']),value(r,m['base']))
-            self.assertEqual(value(r,p['start']),value(r,m['base_age']))
+            self.assertEqual(value(r,p['first']),t['price_plan']['fib_anchors']['start_price'])
+            self.assertGreaterEqual(value(r,p['start']),value(r,m['base_age']))
             self.assertEqual(t['groups'][0]['owner']['end_index'],t['groups'][1]['owner']['end_index'])
     def test_inner_high_cannot_shorten_manual_parent_anchor(self):
         _,_,t=scene('p_whole');a=t['price_plan']['fib_anchors']
@@ -77,7 +80,7 @@ class CompletePTests(unittest.TestCase):
         _,r,t=scene('p_whole');a=t['price_plan']['fib_anchors']
         fib=[l for l in r['lines']if l['color']=='COLORFFCC00']
         levels=sorted({l['start'][1]for l in fib if l['start'][1]==l['end'][1]and abs(l['end'][0]-l['start'][0])>2})
-        np.testing.assert_allclose(levels,[831+(1015.38-831)*q for q in (0,.236,.382,.5,.618,.786,1)])
+        np.testing.assert_allclose(levels,[831+(1015.38-831)*q for q in (0,.191,.382,.5,.618,.786,1)])
         self.assertTrue(any(l['start'][0]==l['end'][0]==a['start_index']for l in fib))
         self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
     def test_running_impulse_targets_are_exclusive_and_s_is_empty(self):
@@ -100,7 +103,7 @@ class CompletePTests(unittest.TestCase):
         self.assertIn('H1 ?',{l['text']for l in r['labels']})
     def test_reversal_k_observations_remain_on_completed_p(self):
         _,r,t=scene('p_white');p=t['groups'][1]['owner']
-        obs=[l for l in r['labels']if ' RV'in l['text']and p['start_index']<=l['x']<=p['end_index']+3]
+        obs=[l for l in r['labels']if l['text'].startswith('RV')and p['start_index']<=l['x']<=p['end_index']+3]
         self.assertTrue(obs)
         self.assertTrue(all(l['function']=='KTEXT'for l in obs))
     def test_reflected_prices_preserve_wave_times_and_percentages(self):
@@ -115,7 +118,7 @@ class CompletePTests(unittest.TestCase):
             self.assertFalse(outline(r));self.assertFalse(outline(r,'COLORCYAN'))
             self.assertFalse(any(l['color']=='COLORFF9900'for l in r['lines']))
     def test_existing_english_interval_classification_is_not_duplicated(self):
-        _,r,_=scene('p_whole');codes=[l for l in r['labels']if l['text']=='7 DIA']
+        _,r,_=scene('s_fib');codes=[l for l in r['labels']if l['text']=='5 EQ']
         self.assertEqual(len(codes),1)
         self.assertFalse(any(any('\u4e00'<=c<='\u9fff'for c in l['text'])for l in r['labels']))
 if __name__=='__main__':unittest.main()

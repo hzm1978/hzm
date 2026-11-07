@@ -83,7 +83,7 @@ def compare(reports):
                 comparison[kind]['only_native']=list((native-model).elements())[:8]
         states={}
         for title,values in result.get('outputs',{}).items():
-            if title not in ('XWD','XPH','XREG','XRPH','XRDIR','XRET'):continue
+            if title not in ('XWD','XPH','XREG','XRPH','XRDIR','XRET','XSPH','XSPMODE'):continue
             model_value=float(local['env'][title][-1]);native_value=values[-1]
             equal=native_value is not None and math.isclose(model_value,native_value,rel_tol=1e-12,abs_tol=1e-8)
             states[title]={'model':model_value,'native':native_value,'matches':equal};passed&=equal

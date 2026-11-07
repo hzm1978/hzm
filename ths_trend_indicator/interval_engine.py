@@ -50,8 +50,8 @@ class Engine:
         fields=FIELDS+tuple(k for k in META if k in yes and k in no)
         return Record(self,name,{k:self.put(name+k.upper(),f'IF({gate},{yes[k]},{no[k]})')for k in fields})
 
-    def crossings(self,name,root,age):
-        mask=f'VX<{age} AND VX>={self.e}'
+    def crossings(self,name,root,age,after=None):
+        mask=f'VX<{after or age} AND VX>={self.e}'
         wa,wh=self.first(name+'W',f'{mask} AND {self.d}*(IF({self.d}=1,H,L)-{root})>BEPS')
         ca,ch=self.first(name+'C',f'{mask} AND {self.d}*(C-{root})>BEPS')
         return self.put(name+'WA',f'IF({wh},{wa},DATACOUNT)'),wh,self.put(name+'CA',f'IF({ch},{ca},DATACOUNT)'),ch
@@ -63,63 +63,92 @@ class Engine:
         at,has=self.first(name+'EXTA',f'{band} AND ABS(IF({self.d}=1,L,H)-{price})<=BEPS')
         return dict(p=price,t=at,has=has)
 
-    def geometry(self,name,root,age,boundary):
+    def geometry(self,name,root,age,boundary,fallback=None,allow_live=False):
         """Complete owned adjustment, including c/e different from extreme a."""
-        extreme=self.counter(name,root,age,boundary)
+        extreme=fallback or self.counter(name,root,age,boundary)
         price,at,has=extreme['p'],extreme['t'],extreme['has']
         options=[]
         for source,n,source_id in (('S','PN',2),('G','GN',1)):
             snap=self.freeze(name+source+'SNAP',f'MIN(DATACOUNT-1,{boundary}+IF(REF({source}TYPE,{boundary})=(0-{self.d}),0,REF({source}A1,{boundary})))')
             frame=self.put(name+source+'FRAME',f'REF({source}TYPE,{snap})=(0-{self.d}) AND REF({source}A0,{snap})+{snap}+{n}<{age} AND REF({source}A0,{snap})+{snap}+{n}>{boundary} AND {self.d}*({root}-REF({source}P0,{snap}))>BEPS')
+            if fallback:
+                frame=self.put(name+source+'LATEST',f'{frame} AND REF({source}A0,{snap})+{snap}+{n}<={at}')
             for size in (5,3):
                 match=self.put(name+source+str(size)+'MATCH',f'{frame} AND REF({source}K{size},{snap}) AND ABS(REF({source}P{size},{snap})-{root})<=BEPS AND ABS(REF({source}A{size},{snap})+{snap}+{n}-{age})<={n}')
                 code=f'REF({source}AC{size},{snap})'
                 options.append((match,code,snap,source_id,size,n))
         options.sort(key=lambda x:(-x[4],-x[3]))
+        live_options=[]
+        if allow_live:
+            # The current c need not have a confirmed fractal yet. Its
+            # endpoint is searched AFTER b, so an older extreme a cannot
+            # replace a contracting correction's actual latest endpoint.
+            for source,n,source_id in (('S','PN',2),('G','GN',1)):
+                la=self.freeze(name+source+'LIVEBA',f'REF({source}A0,{boundary})+{boundary}+{n}')
+                lp=self.freeze(name+source+'LIVEBP',f'REF({source}P0,{boundary})')
+                ap=self.freeze(name+source+'LIVEAP',f'REF({source}P1,{boundary})')
+                live=self.counter(name+source+'LIVE',lp,la,f'({boundary}-1)')
+                match=self.put(name+source+'LIVEMATCH',f'REF({source}TYPE,{boundary})={self.d} AND REF({source}K2,{boundary}) AND ABS(REF({source}P2,{boundary})-{root})<=BEPS AND ABS(REF({source}A2,{boundary})+{boundary}+{n}-{age})<={n} AND {la}<{age} AND {la}>{live["t"]} AND {live["has"]} AND {self.d}*({lp}-{live["p"]})>BEPS AND {self.d}*(C-{lp})<(0-BEPS)')
+                code=self.put(name+source+'LIVECODE',f'IF({self.d}*({lp}-{root})>=0-BEPS,4,IF({self.d}*({live["p"]}-{ap})>BEPS,3,2))')
+                live_options.append((match,code,boundary,source_id,3,n,live))
+            options+=live_options
         choice='0'
-        for number,(match,code,_,_,_,_)in reversed(list(enumerate(options,1))):
+        for number,item in reversed(list(enumerate(options,1))):
+            match,code=item[:2]
             choice=f'IF({match} AND {code}>0,{number},{choice})'
         choice=self.freeze(name+'CHOICE',choice)
-        source=self.put(name+'SOURCE',f'IF({choice}=1 OR {choice}=3,2,IF({choice}>0,1,0))')
+        source=self.put(name+'SOURCE',f'IF({choice}=1 OR {choice}=3'+(f' OR {choice}=5'if allow_live else'')+f',2,IF({choice}>0,1,0))')
         length=self.put(name+'LEN',f'IF({choice}=1 OR {choice}=2,5,IF({choice}>0,3,0))')
         ssnap=next(item[2]for item in options if item[3]==2)
         gsnap=next(item[2]for item in options if item[3]==1)
-        selected_snap=self.put(name+'SNAP',f'IF({source}=2,{ssnap},{gsnap})')
-        counter=self.freeze(name+'ENDP',f'IF({choice}>0,IF({source}=2,REF(SP0,{ssnap}),REF(GP0,{gsnap})),{price})')
-        counter_age=self.freeze(name+'ENDA',f'IF({choice}>0,IF({source}=2,REF(SA0,{ssnap})+{ssnap}+PN,REF(GA0,{gsnap})+{gsnap}+GN),{at})')
+        is_live=self.put(name+'LIVE',f'{choice}>=5')if allow_live else'0'
+        selected_snap=self.put(name+'SNAP',f'IF({is_live},{boundary},IF({source}=2,{ssnap},{gsnap}))')
+        cp=f'IF({choice}>0,IF({source}=2,REF(SP0,{ssnap}),REF(GP0,{gsnap})),{price})'
+        ca=f'IF({choice}>0,IF({source}=2,REF(SA0,{ssnap})+{ssnap}+PN,REF(GA0,{gsnap})+{gsnap}+GN),{at})'
+        if allow_live:
+            cp=f'IF({is_live},IF({source}=2,{live_options[0][6]["p"]},{live_options[1][6]["p"]}),{cp})'
+            ca=f'IF({is_live},IF({source}=2,{live_options[0][6]["t"]},{live_options[1][6]["t"]}),{ca})'
+        counter=self.freeze(name+'ENDP',cp)
+        counter_age=self.freeze(name+'ENDA',ca)
         # A multi-turn correction is never silently called a simple A.
-        inside=self.freeze(name+'INNER',f'COUNT(IF({self.d}=1,GHC,GLC) AND VX+GN<{age} AND VX+GN>{counter_age} AND {self.d}*(REF(IF({self.d}=1,H,L),GN)-{root})<(0-BEPS),BC)')
-        raw_code=self.freeze(name+'FRAMECODE',f'IF({choice}>0,IF({source}=2,IF({length}=5,REF(SAC5,{ssnap}),REF(SAC3,{ssnap})),IF({length}=5,REF(GAC5,{gsnap}),REF(GAC3,{gsnap}))),0)')
+        inside=self.freeze(name+'INNER',f'COUNT(IF({self.d}=1,GHC,GLC) AND VX+GN<{age} AND VX+GN>{counter_age} AND ABS(REF(IF({self.d}=1,H,L),GN)-{root})>BEPS,BC)')
+        rc=f'IF({choice}>0,IF({source}=2,IF({length}=5,REF(SAC5,{ssnap}),REF(SAC3,{ssnap})),IF({length}=5,REF(GAC5,{gsnap}),REF(GAC3,{gsnap}))),0)'
+        if allow_live:rc=f'IF({is_live},IF({source}=2,{live_options[0][1]},{live_options[1][1]}),{rc})'
+        raw_code=self.freeze(name+'FRAMECODE',rc)
         code=self.put(name+'CODE',f'IF({raw_code}>0,{raw_code},IF({inside}=0,1,10))')
         return dict(p=counter,t=counter_age,has=has,code=code,
-                    snap=selected_snap,source=source,length=length)
+                    snap=selected_snap,source=source,length=length,live=is_live)
 
     def raw(self,index,source,n,cursor,previous_root,first):
         tag=f'R{index}'
-        event=self.put(tag+'EVENT',f'IF({self.d}=1,{source}HC,{source}LC) AND VX+{n}<{cursor} AND VX+{n}>{self.e} AND {self.d}*(REF(IF({self.d}=1,H,L),{n})-{previous_root})>BEPS')
+        event=self.put(tag+'EVENT',f'IF({self.d}=1,{source}HC,{source}LC) AND VX+{n}<{cursor} AND VX+{n}>{self.e}')
         raw_age,found=self.first(tag+'A0',event)
-        age=self.put(tag+'A',f'{raw_age}+{n}')
-        root=self.freeze(tag+'P',f'REF(IF({self.d}=1,H,L),MIN(DATACOUNT-1,{age}))')
+        seed_age=self.put(tag+'SEEDA',f'{raw_age}+{n}')
+        root=self.freeze(tag+'P',f'REF(IF({self.d}=1,H,L),MIN(DATACOUNT-1,{seed_age}))')
+        earliest,earliest_has=self.first(tag+'FIRST',f'VX<{cursor} AND VX>={seed_age} AND ABS(IF({self.d}=1,H,L)-{root})<=BEPS')
+        age=self.put(tag+'A',f'IF({earliest_has},{earliest},{seed_age})')
         w,wh,c,ch=self.crossings(tag,root,age)
         boundary=self.put(tag+'BOUNDARY',f'IF({first},IF({ch},{c},{self.e}),IF({wh},{w},{self.e}))')
         shape=self.counter(tag+'AD',root,age,boundary)
-        valid=self.put(tag+'ON',f'{self.s["on"]} AND {found} AND {shape["has"]} AND {age}-{boundary}>=2 AND {self.d}*({root}-{shape["p"]})>BEPS')
+        close_counter=self.freeze(tag+'CLOSECOUNTER',f'COUNT(VX<{age} AND VX>{boundary} AND {self.d}*(C-REF(C,1))<(0-BEPS),BC)>0')
+        valid=self.put(tag+'ON',f'{self.s["on"]} AND {found} AND {shape["has"]} AND {close_counter} AND {age}-{boundary}>=2 AND {self.d}*({root}-{shape["p"]})>BEPS')
         qa=self.put(tag+'SAFEA',f'IF({valid},{age},DATACOUNT)')
         qt=self.put(tag+'SAFET',f'IF({valid},{shape["t"]},DATACOUNT)')
-        record=Record(self,tag+'REC',dict(a=qa,t=qt,w=w,c=c),cache={'r':root,'p':shape['p'],'v':valid,'wh':wh,'ch':ch})
+        closed=self.put(tag+'CLOSED',f'IF({first},{ch},{wh})')
+        record=Record(self,tag+'REC',dict(a=qa,t=qt,w=w,c=c,boundary=boundary,closed=closed),cache={'r':root,'p':shape['p'],'v':valid,'wh':wh,'ch':ch})
         return record,self.put(tag+'NEXT',f'IF({found} AND IF({first},{ch},{wh}),{boundary},{self.e})')
 
     def merged(self,name,left,right,first,classify=False):
-        # Rebuild from actual extrema, not Nleft+Nright. The new root may
-        # be an earlier equal wick; start/end candles are found afresh.
-        mask=self.put(name+'ROOTMASK',f'VX<={left["a"]} AND VX>={right["t"]}')
-        z=self.extreme(name+'ROOTZ',mask,f'{self.d}*IF({self.d}=1,H,L)',True)
-        root=self.put(name+'ROOT',f'{self.d}*{z}')
-        age,found=self.first(name+'ROOTA',f'{mask} AND ABS(IF({self.d}=1,H,L)-{root})<=BEPS')
-        w,wh,c,ch=self.crossings(name,root,age)
+        # Book figs 8-5-45/46 retain the LEFT interval's root. An inner b
+        # may cross it before c; the merged clock resumes AFTER that c/e.
+        # Taking the minimum/maximum of the whole span incorrectly moves
+        # wave 1 to the later b and erases the first visible interval.
+        root=left['r'];age=left['a']
+        w,wh,c,ch=self.crossings(name,root,age,after=right['t'])
         boundary=self.put(name+'BOUNDARY',f'IF({first},IF({ch},{c},{self.e}),IF({wh},{w},{self.e}))')
-        shape=(self.geometry if classify else self.counter)(name+'AD',root,age,boundary)
-        on=self.put(name+'ON',f'{left["v"]} AND {right["v"]} AND {found} AND {shape["has"]} AND {age}>{shape["t"]} AND {age}-{boundary}>=2 AND {self.d}*({root}-{shape["p"]})>BEPS')
+        fallback=dict(p=right['p'],t=right['t'],has=right['v'])
+        shape=self.geometry(name+'AD',root,age,boundary,fallback=fallback)if classify else fallback
+        on=self.put(name+'ON',f'{left["v"]} AND {right["v"]} AND {shape["has"]} AND {age}>{shape["t"]} AND {shape["t"]}>{boundary} AND {age}-{boundary}>=2 AND {self.d}*({root}-{shape["p"]})>BEPS')
         record=Record(self,name+'REC',{'a':self.put(name+'SAFEA',f'IF({on},{age},DATACOUNT)'),
                                       't':self.put(name+'SAFET',f'IF({on},{shape["t"]},DATACOUNT)'),
                                       'w':w,'c':c},cache={'r':root,'p':shape['p'],'v':on,'wh':wh,'ch':ch})
@@ -150,15 +179,15 @@ class Engine:
             prior_rel=self.put(tag+'PREL',relation(self.n(before,True),last_n))
             previous_impulse=self.put(tag+'HPREV',f'{self.d}*({last["r"]}-IF({count}=1,{self.s["first"]},{before["p"]}))')
             new_impulse=self.put(tag+'HNEW',f'{self.d}*({incoming["r"]}-{last["p"]})')
-            do_merge=self.put(tag+'MERGE',f'{incoming["v"]} AND {count}>=1 AND (({count}>=2 AND {rel}=0) OR {self.d}*({incoming["p"]}-{last["p"]})<(0-BEPS) OR {last["t"]}<={incoming["a"]})')
+            do_merge=self.put(tag+'MERGE',f'{incoming["v"]} AND {count}>=1 AND (({count}>=2 AND {incoming["wh"]} AND {rel}=0) OR {self.d}*({incoming["p"]}-{last["p"]})<(0-BEPS) OR {last["t"]}<={incoming["a"]})')
             merged=self.merged(tag+'M',last,incoming,f'{count}=1')
             merge_ok=self.put(tag+'MOK',f'{do_merge} AND {merged["v"]}')
             candidate=self.choose(tag+'C',merge_ok,merged,incoming)
             candidate_n=self.put(tag+'CN',f'IF({merge_ok} AND {count}=1,{self.n(candidate,True)},{self.n(candidate)})')
             reference_n=self.put(tag+'REFN',f'IF({merge_ok} AND {count}>=2,{self.n(before,True)},{last_n})')
             comparison=self.put(tag+'COMPARE',f'IF({merge_ok} AND {count}=1,0,'+relation(reference_n,candidate_n)+')')
-            upgrade=self.put(tag+'UP',f'{candidate["v"]} AND {count}>0 AND {comparison}=2')
-            downgrade=self.put(tag+'DOWN',f'{candidate["v"]} AND {count}>0 AND {comparison}=(0-2)')
+            upgrade=self.put(tag+'UP',f'{candidate["v"]} AND {incoming["wh"]} AND {count}>0 AND {comparison}=2')
+            downgrade=self.put(tag+'DOWN',f'{candidate["v"]} AND {incoming["wh"]} AND {count}>0 AND {comparison}=(0-2)')
             append=self.put(tag+'ADD',f'{candidate["v"]} AND IF({downgrade},0,1)')
             new_state=[]
             for slot in range(3):
@@ -178,7 +207,7 @@ class Engine:
         # actual end of a triangle or abcde correction.
         for i,q in enumerate(state):
             boundary=self.put(f'PRE{i}BOUND',f'IF({q["ch"] if i==0 else q["wh"]},{q["c"] if i==0 else q["w"]},{self.e})')
-            shape=self.geometry(f'PRE{i}AD',q['r'],q['a'],boundary)
+            shape=self.geometry(f'PRE{i}AD',q['r'],q['a'],boundary,fallback=dict(p=q['p'],t=q['t'],has=q['v']))
             state[i]=Record(self,f'PRE{i}',{**{k:q[k]for k in FIELDS},'t':shape['t'],
                         'acode':shape['code'],'asnap':shape['snap'],
                         'asource':shape['source'],'alen':shape['length']},cache={'r':q['r'],'p':shape['p']})
@@ -189,14 +218,14 @@ class Engine:
             hfirst=self.put(tag+'H1',f'{self.d}*({state[0]["r"]}-{self.s["first"]})')
             hthird=self.put(tag+'H3',f'{self.d}*({state[1]["r"]}-{state[0]["p"]})')
             hfifth=self.put(tag+'H5',f'{self.d}*(IF({count}=3,{state[2]["r"]},{self.s["last"]})-{state[1]["p"]})')
-            early=self.put(tag+'EARLY',f'{count}>=2 AND (({hfirst}>BEPS AND {hthird}>1.618*{hfirst}) OR ({hthird}>BEPS AND {hfifth}>1.618*{hthird}))')
+            early=self.put(tag+'EARLY',f'{count}>=2 AND (({state[1]["wh"]} AND {hthird}>BEPS AND {hfifth}>1.618*{hthird}) OR {self.d}*({state[1]["p"]}-{state[0]["p"]})<(0-BEPS) OR {state[0]["t"]}<={state[1]["a"]})')
             lastpair=self.put(tag+'LASTPAIR',f'{count}=3 AND IF({early},0,1)')
             left=self.choose(tag+'L',lastpair,state[1],state[0])
             right=self.choose(tag+'R',lastpair,state[2],state[1])
             hp=self.put(tag+'HP',f'{self.d}*({right["r"]}-{left["p"]})')
-            following=self.put(tag+'HT',f'{self.d}*({self.s["last"]}-{right["p"]})')
+            following=self.put(tag+'HT',f'{self.d}*(IF({lastpair} OR {count}=2,{self.s["last"]},{state[2]["r"]})-{right["p"]})')
             merge=self.merged(tag+'M',left,right,f'IF({lastpair},0,1)',classify=True)
-            do=self.put(tag+'DO',f'{count}>=2 AND {merge["v"]} AND ({early} OR ({hp}>BEPS AND {following}>1.618*{hp}) OR {self.d}*({right["p"]}-{left["p"]})<(0-BEPS) OR {left["t"]}<={right["a"]})')
+            do=self.put(tag+'DO',f'{count}>=2 AND {merge["v"]} AND ({early} OR ({right["wh"]} AND {hp}>BEPS AND {following}>1.618*{hp}) OR {self.d}*({right["p"]}-{left["p"]})<(0-BEPS) OR {left["t"]}<={right["a"]})')
             shifted=self.choose(tag+'SHIFT',f'{count}=3',state[2],zero)
             middle=self.choose(tag+'MID',lastpair,merge,shifted)
             state=[self.choose(tag+'S0',f'{do} AND IF({lastpair},0,1)',merge,state[0]),
@@ -225,10 +254,11 @@ class Engine:
         proof=self.put('PROOF',f'{self.s["on"]} AND {count}>0 AND {selected[0]["ch"]} AND {h1}>BEPS')
         rel1=self.put('REL1',relation(selected[0]['n'],selected[1]['n']))
         rel2=self.put('REL2',relation(selected[1]['n'],selected[2]['n']))
-        kind=self.put('TYPE',f'IF({count}=2,IF({rel1}=0,5,0),IF({count}=3 AND ABS({rel1})=1 AND ABS({rel2})=1,IF({rel1}=1,IF({rel2}=1,71,73),IF({rel2}=(0-1),72,74)),0))')
+        pending=self.put('OPEN',f'{count}>0 AND IF({count}=1,IF({selected[0]["ch"]},0,1),IF({count}=2,IF({selected[1]["wh"]},0,1),IF({selected[2]["wh"]},0,1)))')
+        kind=self.put('TYPE',f'IF({pending},0,IF({count}=1,3,IF({count}=2,IF({rel1}=0,5,0),IF({count}=3 AND ABS({rel1})=1 AND ABS({rel2})=1,IF({rel1}=1,IF({rel2}=1,71,73),IF({rel2}=(0-1),72,74)),0))))')
         end_base=self.put('BASE',f'IF({count}=3,{selected[2]["p"]},IF({count}=2,{selected[1]["p"]},IF({count}=1,{selected[0]["p"]},{self.s["first"]})))')
         end_base_age=self.put('BASEAGE',f'IF({count}=3,{selected[2]["t"]},IF({count}=2,{selected[1]["t"]},IF({count}=1,{selected[0]["t"]},{self.start})))')
         limited=self.freeze('LIMIT',f'{self.start}>BOOKBARS OR COUNT(IF({self.d}=1,{source}HC,{source}LC) AND VX+{n}<{cursor} AND VX+{n}>{self.e},BC)>0')
         return dict(key=self.key,scope=self.s,raw=raws,q=selected,count=count,h1=h1,
                     proof=proof,kind=kind,ambiguous=ambiguous,limited=limited,
-                    base=end_base,base_age=end_base_age,rel1=rel1,rel2=rel2)
+                    base=end_base,base_age=end_base_age,rel1=rel1,rel2=rel2,pending=pending)

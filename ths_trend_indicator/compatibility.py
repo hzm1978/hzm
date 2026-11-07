@@ -17,7 +17,7 @@ from check_formula import (Parser, FormulaError, NUMBER, CONDITION, STRING,
 SETTINGS = {"PN", "BN", "DIR", "KIND", "MANF", "MFROM", "MTO", "MFAGE",
             "MH1", "MBASE", "MORG", "MAGE", "STRONG", "SPAN",
             "SHOWQ", "SHOWK", "SHOWF", "SHOWT", "SHOWC", "DETAIL"}
-SETTINGS |= {'GN','SHOWBOOK','SHOWSUB','SHOWGRAND','BOOKBARS'}
+SETTINGS |= {'GN','SHOWBOOK','SHOWSUB','SHOWGRAND','BOOKBARS','SHOWL'}
 
 
 def variable_names(source):

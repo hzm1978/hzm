@@ -15,7 +15,7 @@ from compatibility import render
 ROOT=Path(__file__).resolve().parent
 OUTPUTS={'工作方向':'XWD','末段状态':'XPH','方向模式':'XMODE','标准K':'XSTD',
          '工作回调百分比':'XRET','价格尺方向':'XRDIR','行情类型':'XREG','价格尺状态':'XRPH',
-         '均线':'XMA','根数':'XCNT','检查':'XTEST'}
+         '均线':'XMA','根数':'XCNT','检查':'XTEST','S细级状态':'XSPH','S所属P段':'XSPMODE'}
 MESSAGES={
     '3?·第一Q进行中':'3? Q1 OPEN','3浪·待耦合':'3 Q WAIT','5?·未破浪3':'5? NO3BREAK',
     'A?·待收盘确认':'A? WAIT','A?候选·非确认分界':'A? WATCH','A?候选失效':'A? FAIL','A失守':'A BREAK',

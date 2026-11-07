@@ -13,7 +13,7 @@ def relation(a,b):
 
 
 class Builder:
-    def __init__(self): self.lines=[];self.owner='overview'
+    def __init__(self,font=9): self.lines=[];self.owner='overview';self.font=font
     def draw(self,text):
         self.lines.append(text+' { OWNER:'+self.owner+' }')
     def put(self,name,expr):
@@ -31,7 +31,7 @@ class Builder:
     def extreme(self,name,mask,price,maximum=False):
         fn='HHV'if maximum else'LLV';fallback='BSAFELO'if maximum else'BSAFEHI'
         return self.frozen(name,f'{fn}(IF({mask},{price},{fallback}),BC)')
-    def text(self,cond,age,price,text,color,align=1,font=9):
+    def text(self,cond,age,price,text,color,align=1,font=None):
         # KTEXT documents position and text to the left/centre/right of its
         # candle. DRAWTEXT only documents COLOR, not ALIGN or FONTSIZE.
         # Native KTEXT LCR and number ALIGN share TextShape.HorizontalAlign:
@@ -41,14 +41,14 @@ class Builder:
         # KTEXT also stores POSITION as a constant HorizontalOffset. A
         # dynamic POSITION can silently become NaN in native shape JSON.
         # Place the label on its historical candle with a literal offset 0.
-        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE{font};")
-    def number(self,cond,age,price,value,color,precision=1,font=9,align=0):
+        self.draw(f"KTEXT(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,0,REFX1({price},100000),{align},{color},'{text}'),FONTSIZE{self.font if font is None else font};")
+    def number(self,cond,age,price,value,color,precision=1,font=None,align=0):
         # The official parser rejects an X variable in DRAWSHIFTNUMBER.
         # Wrapping it in INTPART compiles but yields an invalid constant
         # HorizontalOffset in the native shape description. Draw on the
         # target candle instead, freezing ALL four inputs at the as-of end.
         # In particular PAD/price and the gate may vary over history.
-        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN{align},FONTSIZE{font};')
+        self.draw(f'DRAWNUMBER(VX=REFX1({age},100000) AND REFX1(IF({cond},1,0),100000)>0,REFX1({price},100000),REFX1({value},100000),{precision},{color}),ALIGN{align},FONTSIZE{self.font if font is None else font};')
     def segment(self,cond,from_age,from_price,to_age,to_price,color,style='LINETHICK1'):
         # DRAWLINE3 pairs a start bar with a LATER end bar. Use penultimate
         # and last bars as those triggers, then shift both to actual endpoints.

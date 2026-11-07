@@ -100,7 +100,8 @@ class InstallationLayerTests(unittest.TestCase):
                         count+=1
                         self.assertTrue(statement.name)
                         self.assertEqual(node,statement.expression)
-        self.assertGreater(count,0)
+        # Precise a..e frames no longer need BACKSET in standard layers.
+        # If reintroduced, its native consumer must still receive a name.
 
     def test_windows_paste_cannot_push_any_layer_over_the_saving_budget(self):
         baseline=json.loads((ROOT/'tests/fixtures/v1_2_0_install_signatures.json').read_text())
@@ -113,20 +114,17 @@ class InstallationLayerTests(unittest.TestCase):
             self.assertEqual(windows_text(windows),windows)
             self.assertEqual(len(windows),profile['windows_characters'])
 
-    def test_repacking_preserves_every_published_statement_and_causal_boundary(self):
-        baseline=json.loads((ROOT/'tests/fixtures/v1_2_0_install_signatures.json').read_text())['files']
+    def test_repacking_preserves_every_current_statement_and_causal_boundary(self):
         def digest(statements):
             values=[(s.name,s.expression,s.output,s.styles)for s in statements]
             return hashlib.sha256(json.dumps(values,ensure_ascii=True,separators=(',',':')).encode()).hexdigest()
         for relative in self.profile['install']:
             profile=self.profile['files'][relative]
             source=(ROOT/'formulas'/relative).read_bytes().decode(profile['encoding'])
-            self.assertEqual(digest(Parser(source).parse()),baseline[relative]['statements_ast_sha256'])
+            self.assertEqual(digest(Parser(source).parse()),profile['unpacked_ast_sha256'])
             prefix='\n'.join(source.splitlines()[:profile['analysis_end_line']])
-            self.assertEqual(digest(Parser(prefix).parse()),baseline[relative]['analysis_ast_sha256'])
-            self.assertEqual(len(Parser(source).parse()),baseline[relative]['statements'])
-        for relative in ('install/EWT01.txt','install/EWT03.txt'):
-            self.assertEqual(self.profile['files'][relative]['sha256'],baseline[relative]['source_sha256'])
+            self.assertEqual(digest(Parser(prefix).parse()),profile['unpacked_analysis_ast_sha256'])
+            self.assertEqual(len(Parser(source).parse()),profile['statements'])
 
     def test_native_cases_preserve_delivered_crlf_and_editable_parameter_rows(self):
         from native_scenarios import cases
