@@ -1,37 +1,37 @@
 {
-  "checked_at_utc": "2026-11-07T02:03:20.220741+00:00",
+  "checked_at_utc": "2026-11-07T07:09:53.441894+00:00",
   "parser_client_version": "5.4.0.5",
   "parser_dll_sha256": "c32ededab8d2bfd32d86ea50b08e7ac249429c98642cd040637a619039629c72",
   "harness_sha256": "a9541d050a1e0129d9f092078d03837925e4eb84b2f017af27b12089315acbf9",
   "target_client_ui_run": false,
-  "release": "1.3.0",
+  "release": "1.4.0",
   "scope": "One offline 1000-bar run per unchanged delivered source; parsing and arithmetic measured separately. Not target-client UI speed.",
   "cases": [
     {
       "file": "install/EWT01.txt",
       "rows": 1000,
-      "source_sha256": "184faa4a165a6a9274aef0440ea8f5d6718309e44f455cd1d016e1841c477649",
-      "parse_ms": 2071.318,
-      "calculate_ms": 1742.658,
-      "measured_for_release": "1.3.0",
+      "source_sha256": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
+      "parse_ms": 3674.105,
+      "calculate_ms": 2484.578,
+      "measured_for_release": "1.4.0",
       "unchanged_source_reuse": false
     },
     {
       "file": "install/EWT02.txt",
       "rows": 1000,
-      "source_sha256": "025c6d923642fcc9fe8b5398dbd740c652f3d028941819ff774823c189fd5442",
-      "parse_ms": 2989.421,
-      "calculate_ms": 1916.829,
-      "measured_for_release": "1.3.0",
+      "source_sha256": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
+      "parse_ms": 4265.716,
+      "calculate_ms": 2711.751,
+      "measured_for_release": "1.4.0",
       "unchanged_source_reuse": false
     },
     {
       "file": "install/EWT03.txt",
       "rows": 1000,
-      "source_sha256": "a0d70cda5d440b2c8ee758d947bc63df700043db7a5df124726fa4f0e9d56a8d",
-      "parse_ms": 4239.332,
-      "calculate_ms": 2360.628,
-      "measured_for_release": "1.3.0",
+      "source_sha256": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86",
+      "parse_ms": 4213.601,
+      "calculate_ms": 2469.758,
+      "measured_for_release": "1.4.0",
       "unchanged_source_reuse": false
     }
   ],

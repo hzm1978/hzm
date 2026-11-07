@@ -164,9 +164,22 @@ test_invalid_native_shape_offsets_cannot_be_reported_as_passed (test_native_plac
 test_labels_use_latest_gate_age_price_and_value_on_historical_candle (test_native_placement.NativePlacementTests.test_labels_use_latest_gate_age_price_and_value_on_historical_candle) ... ok
 test_negative_parameter_assignment_has_no_complete_rhs_wrapper (test_native_placement.NativePlacementTests.test_negative_parameter_assignment_has_no_complete_rhs_wrapper) ... ok
 test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch (test_native_placement.NativePlacementTests.test_snapshot_guard_keeps_expensive_scan_inside_last_bar_branch) ... ok
+test_completed_inner_pair_does_not_move_the_original_reference (test_same_degree.SameDegreeTests.test_completed_inner_pair_does_not_move_the_original_reference) ... ok
+test_continuation_recouples_later_interval_with_original_same_degree (test_same_degree.SameDegreeTests.test_continuation_recouples_later_interval_with_original_same_degree) ... ok
+test_current_model_has_a_measured_bounded_review_budget (test_same_degree.SameDegreeTests.test_current_model_has_a_measured_bounded_review_budget) ... ok
+test_different_then_equal_can_remain_a_seven_wave_candidate (test_same_degree.SameDegreeTests.test_different_then_equal_can_remain_a_seven_wave_candidate) ... ok
+test_expanding_seven_is_not_forced_into_same_five (test_same_degree.SameDegreeTests.test_expanding_seven_is_not_forced_into_same_five) ... ok
+test_fourth_same_degree_q_recouples_with_original_reference (test_same_degree.SameDegreeTests.test_fourth_same_degree_q_recouples_with_original_reference) ... ok
+test_height_extension_precedes_time_demotion (test_same_degree.SameDegreeTests.test_height_extension_precedes_time_demotion) ... ok
+test_real_new_interval_upgrade_remains_allowed (test_same_degree.SameDegreeTests.test_real_new_interval_upgrade_remains_allowed) ... ok
+test_same_degree_choice_is_symmetric_under_price_reflection (test_same_degree.SameDegreeTests.test_same_degree_choice_is_symmetric_under_price_reflection) ... ok
+test_seven_wave_grading_compares_adjacent_outer_intervals (test_same_degree.SameDegreeTests.test_seven_wave_grading_compares_adjacent_outer_intervals) ... ok
+test_shared_text_keeps_every_unshared_label_event (test_same_degree.SameDegreeTests.test_shared_text_keeps_every_unshared_label_event) ... ok
+test_three_same_degree_q_demote_trailing_pair_without_a_price_union (test_same_degree.SameDegreeTests.test_three_same_degree_q_demote_trailing_pair_without_a_price_union) ... ok
+test_white_structure_reaches_late_equal_q_despite_startup_noise (test_same_degree.SameDegreeTests.test_white_structure_reaches_late_equal_q_despite_startup_noise) ... ok
 
 ----------------------------------------------------------------------
-Ran 166 tests in 217.491s
+Ran 179 tests in 309.957s
 
 OK
 Local checks passed; native THS compilation NOT performed.

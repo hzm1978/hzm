@@ -1,10 +1,10 @@
 {
-  "release": "1.3.0",
+  "release": "1.4.0",
   "bars": 131,
   "native_client_run": false,
   "mode": "current-prefix retrospective drawing, not historical trade signals",
   "catalog_sha256": "7e709b7b61a6f4297a5b15050e0cb4d1192ff5d27a8e218405289a9654414c11",
-  "formula_normalized_utf8_sha256": "11bfaf63e4ac5d0e15a21466ebedb048003e0acf8dd2cb79dfba1bd8634ef845",
+  "formula_normalized_utf8_sha256": "3af17b4c772f5179fcb78177b2d69c7999112b9a26146b32265521a7bfef6e56",
   "ohlc_float64_sha256": "f91dbe5b3935e58ab81c436b56293197735dd4c6e3fb4bcd10355b871ed1f230",
   "groups": [
     {
@@ -86,6 +86,59 @@
           "actual_H1_multiple": 2.365979381443299,
           "adjustment_shape_code": 1,
           "adjustment_shape_label": "A SIMPLE"
+        }
+      ],
+      "degree_reference_bars": 25.0,
+      "raw_candidates_scanned": 8,
+      "grading_slots": 5,
+      "counting_steps": [
+        {
+          "reference": 25.0,
+          "comparison_span": 25.0,
+          "same_reference": 1.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        },
+        {
+          "reference": 25.0,
+          "comparison_span": 24.0,
+          "same_reference": 0.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        },
+        {
+          "reference": 25.0,
+          "comparison_span": 24.0,
+          "same_reference": 0.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        },
+        {
+          "reference": 25.0,
+          "comparison_span": 24.0,
+          "same_reference": 0.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
         }
       ],
       "internal_Q": []
@@ -171,6 +224,59 @@
           "adjustment_shape_label": "A SIMPLE"
         }
       ],
+      "degree_reference_bars": 25.0,
+      "raw_candidates_scanned": 8,
+      "grading_slots": 5,
+      "counting_steps": [
+        {
+          "reference": 25.0,
+          "comparison_span": 25.0,
+          "same_reference": 1.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        },
+        {
+          "reference": 25.0,
+          "comparison_span": 24.0,
+          "same_reference": 0.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        },
+        {
+          "reference": 25.0,
+          "comparison_span": 24.0,
+          "same_reference": 0.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        },
+        {
+          "reference": 25.0,
+          "comparison_span": 24.0,
+          "same_reference": 0.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 2.0
+        }
+      ],
       "internal_Q": []
     },
     {
@@ -203,6 +309,35 @@
         }
       ],
       "Q": [],
+      "degree_reference_bars": null,
+      "raw_candidates_scanned": 3,
+      "grading_slots": 3,
+      "counting_steps": [
+        {
+          "reference": 128.0,
+          "comparison_span": 128.0,
+          "same_reference": 1.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 0.0
+        },
+        {
+          "reference": 128.0,
+          "comparison_span": 128.0,
+          "same_reference": 1.0,
+          "pre_height": 0.0,
+          "pre_couple": 0.0,
+          "inner_demotion": 0.0,
+          "pre_demotion": 0.0,
+          "upgrade": 0.0,
+          "downgrade": 0.0,
+          "count": 0.0
+        }
+      ],
       "internal_Q": []
     }
   ],
@@ -435,9 +570,9 @@
   "synthetic_ohlc_only": true,
   "scenario": "q_failed_auto",
   "installation_files_sha256": {
-    "install/EWT01.txt": "184faa4a165a6a9274aef0440ea8f5d6718309e44f455cd1d016e1841c477649",
-    "install/EWT02.txt": "025c6d923642fcc9fe8b5398dbd740c652f3d028941819ff774823c189fd5442",
-    "install/EWT03.txt": "a0d70cda5d440b2c8ee758d947bc63df700043db7a5df124726fa4f0e9d56a8d"
+    "install/EWT01.txt": "c9d8b75847d3eb8851aaeee49b06fbe16da1143ccfeb6ca0f5484a0c1aab7144",
+    "install/EWT02.txt": "0025a2f74be729eb963fa86f7a67e26a40ae31b8db7b80ca561ae3bb11806eb5",
+    "install/EWT03.txt": "13d35d98223b4787716d06085d50cb71a3995a2f4317b1f7f600139526db0c86"
   },
   "installation_equivalence_test": "tests/test_install_layers.py"
 }
